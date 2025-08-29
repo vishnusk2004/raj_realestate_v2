@@ -1,0 +1,476 @@
+{% load static tailwind_tags %}
+{% load humanize %}
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Mortgage Calculator - {{ brand_name }}</title>
+    {% tailwind_css %}
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+</head>
+<style>
+    body {
+        font-family: 'Inter', sans-serif;
+    }
+
+    /* Hero section styling */
+    .hero-bg {
+        background: linear-gradient(135deg, rgba(0,0,0,0.8) 0%, rgba(0,0,0,0.6) 100%), 
+                    url('https://images.unsplash.com/photo-1560518883-ce09059eeffa?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=2073&q=80');
+        background-size: cover;
+        background-position: center;
+        background-attachment: fixed;
+        position: relative;
+    }
+
+    .hero-bg::before {
+        content: '';
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        background: linear-gradient(135deg, rgba(102, 126, 234, 0.1) 0%, rgba(118, 75, 162, 0.1) 100%);
+        pointer-events: none;
+    }
+
+    /* Calculator styling */
+    .calculator-container {
+        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        border-radius: 24px;
+        padding: 3px;
+        box-sizing: border-box;
+        box-shadow: 0 20px 40px rgba(102, 126, 234, 0.15);
+    }
+
+    .calculator-inner {
+        background: white;
+        border-radius: 21px;
+        padding: 40px;
+        box-sizing: border-box;
+    }
+
+    .input-group {
+        position: relative;
+        margin-bottom: 24px;
+    }
+
+    .form-input {
+        padding: 16px 20px;
+        border: 2px solid #e5e7eb;
+        border-radius: 12px;
+        font-size: 16px;
+        transition: all 0.3s ease;
+        background: white;
+        color: #374151;
+        line-height: 1.5;
+        height: auto;
+        min-height: unset;
+        box-sizing: border-box;
+        font-family: 'Inter', sans-serif;
+        width: 100%;
+    }
+
+    .form-input:focus {
+        outline: none;
+        border-color: #667eea;
+        box-shadow: 0 0 0 4px rgba(102, 126, 234, 0.1);
+        transform: translateY(-1px);
+    }
+
+    .form-label {
+        display: block;
+        color: #374151;
+        font-weight: 600;
+        margin-bottom: 8px;
+        font-size: 14px;
+        font-family: 'Inter', sans-serif;
+    }
+
+    .calculate-btn {
+        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        color: white;
+        padding: 18px 32px;
+        border: none;
+        border-radius: 12px;
+        font-size: 16px;
+        font-weight: 600;
+        cursor: pointer;
+        transition: all 0.3s ease;
+        line-height: 1.5;
+        height: auto;
+        font-family: 'Inter', sans-serif;
+        text-transform: uppercase;
+        letter-spacing: 0.5px;
+        width: 100%;
+    }
+
+    .calculate-btn:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 15px 35px rgba(102, 126, 234, 0.4);
+    }
+
+    /* Results styling */
+    .results-container {
+        background: rgba(255, 255, 255, 0.05);
+        backdrop-filter: blur(20px);
+        border: 1px solid rgba(255, 255, 255, 0.2);
+        border-radius: 20px;
+        padding: 32px 24px;
+        transition: all 0.4s ease;
+        position: relative;
+        overflow: hidden;
+    }
+
+    .result-item {
+        background: rgba(255, 255, 255, 0.1);
+        border: 1px solid rgba(255, 255, 255, 0.2);
+        border-radius: 16px;
+        padding: 24px;
+        text-align: center;
+        transition: all 0.3s ease;
+        backdrop-filter: blur(10px);
+        margin-bottom: 16px;
+    }
+
+    .result-item:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 10px 25px rgba(102, 126, 234, 0.3);
+        background: rgba(255, 255, 255, 0.1);
+    }
+
+    .result-label {
+        color: #9ca3af;
+        font-size: 0.875rem;
+        font-weight: 500;
+        margin-bottom: 8px;
+    }
+
+    .result-value {
+        color: white;
+        font-size: 1.75rem;
+        font-weight: 700;
+    }
+
+    .result-value.primary {
+        color: #667eea;
+        font-size: 2.5rem;
+    }
+
+    /* Feature cards */
+    .feature-card {
+        background: rgba(255, 255, 255, 0.1);
+        backdrop-filter: blur(20px);
+        border: 1px solid rgba(255, 255, 255, 0.2);
+        border-radius: 20px;
+        padding: 32px 24px;
+        text-align: center;
+        transition: all 0.4s ease;
+        position: relative;
+        overflow: hidden;
+    }
+
+    .feature-card:hover {
+        transform: translateY(-8px);
+        background: rgba(255, 255, 255, 0.15);
+        box-shadow: 0 20px 40px rgba(0, 0, 0, 0.3);
+    }
+
+    .feature-icon {
+        width: 80px;
+        height: 80px;
+        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        margin: 0 auto 24px;
+        font-size: 32px;
+        color: white;
+        position: relative;
+        z-index: 1;
+        box-shadow: 0 10px 25px rgba(102, 126, 234, 0.3);
+    }
+
+    /* Floating elements */
+    .floating-shape {
+        position: absolute;
+        border-radius: 50%;
+        background: linear-gradient(135deg, rgba(102, 126, 234, 0.1) 0%, rgba(118, 75, 162, 0.1) 100%);
+        animation: float 6s ease-in-out infinite;
+    }
+
+    .floating-shape:nth-child(1) {
+        width: 100px;
+        height: 100px;
+        top: 10%;
+        left: 10%;
+        animation-delay: 0s;
+    }
+
+    .floating-shape:nth-child(2) {
+        width: 60px;
+        height: 60px;
+        top: 60%;
+        right: 15%;
+        animation-delay: 2s;
+    }
+
+    .floating-shape:nth-child(3) {
+        width: 80px;
+        height: 80px;
+        bottom: 20%;
+        left: 20%;
+        animation-delay: 4s;
+    }
+
+    @keyframes float {
+        0%, 100% { transform: translateY(0px); }
+        50% { transform: translateY(-20px); }
+    }
+
+    /* Responsive improvements */
+    @media (max-width: 768px) {
+        .calculator-inner {
+            padding: 24px;
+        }
+        
+        .feature-card {
+            padding: 24px 16px;
+        }
+        
+        .hero-bg {
+            background-attachment: scroll;
+        }
+    }
+</style>
+<body class="bg-gray-900">
+
+{% include 'Henry/navbar.html' %}
+
+<!-- Hero Section -->
+<section class="hero-bg py-20 relative overflow-hidden">
+    <div class="floating-shape"></div>
+    <div class="floating-shape"></div>
+    <div class="floating-shape"></div>
+    
+    <div class="container mx-auto px-4 relative z-10">
+        <div class="max-w-7xl mx-auto">
+            <div class="text-center mb-16">
+                <h1 class="text-5xl md:text-6xl font-bold text-white mb-6 leading-tight">
+                    Calculate Your 
+                    <span class="bg-gradient-to-r from-blue-400 to-purple-400 bg-clip-text text-transparent">Mortgage</span>
+                </h1>
+                <p class="text-xl md:text-2xl text-gray-200 max-w-4xl mx-auto leading-relaxed">
+                    Get accurate mortgage payment estimates and explore different loan options with our professional calculator. Plan your home purchase with confidence.
+                </p>
+            </div>
+            
+            <!-- Feature Cards -->
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+                <div class="feature-card">
+                    <div class="feature-icon">
+                        <i class="fas fa-calculator"></i>
+                    </div>
+                    <h3 class="text-xl font-semibold text-white mb-4 relative z-10">Accurate Calculations</h3>
+                    <p class="text-gray-300 text-base leading-relaxed relative z-10">Get precise mortgage payment estimates with our advanced calculator that includes all costs and fees.</p>
+                </div>
+                <div class="feature-card">
+                    <div class="feature-icon">
+                        <i class="fas fa-chart-pie"></i>
+                    </div>
+                    <h3 class="text-xl font-semibold text-white mb-4 relative z-10">Payment Breakdown</h3>
+                    <p class="text-gray-300 text-base leading-relaxed relative z-10">See detailed breakdown of principal, interest, taxes, and insurance for complete transparency.</p>
+                </div>
+                <div class="feature-card">
+                    <div class="feature-icon">
+                        <i class="fas fa-compare"></i>
+                    </div>
+                    <h3 class="text-xl font-semibold text-white mb-4 relative z-10">Compare Options</h3>
+                    <p class="text-gray-300 text-base leading-relaxed relative z-10">Compare different loan terms, down payments, and interest rates to find the best option for you.</p>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Calculator Section -->
+<section class="py-20 bg-gray-800">
+    <div class="container mx-auto px-4">
+        <div class="max-w-6xl mx-auto">
+            <div class="grid grid-cols-1 lg:grid-cols-2 gap-12">
+                <!-- Calculator Form -->
+                <div class="calculator-container">
+                    <div class="calculator-inner">
+                        <h2 class="text-3xl font-bold mb-8 text-center">Calculate Your Payment</h2>
+                        <form id="mortgage-form">
+                            <div class="input-group">
+                                <label class="form-label">Home Price</label>
+                                <input type="number" id="home-price" value="500000" class="form-input" placeholder="Enter home price">
+                            </div>
+                            
+                            <div class="input-group">
+                                <label class="form-label">Down Payment</label>
+                                <input type="number" id="down-payment" value="100000" class="form-input" placeholder="Enter down payment">
+                            </div>
+                            
+                            <div class="input-group">
+                                <label class="form-label">Loan Term (Years)</label>
+                                <select id="loan-term" class="form-input">
+                                    <option value="30">30 Years</option>
+                                    <option value="20">20 Years</option>
+                                    <option value="15">15 Years</option>
+                                    <option value="10">10 Years</option>
+                                </select>
+                            </div>
+                            
+                            <div class="input-group">
+                                <label class="form-label">Interest Rate (%)</label>
+                                <input type="number" id="interest-rate" value="4.5" step="0.1" class="form-input" placeholder="Enter interest rate">
+                            </div>
+                            
+                            <button type="submit" class="calculate-btn">
+                                <i class="fas fa-calculator mr-3"></i>
+                                Calculate Payment
+                            </button>
+                        </form>
+                    </div>
+                </div>
+
+                <!-- Results -->
+                <div class="results-container">
+                    <h2 class="text-3xl font-bold mb-8 text-center text-white">Your Results</h2>
+                    <div class="space-y-4">
+                        <div class="result-item">
+                            <h3 class="result-label">Monthly Payment</h3>
+                            <p class="result-value primary" id="monthly-payment">$2,533</p>
+                        </div>
+                        <div class="result-item">
+                            <h3 class="result-label">Principal & Interest</h3>
+                            <p class="result-value" id="principal-interest">$2,027</p>
+                        </div>
+                        <div class="result-item">
+                            <h3 class="result-label">Property Tax</h3>
+                            <p class="result-value" id="property-tax">$417</p>
+                        </div>
+                        <div class="result-item">
+                            <h3 class="result-label">Home Insurance</h3>
+                            <p class="result-value" id="home-insurance">$89</p>
+                        </div>
+                        <div class="result-item">
+                            <h3 class="result-label">Total Interest Paid</h3>
+                            <p class="result-value" id="total-interest">$329,018</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Loan Types Section -->
+<section class="py-20 bg-gray-900">
+    <div class="container mx-auto px-4">
+        <div class="max-w-6xl mx-auto">
+            <div class="text-center mb-16">
+                <h2 class="text-4xl md:text-5xl font-bold text-white mb-6">
+                    Types of 
+                    <span class="bg-gradient-to-r from-blue-400 to-purple-400 bg-clip-text text-transparent">Mortgages</span>
+                </h2>
+                <p class="text-xl text-gray-300 max-w-3xl mx-auto">
+                    Explore different mortgage options to find the one that best fits your financial situation
+                </p>
+            </div>
+            
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+                <div class="feature-card">
+                    <div class="feature-icon">
+                        <i class="fas fa-home"></i>
+                    </div>
+                    <h3 class="text-xl font-semibold text-white mb-4 relative z-10">Conventional Loans</h3>
+                    <p class="text-gray-300 text-base leading-relaxed relative z-10 mb-4">Traditional mortgages with 20% down payment and competitive interest rates.</p>
+                    <ul class="text-sm text-gray-300 space-y-2 relative z-10">
+                        <li>• 20% down payment required</li>
+                        <li>• No PMI with 20% down</li>
+                        <li>• Competitive rates</li>
+                        <li>• Flexible terms</li>
+                    </ul>
+                </div>
+                
+                <div class="feature-card">
+                    <div class="feature-icon">
+                        <i class="fas fa-shield-alt"></i>
+                    </div>
+                    <h3 class="text-xl font-semibold text-white mb-4 relative z-10">FHA Loans</h3>
+                    <p class="text-gray-300 text-base leading-relaxed relative z-10 mb-4">Government-backed loans with lower down payment requirements.</p>
+                    <ul class="text-sm text-gray-300 space-y-2 relative z-10">
+                        <li>• 3.5% down payment</li>
+                        <li>• Lower credit score requirements</li>
+                        <li>• Mortgage insurance required</li>
+                        <li>• Great for first-time buyers</li>
+                    </ul>
+                </div>
+                
+                <div class="feature-card">
+                    <div class="feature-icon">
+                        <i class="fas fa-university"></i>
+                    </div>
+                    <h3 class="text-xl font-semibold text-white mb-4 relative z-10">VA Loans</h3>
+                    <p class="text-gray-300 text-base leading-relaxed relative z-10 mb-4">Special loans for veterans and active military personnel.</p>
+                    <ul class="text-sm text-gray-300 space-y-2 relative z-10">
+                        <li>• 0% down payment</li>
+                        <li>• No PMI required</li>
+                        <li>• Competitive rates</li>
+                        <li>• VA funding fee</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- JavaScript for Calculator -->
+<script>
+document.getElementById('mortgage-form').addEventListener('submit', function(e) {
+    e.preventDefault();
+    calculateMortgage();
+});
+
+function calculateMortgage() {
+    const homePrice = parseFloat(document.getElementById('home-price').value);
+    const downPayment = parseFloat(document.getElementById('down-payment').value);
+    const loanTerm = parseInt(document.getElementById('loan-term').value);
+    const interestRate = parseFloat(document.getElementById('interest-rate').value);
+    
+    const loanAmount = homePrice - downPayment;
+    const monthlyRate = interestRate / 100 / 12;
+    const numberOfPayments = loanTerm * 12;
+    
+    // Calculate monthly payment
+    const monthlyPayment = loanAmount * (monthlyRate * Math.pow(1 + monthlyRate, numberOfPayments)) / (Math.pow(1 + monthlyRate, numberOfPayments) - 1);
+    
+    // Calculate other components
+    const propertyTax = (homePrice * 0.01) / 12; // 1% annual property tax
+    const homeInsurance = (homePrice * 0.005) / 12; // 0.5% annual insurance
+    const totalMonthlyPayment = monthlyPayment + propertyTax + homeInsurance;
+    const totalInterest = (monthlyPayment * numberOfPayments) - loanAmount;
+    
+    // Update results
+    document.getElementById('monthly-payment').textContent = '$' + totalMonthlyPayment.toFixed(0);
+    document.getElementById('principal-interest').textContent = '$' + monthlyPayment.toFixed(0);
+    document.getElementById('property-tax').textContent = '$' + propertyTax.toFixed(0);
+    document.getElementById('home-insurance').textContent = '$' + homeInsurance.toFixed(0);
+    document.getElementById('total-interest').textContent = '$' + totalInterest.toFixed(0);
+}
+
+// Calculate on page load
+calculateMortgage();
+</script>
+
+{% include 'Henry/footer.html' %}
+
+</body>
+</html>

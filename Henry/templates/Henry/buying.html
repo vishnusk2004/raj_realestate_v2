@@ -1,0 +1,372 @@
+{% load static tailwind_tags %}
+{% load humanize %}
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Buying - {{ brand_name }}</title>
+    {% tailwind_css %}
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+</head>
+<style>
+    /* Dimmed neon border effect */
+    .neon-border-card {
+        border: 2px solid transparent;
+        border-radius: 12px;
+        background-image: linear-gradient(white, white),
+        linear-gradient(135deg, #5d00ff, #00d4ff);
+        background-origin: border-box;
+        background-clip: content-box, border-box;
+        box-shadow: 0 0 4px rgba(93, 0, 255, 0.2), 0 0 8px rgba(0, 212, 255, 0.3);
+        transition: all 0.3s ease-in-out;
+    }
+
+    /* Hover effect with dimmed glow */
+    .neon-border-card:hover {
+        box-shadow: 0 0 8px rgba(93, 0, 255, 0.3), 0 0 12px rgba(0, 212, 255, 0.4);
+        transform: translateY(-3px);
+    }
+
+    /* Professional search bar styling */
+    .search-container {
+        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        border-radius: 20px;
+        padding: 2px;
+    }
+
+    .search-inner {
+        background: white;
+        border-radius: 18px;
+        padding: 20px;
+    }
+
+    /* Loading animation */
+    .loading {
+        display: inline-block;
+        width: 20px;
+        height: 20px;
+        border: 3px solid rgba(255,255,255,.3);
+        border-radius: 50%;
+        border-top-color: #fff;
+        animation: spin 1s ease-in-out infinite;
+    }
+
+    @keyframes spin {
+        to { transform: rotate(360deg); }
+    }
+
+    /* Property card fade in animation */
+    .property-card {
+        opacity: 0;
+        transform: translateY(20px);
+        animation: fadeInUp 0.6s ease forwards;
+    }
+
+    @keyframes fadeInUp {
+        to {
+            opacity: 1;
+            transform: translateY(0);
+        }
+    }
+</style>
+<body class="bg-gray-900">
+
+{% include 'Henry/navbar.html' %}
+
+<!-- Professional Search Bar Section -->
+<section class="bg-gray-800 py-12">
+    <div class="container mx-auto px-4">
+        <div class="max-w-6xl mx-auto">
+            <div class="text-center mb-8">
+                <h1 class="text-4xl font-bold text-white mb-4">Find Your Dream Home</h1>
+                <p class="text-xl text-blue-100">Search through thousands of properties</p>
+            </div>
+            
+            <div class="search-container" style="background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); border-radius: 20px; padding: 2px;">
+                <div class="search-inner" style="background: white; border-radius: 18px; padding: 20px;">
+                    <form class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-4">
+                        <div class="relative">
+                            <i class="fas fa-map-marker-alt absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400"></i>
+                            <input type="text" placeholder="Location" class="w-full pl-10 pr-4 py-3 border border-gray-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent" style="background: white; color: #374151;">
+                        </div>
+                        
+                        <div class="relative">
+                            <i class="fas fa-home absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400"></i>
+                            <select class="w-full pl-10 pr-4 py-3 border border-gray-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent appearance-none bg-white" style="background: white; color: #374151;">
+                                <option>Property Type</option>
+                                <option>House</option>
+                                <option>Apartment</option>
+                                <option>Condo</option>
+                                <option>Townhouse</option>
+                            </select>
+                        </div>
+                        
+                        <div class="relative">
+                            <i class="fas fa-dollar-sign absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400"></i>
+                            <input type="number" placeholder="Min Price" class="w-full pl-10 pr-4 py-3 border border-gray-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent" style="background: white; color: #374151;">
+                        </div>
+                        
+                        <div class="relative">
+                            <i class="fas fa-dollar-sign absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400"></i>
+                            <input type="number" placeholder="Max Price" class="w-full pl-10 pr-4 py-3 border border-gray-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent" style="background: white; color: #374151;">
+                        </div>
+                        
+                        <button type="submit" class="bg-gradient-to-r from-blue-600 to-purple-600 text-white px-6 py-3 rounded-lg hover:from-blue-700 hover:to-purple-700 transition-all duration-300 font-semibold shadow-lg" style="background: linear-gradient(to right, #2563eb, #7c3aed);">
+                            <i class="fas fa-search mr-2"></i>Search
+                        </button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Properties Grid -->
+<section class="bg-gray-800 py-16">
+    <div class="container mx-auto px-4">
+        <div id="properties-grid" class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
+            <!-- Property Cards will be loaded here -->
+        </div>
+        
+        <!-- Load More Button -->
+        <div class="text-center mt-12">
+            <button id="load-more-btn" class="bg-gradient-to-r from-blue-600 to-purple-600 text-white px-8 py-3 rounded-lg hover:from-blue-700 hover:to-purple-700 transition-all duration-300 font-semibold shadow-lg">
+                <span id="load-more-text">Load More Properties</span>
+                <span id="loading-spinner" class="loading ml-2" style="display: none;"></span>
+            </button>
+        </div>
+    </div>
+</section>
+
+{% include 'Henry/footer.html' %}
+
+<script>
+// Property data
+const properties = [
+    {
+        image: "https://static.wixstatic.com/media/4eb8f6_12dd7f5ab6cb49b5974019a73f043f79~mv2_d_2800_1600_s_2.png",
+        title: "Luxury Villa in Beverly Hills",
+        location: "Beverly Hills, CA",
+        price: "$2,500,000",
+        beds: 4,
+        baths: 3,
+        sqft: "3,200"
+    },
+    {
+        image: "https://static.wixstatic.com/media/4eb8f6_9f75dcea435845f0bdc27550cb305fe3~mv2.jpg",
+        title: "Modern Condo Downtown",
+        location: "Downtown, NY",
+        price: "$850,000",
+        beds: 2,
+        baths: 2,
+        sqft: "1,200"
+    },
+    {
+        image: "https://static.wixstatic.com/media/4eb8f6_4b6d8008197b4fd9adc654bb2265ce57~mv2.jpg",
+        title: "Family Home in Suburbs",
+        location: "Suburban Area, TX",
+        price: "$450,000",
+        beds: 3,
+        baths: 2,
+        sqft: "2,100"
+    },
+    {
+        image: "https://static.wixstatic.com/media/4eb8f6_00c3ca9d7d7647348845cb3a692acf62~mv2.jpg",
+        title: "Luxury Penthouse",
+        location: "City Center, CA",
+        price: "$1,200,000",
+        beds: 3,
+        baths: 3,
+        sqft: "2,800"
+    },
+    {
+        image: "https://static.wixstatic.com/media/4eb8f6_12dd7f5ab6cb49b5974019a73f043f79~mv2_d_2800_1600_s_2.png",
+        title: "Waterfront Estate",
+        location: "Miami Beach, FL",
+        price: "$3,800,000",
+        beds: 5,
+        baths: 4,
+        sqft: "4,500"
+    },
+    {
+        image: "https://static.wixstatic.com/media/4eb8f6_9f75dcea435845f0bdc27550cb305fe3~mv2.jpg",
+        title: "Modern Townhouse",
+        location: "Seattle, WA",
+        price: "$750,000",
+        beds: 3,
+        baths: 2.5,
+        sqft: "1,800"
+    },
+    {
+        image: "https://static.wixstatic.com/media/4eb8f6_4b6d8008197b4fd9adc654bb2265ce57~mv2.jpg",
+        title: "Cozy Starter Home",
+        location: "Austin, TX",
+        price: "$320,000",
+        beds: 2,
+        baths: 1,
+        sqft: "1,100"
+    },
+    {
+        image: "https://static.wixstatic.com/media/4eb8f6_00c3ca9d7d7647348845cb3a692acf62~mv2.jpg",
+        title: "Investment Property",
+        location: "Las Vegas, NV",
+        price: "$280,000",
+        beds: 3,
+        baths: 2,
+        sqft: "1,400"
+    },
+    {
+        image: "https://static.wixstatic.com/media/4eb8f6_12dd7f5ab6cb49b5974019a73f043f79~mv2_d_2800_1600_s_2.png",
+        title: "Mountain View Villa",
+        location: "Aspen, CO",
+        price: "$1,800,000",
+        beds: 4,
+        baths: 3,
+        sqft: "3,500"
+    },
+    {
+        image: "https://static.wixstatic.com/media/4eb8f6_9f75dcea435845f0bdc27550cb305fe3~mv2.jpg",
+        title: "Urban Loft",
+        location: "San Francisco, CA",
+        price: "$1,100,000",
+        beds: 2,
+        baths: 2,
+        sqft: "1,600"
+    },
+    {
+        image: "https://static.wixstatic.com/media/4eb8f6_4b6d8008197b4fd9adc654bb2265ce57~mv2.jpg",
+        title: "Garden Cottage",
+        location: "Portland, OR",
+        price: "$420,000",
+        beds: 2,
+        baths: 1,
+        sqft: "1,300"
+    },
+    {
+        image: "https://static.wixstatic.com/media/4eb8f6_00c3ca9d7d7647348845cb3a692acf62~mv2.jpg",
+        title: "Beachfront Condo",
+        location: "Malibu, CA",
+        price: "$2,200,000",
+        beds: 3,
+        baths: 2,
+        sqft: "2,200"
+    },
+    {
+        image: "https://static.wixstatic.com/media/4eb8f6_12dd7f5ab6cb49b5974019a73f043f79~mv2_d_2800_1600_s_2.png",
+        title: "Historic Townhouse",
+        location: "Boston, MA",
+        price: "$950,000",
+        beds: 4,
+        baths: 3,
+        sqft: "2,800"
+    },
+    {
+        image: "https://static.wixstatic.com/media/4eb8f6_9f75dcea435845f0bdc27550cb305fe3~mv2.jpg",
+        title: "Modern Farmhouse",
+        location: "Nashville, TN",
+        price: "$680,000",
+        beds: 4,
+        baths: 3,
+        sqft: "2,400"
+    },
+    {
+        image: "https://static.wixstatic.com/media/4eb8f6_4b6d8008197b4fd9adc654bb2265ce57~mv2.jpg",
+        title: "Downtown Apartment",
+        location: "Chicago, IL",
+        price: "$380,000",
+        beds: 1,
+        baths: 1,
+        sqft: "900"
+    },
+    {
+        image: "https://static.wixstatic.com/media/4eb8f6_00c3ca9d7d7647348845cb3a692acf62~mv2.jpg",
+        title: "Luxury Estate",
+        location: "Palm Springs, CA",
+        price: "$4,500,000",
+        beds: 6,
+        baths: 5,
+        sqft: "5,200"
+    }
+];
+
+let currentIndex = 0;
+const propertiesPerLoad = 8;
+
+// Create property card HTML
+function createPropertyCard(property, index) {
+    return `
+        <div class="property-card" style="animation-delay: ${index * 0.1}s">
+            <div class="relative rounded-lg overflow-hidden shadow-lg bg-white neon-border-card">
+                <img src="${property.image}" alt="${property.title}" class="w-full h-48 object-cover">
+                <div class="absolute top-2 left-2 bg-blue-600 text-white px-2 py-1 text-xs font-semibold uppercase rounded">For Sale</div>
+                <div class="p-4">
+                    <h3 class="text-lg font-semibold text-gray-800 mb-1">${property.title}</h3>
+                    <p class="text-gray-600 text-sm mb-3">${property.location}</p>
+                    <div class="flex justify-between items-center mb-3">
+                        <span class="text-2xl font-bold text-blue-600">${property.price}</span>
+                        <a href="#" class="text-blue-600 font-semibold hover:text-blue-800 transition">View Details</a>
+                    </div>
+                    <div class="flex space-x-4 text-gray-600">
+                        <span class="flex items-center">
+                            <i class="fas fa-bed text-blue-500 mr-1"></i>${property.beds} Beds
+                        </span>
+                        <span class="flex items-center">
+                            <i class="fas fa-bath text-blue-500 mr-1"></i>${property.baths} Baths
+                        </span>
+                        <span class="flex items-center">
+                            <i class="fas fa-expand-arrows-alt text-blue-500 mr-1"></i>${property.sqft} sqft
+                        </span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    `;
+}
+
+// Load initial properties
+function loadProperties() {
+    const grid = document.getElementById('properties-grid');
+    const endIndex = Math.min(currentIndex + propertiesPerLoad, properties.length);
+    
+    for (let i = currentIndex; i < endIndex; i++) {
+        const cardHTML = createPropertyCard(properties[i], i - currentIndex);
+        grid.insertAdjacentHTML('beforeend', cardHTML);
+    }
+    
+    currentIndex = endIndex;
+    
+    // Hide load more button if all properties are loaded
+    if (currentIndex >= properties.length) {
+        document.getElementById('load-more-btn').style.display = 'none';
+    }
+}
+
+// Load more button functionality
+document.getElementById('load-more-btn').addEventListener('click', function() {
+    const button = this;
+    const loadText = document.getElementById('load-more-text');
+    const spinner = document.getElementById('loading-spinner');
+    
+    // Show loading state
+    loadText.textContent = 'Loading...';
+    spinner.style.display = 'inline-block';
+    button.disabled = true;
+    
+    // Simulate loading delay
+    setTimeout(() => {
+        loadProperties();
+        
+        // Reset button state
+        loadText.textContent = 'Load More Properties';
+        spinner.style.display = 'none';
+        button.disabled = false;
+    }, 800);
+});
+
+// Initial load
+loadProperties();
+</script>
+
+</body>
+</html>
