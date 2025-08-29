@@ -17,6 +17,7 @@ Including another URLconf
 from django.contrib import admin
 from django.urls import path, include
 from django.http import HttpResponse
+from api.migrate_endpoint import run_migrations
 
 
 def health_check(request):
@@ -26,6 +27,7 @@ def health_check(request):
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('health/', health_check, name='health_check'),
+    path('migrate/', run_migrations, name='run_migrations'),
     path('', include('Henry.urls')),
     path("__reload__/", include("django_browser_reload.urls")),
 ]

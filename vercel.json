@@ -23,5 +23,10 @@
       "src": "/(.*)",
       "dest": "mysite/wsgi.py"
     }
-  ]
+  ],
+  "functions": {
+    "mysite/wsgi.py": {
+      "includeFiles": "api/**"
+    }
+  }
 }
