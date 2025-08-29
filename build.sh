@@ -12,7 +12,14 @@ cd theme/static_src
 if [ ! -d "node_modules" ]; then
     echo "Installing Node.js dependencies..."
     npm install
+else
+    echo "Node.js dependencies already installed, updating..."
+    npm install
 fi
+
+# Update browserslist database to avoid warnings
+echo "Updating browserslist database..."
+npx update-browserslist-db@latest --yes
 
 # Build Tailwind CSS
 echo "Building CSS..."
@@ -24,6 +31,6 @@ echo "Collecting static files..."
 python manage.py collectstatic --no-input
 
 echo "Running database migrations..."
-python manage.py migrate
+python manage.py migrate --noinput
 
 echo "Build completed successfully!"
