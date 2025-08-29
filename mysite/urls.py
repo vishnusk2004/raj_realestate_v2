@@ -16,10 +16,16 @@ Including another URLconf
 """
 from django.contrib import admin
 from django.urls import path, include
+from django.http import HttpResponse
+
+
+def health_check(request):
+    return HttpResponse("Django app is running!")
 
 
 urlpatterns = [
     path('admin/', admin.site.urls),
+    path('health/', health_check, name='health_check'),
     path('', include('Henry.urls')),
     path("__reload__/", include("django_browser_reload.urls")),
 ]

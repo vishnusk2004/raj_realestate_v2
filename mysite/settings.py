@@ -30,7 +30,19 @@ SECRET_KEY = os.getenv('SECRET_KEY', 'django-insecure-tzk4^_u^x05juz(7r*c16hptg0
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = os.getenv('DEBUG', 'False').lower() == 'true'
 
-ALLOWED_HOSTS = os.getenv('ALLOWED_HOSTS', 'localhost,127.0.0.1,.vercel.app').split(',')
+# Get allowed hosts from environment or use a default list
+ALLOWED_HOSTS = os.getenv('ALLOWED_HOSTS', 'localhost,127.0.0.1,.vercel.app,.onrender.com').split(',')
+
+# For development, you can add more hosts
+if DEBUG:
+    ALLOWED_HOSTS.extend(['*'])
+
+# Add common Vercel domains
+ALLOWED_HOSTS.extend([
+    'raj-realestate.vercel.app',
+    'raj-realestate-git-main-kumarsravan2004gmailcoms-projects.vercel.app',
+    'raj-realestate-m8ms2xjy1-kumarsravan2004gmailcoms-projects.vercel.app'
+])
 
 
 # Application definition
@@ -97,19 +109,27 @@ WSGI_APPLICATION = 'mysite.wsgi.application'
 # Database
 # https://docs.djangoproject.com/en/5.1/ref/settings/#databases
 
-DATABASES = {
-    'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': BASE_DIR / 'db.sqlite3',
-    } if DEBUG else {
-        'ENGINE': 'django.db.backends.postgresql',
-        'NAME': os.getenv('DATABASE_NAME', ''),
-        'USER': os.getenv('DATABASE_USER', ''),
-        'PASSWORD': os.getenv('DATABASE_PASSWORD', ''),
-        'HOST': os.getenv('DATABASE_HOST', ''),
-        'PORT': os.getenv('DATABASE_PORT', '5432'),
+# Database configuration
+if DEBUG or not all([os.getenv('DATABASE_NAME'), os.getenv('DATABASE_USER'), os.getenv('DATABASE_PASSWORD'), os.getenv('DATABASE_HOST')]):
+    # Use SQLite for development or if PostgreSQL credentials are not provided
+    DATABASES = {
+        'default': {
+            'ENGINE': 'django.db.backends.sqlite3',
+            'NAME': BASE_DIR / 'db.sqlite3',
+        }
     }
-}
+else:
+    # Use PostgreSQL for production
+    DATABASES = {
+        'default': {
+            'ENGINE': 'django.db.backends.postgresql',
+            'NAME': os.getenv('DATABASE_NAME'),
+            'USER': os.getenv('DATABASE_USER'),
+            'PASSWORD': os.getenv('DATABASE_PASSWORD'),
+            'HOST': os.getenv('DATABASE_HOST'),
+            'PORT': os.getenv('DATABASE_PORT', '5432'),
+        }
+    }
 
 
 # Password validation
@@ -163,3 +183,25 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 # Brand Configuration
 BRAND_NAME = os.getenv('BRAND_NAME', 'RealtyPro')
+
+# Logging configuration for debugging
+LOGGING = {
+    'version': 1,
+    'disable_existing_loggers': False,
+    'handlers': {
+        'console': {
+            'class': 'logging.StreamHandler',
+        },
+    },
+    'root': {
+        'handlers': ['console'],
+        'level': 'INFO',
+    },
+    'loggers': {
+        'django': {
+            'handlers': ['console'],
+            'level': 'INFO',
+            'propagate': False,
+        },
+    },
+}

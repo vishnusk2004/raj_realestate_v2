@@ -5,6 +5,7 @@ from django.core.serializers import serialize
 from django.utils.safestring import mark_safe
 from django.conf import settings
 from django.shortcuts import render, redirect
+from django.http import HttpResponse
 from django.contrib import messages
 
 from .models import Property, SellingContact
@@ -12,24 +13,28 @@ from .models import Property, SellingContact
 
 # Create your views here.
 def home(request):
-    featured_properties = Property.objects.all()[:8]  # Get the first 8 properties or however many you want to display
+    try:
+        featured_properties = Property.objects.all()[:8]  # Get the first 8 properties or however many you want to display
 
-    # Update each property's image_url to only contain the first URL
-    for featured_property in featured_properties:
-        try:
-            # Use literal_eval to convert the string representation of the list into an actual list
-            image_list = literal_eval(featured_property.image_url)
-            # Assign only the first URL (if it exists)
-            featured_property.cover_image_url = image_list[0] if image_list else None
-        except (ValueError, SyntaxError):
-            featured_property.cover_image_url = None  # Handle cases where image_url format is unexpected
+        # Update each property's image_url to only contain the first URL
+        for featured_property in featured_properties:
+            try:
+                # Use literal_eval to convert the string representation of the list into an actual list
+                image_list = literal_eval(featured_property.image_url)
+                # Assign only the first URL (if it exists)
+                featured_property.cover_image_url = image_list[0] if image_list else None
+            except (ValueError, SyntaxError):
+                featured_property.cover_image_url = None  # Handle cases where image_url format is unexpected
 
-    # Pass the updated queryset as context
-    context = {
-        'featured_properties': featured_properties,
-        'brand_name': settings.BRAND_NAME
-    }
-    return render(request, 'Henry/index.html', context)
+        # Pass the updated queryset as context
+        context = {
+            'featured_properties': featured_properties,
+            'brand_name': settings.BRAND_NAME
+        }
+        return render(request, 'Henry/index.html', context)
+    except Exception as e:
+        # Return a simple error response for debugging
+        return HttpResponse(f"Error in home view: {str(e)}", status=500)
 
 
 def featured_properties(request):
