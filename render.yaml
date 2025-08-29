@@ -9,7 +9,7 @@ services:
     name: henry-realestate
     env: python
     plan: free
-    buildCommand: pip install -r requirements.txt
+    buildCommand: ./build.sh
     startCommand: gunicorn mysite.wsgi:application
     envVars:
       - key: PYTHON_VERSION
