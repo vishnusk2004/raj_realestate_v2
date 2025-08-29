@@ -40,11 +40,12 @@ ALLOWED_HOSTS = os.getenv('ALLOWED_HOSTS', 'localhost,127.0.0.1,.vercel.app,.onr
 if DEBUG:
     ALLOWED_HOSTS.extend(['*'])
 
-# Add common Vercel domains
+# Add common deployment domains
 ALLOWED_HOSTS.extend([
     'raj-realestate.vercel.app',
     'raj-realestate-git-main-kumarsravan2004gmailcoms-projects.vercel.app',
-    'raj-realestate-m8ms2xjy1-kumarsravan2004gmailcoms-projects.vercel.app'
+    'raj-realestate-m8ms2xjy1-kumarsravan2004gmailcoms-projects.vercel.app',
+    'henry-realestate.onrender.com'
 ])
 
 
@@ -113,7 +114,9 @@ WSGI_APPLICATION = 'mysite.wsgi.application'
 # https://docs.djangoproject.com/en/5.1/ref/settings/#databases
 
 # Database configuration
-if DEBUG and not os.getenv('VERCEL'):
+import dj_database_url
+
+if DEBUG and not os.getenv('DATABASE_URL'):
     # Use SQLite for local development only
     DATABASES = {
         'default': {
@@ -122,16 +125,12 @@ if DEBUG and not os.getenv('VERCEL'):
         }
     }
 else:
-    # Use PostgreSQL for production (Vercel)
+    # Use PostgreSQL for production (Render/Vercel)
     DATABASES = {
-        'default': {
-            'ENGINE': 'django.db.backends.postgresql',
-            'NAME': os.getenv('POSTGRES_DATABASE', 'verceldb'),
-            'USER': os.getenv('POSTGRES_USER', 'default'),
-            'PASSWORD': os.getenv('POSTGRES_PASSWORD', ''),
-            'HOST': os.getenv('POSTGRES_HOST', ''),
-            'PORT': os.getenv('POSTGRES_PORT', '5432'),
-        }
+        'default': dj_database_url.config(
+            default=os.getenv('DATABASE_URL'),
+            conn_max_age=600
+        )
     }
 
 
