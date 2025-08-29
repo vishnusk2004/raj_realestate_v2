@@ -30,6 +30,9 @@ SECRET_KEY = os.getenv('SECRET_KEY', 'django-insecure-tzk4^_u^x05juz(7r*c16hptg0
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = os.getenv('DEBUG', 'False').lower() == 'true'
 
+# Check if running on Vercel
+IS_VERCEL = os.getenv('VERCEL', 'false').lower() == 'true'
+
 # Get allowed hosts from environment or use a default list
 ALLOWED_HOSTS = os.getenv('ALLOWED_HOSTS', 'localhost,127.0.0.1,.vercel.app,.onrender.com').split(',')
 
@@ -110,8 +113,8 @@ WSGI_APPLICATION = 'mysite.wsgi.application'
 # https://docs.djangoproject.com/en/5.1/ref/settings/#databases
 
 # Database configuration
-if DEBUG or not all([os.getenv('DATABASE_NAME'), os.getenv('DATABASE_USER'), os.getenv('DATABASE_PASSWORD'), os.getenv('DATABASE_HOST')]):
-    # Use SQLite for development or if PostgreSQL credentials are not provided
+if DEBUG and not os.getenv('VERCEL'):
+    # Use SQLite for local development only
     DATABASES = {
         'default': {
             'ENGINE': 'django.db.backends.sqlite3',
@@ -119,15 +122,15 @@ if DEBUG or not all([os.getenv('DATABASE_NAME'), os.getenv('DATABASE_USER'), os.
         }
     }
 else:
-    # Use PostgreSQL for production
+    # Use PostgreSQL for production (Vercel)
     DATABASES = {
         'default': {
             'ENGINE': 'django.db.backends.postgresql',
-            'NAME': os.getenv('DATABASE_NAME'),
-            'USER': os.getenv('DATABASE_USER'),
-            'PASSWORD': os.getenv('DATABASE_PASSWORD'),
-            'HOST': os.getenv('DATABASE_HOST'),
-            'PORT': os.getenv('DATABASE_PORT', '5432'),
+            'NAME': os.getenv('POSTGRES_DATABASE', 'verceldb'),
+            'USER': os.getenv('POSTGRES_USER', 'default'),
+            'PASSWORD': os.getenv('POSTGRES_PASSWORD', ''),
+            'HOST': os.getenv('POSTGRES_HOST', ''),
+            'PORT': os.getenv('POSTGRES_PORT', '5432'),
         }
     }
 
