@@ -28,7 +28,7 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 SECRET_KEY = os.getenv('SECRET_KEY', 'django-insecure-tzk4^_u^x05juz(7r*c16hptg0pt6kcwiide^wsg+s+-kfb%&6')
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = os.getenv('DEBUG', 'False').lower() == 'true'
+DEBUG = os.getenv('DEBUG', 'True').lower() == 'true'
 
 # Check if running on Vercel
 IS_VERCEL = os.getenv('VERCEL', 'false').lower() == 'true'
@@ -116,21 +116,24 @@ WSGI_APPLICATION = 'mysite.wsgi.application'
 # Database configuration
 import dj_database_url
 
-if DEBUG and not os.getenv('DATABASE_URL'):
-    # Use SQLite for local development only
+# Check if DATABASE_URL is available
+database_url = os.getenv('DATABASE_URL')
+
+if database_url:
+    # Use PostgreSQL for production (Render/Vercel)
+    DATABASES = {
+        'default': dj_database_url.config(
+            default=database_url,
+            conn_max_age=600
+        )
+    }
+else:
+    # Use SQLite for local development when no DATABASE_URL is set
     DATABASES = {
         'default': {
             'ENGINE': 'django.db.backends.sqlite3',
             'NAME': BASE_DIR / 'db.sqlite3',
         }
-    }
-else:
-    # Use PostgreSQL for production (Render/Vercel)
-    DATABASES = {
-        'default': dj_database_url.config(
-            default=os.getenv('DATABASE_URL'),
-            conn_max_age=600
-        )
     }
 
 

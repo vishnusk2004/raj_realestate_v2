@@ -1,0 +1,61 @@
+
+HOME PAGE
+Menu icons are overlapping. Remove Market Insight and Listings for now
+
+
+Play video in the background. Essentially the video you are playing below needs to be in the background. Instead of "Browse Listing" can you put the options in the screenshot below this one. Will need to make the background video asynchronous so it does not impact the "First Paint" load time. You can use Google Lighthouse to test the page load and SEO score too.
+
+
+
+Change the featured property to "Recently sold and leased". We may extend this to featured property later
+Remove the text "Checkout out some exclusive.....". 
+The cards looks great. We will have to figure out how to upload this data. Don't need to show the address. Just need to show the 'city'
+
+
+We can get rid of this. Move the "Join Us" Option with the Achievement
+
+
+Remove this as well
+
+
+We need "Join" and "Contact Us" option here
+
+
+Remove this as well
+
+
+Move the reviews above the featured properties.
+
+
+
+BUYING
+I like this page but the challenge is I am not able to find any freeway (API or rss feeds) to get this data. I'm thinking we should put this for future enhancements for now until I can find a solution
+
+
+SELLING
+Make this form really short - Name, Email, Phone Number, Additional information is all we need
+
+Add the following cards - "Professional", "Experiences Partner Network", "Trusted Local Expert"
+
+Note: We need to figure out a way to save this info. I am thinking if we have an API that we can consume then we should use the "Podio" CRM tool that we have to push the website data there.
+LEASING
+Here also we need an API. For now I am okay to merge this with Selling option. So Selling can be changed to "Sell Or Lease"
+
+
+OPEN HOUSE
+The cards we have in "Buying" can be moved to Open house area. Show this as a calendar on the top and list of properties below. This is where we need an admin page OR may be we can use "Podio" to push the info to the website via REST api
+
+
+
+Mortgage Calculator
+
+Just show the calculator. Get rid of this text
+
+
+Keep this
+
+
+Home Valuation
+
+Same issue here. Need to find a free API. Hide this for now. 
+

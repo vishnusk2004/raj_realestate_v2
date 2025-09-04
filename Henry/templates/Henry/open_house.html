@@ -8,6 +8,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Open House - {{ brand_name }}</title>
     {% tailwind_css %}
+    <link rel="stylesheet" href="{% static 'css/dist/styles.css' %}">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
 </head>
@@ -377,6 +378,152 @@
     </div>
 </section>
 
+<!-- Open House Calendar Section -->
+<section class="py-20 bg-gray-900">
+    <div class="container mx-auto px-4">
+        <div class="max-w-6xl mx-auto">
+            <div class="text-center mb-16">
+                <h2 class="text-4xl md:text-5xl font-bold text-white mb-6">
+                    Open House 
+                    <span class="bg-gradient-to-r from-blue-400 to-purple-400 bg-clip-text text-transparent">Calendar</span>
+                </h2>
+                <p class="text-xl text-gray-300 max-w-3xl mx-auto">
+                    Browse our upcoming open house schedule and find the perfect time to visit
+                </p>
+            </div>
+            
+            <!-- Calendar Grid -->
+            <div class="bg-gray-800 rounded-lg p-8 mb-12">
+                <div class="grid grid-cols-7 gap-4 text-center">
+                    <!-- Calendar Headers -->
+                    <div class="text-gray-400 font-semibold py-2">Sun</div>
+                    <div class="text-gray-400 font-semibold py-2">Mon</div>
+                    <div class="text-gray-400 font-semibold py-2">Tue</div>
+                    <div class="text-gray-400 font-semibold py-2">Wed</div>
+                    <div class="text-gray-400 font-semibold py-2">Thu</div>
+                    <div class="text-gray-400 font-semibold py-2">Fri</div>
+                    <div class="text-gray-400 font-semibold py-2">Sat</div>
+                    
+                    <!-- Calendar Days -->
+                    <div class="py-4 text-gray-500">28</div>
+                    <div class="py-4 text-gray-500">29</div>
+                    <div class="py-4 text-gray-500">30</div>
+                    <div class="py-4 text-gray-500">31</div>
+                    <div class="py-4 text-gray-500">1</div>
+                    <div class="py-4 text-gray-500">2</div>
+                    <div class="py-4 text-gray-500">3</div>
+                    
+                    <div class="py-4 text-gray-500">4</div>
+                    <div class="py-4 text-gray-500">5</div>
+                    <div class="py-4 text-gray-500">6</div>
+                    <div class="py-4 text-gray-500">7</div>
+                    <div class="py-4 text-gray-500">8</div>
+                    <div class="py-4 text-gray-500">9</div>
+                    <div class="py-4 text-gray-500">10</div>
+                    
+                    <div class="py-4 text-gray-500">11</div>
+                    <div class="py-4 text-gray-500">12</div>
+                    <div class="py-4 text-gray-500">13</div>
+                    <div class="py-4 text-gray-500">14</div>
+                    <div class="py-4 text-gray-500">15</div>
+                    <div class="py-4 text-gray-500">16</div>
+                    <div class="py-4 text-gray-500">17</div>
+                    
+                    <div class="py-4 text-gray-500">18</div>
+                    <div class="py-4 text-gray-500">19</div>
+                    <div class="py-4 text-gray-500">20</div>
+                    <div class="py-4 text-gray-500">21</div>
+                    <div class="py-4 text-gray-500">22</div>
+                    <div class="py-4 text-gray-500">23</div>
+                    <div class="py-4 text-gray-500">24</div>
+                    
+                    <div class="py-4 text-gray-500">25</div>
+                    <div class="py-4 text-gray-500">26</div>
+                    <div class="py-4 text-gray-500">27</div>
+                    <div class="py-4 text-gray-500">28</div>
+                    <div class="py-4 text-gray-500">29</div>
+                    <div class="py-4 text-gray-500">30</div>
+                    <div class="py-4 text-gray-500">31</div>
+                </div>
+            </div>
+            
+            <!-- Upcoming Open Houses -->
+            <div class="text-center mb-12">
+                <h3 class="text-2xl font-bold text-white mb-6">Upcoming Open Houses</h3>
+            </div>
+            
+            <!-- Property Cards Grid -->
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+                <!-- Property Card 1 -->
+                <div class="bg-gray-800 rounded-lg overflow-hidden shadow-lg hover:shadow-xl transition-shadow duration-300">
+                    <img src="https://static.wixstatic.com/media/4eb8f6_12dd7f5ab6cb49b5974019a73f043f79~mv2_d_2800_1600_s_2.png/v1/fill/w_1205,h_689,al_c,q_90,usm_0.66_1.00_0.01,enc_auto/4eb8f6_12dd7f5ab6cb49b5974019a73f043f79~mv2_d_2800_1600_s_2.png" alt="Property 1" class="w-full h-48 object-cover">
+                    <div class="p-6">
+                        <div class="flex justify-between items-start mb-4">
+                            <h3 class="text-xl font-bold text-white">Luxury Penthouse</h3>
+                            <span class="bg-blue-600 text-white px-3 py-1 text-sm font-semibold rounded-full">Open House</span>
+                        </div>
+                        <p class="text-gray-300 mb-2">New York, NY</p>
+                        <p class="text-2xl font-bold text-blue-400 mb-4">$58,500,000</p>
+                        <div class="flex justify-between text-gray-400 text-sm mb-4">
+                            <span>5 Beds</span>
+                            <span>4 Baths</span>
+                            <span>16,000 sq.ft</span>
+                        </div>
+                        <div class="bg-green-600 text-white p-3 rounded-lg text-center font-semibold">
+                            <i class="fas fa-calendar-alt mr-2"></i>
+                            Saturday, Dec 14 • 2:00 PM
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Property Card 2 -->
+                <div class="bg-gray-800 rounded-lg overflow-hidden shadow-lg hover:shadow-xl transition-shadow duration-300">
+                    <img src="https://static.wixstatic.com/media/4eb8f6_4b6d800819b4fd9adc654bb2265ce57~mv2.jpg/v1/fill/w_1033,h_689,al_c,q_85,usm_0.66_1.00_0.01,enc_auto/4eb8f6_4b6d800819b4fd9adc654bb2265ce57~mv2.jpg" alt="Property 2" class="w-full h-48 object-cover">
+                    <div class="p-6">
+                        <div class="flex justify-between items-start mb-4">
+                            <h3 class="text-xl font-bold text-white">Beachfront Villa</h3>
+                            <span class="bg-green-600 text-white px-3 py-1 text-sm font-semibold rounded-full">Open House</span>
+                        </div>
+                        <p class="text-gray-300 mb-2">Miami Beach, FL</p>
+                        <p class="text-2xl font-bold text-blue-400 mb-4">$17,900,000</p>
+                        <div class="flex justify-between text-gray-400 text-sm mb-4">
+                            <span>3 Beds</span>
+                            <span>3 Baths</span>
+                            <span>4,434 sq.ft</span>
+                        </div>
+                        <div class="bg-green-600 text-white p-3 rounded-lg text-center font-semibold">
+                            <i class="fas fa-calendar-alt mr-2"></i>
+                            Sunday, Dec 15 • 1:00 PM
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Property Card 3 -->
+                <div class="bg-gray-800 rounded-lg overflow-hidden shadow-lg hover:shadow-xl transition-shadow duration-300">
+                    <img src="https://static.wixstatic.com/media/4eb8f6_17638737f4664711bd0cc86f3b2d8fe7~mv2.jpg/v1/fill/w_1224,h_689,al_c,q_85,usm_0.66_1.00_0.01,enc_auto/4eb8f6_17638737f4664711bd0cc86f3b2d8fe7~mv2.jpg" alt="Property 3" class="w-full h-48 object-cover">
+                    <div class="p-6">
+                        <div class="flex justify-between items-start mb-4">
+                            <h3 class="text-xl font-bold text-white">Modern Townhouse</h3>
+                            <span class="bg-purple-600 text-white px-3 py-1 text-sm font-semibold rounded-full">Open House</span>
+                        </div>
+                        <p class="text-gray-300 mb-2">Los Angeles, CA</p>
+                        <p class="text-2xl font-bold text-blue-400 mb-4">$12,500,000</p>
+                        <div class="flex justify-between text-gray-400 text-sm mb-4">
+                            <span>4 Beds</span>
+                            <span>3 Baths</span>
+                            <span>3,200 sq.ft</span>
+                        </div>
+                        <div class="bg-green-600 text-white p-3 rounded-lg text-center font-semibold">
+                            <i class="fas fa-calendar-alt mr-2"></i>
+                            Saturday, Dec 21 • 3:00 PM
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
 <!-- Why Choose Us Section -->
 <section class="py-20 bg-gray-800">
     <div class="container mx-auto px-4">
@@ -433,7 +580,7 @@
                 {% endfor %}
             {% endif %}
 
-            <div class="form-container" style="min-width: 1000px; max-width: 1000px; margin: 0 auto;">
+            <div class="form-container max-w-2xl mx-auto">
                 <div class="form-inner">
                     <form method="POST">
                         {% csrf_token %}

@@ -1,0 +1,142 @@
+{% load static tailwind_tags %}
+{% load static %}
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Blog Tracking Dashboard - {{ brand_name }}</title>
+    {% tailwind_css %}
+    <link rel="stylesheet" href="{% static 'css/dist/styles.css' %}">
+</head>
+<body class="bg-gray-900 text-gray-300">
+    {% include 'Henry/navbar.html' %}
+
+    <div class="container mx-auto px-4 py-8">
+        <h1 class="text-3xl font-bold text-white mb-8">Blog Tracking Dashboard</h1>
+        
+        <!-- Statistics Cards -->
+        <div class="grid grid-cols-1 md:grid-cols-4 gap-6 mb-8">
+            <div class="bg-gray-800 p-6 rounded-lg">
+                <h3 class="text-lg font-semibold text-white mb-2">Total Links Sent</h3>
+                <p class="text-3xl font-bold text-blue-400">{{ total_trackings }}</p>
+            </div>
+            <div class="bg-gray-800 p-6 rounded-lg">
+                <h3 class="text-lg font-semibold text-white mb-2">Links Opened</h3>
+                <p class="text-3xl font-bold text-green-400">{{ opened_trackings }}</p>
+            </div>
+            <div class="bg-gray-800 p-6 rounded-lg">
+                <h3 class="text-lg font-semibold text-white mb-2">Not Opened</h3>
+                <p class="text-3xl font-bold text-red-400">{{ unopened_trackings }}</p>
+            </div>
+            <div class="bg-gray-800 p-6 rounded-lg">
+                <h3 class="text-lg font-semibold text-white mb-2">Open Rate</h3>
+                <p class="text-3xl font-bold text-yellow-400">{{ open_rate|floatformat:1 }}%</p>
+            </div>
+        </div>
+
+        <!-- Blog Post Statistics -->
+        <div class="bg-gray-800 p-6 rounded-lg mb-8">
+            <h2 class="text-xl font-bold text-white mb-4">Statistics by Blog Post</h2>
+            <div class="overflow-x-auto">
+                <table class="w-full text-sm">
+                    <thead>
+                        <tr class="border-b border-gray-700">
+                            <th class="text-left py-2 text-white">Blog Post ID</th>
+                            <th class="text-left py-2 text-white">Total Sent</th>
+                            <th class="text-left py-2 text-white">Opened</th>
+                            <th class="text-left py-2 text-white">Open Rate</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for post_id, stats in blog_stats.items %}
+                        <tr class="border-b border-gray-700">
+                            <td class="py-2 text-gray-300">Post {{ post_id }}</td>
+                            <td class="py-2 text-gray-300">{{ stats.total }}</td>
+                            <td class="py-2 text-gray-300">{{ stats.opened }}</td>
+                            <td class="py-2 text-gray-300">
+                                {% if stats.total > 0 %}
+                                    {{ stats.opened|floatformat:0|add:0|mul:100|div:stats.total|floatformat:1 }}%
+                                {% else %}
+                                    0%
+                                {% endif %}
+                            </td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+        <!-- Recent Trackings -->
+        <div class="bg-gray-800 p-6 rounded-lg">
+            <h2 class="text-xl font-bold text-white mb-4">Recent Tracking Records</h2>
+            <div class="overflow-x-auto">
+                <table class="w-full text-sm">
+                    <thead>
+                        <tr class="border-b border-gray-700">
+                            <th class="text-left py-2 text-white">Member</th>
+                            <th class="text-left py-2 text-white">Email</th>
+                            <th class="text-left py-2 text-white">Blog Post</th>
+                            <th class="text-left py-2 text-white">Status</th>
+                            <th class="text-left py-2 text-white">Created</th>
+                            <th class="text-left py-2 text-white">Opened</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for tracking in recent_trackings %}
+                        <tr class="border-b border-gray-700">
+                            <td class="py-2 text-gray-300">{{ tracking.member_name }}</td>
+                            <td class="py-2 text-gray-300">{{ tracking.member_email }}</td>
+                            <td class="py-2 text-gray-300">Post {{ tracking.blog_post_id }}</td>
+                            <td class="py-2">
+                                {% if tracking.is_opened %}
+                                    <span class="bg-green-600 text-white px-2 py-1 rounded text-xs">Opened</span>
+                                {% else %}
+                                    <span class="bg-red-600 text-white px-2 py-1 rounded text-xs">Not Opened</span>
+                                {% endif %}
+                            </td>
+                            <td class="py-2 text-gray-300">{{ tracking.created_at|date:"M d, Y H:i" }}</td>
+                            <td class="py-2 text-gray-300">
+                                {% if tracking.opened_at %}
+                                    {{ tracking.opened_at|date:"M d, Y H:i" }}
+                                {% else %}
+                                    -
+                                {% endif %}
+                            </td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+        <!-- API Usage Instructions -->
+        <div class="bg-gray-800 p-6 rounded-lg mt-8">
+            <h2 class="text-xl font-bold text-white mb-4">API Usage for CRM Integration</h2>
+            <div class="text-gray-300 space-y-4">
+                <p><strong>Endpoint:</strong> <code class="bg-gray-700 px-2 py-1 rounded">POST /api/create-tracking-link/</code></p>
+                <p><strong>Parameters:</strong></p>
+                <ul class="list-disc list-inside ml-4 space-y-1">
+                    <li><code>blog_post_id</code> - ID of the blog post (1-6)</li>
+                    <li><code>member_name</code> - Name of the member</li>
+                    <li><code>member_email</code> - Email of the member</li>
+                    <li><code>member_phone</code> - Phone number (optional)</li>
+                    <li><code>crm_reference</code> - Reference from CRM (optional)</li>
+                </ul>
+                <p><strong>Response:</strong></p>
+                <pre class="bg-gray-700 p-3 rounded text-sm overflow-x-auto">
+{
+    "success": true,
+    "tracking_code": "uuid-string",
+    "tracking_url": "https://yoursite.com/tracked-blog/uuid-string/",
+    "member_name": "John Doe",
+    "member_email": "john@example.com"
+}</pre>
+            </div>
+        </div>
+    </div>
+
+    {% include 'Henry/footer.html' %}
+</body>
+</html>

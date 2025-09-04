@@ -1,0 +1,104 @@
+{% load static tailwind_tags %}
+{% load static %}
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>{{ post.title }} - {{ brand_name }}</title>
+    {% tailwind_css %}
+    <link rel="stylesheet" href="{% static 'css/dist/styles.css' %}">
+</head>
+<body class="bg-gray-900">
+{% include 'Henry/navbar.html' %}
+
+<!-- Blog Post Detail -->
+<section class="bg-gray-800 text-white py-16">
+    <div class="container mx-auto px-4 max-w-4xl">
+        <!-- Back to Blog Link -->
+        <div class="mb-4">
+            <a href="{% url 'blog' %}" class="text-blue-400 hover:text-blue-300 transition-colors duration-200 flex items-center text-xs" style="font-size: 10px; line-height: 1;">
+                <svg class="mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24" style="width: 10px; height: 10px;">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7"></path>
+                </svg>
+                Back to Blog
+            </a>
+        </div>
+
+        <!-- Blog Post Header -->
+        <div class="mb-8">
+            <h1 class="text-4xl md:text-5xl font-bold text-white mb-4">{{ post.title }}</h1>
+            <div class="flex items-center text-gray-300 mb-6">
+                <span class="mr-4">By {{ post.author }}</span>
+                <span class="mr-4">•</span>
+                <span>{{ post.date|date:"F d, Y" }}</span>
+            </div>
+        </div>
+
+        <!-- Featured Image -->
+        <div class="mb-8">
+            <img src="{{ post.image_url }}" alt="{{ post.title }}" class="w-full h-64 md:h-96 object-cover rounded-lg shadow-lg">
+        </div>
+
+        <!-- Blog Content -->
+        <div class="prose prose-lg prose-invert max-w-none">
+            <div class="text-gray-300 leading-relaxed">
+                {{ post.content|safe }}
+            </div>
+        </div>
+
+        <!-- Author Bio Section -->
+        <div class="mt-12 p-6 bg-gray-700 rounded-lg">
+            <h3 class="text-xl font-semibold text-white mb-4">About the Author</h3>
+            <div class="flex items-start">
+                <div class="w-16 h-16 bg-blue-600 rounded-full flex items-center justify-center mr-4">
+                    <span class="text-white font-bold text-xl">{{ post.author|first }}</span>
+                </div>
+                <div>
+                    <h4 class="text-white font-semibold">{{ post.author }}</h4>
+                    <p class="text-gray-300 text-sm mt-1">Real Estate Expert</p>
+                    <p class="text-gray-400 text-sm mt-2">Experienced professional with deep knowledge of the real estate market and investment strategies.</p>
+                </div>
+            </div>
+        </div>
+
+                        <!-- Related Posts Section -->
+                <div class="mt-12">
+                    <h3 class="text-2xl font-bold text-white mb-6">Related Articles</h3>
+                    <div class="grid gap-6 md:grid-cols-2">
+                        {% for related_post in related_posts %}
+                        <a href="{% url 'blog_detail' related_post.id %}" class="bg-gray-700 rounded-lg overflow-hidden hover:bg-gray-600 transition-colors duration-300 block">
+                            <img src="{{ related_post.image_url }}" alt="{{ related_post.title }}" class="w-full h-32 object-cover">
+                            <div class="p-4">
+                                <h4 class="text-white font-semibold mb-2">{{ related_post.title }}</h4>
+                                <p class="text-gray-300 text-sm">{{ related_post.excerpt|truncatewords:15 }}</p>
+                            </div>
+                        </a>
+                        {% endfor %}
+                        {% if not related_posts %}
+                        <div class="col-span-full text-center text-gray-400">
+                            <p>No related articles available.</p>
+                        </div>
+                        {% endif %}
+                    </div>
+                </div>
+
+        <!-- Call to Action -->
+        <div class="mt-12 text-center">
+            <h3 class="text-2xl font-bold text-white mb-4">Ready to Start Your Real Estate Journey?</h3>
+            <p class="text-gray-300 mb-6">Get in touch with our expert team for personalized guidance and support.</p>
+            <div class="flex flex-col sm:flex-row gap-4 justify-center">
+                <a href="{% url 'selling' %}" class="bg-blue-600 hover:bg-blue-700 text-white px-6 py-3 rounded-lg font-semibold transition-colors duration-200">
+                    Sell or Lease Your Property
+                </a>
+                <a href="{% url 'open_house' %}" class="bg-gray-600 hover:bg-gray-700 text-white px-6 py-3 rounded-lg font-semibold transition-colors duration-200">
+                    View Open Houses
+                </a>
+            </div>
+        </div>
+    </div>
+</section>
+
+{% include 'Henry/footer.html' %}
+</body>
+</html>

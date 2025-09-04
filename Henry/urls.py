@@ -6,6 +6,7 @@ urlpatterns = [
     path('', views.home, name='home'),
     path('featured_properties/', views.featured_properties, name='featured_properties'),
     path('blog/', views.blog, name='blog'),
+    path('blog/<int:post_id>/', views.blog_detail, name='blog_detail'),
     path('blog_page/', views.blog_page, name='blog_page'),
     path('buying/', views.buying, name='buying'),
     path('selling/', views.selling, name='selling'),
@@ -14,4 +15,8 @@ urlpatterns = [
     path('open-house/', views.open_house, name='open_house'),
     path('mortgage-calculator/', views.mortgage_calculator, name='mortgage_calculator'),
     path('market-insights/', views.market_insights, name='market_insights'),
+    # Blog tracking URLs
+    path('tracked-blog/<uuid:tracking_code>/', views.tracked_blog_detail, name='tracked_blog_detail'),
+    path('api/create-tracking-link/', views.create_tracking_link, name='create_tracking_link'),
+    path('tracking-dashboard/', views.tracking_dashboard, name='tracking_dashboard'),
 ]
