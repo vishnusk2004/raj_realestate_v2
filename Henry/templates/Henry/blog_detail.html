@@ -8,16 +8,61 @@
     <title>{{ post.title }} - {{ brand_name }}</title>
     {% tailwind_css %}
     <link rel="stylesheet" href="{% static 'css/dist/styles.css' %}">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    
+    <style>
+        /* Dark theme styles */
+        .dark-theme {
+            background-color: #1a1a1a !important;
+            color: #e5e5e5 !important;
+        }
+        
+        .dark-theme .bg-gray-50 {
+            background-color: #1a1a1a !important;
+        }
+        
+        .dark-theme .bg-white {
+            background-color: #2d2d2d !important;
+        }
+        
+        .dark-theme .text-gray-900 {
+            color: #e5e5e5 !important;
+        }
+        
+        .dark-theme .text-gray-700 {
+            color: #d1d5db !important;
+        }
+        
+        .dark-theme .text-gray-600 {
+            color: #9ca3af !important;
+        }
+        
+        .dark-theme .bg-blue-50 {
+            background-color: #1e3a8a !important;
+        }
+        
+        .dark-theme .bg-gray-100 {
+            background-color: #374151 !important;
+        }
+        
+        .dark-theme .border-gray-200 {
+            border-color: #4b5563 !important;
+        }
+        
+        .dark-theme .shadow-lg {
+            box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.3), 0 4px 6px -2px rgba(0, 0, 0, 0.1) !important;
+        }
+    </style>
 </head>
-<body class="bg-gray-900">
+<body class="bg-gray-50">
 {% include 'Henry/navbar.html' %}
 
 <!-- Blog Post Detail -->
-<section class="bg-gray-800 text-white py-16">
+<section class="bg-gray-50 py-16">
     <div class="container mx-auto px-4 max-w-4xl">
         <!-- Back to Blog Link -->
         <div class="mb-4">
-            <a href="{% url 'blog' %}" class="text-blue-400 hover:text-blue-300 transition-colors duration-200 flex items-center text-xs" style="font-size: 10px; line-height: 1;">
+            <a href="{% url 'blog' %}" class="text-blue-600 hover:text-blue-700 transition-colors duration-200 flex items-center text-xs" style="font-size: 10px; line-height: 1;">
                 <svg class="mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24" style="width: 10px; height: 10px;">
                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7"></path>
                 </svg>
@@ -27,11 +72,11 @@
 
         <!-- Blog Post Header -->
         <div class="mb-8">
-            <h1 class="text-4xl md:text-5xl font-bold text-white mb-4">{{ post.title }}</h1>
-            <div class="flex items-center text-gray-300 mb-6">
+            <h1 class="text-4xl md:text-5xl font-bold text-gray-900 mb-4">{{ post.title }}</h1>
+            <div class="flex items-center text-gray-600 mb-6">
                 <span class="mr-4">By {{ post.author }}</span>
                 <span class="mr-4">•</span>
-                <span>{{ post.date|date:"F d, Y" }}</span>
+                <span>{{ post.created_at|date:"F d, Y" }}</span>
             </div>
         </div>
 
@@ -41,42 +86,43 @@
         </div>
 
         <!-- Blog Content -->
-        <div class="prose prose-lg prose-invert max-w-none">
-            <div class="text-gray-300 leading-relaxed">
+        <div class="prose prose-lg max-w-none">
+            <div class="text-gray-700 leading-relaxed">
                 {{ post.content|safe }}
             </div>
         </div>
 
         <!-- Author Bio Section -->
-        <div class="mt-12 p-6 bg-gray-700 rounded-lg">
-            <h3 class="text-xl font-semibold text-white mb-4">About the Author</h3>
+        <div class="mt-12 p-6 bg-white rounded-lg shadow-lg">
+            <h3 class="text-xl font-semibold text-gray-900 mb-4">About the Author</h3>
             <div class="flex items-start">
-                <div class="w-16 h-16 bg-blue-600 rounded-full flex items-center justify-center mr-4">
+                <div class="w-16 h-16 bg-blue-600 rounded-full flex items-center justify-center mr-4" 
+                     style="border-radius: 50% !important; width: 4rem !important; height: 4rem !important;">
                     <span class="text-white font-bold text-xl">{{ post.author|first }}</span>
                 </div>
                 <div>
-                    <h4 class="text-white font-semibold">{{ post.author }}</h4>
-                    <p class="text-gray-300 text-sm mt-1">Real Estate Expert</p>
-                    <p class="text-gray-400 text-sm mt-2">Experienced professional with deep knowledge of the real estate market and investment strategies.</p>
+                    <h4 class="text-gray-900 font-semibold">{{ post.author }}</h4>
+                    <p class="text-gray-600 text-sm mt-1">Real Estate Expert</p>
+                    <p class="text-gray-700 text-sm mt-2">Experienced professional with deep knowledge of the real estate market and investment strategies.</p>
                 </div>
             </div>
         </div>
 
                         <!-- Related Posts Section -->
                 <div class="mt-12">
-                    <h3 class="text-2xl font-bold text-white mb-6">Related Articles</h3>
+                    <h3 class="text-2xl font-bold text-gray-900 mb-6">Related Articles</h3>
                     <div class="grid gap-6 md:grid-cols-2">
                         {% for related_post in related_posts %}
-                        <a href="{% url 'blog_detail' related_post.id %}" class="bg-gray-700 rounded-lg overflow-hidden hover:bg-gray-600 transition-colors duration-300 block">
+                        <a href="{% url 'blog_detail' related_post.id %}" class="bg-white rounded-lg overflow-hidden hover:shadow-lg transition-shadow duration-300 block shadow-lg">
                             <img src="{{ related_post.image_url }}" alt="{{ related_post.title }}" class="w-full h-32 object-cover">
                             <div class="p-4">
-                                <h4 class="text-white font-semibold mb-2">{{ related_post.title }}</h4>
-                                <p class="text-gray-300 text-sm">{{ related_post.excerpt|truncatewords:15 }}</p>
+                                <h4 class="text-gray-900 font-semibold mb-2">{{ related_post.title }}</h4>
+                                <p class="text-gray-600 text-sm">{{ related_post.excerpt|truncatewords:15 }}</p>
                             </div>
                         </a>
                         {% endfor %}
                         {% if not related_posts %}
-                        <div class="col-span-full text-center text-gray-400">
+                        <div class="col-span-full text-center text-gray-600">
                             <p>No related articles available.</p>
                         </div>
                         {% endif %}
@@ -85,13 +131,13 @@
 
         <!-- Call to Action -->
         <div class="mt-12 text-center">
-            <h3 class="text-2xl font-bold text-white mb-4">Ready to Start Your Real Estate Journey?</h3>
-            <p class="text-gray-300 mb-6">Get in touch with our expert team for personalized guidance and support.</p>
+            <h3 class="text-2xl font-bold text-gray-900 mb-4">Ready to Start Your Real Estate Journey?</h3>
+            <p class="text-gray-700 mb-6">Get in touch with our expert team for personalized guidance and support.</p>
             <div class="flex flex-col sm:flex-row gap-4 justify-center">
                 <a href="{% url 'selling' %}" class="bg-blue-600 hover:bg-blue-700 text-white px-6 py-3 rounded-lg font-semibold transition-colors duration-200">
                     Sell or Lease Your Property
                 </a>
-                <a href="{% url 'open_house' %}" class="bg-gray-600 hover:bg-gray-700 text-white px-6 py-3 rounded-lg font-semibold transition-colors duration-200">
+                <a href="{% url 'open_house' %}" class="bg-green-600 hover:bg-green-700 text-white px-6 py-3 rounded-lg font-semibold transition-colors duration-200">
                     View Open Houses
                 </a>
             </div>
@@ -100,5 +146,42 @@
 </section>
 
 {% include 'Henry/footer.html' %}
+
+<script>
+// Theme Toggle Functionality
+document.addEventListener("DOMContentLoaded", function() {
+    const themeToggle = document.getElementById('theme-toggle');
+    const themeIcon = document.getElementById('theme-icon');
+    const body = document.body;
+    
+    // Check for saved theme preference or default to light theme
+    const currentTheme = localStorage.getItem('theme') || 'light';
+    
+    // Apply the saved theme
+    if (currentTheme === 'dark') {
+        body.classList.add('dark-theme');
+        themeIcon.className = 'fas fa-sun text-white text-base';
+    } else {
+        body.classList.remove('dark-theme');
+        themeIcon.className = 'fas fa-moon text-white text-base';
+    }
+    
+    // Theme toggle event listener
+    themeToggle.addEventListener('click', function() {
+        if (body.classList.contains('dark-theme')) {
+            // Switch to light theme
+            body.classList.remove('dark-theme');
+            themeIcon.className = 'fas fa-moon text-white text-base';
+            localStorage.setItem('theme', 'light');
+        } else {
+            // Switch to dark theme
+            body.classList.add('dark-theme');
+            themeIcon.className = 'fas fa-sun text-white text-base';
+            localStorage.setItem('theme', 'dark');
+        }
+    });
+});
+</script>
+
 </body>
 </html>

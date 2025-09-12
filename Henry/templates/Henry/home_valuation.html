@@ -508,11 +508,26 @@
                         </div>
 
                         <!-- Submit Button -->
-                        <button type="submit" class="submit-btn w-full">
-                            <i class="fas fa-paper-plane mr-3"></i>
-                            Get Free Consultation
+                        <button type="submit" id="submitBtn" class="submit-btn w-full">
+                            <i class="fas fa-paper-plane mr-3" id="submitIcon"></i>
+                            <span id="submitText">Get Free Consultation</span>
+                            <i class="fas fa-spinner fa-spin mr-3" id="loadingIcon" style="display: none !important;"></i>
                         </button>
                     </form>
+                </div>
+            </div>
+            
+            <!-- Success Modal -->
+            <div id="successModal" class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50" style="display: none;">
+                <div class="bg-white rounded-lg p-8 max-w-md mx-4 text-center">
+                    <div class="text-green-500 text-6xl mb-4">
+                        <i class="fas fa-check-circle"></i>
+                    </div>
+                    <h3 class="text-2xl font-bold text-gray-900 mb-4">Success!</h3>
+                    <p class="text-gray-700 mb-6">Your home valuation request has been submitted successfully! We will contact you within 24 hours.</p>
+                    <button onclick="closeSuccessModal()" class="bg-blue-600 text-white px-6 py-2 rounded-lg hover:bg-blue-700 transition-colors">
+                        Close
+                    </button>
                 </div>
             </div>
 
@@ -522,6 +537,44 @@
 </section>
 
 {% include 'Henry/footer.html' %}
+
+<script>
+    // Form submission handling
+    document.addEventListener('DOMContentLoaded', function() {
+        const form = document.querySelector('form[method="POST"]');
+        if (form) {
+            form.addEventListener('submit', function(e) {
+                const submitBtn = document.getElementById('submitBtn');
+                const submitIcon = document.getElementById('submitIcon');
+                const submitText = document.getElementById('submitText');
+                const loadingIcon = document.getElementById('loadingIcon');
+                
+                // Disable button and show loading
+                submitBtn.disabled = true;
+                submitIcon.style.display = 'none';
+                submitText.textContent = 'Submitting...';
+                loadingIcon.style.display = 'inline-block';
+                submitBtn.style.opacity = '0.7';
+            });
+        }
+    });
+    
+    // Success modal functions
+    function closeSuccessModal() {
+        document.getElementById('successModal').style.display = 'none';
+    }
+    
+    // Show success modal if there are success messages
+    {% if messages %}
+        {% for message in messages %}
+            {% if message.tags == 'success' %}
+                document.addEventListener('DOMContentLoaded', function() {
+                    document.getElementById('successModal').style.display = 'flex';
+                });
+            {% endif %}
+        {% endfor %}
+    {% endif %}
+</script>
 
 </body>
 </html>

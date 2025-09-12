@@ -9,8 +9,7 @@ from django.http import HttpResponse, JsonResponse
 from django.contrib import messages
 from django.utils import timezone
 from django.views.decorators.csrf import csrf_exempt
-from django.db import models
-from .models import BlogTracking, BlogPost, PropertyListing, OpenHouse
+from .models import BlogTracking, BlogPost
 from .forms import BlogPostForm
 import uuid
 import json
@@ -191,24 +190,6 @@ def leasing(request):
 
 
 def home_valuation(request):
-    if request.method == 'POST':
-        try:
-            # Get form data
-            name = request.POST.get('name')
-            email = request.POST.get('email')
-            phone = request.POST.get('phone')
-            address = request.POST.get('address')
-            property_type = request.POST.get('property_type')
-            message = request.POST.get('message')
-            
-            # Create a simple contact record (you can create a model for this if needed)
-            # For now, we'll just show success message
-            messages.success(request, 'Your home valuation request has been submitted successfully! We will contact you within 24 hours.')
-            return redirect('home_valuation')  # Redirect to clear the POST data
-            
-        except Exception as e:
-            messages.error(request, 'There was an error submitting your request. Please try again.')
-    
     context = {
         'brand_name': settings.BRAND_NAME
     }
@@ -216,28 +197,8 @@ def home_valuation(request):
 
 
 def open_house(request):
-    if request.method == 'POST':
-        try:
-            # Get form data
-            name = request.POST.get('name')
-            email = request.POST.get('email')
-            phone = request.POST.get('phone')
-            message = request.POST.get('message')
-            
-            # Create a simple contact record (you can create a model for this if needed)
-            # For now, we'll just show success message
-            messages.success(request, 'Your inquiry has been submitted successfully! We will contact you within 24 hours.')
-            return redirect('open_house')  # Redirect to clear the POST data
-            
-        except Exception as e:
-            messages.error(request, 'There was an error submitting your inquiry. Please try again.')
-    
-    # Get all published open house events
-    open_houses = OpenHouse.objects.filter(published=True).order_by('open_house_date', 'open_house_time')
-    
     context = {
-        'brand_name': settings.BRAND_NAME,
-        'open_houses': open_houses
+        'brand_name': settings.BRAND_NAME
     }
     return render(request, 'Henry/open_house.html', context)
 
@@ -503,36 +464,3 @@ def blog_delete(request, post_id):
     }
     return render(request, 'Henry/blog_delete.html', context)
 
-
-def buy_lease(request):
-    """Buy/Lease properties page"""
-    # Get filter parameters
-    property_type = request.GET.get('type', 'all')  # all, buy, lease
-    search_query = request.GET.get('search', '')
-    
-    # Start with published properties
-    properties = PropertyListing.objects.filter(published=True)
-    
-    # Filter by property type
-    if property_type in ['buy', 'lease']:
-        properties = properties.filter(property_type=property_type)
-    
-    # Filter by search query
-    if search_query:
-        properties = properties.filter(
-            models.Q(title__icontains=search_query) |
-            models.Q(location__icontains=search_query) |
-            models.Q(address__icontains=search_query) |
-            models.Q(description__icontains=search_query)
-        )
-    
-    # Order by featured first, then by creation date
-    properties = properties.order_by('-featured', '-created_at')
-    
-    context = {
-        'properties': properties,
-        'current_type': property_type,
-        'search_query': search_query,
-        'brand_name': settings.BRAND_NAME
-    }
-    return render(request, 'Henry/buy_lease.html', context)

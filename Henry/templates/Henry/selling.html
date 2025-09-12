@@ -6,11 +6,129 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Selling - {{ brand_name }}</title>
+    <title>Sell & Evaluate - {{ brand_name }}</title>
+    <link rel="icon" type="image/svg+xml" href="{% static 'favicon.svg' %}">
     {% tailwind_css %}
     <link rel="stylesheet" href="{% static 'css/dist/styles.css' %}">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    
+    <!-- Footer CSS Override -->
+    <style>
+    footer {
+        background-color: #1f2937 !important;
+        color: #d1d5db !important;
+    }
+    footer * {
+        color: inherit !important;
+    }
+    footer h2, footer h3 {
+        color: #ffffff !important;
+    }
+    footer p {
+        color: #9ca3af !important;
+    }
+    footer .text-gray-500 {
+        color: #6b7280 !important;
+    }
+    footer .text-gray-400 {
+        color: #9ca3af !important;
+    }
+    footer .border-gray-700 {
+        border-color: #374151 !important;
+    }
+    </style>
+    
+    <!-- Theme Toggle CSS -->
+    <style>
+    /* Dark theme styles */
+    .dark-theme {
+        background-color: #1a1a1a !important;
+        color: #e5e5e5 !important;
+    }
+    
+    .dark-theme .bg-gray-50 {
+        background-color: #1a1a1a !important;
+    }
+    
+    .dark-theme .bg-white {
+        background-color: #2d2d2d !important;
+    }
+    
+    .dark-theme .text-gray-900 {
+        color: #e5e5e5 !important;
+    }
+    
+    .dark-theme .text-gray-700 {
+        color: #d1d5db !important;
+    }
+    
+    .dark-theme .text-gray-600 {
+        color: #9ca3af !important;
+    }
+    
+    .dark-theme .bg-blue-50 {
+        background-color: #1e3a8a !important;
+    }
+    
+    .dark-theme .bg-gray-100 {
+        background-color: #374151 !important;
+    }
+    
+    .dark-theme .border-gray-200 {
+        border-color: #4b5563 !important;
+    }
+    
+    .dark-theme .shadow-lg {
+        box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.3), 0 4px 6px -2px rgba(0, 0, 0, 0.1) !important;
+    }
+    
+    /* Theme toggle button */
+    #theme-toggle {
+        transition: all 0.3s ease;
+    }
+    
+    #theme-icon {
+        transition: transform 0.3s ease;
+    }
+    </style>
+    
+    <style>
+        /* Fallback styles to ensure visibility */
+        body { background-color: #f9fafb !important; color: #111827 !important; }
+        
+        /* Navbar styling is now handled globally in navbar.html */
+        
+        /* Page-specific styles - excluding navbar */
+        .main-content .text-white { color: #ffffff !important; }
+        .main-content .text-gray-900 { color: #111827 !important; }
+        .main-content .text-gray-600 { color: #4b5563 !important; }
+        .main-content .text-gray-700 { color: #374151 !important; }
+        .main-content .bg-blue-900 { background-color: #1e3a8a !important; }
+        .main-content .bg-blue-700 { background-color: #1d4ed8 !important; }
+        .main-content .bg-white { background-color: #ffffff !important; }
+        .main-content .bg-gray-50 { background-color: #f9fafb !important; }
+        .main-content .bg-yellow-500 { background-color: #eab308 !important; }
+        .main-content .bg-green-600 { background-color: #16a34a !important; }
+        .main-content .bg-blue-600 { background-color: #2563eb !important; }
+        .main-content .text-green-600 { color: #16a34a !important; }
+        .main-content .text-blue-500 { color: #3b82f6 !important; }
+        .main-content h1, .main-content h2, .main-content h3, .main-content h4, .main-content h5, .main-content h6 { color: #111827 !important; }
+        .main-content p { color: #374151 !important; }
+        .main-content .text-center h1 { color: #ffffff !important; }
+        .main-content .text-center p { color: #ffffff !important; }
+        /* Service card text visibility */
+        .main-content .bg-white p { color: #374151 !important; }
+        .main-content .bg-white h3 { color: #111827 !important; }
+        .main-content .bg-white h2 { color: #111827 !important; }
+        /* Hero section specific styles */
+        .main-content .bg-gradient-to-r h1 { color: #ffffff !important; }
+        .main-content .bg-gradient-to-r p { color: #ffffff !important; }
+        .main-content .bg-gradient-to-r .text-white { color: #ffffff !important; }
+        .main-content .bg-gradient-to-r input { color: #111827 !important; background-color: #ffffff !important; }
+        .main-content .bg-gradient-to-r select { color: #111827 !important; background-color: #ffffff !important; }
+        .main-content .bg-gradient-to-r button { color: #ffffff !important; }
+    </style>
 </head>
 <style>
     body {
@@ -330,250 +448,289 @@
         }
     }
 </style>
-<body class="bg-gray-900">
+<body class="bg-gray-50" style="background-color: #f9fafb; color: #111827;">
+    {% include 'Henry/navbar.html' %}
 
-{% include 'Henry/navbar.html' %}
+    <div class="min-h-screen bg-gray-50">
+    <div class="main-content">
+    <!-- Hero Section -->
+<div class="bg-gradient-to-r from-blue-900 to-blue-700 text-white py-20" style="background: linear-gradient(to right, #1e3a8a, #1d4ed8); color: #ffffff;">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div class="text-center">
+            <h1 class="text-4xl md:text-6xl font-bold mb-6" style="color: #ffffff !important;">Sell & Evaluate Your Property</h1>
+            <p class="text-xl md:text-2xl mb-8" style="color: #ffffff !important;">Get the best value for your property with our expert team. Professional valuation and selling services.</p>
+        </div>
+    </div>
+</div>
 
-<!-- Hero Section -->
-<section class="hero-bg py-20 relative overflow-hidden">
-    <div class="floating-shape"></div>
-    <div class="floating-shape"></div>
-    <div class="floating-shape"></div>
-    
-    <div class="container mx-auto px-4 relative z-10">
-        <div class="max-w-7xl mx-auto">
-            <div class="text-center mb-16">
-                <h1 class="text-5xl md:text-6xl font-bold text-white mb-6 leading-tight">
-                    Sell Your Property with 
-                    <span class="bg-gradient-to-r from-blue-400 to-purple-400 bg-clip-text text-transparent">Confidence</span>
-                </h1>
-                <p class="text-xl md:text-2xl text-gray-200 max-w-4xl mx-auto leading-relaxed">
-                    Get the best value for your property with our expert team. We'll handle everything from valuation to closing with professional care and personalized attention.
-                </p>
+<!-- Services Section -->
+<div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16">
+    <div class="text-center mb-16">
+        <h2 class="text-3xl font-bold mb-4" style="color: #111827 !important;">Our Services</h2>
+        <p class="text-xl" style="color: #374151 !important;">Professional real estate services to help you sell or lease your property</p>
+    </div>
+
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+            <div class="bg-white rounded-lg shadow-lg p-8 hover:shadow-xl transition duration-300">
+                <div class="text-center">
+                    <div class="bg-blue-100 w-16 h-16 rounded-full flex items-center justify-center mx-auto mb-6">
+                        <i class="fas fa-chart-line text-blue-600 text-2xl"></i>
+                    </div>
+                    <h3 class="text-xl font-bold mb-4" style="color: #111827 !important;">Property Valuation</h3>
+                    <p style="color: #374151 !important;">Get an accurate market value assessment from our certified appraisers with detailed analysis and market insights.</p>
+                </div>
             </div>
-            
-            <!-- Feature Cards -->
-            <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
-                <div class="feature-card">
-                    <div class="feature-icon">
-                        <i class="fas fa-chart-line"></i>
+
+            <div class="bg-white rounded-lg shadow-lg p-8 hover:shadow-xl transition duration-300">
+                <div class="text-center">
+                    <div class="bg-green-100 w-16 h-16 rounded-full flex items-center justify-center mx-auto mb-6">
+                        <i class="fas fa-camera text-green-600 text-2xl"></i>
                     </div>
-                    <h3 class="text-xl font-semibold text-white mb-4 relative z-10">Expert Valuation</h3>
-                    <p class="text-gray-300 text-base leading-relaxed relative z-10">Get an accurate market value assessment from our certified appraisers with detailed analysis and market insights</p>
+                    <h3 class="text-xl font-bold mb-4" style="color: #111827 !important;">Professional Marketing</h3>
+                    <p style="color: #374151 !important;">High-quality photos, virtual tours, and targeted marketing campaigns to reach qualified buyers worldwide.</p>
                 </div>
-                <div class="feature-card">
-                    <div class="feature-icon">
-                        <i class="fas fa-camera"></i>
+            </div>
+
+            <div class="bg-white rounded-lg shadow-lg p-8 hover:shadow-xl transition duration-300">
+                <div class="text-center">
+                    <div class="bg-yellow-100 w-16 h-16 rounded-full flex items-center justify-center mx-auto mb-6">
+                        <i class="fas fa-handshake text-yellow-600 text-2xl"></i>
                     </div>
-                    <h3 class="text-xl font-semibold text-white mb-4 relative z-10">Professional Marketing</h3>
-                    <p class="text-gray-300 text-base leading-relaxed relative z-10">High-quality photos, virtual tours, and targeted marketing campaigns to reach qualified buyers worldwide</p>
-                </div>
-                <div class="feature-card">
-                    <div class="feature-icon">
-                        <i class="fas fa-handshake"></i>
-                    </div>
-                    <h3 class="text-xl font-semibold text-white mb-4 relative z-10">Full Support</h3>
-                    <p class="text-gray-300 text-base leading-relaxed relative z-10">Complete guidance through negotiations, inspections, and closing process with dedicated support</p>
+                    <h3 class="text-xl font-bold mb-4" style="color: #111827 !important;">Full Support</h3>
+                    <p style="color: #374151 !important;">Complete guidance through negotiations, inspections, and closing process with dedicated support.</p>
                 </div>
             </div>
         </div>
-    </div>
-</section>
-
-<!-- Why Choose Us Section -->
-<section class="py-20 bg-gray-800">
-    <div class="container mx-auto px-4">
-        <div class="max-w-6xl mx-auto">
-            <div class="text-center mb-16">
-                <h2 class="text-4xl md:text-5xl font-bold text-white mb-6">
-                    Why Choose 
-                    <span class="bg-gradient-to-r from-blue-400 to-purple-400 bg-clip-text text-transparent">{{ brand_name }}</span>
-                </h2>
-                <p class="text-xl text-gray-300 max-w-3xl mx-auto">
-                    We combine local expertise with cutting-edge technology to deliver exceptional results for our clients
-                </p>
-            </div>
-            
-            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
-                <div class="stats-card">
-                    <div class="text-4xl font-bold text-blue-400 mb-2">500+</div>
-                    <div class="text-gray-300 font-medium">Properties Sold</div>
-                </div>
-                <div class="stats-card">
-                    <div class="text-4xl font-bold text-blue-400 mb-2">98%</div>
-                    <div class="text-gray-300 font-medium">Client Satisfaction</div>
-                </div>
-                <div class="stats-card">
-                    <div class="text-4xl font-bold text-blue-400 mb-2">24h</div>
-                    <div class="text-gray-300 font-medium">Response Time</div>
-                </div>
-                <div class="stats-card">
-                    <div class="text-4xl font-bold text-blue-400 mb-2">15+</div>
-                    <div class="text-gray-300 font-medium">Years Experience</div>
-                </div>
-            </div>
-        </div>
-    </div>
-</section>
-
-<div class="section-divider"></div>
+</div>
 
 <!-- Contact Form Section -->
-<section class="py-20 bg-gray-800">
-    <div class="container mx-auto px-4">
-        <div class="max-w-xl mx-auto">
-            <div class="text-center mb-12">
-                <h2 class="text-4xl md:text-5xl font-bold text-white mb-6">Ready to Sell or Lease Your Property?</h2>
-                <p class="text-xl text-gray-300">Fill out the form below and our expert team will contact you within 24 hours with a personalized consultation.</p>
-            </div>
+<div class="bg-blue-900 text-white py-16">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div class="text-center mb-12">
+            <h2 class="text-3xl font-bold mb-4" style="color: #ffffff !important;">Ready to Sell or Lease Your Property?</h2>
+            <p class="text-xl" style="color: #ffffff !important;">Fill out the form below and our expert team will contact you within 24 hours with a personalized consultation.</p>
+        </div>
 
+            <div class="max-w-xl mx-auto">
             <!-- Messages -->
             {% if messages %}
                 {% for message in messages %}
-                    <div class="alert {% if message.tags == 'success' %}alert-success{% else %}alert-error{% endif %}">
+                    <div class="mb-6 p-4 rounded-lg {% if message.tags == 'success' %}bg-green-100 text-green-800{% else %}bg-red-100 text-red-800{% endif %}">
                         {{ message }}
                     </div>
                 {% endfor %}
             {% endif %}
 
-            <div class="form-container max-w-2xl mx-auto">
-                <div class="form-inner">
-                    <form method="POST">
-                        {% csrf_token %}
-                        
+            <div class="bg-white rounded-lg shadow-xl p-8" style="background-color: #ffffff !important;">
+                <form method="POST">
+                    {% csrf_token %}
+                    
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mb-6">
                         <!-- Name -->
-                        <div class="input-group">
-                            <label class="form-label">Full Name *</label>
-                            <input type="text" name="name" class="form-input w-full" placeholder="Enter your full name" required>
+                        <div>
+                            <label class="block text-sm font-medium mb-2" style="color: #374151 !important;">Full Name *</label>
+                            <input type="text" name="name" class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+                                   placeholder="Enter your full name" required style="color: #111827 !important; background-color: #ffffff !important;">
                         </div>
 
                         <!-- Email -->
-                        <div class="input-group">
-                            <label class="form-label">Email Address *</label>
-                            <input type="email" name="email" class="form-input w-full" placeholder="Enter your email address" required>
+                        <div>
+                            <label class="block text-sm font-medium mb-2" style="color: #374151 !important;">Email Address *</label>
+                            <input type="email" name="email" class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+                                   placeholder="Enter your email address" required style="color: #111827 !important; background-color: #ffffff !important;">
                         </div>
+                    </div>
 
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mb-6">
                         <!-- Phone -->
-                        <div class="input-group">
-                            <label class="form-label">Phone Number *</label>
-                            <input type="tel" name="phone" class="form-input w-full" placeholder="Enter your phone number" required>
+                        <div>
+                            <label class="block text-sm font-medium mb-2" style="color: #374151 !important;">Phone Number *</label>
+                            <input type="tel" name="phone" class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+                                   placeholder="Enter your phone number" required style="color: #111827 !important; background-color: #ffffff !important;">
                         </div>
 
-                        <!-- Additional Information -->
-                        <div class="input-group">
-                            <label class="form-label">Additional Information</label>
-                            <textarea name="message" class="form-input w-full" rows="4" placeholder="Tell us more about your property, any specific requirements, or questions you may have..."></textarea>
+                        <!-- Property Type -->
+                        <div>
+                            <label class="block text-sm font-medium mb-2" style="color: #374151 !important;">Property Type</label>
+                            <select name="property_type" class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+                                    style="color: #111827 !important; background-color: #ffffff !important;">
+                                <option value="">Select property type</option>
+                                <option value="house">House</option>
+                                <option value="condo">Condo</option>
+                                <option value="townhouse">Townhouse</option>
+                                <option value="commercial">Commercial</option>
+                                <option value="land">Land</option>
+                            </select>
                         </div>
-
-                        <!-- Submit Button -->
-                        <button type="submit" class="submit-btn w-full">
-                            <i class="fas fa-paper-plane mr-3"></i>
-                            Get Free Consultation
-                        </button>
-                    </form>
-                </div>
-            </div>
-
-        </div>
-    </div>
-</section>
-
-<!-- Professional Services Cards Section -->
-<section class="py-20 bg-gray-900">
-    <div class="container mx-auto px-4">
-        <div class="max-w-6xl mx-auto">
-            <div class="text-center mb-16">
-                <h2 class="text-4xl md:text-5xl font-bold text-white mb-6">Why Choose {{ brand_name }}</h2>
-                <p class="text-xl text-gray-300 max-w-3xl mx-auto">We provide comprehensive real estate services with a focus on professionalism and local expertise</p>
-            </div>
-            
-            <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
-                <!-- Professional Card -->
-                <div class="bg-gray-800 p-8 rounded-lg shadow-lg hover:shadow-xl transition-shadow duration-300">
-                    <div class="text-center mb-6">
-                        <div class="w-20 h-20 bg-blue-600 rounded-full flex items-center justify-center mx-auto mb-4">
-                            <i class="fas fa-user-tie text-3xl text-white"></i>
-                        </div>
-                        <h3 class="text-2xl font-bold text-white mb-4">Professional</h3>
                     </div>
-                    <p class="text-gray-300 text-center leading-relaxed">
-                        Our team of licensed real estate professionals brings years of experience and industry expertise to every transaction. We maintain the highest standards of professionalism and ethical conduct.
-                    </p>
-                    <ul class="mt-6 text-gray-300 space-y-2">
-                        <li class="flex items-center">
-                            <i class="fas fa-check text-green-400 mr-3"></i>
-                            Licensed & Certified Agents
-                        </li>
-                        <li class="flex items-center">
-                            <i class="fas fa-check text-green-400 mr-3"></i>
-                            Industry Best Practices
-                        </li>
-                        <li class="flex items-center">
-                            <i class="fas fa-check text-green-400 mr-3"></i>
-                            Professional Standards
-                        </li>
-                    </ul>
-                </div>
-                
-                <!-- Experienced Partner Network Card -->
-                <div class="bg-gray-800 p-8 rounded-lg shadow-lg hover:shadow-xl transition-shadow duration-300">
-                    <div class="text-center mb-6">
-                        <div class="w-20 h-20 bg-green-600 rounded-full flex items-center justify-center mx-auto mb-4">
-                            <i class="fas fa-network-wired text-3xl text-white"></i>
-                        </div>
-                        <h3 class="text-2xl font-bold text-white mb-4">Experienced Partner Network</h3>
+
+                    <!-- Property Address -->
+                    <div class="mb-6">
+                        <label class="block text-sm font-medium mb-2" style="color: #374151 !important;">Property Address *</label>
+                        <input type="text" name="property_address" class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+                               placeholder="Enter the full address of the property you want to sell/lease" required style="color: #111827 !important; background-color: #ffffff !important;">
                     </div>
-                    <p class="text-gray-300 text-center leading-relaxed">
-                        We've built strong relationships with industry professionals including lenders, inspectors, contractors, and legal experts to ensure smooth transactions and comprehensive service.
-                    </p>
-                    <ul class="mt-6 text-gray-300 space-y-2">
-                        <li class="flex items-center">
-                            <i class="fas fa-check text-green-400 mr-3"></i>
-                            Trusted Lenders
-                        </li>
-                        <li class="flex items-center">
-                            <i class="fas fa-check text-green-400 mr-3"></i>
-                            Qualified Inspectors
-                        </li>
-                        <li class="flex items-center">
-                            <i class="fas fa-check text-green-400 mr-3"></i>
-                            Legal Experts
-                        </li>
-                    </ul>
-                </div>
-                
-                <!-- Trusted Local Expert Card -->
-                <div class="bg-gray-800 p-8 rounded-lg shadow-lg hover:shadow-xl transition-shadow duration-300">
-                    <div class="text-center mb-6">
-                        <div class="w-20 h-20 bg-purple-600 rounded-full flex items-center justify-center mx-auto mb-4">
-                            <i class="fas fa-map-marker-alt text-3xl text-white"></i>
+
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mb-6">
+                        <!-- Estimated Value -->
+                        <div>
+                            <label class="block text-sm font-medium mb-2" style="color: #374151 !important;">Estimated Property Value</label>
+                            <input type="text" name="estimated_value" class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+                                   placeholder="e.g., $500,000" style="color: #111827 !important; background-color: #ffffff !important;">
                         </div>
-                        <h3 class="text-2xl font-bold text-white mb-4">Trusted Local Expert</h3>
+
+                        <!-- Timeline -->
+                        <div>
+                            <label class="block text-sm font-medium mb-2" style="color: #374151 !important;">Timeline to Sell/Lease</label>
+                            <select name="timeline" class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+                                    style="color: #111827 !important; background-color: #ffffff !important;">
+                                <option value="">Select timeline</option>
+                                <option value="immediately">Immediately</option>
+                                <option value="1-3 months">1-3 months</option>
+                                <option value="3-6 months">3-6 months</option>
+                                <option value="6-12 months">6-12 months</option>
+                                <option value="flexible">Flexible</option>
+                            </select>
+                        </div>
                     </div>
-                    <p class="text-gray-300 text-center leading-relaxed">
-                        With deep knowledge of local markets, neighborhoods, and property values, we provide insights that only local experts can offer. We know what makes each area unique.
-                    </p>
-                    <ul class="mt-6 text-gray-300 space-y-2">
-                        <li class="flex items-center">
-                            <i class="fas fa-check text-green-400 mr-3"></i>
-                            Local Market Knowledge
-                        </li>
-                        <li class="flex items-center">
-                            <i class="fas fa-check text-green-400 mr-3"></i>
-                            Neighborhood Insights
-                        </li>
-                        <li class="flex items-center">
-                            <i class="fas fa-check text-green-400 mr-3"></i>
-                            Community Connections
-                        </li>
-                    </ul>
-                </div>
+
+                    <!-- Message -->
+                    <div class="mb-6">
+                        <label class="block text-sm font-medium mb-2" style="color: #374151 !important;">Additional Information</label>
+                        <textarea name="message" class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+                                  rows="4" placeholder="Tell us more about your property, any specific requirements, or questions you may have..."
+                                  style="color: #111827 !important; background-color: #ffffff !important;"></textarea>
+                    </div>
+
+                    <!-- Submit Button -->
+                    <button type="submit" id="submitBtn" class="w-full bg-yellow-500 hover:bg-yellow-600 text-white font-semibold py-4 px-6 rounded-lg transition duration-300" 
+                            style="background-color: #eab308 !important; color: #ffffff !important;">
+                        <i class="fas fa-paper-plane mr-3" id="submitIcon"></i>
+                        <span id="submitText">Get Free Consultation</span>
+                        <i class="fas fa-spinner fa-spin mr-3" id="loadingIcon" style="display: none !important;"></i>
+                    </button>
+                </form>
             </div>
         </div>
     </div>
-</section>
+    </div>
+    </div>
+    </div>
 
 {% include 'Henry/footer.html' %}
+
+<!-- Success Modal -->
+<div id="successModal" class="fixed inset-0 bg-black bg-opacity-50 hidden z-50 flex items-center justify-center">
+    <div class="bg-white rounded-lg p-8 max-w-md mx-4 text-center">
+        <div class="mb-4">
+            <div class="mx-auto flex items-center justify-center h-16 w-16 rounded-full bg-green-100">
+                <i class="fas fa-check text-green-600 text-2xl"></i>
+            </div>
+        </div>
+        <h3 class="text-lg font-semibold text-gray-900 mb-2">Success!</h3>
+        <p class="text-gray-600 mb-6">Your details have been saved and sent to our team. We will contact you within 24 hours.</p>
+        <button onclick="closeSuccessModal()" class="bg-blue-600 hover:bg-blue-700 text-white font-semibold py-2 px-6 rounded-lg transition duration-300">
+            Close
+        </button>
+    </div>
+</div>
+
+<!-- Django Messages Display -->
+{% if messages %}
+    {% for message in messages %}
+        <div class="fixed top-20 right-4 z-50 max-w-sm">
+            <div class="{% if message.tags == 'success' %}bg-green-500{% else %}bg-red-500{% endif %} text-white px-6 py-3 rounded-lg shadow-lg">
+                <div class="flex items-center">
+                    <i class="fas {% if message.tags == 'success' %}fa-check-circle{% else %}fa-exclamation-circle{% endif %} mr-2"></i>
+                    <span>{{ message }}</span>
+                </div>
+            </div>
+        </div>
+    {% endfor %}
+{% endif %}
+
+<script>
+    // Show success modal if form was submitted successfully
+    {% if messages %}
+        {% for message in messages %}
+            {% if message.tags == 'success' %}
+                document.addEventListener('DOMContentLoaded', function() {
+                    showSuccessModal();
+                });
+            {% endif %}
+        {% endfor %}
+    {% endif %}
+
+    function showSuccessModal() {
+        document.getElementById('successModal').classList.remove('hidden');
+    }
+
+    function closeSuccessModal() {
+        document.getElementById('successModal').classList.add('hidden');
+    }
+
+    // Form submission loading state
+    document.addEventListener('DOMContentLoaded', function() {
+        const form = document.querySelector('form');
+        const submitBtn = document.getElementById('submitBtn');
+        const submitIcon = document.getElementById('submitIcon');
+        const submitText = document.getElementById('submitText');
+        const loadingIcon = document.getElementById('loadingIcon');
+
+        form.addEventListener('submit', function() {
+            // Show loading state
+            submitBtn.disabled = true;
+            submitIcon.style.display = 'none';
+            submitText.textContent = 'Submitting...';
+            loadingIcon.style.display = 'inline-block';
+            submitBtn.style.opacity = '0.7';
+        });
+    });
+
+    // Auto-hide messages after 5 seconds
+    setTimeout(function() {
+        const messageDivs = document.querySelectorAll('.fixed.top-20');
+        messageDivs.forEach(function(div) {
+            div.style.display = 'none';
+        });
+    }, 5000);
+</script>
+
+<script>
+// Theme Toggle Functionality
+document.addEventListener("DOMContentLoaded", function() {
+    const themeToggle = document.getElementById('theme-toggle');
+    const themeIcon = document.getElementById('theme-icon');
+    const body = document.body;
+    
+    // Check for saved theme preference or default to light theme
+    const currentTheme = localStorage.getItem('theme') || 'light';
+    
+    // Apply the saved theme
+    if (currentTheme === 'dark') {
+        body.classList.add('dark-theme');
+        themeIcon.className = 'fas fa-sun text-white text-lg';
+    } else {
+        body.classList.remove('dark-theme');
+        themeIcon.className = 'fas fa-moon text-white text-lg';
+    }
+    
+    // Theme toggle event listener
+    themeToggle.addEventListener('click', function() {
+        if (body.classList.contains('dark-theme')) {
+            // Switch to light theme
+            body.classList.remove('dark-theme');
+            themeIcon.className = 'fas fa-moon text-white text-lg';
+            localStorage.setItem('theme', 'light');
+        } else {
+            // Switch to dark theme
+            body.classList.add('dark-theme');
+            themeIcon.className = 'fas fa-sun text-white text-lg';
+            localStorage.setItem('theme', 'dark');
+        }
+    });
+});
+</script>
 
 </body>
 </html>

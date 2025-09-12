@@ -9,6 +9,90 @@
     {% tailwind_css %}
     <link rel="stylesheet" href="{% static 'css/dist/styles.css' %}">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    
+    <!-- Footer CSS Override -->
+    <style>
+    footer {
+        background-color: #1f2937 !important;
+        color: #d1d5db !important;
+    }
+    footer * {
+        color: inherit !important;
+    }
+    footer h2, footer h3 {
+        color: #ffffff !important;
+    }
+    footer p {
+        color: #9ca3af !important;
+    }
+    footer .text-gray-500 {
+        color: #6b7280 !important;
+    }
+    footer .text-gray-400 {
+        color: #9ca3af !important;
+    }
+    footer .border-gray-700 {
+        border-color: #374151 !important;
+    }
+    </style>
+    
+    <!-- Theme Toggle CSS -->
+    <style>
+    /* Dark theme styles */
+    .dark-theme {
+        background-color: #1a1a1a !important;
+        color: #e5e5e5 !important;
+    }
+    
+    .dark-theme .bg-gray-50 {
+        background-color: #1a1a1a !important;
+    }
+    
+    .dark-theme .bg-white {
+        background-color: #2d2d2d !important;
+    }
+    
+    .dark-theme .text-gray-900 {
+        color: #e5e5e5 !important;
+    }
+    
+    .dark-theme .text-gray-700 {
+        color: #d1d5db !important;
+    }
+    
+    .dark-theme .text-gray-600 {
+        color: #9ca3af !important;
+    }
+    
+    .dark-theme .text-gray-800 {
+        color: #e5e5e5 !important;
+    }
+    
+    .dark-theme .bg-blue-50 {
+        background-color: #1e3a8a !important;
+    }
+    
+    .dark-theme .bg-gray-100 {
+        background-color: #374151 !important;
+    }
+    
+    .dark-theme .border-gray-200 {
+        border-color: #4b5563 !important;
+    }
+    
+    .dark-theme .shadow-lg {
+        box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.3), 0 4px 6px -2px rgba(0, 0, 0, 0.1) !important;
+    }
+    
+    /* Theme toggle button */
+    #theme-toggle {
+        transition: all 0.3s ease;
+    }
+    
+    #theme-icon {
+        transition: transform 0.3s ease;
+    }
+    </style>
 
 </head>
 <!-- Add the following CSS to hide the scrollbar -->
@@ -40,8 +124,10 @@
         .neon-border-card:hover {
             box-shadow: 0 0 12px rgba(93, 0, 255, 0.5), 0 0 20px rgba(0, 212, 255, 0.6);
             transform: translateY(-5px); /* Adds a slight lift on hover */}
+        
+        /* Navbar styling is now handled globally in navbar.html */
 </style>
-<body class="bg-gray-900">
+<body class="bg-gray-50">
 
     {% include 'Henry/navbar.html' %}
 
@@ -75,21 +161,21 @@
     </section>
 
     <!-- Testimonials Section (Moved above featured properties) -->
-    <section class="bg-gray-800 py-16 px-4 text-white" id="testimonials">
+    <section class="bg-gray-50 py-16 px-4" id="testimonials">
         <div class="container mx-auto max-w-5xl">
-            <h2 class="text-4xl font-bold text-center mb-10 text-white">What Our Clients Say</h2>
+            <h2 class="text-4xl font-bold text-center mb-10 text-gray-900">What Our Clients Say</h2>
 
             <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
                 <!-- Testimonial Card 1 -->
-                <div class="testimonial-card bg-gray-800 p-6 rounded-lg shadow-lg">
+                <div class="testimonial-card bg-white p-6 rounded-lg shadow-lg">
                     <div class="flex items-center mb-4">
                         <img src="https://images.unsplash.com/photo-1494790108755-2616b612b786?w=60&h=60&fit=crop&crop=face" alt="Client Photo" class="w-14 h-14 rounded-full mr-4 object-cover">
                         <div>
-                            <h3 class="text-xl font-semibold">Emily Carter</h3>
-                            <p class="text-gray-400 text-sm">Homeowner in Miami, FL</p>
+                            <h3 class="text-xl font-semibold text-gray-900">Emily Carter</h3>
+                            <p class="text-gray-600 text-sm">Homeowner in Miami, FL</p>
                         </div>
                     </div>
-                    <p class="text-gray-300">"{{ brand_name }} made the home-buying process so much easier! The team was incredibly knowledgeable and helped us find the perfect home for our family."</p>
+                    <p class="text-gray-700">"{{ brand_name }} made the home-buying process so much easier! The team was incredibly knowledgeable and helped us find the perfect home for our family."</p>
                     <div class="mt-4 text-yellow-400">
                         <i class="fas fa-star"></i>
                         <i class="fas fa-star"></i>
@@ -100,15 +186,15 @@
                 </div>
 
                 <!-- Testimonial Card 2 -->
-                <div class="testimonial-card bg-gray-800 p-6 rounded-lg shadow-lg">
+                <div class="testimonial-card bg-white p-6 rounded-lg shadow-lg">
                     <div class="flex items-center mb-4">
                         <img src="https://images.unsplash.com/photo-1494790108755-2616b612b786?w=60&h=60&fit=crop&crop=face" alt="Client Photo" class="w-14 h-14 rounded-full mr-4 object-cover">
                         <div>
-                            <h3 class="text-xl font-semibold">John Doe</h3>
-                            <p class="text-gray-400 text-sm">Investor in New York, NY</p>
+                            <h3 class="text-xl font-semibold text-gray-900">John Doe</h3>
+                            <p class="text-gray-600 text-sm">Investor in New York, NY</p>
                         </div>
                     </div>
-                    <p class="text-gray-300">"Working with {{ brand_name }} was a fantastic experience. Their market insights and negotiation skills are second to none. Highly recommended!"</p>
+                    <p class="text-gray-700">"Working with {{ brand_name }} was a fantastic experience. Their market insights and negotiation skills are second to none. Highly recommended!"</p>
                     <div class="mt-4 text-yellow-400">
                         <i class="fas fa-star"></i>
                         <i class="fas fa-star"></i>
@@ -119,15 +205,15 @@
                 </div>
 
                 <!-- Testimonial Card 3 -->
-                <div class="testimonial-card bg-gray-800 p-6 rounded-lg shadow-lg">
+                <div class="testimonial-card bg-white p-6 rounded-lg shadow-lg">
                     <div class="flex items-center mb-4">
                         <img src="https://images.unsplash.com/photo-1494790108755-2616b612b786?w=60&h=60&fit=crop&crop=face" alt="Client Photo" class="w-14 h-14 rounded-full mr-4 object-cover">
                         <div>
-                            <h3 class="text-xl font-semibold">Sarah Williams</h3>
-                            <p class="text-gray-400 text-sm">Homebuyer in Los Angeles, CA</p>
+                            <h3 class="text-xl font-semibold text-gray-900">Sarah Williams</h3>
+                            <p class="text-gray-600 text-sm">Homebuyer in Los Angeles, CA</p>
                         </div>
                     </div>
-                    <p class="text-gray-300">"From start to finish, {{ brand_name }} was there every step of the way. They really made us feel like their top priority. Thank you so much!"</p>
+                    <p class="text-gray-700">"From start to finish, {{ brand_name }} was there every step of the way. They really made us feel like their top priority. Thank you so much!"</p>
                     <div class="mt-4 text-yellow-400">
                         <i class="fas fa-star"></i>
                         <i class="fas fa-star"></i>
@@ -141,9 +227,9 @@
     </section>
 
     <!-- Recently Sold and Leased Section (Changed from Featured Properties) -->
-    <section class="bg-gray-900 py-8">
+    <section class="bg-gray-50 py-8">
         <div class="container mx-auto px-4">
-            <h2 class="text-3xl font-bold text-white text-center mb-6">Recently Sold and Leased</h2>
+            <h2 class="text-3xl font-bold text-gray-900 text-center mb-6">Recently Sold and Leased</h2>
             <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
 
                 <!-- Property Card 1 -->
@@ -238,33 +324,33 @@
     </section>
 
     <!-- Stats Section with Join Us and Contact Us -->
-    <section class="bg-gray-900 py-16 text-white" id="stats-section">
+    <section class="bg-blue-900 py-16 text-white" id="stats-section" style="background-color: #1e3a8a !important; color: #ffffff !important;">
         <div class="container mx-auto px-4 text-center">
-            <h2 class="text-4xl font-bold text-white mb-6">Our Achievements</h2>
+            <h2 class="text-4xl font-bold text-white mb-6" style="color: #ffffff !important;">Our Achievements</h2>
 
             <div class="grid grid-cols-1 md:grid-cols-3 gap-12">
                 <!-- Satisfied Customers -->
                 <div>
                     <div class="text-6xl font-bold text-blue-400" id="customers">0</div>
-                    <p class="text-xl text-gray-300 mt-2">Satisfied Customers</p>
+                    <p class="text-xl text-gray-300 mt-2" style="color: #d1d5db !important;">Satisfied Customers</p>
                 </div>
 
                 <!-- Completed Projects -->
                 <div>
                     <div class="text-6xl font-bold text-green-400" id="projects">0</div>
-                    <p class="text-xl text-gray-300 mt-2">Completed Projects</p>
+                    <p class="text-xl text-gray-300 mt-2" style="color: #d1d5db !important;">Completed Projects</p>
                 </div>
 
                 <!-- Years of Experience -->
                 <div>
                     <div class="text-6xl font-bold text-purple-400" id="experience">0</div>
-                    <p class="text-xl text-gray-300 mt-2">Years of Experience</p>
+                    <p class="text-xl text-gray-300 mt-2" style="color: #d1d5db !important;">Years of Experience</p>
                 </div>
             </div>
 
             <!-- Join Us and Contact Us Buttons -->
             <div class="mt-12 flex flex-col sm:flex-row gap-4 justify-center">
-                <a href="#contact" class="inline-block bg-blue-600 text-white font-semibold px-8 py-3 rounded-full shadow-lg hover:bg-blue-700 transition-colors duration-300">
+                <a href="#contact" class="inline-block bg-yellow-500 text-white font-semibold px-8 py-3 rounded-full shadow-lg hover:bg-yellow-600 transition-colors duration-300">
                     JOIN US
                 </a>
                 <a href="#contact" class="inline-block bg-green-600 text-white font-semibold px-8 py-3 rounded-full shadow-lg hover:bg-green-700 transition-colors duration-300">
@@ -323,6 +409,40 @@
                 video.preload = 'metadata';
                 video.load();
             }
+        });
+        
+        // Theme Toggle Functionality
+        document.addEventListener("DOMContentLoaded", function() {
+            const themeToggle = document.getElementById('theme-toggle');
+            const themeIcon = document.getElementById('theme-icon');
+            const body = document.body;
+            
+            // Check for saved theme preference or default to light theme
+            const currentTheme = localStorage.getItem('theme') || 'light';
+            
+            // Apply the saved theme
+            if (currentTheme === 'dark') {
+                body.classList.add('dark-theme');
+                themeIcon.className = 'fas fa-sun text-white text-lg';
+            } else {
+                body.classList.remove('dark-theme');
+                themeIcon.className = 'fas fa-moon text-white text-lg';
+            }
+            
+            // Theme toggle event listener
+            themeToggle.addEventListener('click', function() {
+                if (body.classList.contains('dark-theme')) {
+                    // Switch to light theme
+                    body.classList.remove('dark-theme');
+                    themeIcon.className = 'fas fa-moon text-white text-lg';
+                    localStorage.setItem('theme', 'light');
+                } else {
+                    // Switch to dark theme
+                    body.classList.add('dark-theme');
+                    themeIcon.className = 'fas fa-sun text-white text-lg';
+                    localStorage.setItem('theme', 'dark');
+                }
+            });
         });
     </script>
 

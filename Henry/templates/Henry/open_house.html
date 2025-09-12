@@ -11,10 +11,54 @@
     <link rel="stylesheet" href="{% static 'css/dist/styles.css' %}">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
-</head>
-<style>
+    
+    <style>
     body {
         font-family: 'Inter', sans-serif;
+    }
+    
+    /* Navbar styling is now handled globally in navbar.html */
+    
+    /* Dark theme styles */
+    .dark-theme {
+        background-color: #1a1a1a !important;
+        color: #e5e5e5 !important;
+    }
+    
+    .dark-theme .bg-gray-50 {
+        background-color: #1a1a1a !important;
+    }
+    
+    .dark-theme .bg-white {
+        background-color: #2d2d2d !important;
+    }
+    
+    .dark-theme .text-gray-900 {
+        color: #e5e5e5 !important;
+    }
+    
+    .dark-theme .text-gray-700 {
+        color: #d1d5db !important;
+    }
+    
+    .dark-theme .text-gray-600 {
+        color: #9ca3af !important;
+    }
+    
+    .dark-theme .bg-blue-50 {
+        background-color: #1e3a8a !important;
+    }
+    
+    .dark-theme .bg-gray-100 {
+        background-color: #374151 !important;
+    }
+    
+    .dark-theme .border-gray-200 {
+        border-color: #4b5563 !important;
+    }
+    
+    .dark-theme .shadow-lg {
+        box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.3), 0 4px 6px -2px rgba(0, 0, 0, 0.1) !important;
     }
 
     /* Professional form styling */
@@ -272,7 +316,7 @@
     /* Section dividers */
     .section-divider {
         height: 1px;
-        background: linear-gradient(90deg, transparent 0%, rgba(255, 255, 255, 0.2) 50%, transparent 100%);
+        background: linear-gradient(90deg, transparent 0%, rgba(0, 0, 0, 0.1) 50%, transparent 100%);
         margin: 60px 0;
     }
 
@@ -327,8 +371,9 @@
             background-attachment: scroll;
         }
     }
-</style>
-<body class="bg-gray-900">
+    </style>
+</head>
+<body class="bg-gray-50">
 
 {% include 'Henry/navbar.html' %}
 
@@ -379,22 +424,33 @@
 </section>
 
 <!-- Open House Calendar Section -->
-<section class="py-20 bg-gray-900">
+<section class="py-20 bg-gray-50">
     <div class="container mx-auto px-4">
         <div class="max-w-6xl mx-auto">
             <div class="text-center mb-16">
-                <h2 class="text-4xl md:text-5xl font-bold text-white mb-6">
+                <h2 class="text-4xl md:text-5xl font-bold text-gray-900 mb-6">
                     Open House 
-                    <span class="bg-gradient-to-r from-blue-400 to-purple-400 bg-clip-text text-transparent">Calendar</span>
+                    <span class="bg-gradient-to-r from-blue-600 to-purple-600 bg-clip-text text-transparent">Calendar</span>
                 </h2>
-                <p class="text-xl text-gray-300 max-w-3xl mx-auto">
+                <p class="text-xl text-gray-700 max-w-3xl mx-auto">
                     Browse our upcoming open house schedule and find the perfect time to visit
                 </p>
             </div>
             
             <!-- Calendar Grid -->
-            <div class="bg-gray-800 rounded-lg p-8 mb-12">
-                <div class="grid grid-cols-7 gap-4 text-center">
+            <div class="bg-white rounded-lg p-8 mb-12 shadow-lg">
+                <!-- Calendar Navigation -->
+                <div class="flex justify-between items-center mb-6">
+                    <button id="prevMonth" class="p-2 hover:bg-gray-100 rounded-lg transition-colors">
+                        <i class="fas fa-chevron-left text-gray-600"></i>
+                    </button>
+                    <h3 id="currentMonth" class="text-xl font-semibold text-gray-900"></h3>
+                    <button id="nextMonth" class="p-2 hover:bg-gray-100 rounded-lg transition-colors">
+                        <i class="fas fa-chevron-right text-gray-600"></i>
+                    </button>
+                </div>
+                
+                <div class="grid grid-cols-7 gap-4 text-center" id="calendarGrid">
                     <!-- Calendar Headers -->
                     <div class="text-gray-400 font-semibold py-2">Sun</div>
                     <div class="text-gray-400 font-semibold py-2">Mon</div>
@@ -403,172 +459,94 @@
                     <div class="text-gray-400 font-semibold py-2">Thu</div>
                     <div class="text-gray-400 font-semibold py-2">Fri</div>
                     <div class="text-gray-400 font-semibold py-2">Sat</div>
-                    
-                    <!-- Calendar Days -->
-                    <div class="py-4 text-gray-500">28</div>
-                    <div class="py-4 text-gray-500">29</div>
-                    <div class="py-4 text-gray-500">30</div>
-                    <div class="py-4 text-gray-500">31</div>
-                    <div class="py-4 text-gray-500">1</div>
-                    <div class="py-4 text-gray-500">2</div>
-                    <div class="py-4 text-gray-500">3</div>
-                    
-                    <div class="py-4 text-gray-500">4</div>
-                    <div class="py-4 text-gray-500">5</div>
-                    <div class="py-4 text-gray-500">6</div>
-                    <div class="py-4 text-gray-500">7</div>
-                    <div class="py-4 text-gray-500">8</div>
-                    <div class="py-4 text-gray-500">9</div>
-                    <div class="py-4 text-gray-500">10</div>
-                    
-                    <div class="py-4 text-gray-500">11</div>
-                    <div class="py-4 text-gray-500">12</div>
-                    <div class="py-4 text-gray-500">13</div>
-                    <div class="py-4 text-gray-500">14</div>
-                    <div class="py-4 text-gray-500">15</div>
-                    <div class="py-4 text-gray-500">16</div>
-                    <div class="py-4 text-gray-500">17</div>
-                    
-                    <div class="py-4 text-gray-500">18</div>
-                    <div class="py-4 text-gray-500">19</div>
-                    <div class="py-4 text-gray-500">20</div>
-                    <div class="py-4 text-gray-500">21</div>
-                    <div class="py-4 text-gray-500">22</div>
-                    <div class="py-4 text-gray-500">23</div>
-                    <div class="py-4 text-gray-500">24</div>
-                    
-                    <div class="py-4 text-gray-500">25</div>
-                    <div class="py-4 text-gray-500">26</div>
-                    <div class="py-4 text-gray-500">27</div>
-                    <div class="py-4 text-gray-500">28</div>
-                    <div class="py-4 text-gray-500">29</div>
-                    <div class="py-4 text-gray-500">30</div>
-                    <div class="py-4 text-gray-500">31</div>
                 </div>
             </div>
             
             <!-- Upcoming Open Houses -->
             <div class="text-center mb-12">
-                <h3 class="text-2xl font-bold text-white mb-6">Upcoming Open Houses</h3>
+                <h3 class="text-2xl font-bold text-gray-900 mb-6">Upcoming Open Houses</h3>
             </div>
             
             <!-- Property Cards Grid -->
             <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-                <!-- Property Card 1 -->
-                <div class="bg-gray-800 rounded-lg overflow-hidden shadow-lg hover:shadow-xl transition-shadow duration-300">
-                    <img src="https://static.wixstatic.com/media/4eb8f6_12dd7f5ab6cb49b5974019a73f043f79~mv2_d_2800_1600_s_2.png/v1/fill/w_1205,h_689,al_c,q_90,usm_0.66_1.00_0.01,enc_auto/4eb8f6_12dd7f5ab6cb49b5974019a73f043f79~mv2_d_2800_1600_s_2.png" alt="Property 1" class="w-full h-48 object-cover">
+                {% for open_house in open_houses %}
+                <div class="bg-white rounded-lg overflow-hidden shadow-lg hover:shadow-xl transition-shadow duration-300">
+                    <img src="{{ open_house.image_url }}" alt="{{ open_house.title }}" class="w-full h-48 object-cover">
                     <div class="p-6">
                         <div class="flex justify-between items-start mb-4">
-                            <h3 class="text-xl font-bold text-white">Luxury Penthouse</h3>
+                            <h3 class="text-xl font-bold text-gray-900">{{ open_house.title }}</h3>
                             <span class="bg-blue-600 text-white px-3 py-1 text-sm font-semibold rounded-full">Open House</span>
                         </div>
-                        <p class="text-gray-300 mb-2">New York, NY</p>
-                        <p class="text-2xl font-bold text-blue-400 mb-4">$58,500,000</p>
-                        <div class="flex justify-between text-gray-400 text-sm mb-4">
-                            <span>5 Beds</span>
-                            <span>4 Baths</span>
-                            <span>16,000 sq.ft</span>
+                        <p class="text-gray-700 mb-2">{{ open_house.property_address }}</p>
+                        <p class="text-2xl font-bold text-blue-600 mb-4">${{ open_house.price|floatformat:0|add:"," }}</p>
+                        <div class="flex justify-between text-gray-600 text-sm mb-4">
+                            <span>{{ open_house.bedrooms|default:"0" }} Beds</span>
+                            <span>{{ open_house.bathrooms|default:"0" }} Baths</span>
+                            <span>{{ open_house.area_sqft|default:"0"|add:"," }} sq.ft</span>
                         </div>
                         <div class="bg-green-600 text-white p-3 rounded-lg text-center font-semibold">
                             <i class="fas fa-calendar-alt mr-2"></i>
-                            Saturday, Dec 14 • 2:00 PM
+                            {{ open_house.open_house_date|date:"l, M d" }} • {{ open_house.open_house_time|time:"g:i A" }}
                         </div>
                     </div>
                 </div>
-                
-                <!-- Property Card 2 -->
-                <div class="bg-gray-800 rounded-lg overflow-hidden shadow-lg hover:shadow-xl transition-shadow duration-300">
-                    <img src="https://static.wixstatic.com/media/4eb8f6_4b6d800819b4fd9adc654bb2265ce57~mv2.jpg/v1/fill/w_1033,h_689,al_c,q_85,usm_0.66_1.00_0.01,enc_auto/4eb8f6_4b6d800819b4fd9adc654bb2265ce57~mv2.jpg" alt="Property 2" class="w-full h-48 object-cover">
-                    <div class="p-6">
-                        <div class="flex justify-between items-start mb-4">
-                            <h3 class="text-xl font-bold text-white">Beachfront Villa</h3>
-                            <span class="bg-green-600 text-white px-3 py-1 text-sm font-semibold rounded-full">Open House</span>
-                        </div>
-                        <p class="text-gray-300 mb-2">Miami Beach, FL</p>
-                        <p class="text-2xl font-bold text-blue-400 mb-4">$17,900,000</p>
-                        <div class="flex justify-between text-gray-400 text-sm mb-4">
-                            <span>3 Beds</span>
-                            <span>3 Baths</span>
-                            <span>4,434 sq.ft</span>
-                        </div>
-                        <div class="bg-green-600 text-white p-3 rounded-lg text-center font-semibold">
-                            <i class="fas fa-calendar-alt mr-2"></i>
-                            Sunday, Dec 15 • 1:00 PM
-                        </div>
+                {% empty %}
+                <div class="col-span-full text-center py-12">
+                    <div class="text-gray-500 text-lg">
+                        <i class="fas fa-calendar-times text-4xl mb-4"></i>
+                        <p>No open house events scheduled at the moment.</p>
+                        <p class="text-sm mt-2">Check back soon for upcoming events!</p>
                     </div>
                 </div>
-                
-                <!-- Property Card 3 -->
-                <div class="bg-gray-800 rounded-lg overflow-hidden shadow-lg hover:shadow-xl transition-shadow duration-300">
-                    <img src="https://static.wixstatic.com/media/4eb8f6_17638737f4664711bd0cc86f3b2d8fe7~mv2.jpg/v1/fill/w_1224,h_689,al_c,q_85,usm_0.66_1.00_0.01,enc_auto/4eb8f6_17638737f4664711bd0cc86f3b2d8fe7~mv2.jpg" alt="Property 3" class="w-full h-48 object-cover">
-                    <div class="p-6">
-                        <div class="flex justify-between items-start mb-4">
-                            <h3 class="text-xl font-bold text-white">Modern Townhouse</h3>
-                            <span class="bg-purple-600 text-white px-3 py-1 text-sm font-semibold rounded-full">Open House</span>
-                        </div>
-                        <p class="text-gray-300 mb-2">Los Angeles, CA</p>
-                        <p class="text-2xl font-bold text-blue-400 mb-4">$12,500,000</p>
-                        <div class="flex justify-between text-gray-400 text-sm mb-4">
-                            <span>4 Beds</span>
-                            <span>3 Baths</span>
-                            <span>3,200 sq.ft</span>
-                        </div>
-                        <div class="bg-green-600 text-white p-3 rounded-lg text-center font-semibold">
-                            <i class="fas fa-calendar-alt mr-2"></i>
-                            Saturday, Dec 21 • 3:00 PM
-                        </div>
-                    </div>
-                </div>
+                {% endfor %}
             </div>
         </div>
     </div>
 </section>
 
 <!-- Why Choose Us Section -->
-<section class="py-20 bg-gray-800">
+<section class="py-20 bg-gray-50">
     <div class="container mx-auto px-4">
         <div class="max-w-6xl mx-auto">
             <div class="text-center mb-16">
-                <h2 class="text-4xl md:text-5xl font-bold text-white mb-6">
+                <h2 class="text-4xl md:text-5xl font-bold text-gray-900 mb-6">
                     Open House 
-                    <span class="bg-gradient-to-r from-blue-400 to-purple-400 bg-clip-text text-transparent">Statistics</span>
+                    <span class="bg-gradient-to-r from-blue-600 to-purple-600 bg-clip-text text-transparent">Statistics</span>
                 </h2>
-                <p class="text-xl text-gray-300 max-w-3xl mx-auto">
+                <p class="text-xl text-gray-700 max-w-3xl mx-auto">
                     Join thousands of satisfied visitors who found their dream homes through our open houses
                 </p>
             </div>
             
             <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
-                <div class="stats-card">
-                    <div class="text-4xl font-bold text-blue-400 mb-2">50+</div>
-                    <div class="text-gray-300 font-medium">Open Houses This Weekend</div>
+                <div class="bg-white rounded-lg p-6 text-center shadow-lg">
+                    <div class="text-4xl font-bold text-blue-600 mb-2">50+</div>
+                    <div class="text-gray-700 font-medium">Open Houses This Weekend</div>
                 </div>
-                <div class="stats-card">
-                    <div class="text-4xl font-bold text-blue-400 mb-2">500+</div>
-                    <div class="text-gray-300 font-medium">Visitors Last Month</div>
+                <div class="bg-white rounded-lg p-6 text-center shadow-lg">
+                    <div class="text-4xl font-bold text-blue-600 mb-2">500+</div>
+                    <div class="text-gray-700 font-medium">Visitors Last Month</div>
                 </div>
-                <div class="stats-card">
-                    <div class="text-4xl font-bold text-blue-400 mb-2">25+</div>
-                    <div class="text-gray-300 font-medium">Virtual Tours Available</div>
+                <div class="bg-white rounded-lg p-6 text-center shadow-lg">
+                    <div class="text-4xl font-bold text-blue-600 mb-2">25+</div>
+                    <div class="text-gray-700 font-medium">Virtual Tours Available</div>
                 </div>
-                <div class="stats-card">
-                    <div class="text-4xl font-bold text-blue-400 mb-2">98%</div>
-                    <div class="text-gray-300 font-medium">Visitor Satisfaction</div>
+                <div class="bg-white rounded-lg p-6 text-center shadow-lg">
+                    <div class="text-4xl font-bold text-blue-600 mb-2">98%</div>
+                    <div class="text-gray-700 font-medium">Visitor Satisfaction</div>
                 </div>
             </div>
         </div>
     </div>
 </section>
 
-<div class="section-divider"></div>
-
 <!-- Contact Form Section -->
-<section class="py-20 bg-gray-800">
+<section class="py-20 bg-gray-50">
     <div class="container mx-auto px-4">
         <div class="max-w-xl mx-auto">
             <div class="text-center mb-12">
-                <h2 class="text-4xl md:text-5xl font-bold text-white mb-6">Ready to Visit an Open House?</h2>
-                <p class="text-xl text-gray-300">Fill out the form below to schedule your visit or get more information about our open houses.</p>
+                <h2 class="text-4xl md:text-5xl font-bold text-gray-900 mb-6">Ready to Visit an Open House?</h2>
+                <p class="text-xl text-gray-700">Fill out the form below to schedule your visit or get more information about our open houses.</p>
             </div>
 
             <!-- Messages -->
@@ -660,11 +638,26 @@
                         </div>
 
                         <!-- Submit Button -->
-                        <button type="submit" class="submit-btn w-full">
-                            <i class="fas fa-calendar-check mr-3"></i>
-                            Schedule Open House Visit
+                        <button type="submit" id="submitBtn" class="submit-btn w-full">
+                            <i class="fas fa-calendar-check mr-3" id="submitIcon"></i>
+                            <span id="submitText">Schedule Open House Visit</span>
+                            <i class="fas fa-spinner fa-spin mr-3" id="loadingIcon" style="display: none !important;"></i>
                         </button>
                     </form>
+                </div>
+            </div>
+            
+            <!-- Success Modal -->
+            <div id="successModal" class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50" style="display: none;">
+                <div class="bg-white rounded-lg p-8 max-w-md mx-4 text-center">
+                    <div class="text-green-500 text-6xl mb-4">
+                        <i class="fas fa-check-circle"></i>
+                    </div>
+                    <h3 class="text-2xl font-bold text-gray-900 mb-4">Success!</h3>
+                    <p class="text-gray-700 mb-6">Your inquiry has been submitted successfully! We will contact you within 24 hours.</p>
+                    <button onclick="closeSuccessModal()" class="bg-blue-600 text-white px-6 py-2 rounded-lg hover:bg-blue-700 transition-colors">
+                        Close
+                    </button>
                 </div>
             </div>
 
@@ -674,6 +667,207 @@
 </section>
 
 {% include 'Henry/footer.html' %}
+
+<script>
+    // Dynamic Calendar Implementation
+    class Calendar {
+        constructor() {
+            this.currentDate = new Date();
+            this.monthNames = [
+                "January", "February", "March", "April", "May", "June",
+                "July", "August", "September", "October", "November", "December"
+            ];
+            this.openHouseDates = [
+                {% for open_house in open_houses %}
+                { 
+                    date: {{ open_house.open_house_date.day }}, 
+                    month: {{ open_house.open_house_date.month|add:"-1" }}, 
+                    year: {{ open_house.open_house_date.year }}, 
+                    time: "{{ open_house.open_house_time|time:'g:i A' }}", 
+                    property: "{{ open_house.title|escapejs }}", 
+                    price: "${{ open_house.price|floatformat:0|add:"," }}",
+                    address: "{{ open_house.property_address|escapejs }}",
+                    bedrooms: {{ open_house.bedrooms|default:"0" }},
+                    bathrooms: {{ open_house.bathrooms|default:"0" }},
+                    area: {{ open_house.area_sqft|default:"0" }},
+                    description: "{{ open_house.description|escapejs }}",
+                    image: "{{ open_house.image_url }}",
+                    contact_email: "{{ open_house.contact_email }}",
+                    contact_phone: "{{ open_house.contact_phone }}"
+                }{% if not forloop.last %},{% endif %}
+                {% endfor %}
+            ];
+            this.init();
+        }
+
+        init() {
+            this.renderCalendar();
+            this.bindEvents();
+        }
+
+        renderCalendar() {
+            const year = this.currentDate.getFullYear();
+            const month = this.currentDate.getMonth();
+            
+            // Update month display
+            document.getElementById('currentMonth').textContent = 
+                `${this.monthNames[month]} ${year}`;
+
+            // Get first day of month and number of days
+            const firstDay = new Date(year, month, 1);
+            const lastDay = new Date(year, month + 1, 0);
+            const daysInMonth = lastDay.getDate();
+            const startingDayOfWeek = firstDay.getDay();
+
+            // Clear previous calendar days
+            const calendarGrid = document.getElementById('calendarGrid');
+            const existingDays = calendarGrid.querySelectorAll('.calendar-day');
+            existingDays.forEach(day => day.remove());
+
+            // Add empty cells for days before the first day of the month
+            for (let i = 0; i < startingDayOfWeek; i++) {
+                const emptyDay = document.createElement('div');
+                emptyDay.className = 'py-4 text-gray-300';
+                calendarGrid.appendChild(emptyDay);
+            }
+
+            // Add days of the month
+            for (let day = 1; day <= daysInMonth; day++) {
+                const dayElement = document.createElement('div');
+                const currentDate = new Date(year, month, day);
+                const today = new Date();
+                today.setHours(0, 0, 0, 0);
+                const isPastDate = currentDate < today;
+                
+                dayElement.className = 'calendar-day py-4 text-gray-700 hover:bg-blue-50 cursor-pointer rounded-lg transition-colors';
+                dayElement.textContent = day;
+                
+                // Check if this day has an open house
+                const hasOpenHouse = this.openHouseDates.some(oh => 
+                    oh.date === day && oh.month === month && oh.year === year
+                );
+                
+                if (isPastDate) {
+                    dayElement.className = 'calendar-day py-4 text-gray-400 cursor-not-allowed rounded-lg';
+                    dayElement.title = 'This date has passed';
+                } else if (hasOpenHouse) {
+                    // Open house dates get priority - bright green with white text
+                    dayElement.className = 'calendar-day py-4 bg-green-500 text-white font-bold shadow-lg border-2 border-green-600 cursor-pointer rounded-lg transition-colors';
+                    dayElement.style.cssText = 'background-color: #10b981 !important; color: white !important; font-weight: bold !important; box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05) !important; border: 2px solid #059669 !important;';
+                    dayElement.title = 'Open House Available - Click for details!';
+                } else if (day === today.getDate() && month === today.getMonth() && year === today.getFullYear()) {
+                    // Today highlighting only if no open house
+                    dayElement.className = 'calendar-day py-4 bg-blue-600 text-white font-semibold cursor-pointer rounded-lg transition-colors';
+                    dayElement.title = 'Today';
+                }
+                
+                if (!isPastDate) {
+                    dayElement.addEventListener('click', () => this.showOpenHouseDetails(day, month, year));
+                }
+                calendarGrid.appendChild(dayElement);
+            }
+        }
+
+        showOpenHouseDetails(day, month, year) {
+            const openHouse = this.openHouseDates.find(oh => 
+                oh.date === day && oh.month === month && oh.year === year
+            );
+            
+            if (openHouse) {
+                alert(`Open House Details:\n\nProperty: ${openHouse.property}\nAddress: ${openHouse.address}\nPrice: ${openHouse.price}\nDate: ${this.monthNames[month]} ${day}, ${year}\nTime: ${openHouse.time}\n\nProperty Details:\nBedrooms: ${openHouse.bedrooms}\nBathrooms: ${openHouse.bathrooms}\nArea: ${openHouse.area} sq ft\n\nContact Information:\nEmail: ${openHouse.contact_email}\nPhone: ${openHouse.contact_phone}\n\nContact us to schedule your visit!`);
+            } else {
+                alert(`No open house scheduled for ${this.monthNames[month]} ${day}, ${year}.\n\nPlease contact us to schedule a private viewing.`);
+            }
+        }
+
+        bindEvents() {
+            document.getElementById('prevMonth').addEventListener('click', () => {
+                this.currentDate.setMonth(this.currentDate.getMonth() - 1);
+                this.renderCalendar();
+            });
+
+            document.getElementById('nextMonth').addEventListener('click', () => {
+                this.currentDate.setMonth(this.currentDate.getMonth() + 1);
+                this.renderCalendar();
+            });
+        }
+    }
+
+    // Initialize calendar when page loads
+    document.addEventListener('DOMContentLoaded', function() {
+        new Calendar();
+        
+        // Form submission handling
+        const form = document.querySelector('form[method="POST"]');
+        if (form) {
+            form.addEventListener('submit', function(e) {
+                const submitBtn = document.getElementById('submitBtn');
+                const submitIcon = document.getElementById('submitIcon');
+                const submitText = document.getElementById('submitText');
+                const loadingIcon = document.getElementById('loadingIcon');
+                
+                // Disable button and show loading
+                submitBtn.disabled = true;
+                submitIcon.style.display = 'none';
+                submitText.textContent = 'Submitting...';
+                loadingIcon.style.display = 'inline-block';
+                submitBtn.style.opacity = '0.7';
+            });
+        }
+    });
+    
+    // Success modal functions
+    function closeSuccessModal() {
+        document.getElementById('successModal').style.display = 'none';
+    }
+    
+    // Show success modal if there are success messages
+    {% if messages %}
+        {% for message in messages %}
+            {% if message.tags == 'success' %}
+                document.addEventListener('DOMContentLoaded', function() {
+                    document.getElementById('successModal').style.display = 'flex';
+                });
+            {% endif %}
+        {% endfor %}
+    {% endif %}
+    </script>
+
+    <script>
+    // Theme Toggle Functionality
+    document.addEventListener("DOMContentLoaded", function() {
+        const themeToggle = document.getElementById('theme-toggle');
+        const themeIcon = document.getElementById('theme-icon');
+        const body = document.body;
+        
+        // Check for saved theme preference or default to light theme
+        const currentTheme = localStorage.getItem('theme') || 'light';
+        
+        // Apply the saved theme
+        if (currentTheme === 'dark') {
+            body.classList.add('dark-theme');
+            themeIcon.className = 'fas fa-sun text-white text-base';
+        } else {
+            body.classList.remove('dark-theme');
+            themeIcon.className = 'fas fa-moon text-white text-base';
+        }
+        
+        // Theme toggle event listener
+        themeToggle.addEventListener('click', function() {
+            if (body.classList.contains('dark-theme')) {
+                // Switch to light theme
+                body.classList.remove('dark-theme');
+                themeIcon.className = 'fas fa-moon text-white text-base';
+                localStorage.setItem('theme', 'light');
+            } else {
+                // Switch to dark theme
+                body.classList.add('dark-theme');
+                themeIcon.className = 'fas fa-sun text-white text-base';
+                localStorage.setItem('theme', 'dark');
+            }
+        });
+    });
+    </script>
 
 </body>
 </html>

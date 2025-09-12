@@ -1,16 +1,69 @@
 {% load static %}
 
+<style>
+/* Theme toggle button */
+#theme-toggle {
+    transition: all 0.3s ease;
+}
+
+#theme-icon {
+    transition: transform 0.3s ease;
+}
+
+/* Simple navbar protection - only override specific conflicting properties */
+nav {
+    background-color: #1e40af !important;
+    position: sticky !important;
+    top: 0 !important;
+    z-index: 50 !important;
+    box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06) !important;
+}
+
+nav .text-white {
+    color: #ffffff !important;
+}
+
+nav ul li a {
+    color: #ffffff !important;
+    font-weight: 500 !important;
+}
+
+nav ul li a:hover {
+    color: #93c5fd !important;
+}
+
+#theme-toggle {
+    display: block !important;
+    visibility: visible !important;
+    opacity: 1 !important;
+}
+
+#theme-icon {
+    display: inline-block !important;
+    visibility: visible !important;
+    opacity: 1 !important;
+    color: #ffffff !important;
+}
+</style>
+
 <!-- Navbar -->
 <nav class="bg-blue-800 shadow-lg w-full sticky top-0 z-50">
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div class="flex justify-between items-center py-4">
-            <div class="text-white text-xl font-bold">{{ brand_name }}</div>
-            <ul class="flex flex-wrap items-center space-x-4 md:space-x-6 text-white font-semibold">
+            <div class="text-white text-lg font-semibold">{{ brand_name }}</div>
+            <ul class="flex flex-wrap items-center space-x-4 md:space-x-6 text-white font-medium">
                 <li><a href="{% url 'home' %}" class="hover:text-blue-300 transition-colors duration-200">Home</a></li>
+                <li><a href="{% url 'buy_lease' %}" class="hover:text-blue-300 transition-colors duration-200">Buy / Lease</a></li>
+                <li><a href="{% url 'selling' %}" class="hover:text-blue-300 transition-colors duration-200">Sell & Evaluate</a></li>
                 <li><a href="{% url 'blog' %}" class="hover:text-blue-300 transition-colors duration-200">Blog</a></li>
-                <li><a href="{% url 'selling' %}" class="hover:text-blue-300 transition-colors duration-200">Sell Or Lease</a></li>
                 <li><a href="{% url 'open_house' %}" class="hover:text-blue-300 transition-colors duration-200">Open House</a></li>
                 <li><a href="{% url 'mortgage_calculator' %}" class="hover:text-blue-300 transition-colors duration-200">Mortgage Calculator</a></li>
+                <li>
+                    <!-- Theme Toggle Button -->
+                    <button id="theme-toggle" class="p-2 rounded-lg hover:bg-blue-700 transition-colors duration-200" title="Toggle theme">
+                        <i id="theme-icon" class="fas fa-moon text-white text-base"></i>
+                    </button>
+                </li>
             </ul>
         </div>
     </div>

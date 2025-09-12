@@ -1,5 +1,5 @@
 from django.contrib import admin
-from .models import Property, SellingContact, BlogTracking
+from .models import Property, SellingContact, BlogTracking, BlogPost, PropertyListing, OpenHouse
 
 # Register your models here.
 @admin.register(Property)
@@ -38,3 +38,85 @@ class BlogTrackingAdmin(admin.ModelAdmin):
         if obj:  # editing an existing object
             return self.readonly_fields + ('member_name', 'member_email', 'member_phone', 'blog_post_id', 'crm_reference')
         return self.readonly_fields
+
+
+@admin.register(PropertyListing)
+class PropertyListingAdmin(admin.ModelAdmin):
+    list_display = ('title', 'property_type', 'price', 'location', 'bedrooms', 'bathrooms', 'featured', 'published', 'created_at')
+    list_filter = ('property_type', 'featured', 'published', 'bedrooms', 'bathrooms', 'created_at')
+    search_fields = ('title', 'location', 'address', 'description')
+    readonly_fields = ('created_at', 'updated_at')
+    fieldsets = (
+        ('Basic Information', {
+            'fields': ('title', 'property_type', 'price', 'location', 'address')
+        }),
+        ('Property Details', {
+            'fields': ('bedrooms', 'bathrooms', 'parking_spaces', 'area_sqft', 'description')
+        }),
+        ('Images', {
+            'fields': ('image_url', 'additional_images')
+        }),
+        ('Contact Information', {
+            'fields': ('contact_email', 'contact_phone')
+        }),
+        ('Settings', {
+            'fields': ('featured', 'published')
+        }),
+        ('Timestamps', {
+            'fields': ('created_at', 'updated_at'),
+            'classes': ('collapse',)
+        }),
+    )
+
+
+@admin.register(BlogPost)
+class BlogPostAdmin(admin.ModelAdmin):
+    list_display = ('title', 'author', 'featured', 'published', 'created_at')
+    list_filter = ('featured', 'published', 'created_at', 'author')
+    search_fields = ('title', 'content', 'author')
+    prepopulated_fields = {'slug': ('title',)}
+    readonly_fields = ('created_at', 'updated_at')
+    fieldsets = (
+        ('Basic Information', {
+            'fields': ('title', 'slug', 'author', 'excerpt')
+        }),
+        ('Content', {
+            'fields': ('content', 'image_url')
+        }),
+        ('Settings', {
+            'fields': ('featured', 'published')
+        }),
+        ('Timestamps', {
+            'fields': ('created_at', 'updated_at'),
+            'classes': ('collapse',)
+        }),
+    )
+
+
+@admin.register(OpenHouse)
+class OpenHouseAdmin(admin.ModelAdmin):
+    list_display = ('title', 'property_address', 'price', 'open_house_date', 'open_house_time', 'published', 'is_past')
+    list_filter = ('published', 'open_house_date', 'created_at')
+    search_fields = ('title', 'property_address', 'description')
+    readonly_fields = ('created_at', 'updated_at', 'is_past')
+    fieldsets = (
+        ('Basic Information', {
+            'fields': ('title', 'property_address', 'price')
+        }),
+        ('Property Details', {
+            'fields': ('bedrooms', 'bathrooms', 'area_sqft', 'description', 'image_url')
+        }),
+        ('Open House Details', {
+            'fields': ('open_house_date', 'open_house_time')
+        }),
+        ('Contact Information', {
+            'fields': ('contact_email', 'contact_phone')
+        }),
+        ('Settings', {
+            'fields': ('published',)
+        }),
+        ('Timestamps', {
+            'fields': ('created_at', 'updated_at', 'is_past'),
+            'classes': ('collapse',)
+        }),
+    )

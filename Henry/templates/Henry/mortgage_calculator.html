@@ -11,10 +11,223 @@
     <link rel="stylesheet" href="{% static 'css/dist/styles.css' %}">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
-</head>
-<style>
+    
+    <style>
     body {
         font-family: 'Inter', sans-serif;
+    }
+    
+    /* Navbar styling is now handled globally in navbar.html */
+    
+    /* Dark theme styles */
+    .dark-theme {
+        background-color: #1a1a1a !important;
+        color: #e5e5e5 !important;
+    }
+    
+    .dark-theme .bg-gray-50 {
+        background-color: #1a1a1a !important;
+    }
+    
+    .dark-theme .bg-white {
+        background-color: #2d2d2d !important;
+    }
+    
+    .dark-theme .text-gray-900 {
+        color: #e5e5e5 !important;
+    }
+    
+    .dark-theme .text-gray-700 {
+        color: #d1d5db !important;
+    }
+    
+    .dark-theme .text-gray-600 {
+        color: #9ca3af !important;
+    }
+    
+    .dark-theme .bg-blue-50 {
+        background-color: #1e3a8a !important;
+    }
+    
+    .dark-theme .bg-gray-100 {
+        background-color: #374151 !important;
+    }
+    
+    .dark-theme .border-gray-200 {
+        border-color: #4b5563 !important;
+    }
+    
+    .dark-theme .shadow-lg {
+        box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.3), 0 4px 6px -2px rgba(0, 0, 0, 0.1) !important;
+    }
+    
+    /* Mortgage Calculator specific dark theme styles */
+    .dark-theme .form-container {
+        background: linear-gradient(135deg, #4c1d95 0%, #581c87 100%) !important;
+    }
+    
+    .dark-theme .form-input {
+        background-color: #374151 !important;
+        border-color: #4b5563 !important;
+        color: #e5e5e5 !important;
+    }
+    
+    .dark-theme .form-input:focus {
+        border-color: #667eea !important;
+        background-color: #4b5563 !important;
+    }
+    
+    .dark-theme .form-label {
+        color: #d1d5db !important;
+    }
+    
+    .dark-theme .results-card {
+        background-color: #2d2d2d !important;
+        border-color: #4b5563 !important;
+    }
+    
+    .dark-theme .results-card h3 {
+        color: #e5e5e5 !important;
+    }
+    
+    .dark-theme .results-card .text-3xl {
+        color: #e5e5e5 !important;
+    }
+    
+    .dark-theme .results-card .text-gray-600 {
+        color: #9ca3af !important;
+    }
+    
+    .dark-theme .loan-type-card {
+        background-color: #2d2d2d !important;
+        border-color: #4b5563 !important;
+    }
+    
+    .dark-theme .loan-type-card h3 {
+        color: #e5e5e5 !important;
+    }
+    
+    .dark-theme .loan-type-card p {
+        color: #d1d5db !important;
+    }
+    
+    .dark-theme .loan-type-card ul li {
+        color: #d1d5db !important;
+    }
+    
+    .dark-theme .hero-bg h1 {
+        color: #ffffff !important;
+    }
+    
+    .dark-theme .hero-bg p {
+        color: #e5e5e5 !important;
+    }
+    
+    /* Feature cards dark theme */
+    .dark-theme .feature-card {
+        background-color: #2d2d2d !important;
+        border-color: #4b5563 !important;
+    }
+    
+    .dark-theme .feature-card h3 {
+        color: #e5e5e5 !important;
+    }
+    
+    .dark-theme .feature-card p {
+        color: #d1d5db !important;
+    }
+    
+    /* Calculator form dark theme */
+    .dark-theme .calculator-inner {
+        background-color: #2d2d2d !important;
+    }
+    
+    .dark-theme .calculator-inner h2 {
+        color: #e5e5e5 !important;
+    }
+    
+    /* Loan type cards dark theme */
+    .dark-theme .loan-type-card {
+        background-color: #2d2d2d !important;
+        border-color: #4b5563 !important;
+    }
+    
+    .dark-theme .loan-type-card h3 {
+        color: #e5e5e5 !important;
+    }
+    
+    .dark-theme .loan-type-card p {
+        color: #d1d5db !important;
+    }
+    
+    .dark-theme .loan-type-card ul li {
+        color: #d1d5db !important;
+    }
+    
+    /* Results section dark theme */
+    .dark-theme .results-section {
+        background-color: #2d2d2d !important;
+    }
+    
+    .dark-theme .results-section h3 {
+        color: #e5e5e5 !important;
+    }
+    
+    .dark-theme .results-section .text-3xl {
+        color: #e5e5e5 !important;
+    }
+    
+    .dark-theme .results-section .text-gray-600 {
+        color: #9ca3af !important;
+    }
+    
+    /* All white backgrounds in dark theme */
+    .dark-theme .bg-white {
+        background-color: #2d2d2d !important;
+    }
+    
+    /* All gray text in dark theme */
+    .dark-theme .text-gray-900 {
+        color: #e5e5e5 !important;
+    }
+    
+    .dark-theme .text-gray-700 {
+        color: #d1d5db !important;
+    }
+    
+    .dark-theme .text-gray-600 {
+        color: #9ca3af !important;
+    }
+    
+    .dark-theme .text-gray-500 {
+        color: #9ca3af !important;
+    }
+    
+    /* Results section specific dark theme */
+    .dark-theme .results-container {
+        background-color: #2d2d2d !important;
+        border-color: #4b5563 !important;
+    }
+    
+    .dark-theme .results-container h2 {
+        color: #e5e5e5 !important;
+    }
+    
+    .dark-theme .result-item {
+        background-color: #374151 !important;
+        border-color: #4b5563 !important;
+    }
+    
+    .dark-theme .result-label {
+        color: #d1d5db !important;
+    }
+    
+    .dark-theme .result-value {
+        color: #e5e5e5 !important;
+    }
+    
+    .dark-theme .result-value.primary {
+        color: #60a5fa !important;
     }
 
     /* Hero section styling */
@@ -45,6 +258,9 @@
         padding: 3px;
         box-sizing: border-box;
         box-shadow: 0 20px 40px rgba(102, 126, 234, 0.15);
+        display: flex;
+        flex-direction: column;
+        align-items: stretch;
     }
 
     .calculator-inner {
@@ -52,11 +268,23 @@
         border-radius: 21px;
         padding: 40px;
         box-sizing: border-box;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        width: 100%;
+        flex: 1;
+    }
+    
+    #mortgage-form {
+        width: 100%;
+        display: flex;
+        flex-direction: column;
+        gap: 24px;
     }
 
     .input-group {
         position: relative;
-        margin-bottom: 24px;
+        margin-bottom: 0;
     }
 
     .form-input {
@@ -116,42 +344,41 @@
 
     /* Results styling */
     .results-container {
-        background: rgba(255, 255, 255, 0.05);
-        backdrop-filter: blur(20px);
-        border: 1px solid rgba(255, 255, 255, 0.2);
+        background: white;
+        border: 1px solid #e5e7eb;
         border-radius: 20px;
         padding: 32px 24px;
         transition: all 0.4s ease;
         position: relative;
         overflow: hidden;
+        box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
     }
 
     .result-item {
-        background: rgba(255, 255, 255, 0.1);
-        border: 1px solid rgba(255, 255, 255, 0.2);
+        background: #f9fafb;
+        border: 1px solid #e5e7eb;
         border-radius: 16px;
         padding: 24px;
         text-align: center;
         transition: all 0.3s ease;
-        backdrop-filter: blur(10px);
         margin-bottom: 16px;
     }
 
     .result-item:hover {
         transform: translateY(-2px);
         box-shadow: 0 10px 25px rgba(102, 126, 234, 0.3);
-        background: rgba(255, 255, 255, 0.1);
+        background: #f3f4f6;
     }
 
     .result-label {
-        color: #9ca3af;
+        color: #6b7280;
         font-size: 0.875rem;
         font-weight: 500;
         margin-bottom: 8px;
     }
 
     .result-value {
-        color: white;
+        color: #374151;
         font-size: 1.75rem;
         font-weight: 700;
     }
@@ -163,21 +390,21 @@
 
     /* Feature cards */
     .feature-card {
-        background: rgba(255, 255, 255, 0.1);
-        backdrop-filter: blur(20px);
-        border: 1px solid rgba(255, 255, 255, 0.2);
+        background: white;
+        border: 1px solid #e5e7eb;
         border-radius: 20px;
         padding: 32px 24px;
         text-align: center;
         transition: all 0.4s ease;
         position: relative;
         overflow: hidden;
+        box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
     }
 
     .feature-card:hover {
         transform: translateY(-8px);
-        background: rgba(255, 255, 255, 0.15);
-        box-shadow: 0 20px 40px rgba(0, 0, 0, 0.3);
+        background: white;
+        box-shadow: 0 20px 40px rgba(0, 0, 0, 0.15);
     }
 
     .feature-icon {
@@ -247,8 +474,9 @@
             background-attachment: scroll;
         }
     }
-</style>
-<body class="bg-gray-900">
+    </style>
+</head>
+<body class="bg-gray-50">
 
 {% include 'Henry/navbar.html' %}
 
@@ -261,11 +489,11 @@
     <div class="container mx-auto px-4 relative z-10">
         <div class="max-w-7xl mx-auto">
             <div class="text-center mb-16">
-                <h1 class="text-5xl md:text-6xl font-bold text-white mb-6 leading-tight">
+                <h1 class="text-5xl md:text-6xl font-bold text-gray-900 mb-6 leading-tight">
                     Calculate Your 
-                    <span class="bg-gradient-to-r from-blue-400 to-purple-400 bg-clip-text text-transparent">Mortgage</span>
+                    <span class="bg-gradient-to-r from-blue-600 to-purple-600 bg-clip-text text-transparent">Mortgage</span>
                 </h1>
-                <p class="text-xl md:text-2xl text-gray-200 max-w-4xl mx-auto leading-relaxed">
+                <p class="text-xl md:text-2xl text-gray-700 max-w-4xl mx-auto leading-relaxed">
                     Get accurate mortgage payment estimates and explore different loan options with our professional calculator. Plan your home purchase with confidence.
                 </p>
             </div>
@@ -276,22 +504,22 @@
                     <div class="feature-icon">
                         <i class="fas fa-calculator"></i>
                     </div>
-                    <h3 class="text-xl font-semibold text-white mb-4 relative z-10">Accurate Calculations</h3>
-                    <p class="text-gray-300 text-base leading-relaxed relative z-10">Get precise mortgage payment estimates with our advanced calculator that includes all costs and fees.</p>
+                    <h3 class="text-xl font-semibold text-gray-900 mb-4 relative z-10">Accurate Calculations</h3>
+                    <p class="text-gray-700 text-base leading-relaxed relative z-10">Get precise mortgage payment estimates with our advanced calculator that includes all costs and fees.</p>
                 </div>
                 <div class="feature-card">
                     <div class="feature-icon">
                         <i class="fas fa-chart-pie"></i>
                     </div>
-                    <h3 class="text-xl font-semibold text-white mb-4 relative z-10">Payment Breakdown</h3>
-                    <p class="text-gray-300 text-base leading-relaxed relative z-10">See detailed breakdown of principal, interest, taxes, and insurance for complete transparency.</p>
+                    <h3 class="text-xl font-semibold text-gray-900 mb-4 relative z-10">Payment Breakdown</h3>
+                    <p class="text-gray-700 text-base leading-relaxed relative z-10">See detailed breakdown of principal, interest, taxes, and insurance for complete transparency.</p>
                 </div>
                 <div class="feature-card">
                     <div class="feature-icon">
                         <i class="fas fa-compare"></i>
                     </div>
-                    <h3 class="text-xl font-semibold text-white mb-4 relative z-10">Compare Options</h3>
-                    <p class="text-gray-300 text-base leading-relaxed relative z-10">Compare different loan terms, down payments, and interest rates to find the best option for you.</p>
+                    <h3 class="text-xl font-semibold text-gray-900 mb-4 relative z-10">Compare Options</h3>
+                    <p class="text-gray-700 text-base leading-relaxed relative z-10">Compare different loan terms, down payments, and interest rates to find the best option for you.</p>
                 </div>
             </div>
         </div>
@@ -299,7 +527,7 @@
 </section>
 
 <!-- Calculator Section -->
-<section class="py-20 bg-gray-800">
+<section class="py-20 bg-gray-50">
     <div class="container mx-auto px-4">
         <div class="max-w-6xl mx-auto">
             <div class="grid grid-cols-1 lg:grid-cols-2 gap-12">
@@ -343,7 +571,7 @@
 
                 <!-- Results -->
                 <div class="results-container">
-                    <h2 class="text-3xl font-bold mb-8 text-center text-white">Your Results</h2>
+                    <h2 class="text-3xl font-bold mb-8 text-center text-gray-900">Your Results</h2>
                     <div class="space-y-4">
                         <div class="result-item">
                             <h3 class="result-label">Monthly Payment</h3>
@@ -373,12 +601,12 @@
 </section>
 
 <!-- Loan Types Section -->
-<section class="py-20 bg-gray-900">
+<section class="py-20 bg-gray-50">
     <div class="container mx-auto px-4">
         <div class="max-w-6xl mx-auto">
             <div class="text-center mb-16">
-                <h2 class="text-4xl md:text-5xl font-bold text-white mb-6">
-                    <span class="bg-gradient-to-r from-blue-400 to-purple-400 bg-clip-text text-transparent">Mortgage Calculator</span>
+                <h2 class="text-4xl md:text-5xl font-bold text-gray-900 mb-6">
+                    <span class="bg-gradient-to-r from-blue-600 to-purple-600 bg-clip-text text-transparent">Mortgage Calculator</span>
                 </h2>
             </div>
             
@@ -387,9 +615,9 @@
                     <div class="feature-icon">
                         <i class="fas fa-home"></i>
                     </div>
-                    <h3 class="text-xl font-semibold text-white mb-4 relative z-10">Conventional Loans</h3>
-                    <p class="text-gray-300 text-base leading-relaxed relative z-10 mb-4">Traditional mortgages with 20% down payment and competitive interest rates.</p>
-                    <ul class="text-sm text-gray-300 space-y-2 relative z-10">
+                    <h3 class="text-xl font-semibold text-gray-900 mb-4 relative z-10">Conventional Loans</h3>
+                    <p class="text-gray-700 text-base leading-relaxed relative z-10 mb-4">Traditional mortgages with 20% down payment and competitive interest rates.</p>
+                    <ul class="text-sm text-gray-600 space-y-2 relative z-10">
                         <li>• 20% down payment required</li>
                         <li>• No PMI with 20% down</li>
                         <li>• Competitive rates</li>
@@ -401,9 +629,9 @@
                     <div class="feature-icon">
                         <i class="fas fa-shield-alt"></i>
                     </div>
-                    <h3 class="text-xl font-semibold text-white mb-4 relative z-10">FHA Loans</h3>
-                    <p class="text-gray-300 text-base leading-relaxed relative z-10 mb-4">Government-backed loans with lower down payment requirements.</p>
-                    <ul class="text-sm text-gray-300 space-y-2 relative z-10">
+                    <h3 class="text-xl font-semibold text-gray-900 mb-4 relative z-10">FHA Loans</h3>
+                    <p class="text-gray-700 text-base leading-relaxed relative z-10 mb-4">Government-backed loans with lower down payment requirements.</p>
+                    <ul class="text-sm text-gray-600 space-y-2 relative z-10">
                         <li>• 3.5% down payment</li>
                         <li>• Lower credit score requirements</li>
                         <li>• Mortgage insurance required</li>
@@ -415,9 +643,9 @@
                     <div class="feature-icon">
                         <i class="fas fa-university"></i>
                     </div>
-                    <h3 class="text-xl font-semibold text-white mb-4 relative z-10">VA Loans</h3>
-                    <p class="text-gray-300 text-base leading-relaxed relative z-10 mb-4">Special loans for veterans and active military personnel.</p>
-                    <ul class="text-sm text-gray-300 space-y-2 relative z-10">
+                    <h3 class="text-xl font-semibold text-gray-900 mb-4 relative z-10">VA Loans</h3>
+                    <p class="text-gray-700 text-base leading-relaxed relative z-10 mb-4">Special loans for veterans and active military personnel.</p>
+                    <ul class="text-sm text-gray-600 space-y-2 relative z-10">
                         <li>• 0% down payment</li>
                         <li>• No PMI required</li>
                         <li>• Competitive rates</li>
@@ -465,6 +693,42 @@ function calculateMortgage() {
 
 // Calculate on page load
 calculateMortgage();
+</script>
+
+<script>
+// Theme Toggle Functionality
+document.addEventListener("DOMContentLoaded", function() {
+    const themeToggle = document.getElementById('theme-toggle');
+    const themeIcon = document.getElementById('theme-icon');
+    const body = document.body;
+    
+    // Check for saved theme preference or default to light theme
+    const currentTheme = localStorage.getItem('theme') || 'light';
+    
+    // Apply the saved theme
+    if (currentTheme === 'dark') {
+        body.classList.add('dark-theme');
+        themeIcon.className = 'fas fa-sun text-white text-base';
+    } else {
+        body.classList.remove('dark-theme');
+        themeIcon.className = 'fas fa-moon text-white text-base';
+    }
+    
+    // Theme toggle event listener
+    themeToggle.addEventListener('click', function() {
+        if (body.classList.contains('dark-theme')) {
+            // Switch to light theme
+            body.classList.remove('dark-theme');
+            themeIcon.className = 'fas fa-moon text-white text-base';
+            localStorage.setItem('theme', 'light');
+        } else {
+            // Switch to dark theme
+            body.classList.add('dark-theme');
+            themeIcon.className = 'fas fa-sun text-white text-base';
+            localStorage.setItem('theme', 'dark');
+        }
+    });
+});
 </script>
 
 {% include 'Henry/footer.html' %}
