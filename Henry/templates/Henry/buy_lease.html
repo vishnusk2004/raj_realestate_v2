@@ -185,7 +185,7 @@
                     {% endif %}
                     
                     <div class="relative">
-                        <img src="{{ property.image_url }}" alt="{{ property.title }}" 
+                        <img src="{{ property.get_main_image_url }}" alt="{{ property.title }}" 
                              class="w-full h-64 object-cover">
                         <div class="absolute top-4 left-4">
                             <span class="bg-black bg-opacity-70 text-white px-3 py-1 rounded-full text-xs font-semibold">

@@ -54,7 +54,8 @@ class PropertyListingAdmin(admin.ModelAdmin):
             'fields': ('bedrooms', 'bathrooms', 'parking_spaces', 'area_sqft', 'description')
         }),
         ('Images', {
-            'fields': ('image_url', 'additional_images')
+            'fields': ('image_file', 'image_url', 'additional_images'),
+            'description': 'You can either upload an image file or provide an image URL. If both are provided, the uploaded file will be used.'
         }),
         ('Contact Information', {
             'fields': ('contact_email', 'contact_phone')

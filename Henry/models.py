@@ -87,7 +87,8 @@ class PropertyListing(models.Model):
     parking_spaces = models.IntegerField(null=True, blank=True)
     area_sqft = models.IntegerField(null=True, blank=True, help_text="Area in square feet")
     description = models.TextField(help_text="Detailed property description")
-    image_url = models.URLField(max_length=500, help_text="Main property image URL")
+    image_url = models.URLField(max_length=500, blank=True, help_text="Main property image URL (optional if uploading file)")
+    image_file = models.ImageField(upload_to='properties/', blank=True, null=True, help_text="Upload property image (optional if providing URL)")
     additional_images = models.TextField(blank=True, help_text="Additional image URLs (one per line)")
     featured = models.BooleanField(default=False, help_text="Featured properties appear first")
     published = models.BooleanField(default=True, help_text="Only published properties are visible")
@@ -109,6 +110,14 @@ class PropertyListing(models.Model):
         if self.additional_images:
             return [url.strip() for url in self.additional_images.split('\n') if url.strip()]
         return []
+    
+    def get_main_image_url(self):
+        """Return the main image URL - either from URL field or uploaded file"""
+        if self.image_file:
+            return self.image_file.url
+        elif self.image_url:
+            return self.image_url
+        return None
 
 
 class BlogPost(models.Model):
