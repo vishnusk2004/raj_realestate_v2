@@ -1,5 +1,5 @@
 from django import forms
-from .models import BlogPost
+from .models import BlogPost, PropertyListing
 
 
 class BlogPostForm(forms.ModelForm):
@@ -23,4 +23,20 @@ class BlogPostForm(forms.ModelForm):
             'image_url': 'Image URL',
             'featured': 'Featured Post',
             'published': 'Published',
+        }
+
+
+class PropertyListingForm(forms.ModelForm):
+    class Meta:
+        model = PropertyListing
+        fields = ['title', 'property_type', 'price', 'location', 'address', 'bedrooms', 'bathrooms', 
+                 'parking_spaces', 'area_sqft', 'description', 'image_file', 'image_url', 
+                 'additional_images', 'contact_email', 'contact_phone', 'featured', 'published']
+        widgets = {
+            'image_url': forms.Textarea(attrs={
+                'class': 'form-control', 
+                'rows': 4, 
+                'placeholder': 'Enter image URL or paste base64 data URL (data:image/...)',
+                'style': 'font-family: monospace; font-size: 12px;'
+            }),
         }

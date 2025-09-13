@@ -1,5 +1,6 @@
 from django.contrib import admin
 from .models import Property, SellingContact, BlogTracking, BlogPost, PropertyListing, OpenHouse
+from .forms import PropertyListingForm
 
 # Register your models here.
 @admin.register(Property)
@@ -42,6 +43,7 @@ class BlogTrackingAdmin(admin.ModelAdmin):
 
 @admin.register(PropertyListing)
 class PropertyListingAdmin(admin.ModelAdmin):
+    form = PropertyListingForm
     list_display = ('title', 'property_type', 'price', 'location', 'bedrooms', 'bathrooms', 'featured', 'published', 'created_at')
     list_filter = ('property_type', 'featured', 'published', 'bedrooms', 'bathrooms', 'created_at')
     search_fields = ('title', 'location', 'address', 'description')
@@ -55,7 +57,7 @@ class PropertyListingAdmin(admin.ModelAdmin):
         }),
         ('Images', {
             'fields': ('image_file', 'image_url', 'additional_images'),
-            'description': 'You can either upload an image file or provide an image URL. If both are provided, the uploaded file will be used.'
+            'description': 'You can either upload an image file or provide an image URL/data URL. If both are provided, the uploaded file will be used. Data URLs (base64) are supported for direct image embedding.'
         }),
         ('Contact Information', {
             'fields': ('contact_email', 'contact_phone')
