@@ -271,19 +271,17 @@
                             {% endif %}
                         </div>
                         
-                        <p class="text-gray-700 mb-4 line-clamp-2 text-sm">{{ property.description|truncatewords:15 }}</p>
-                        
                         <div class="flex gap-2">
                             <button class="flex-1 bg-purple-600 hover:bg-purple-700 text-white text-center py-2 px-4 rounded-lg transition duration-300">
                                 <i class="fas fa-eye mr-2"></i>View Details
                             </button>
                             <a href="mailto:{{ property.contact_email }}?subject=Inquiry about {{ property.title }}" 
-                               class="flex-1 bg-blue-600 hover:bg-blue-700 text-white text-center py-2 px-4 rounded-lg transition duration-300">
-                                <i class="fas fa-envelope mr-2"></i>Email
+                               class="bg-blue-600 hover:bg-blue-700 text-white text-center py-2 px-4 rounded-lg transition duration-300">
+                                <i class="fas fa-envelope"></i>
                             </a>
                             <a href="tel:{{ property.contact_phone }}" 
-                               class="flex-1 bg-green-600 hover:bg-green-700 text-white text-center py-2 px-4 rounded-lg transition duration-300">
-                                <i class="fas fa-phone mr-2"></i>Call
+                               class="bg-green-600 hover:bg-green-700 text-white text-center py-2 px-4 rounded-lg transition duration-300">
+                                <i class="fas fa-phone"></i>
                             </a>
                         </div>
                     </div>
