@@ -121,6 +121,14 @@
         border-color: #4b5563 !important;
     }
     
+    .dark-theme #propertyModal .border-t {
+        border-color: #4b5563 !important;
+    }
+    
+    .dark-theme #propertyModal .bg-gray-50 {
+        background-color: #374151 !important;
+    }
+    
     /* Theme toggle button */
     #theme-toggle {
         transition: all 0.3s ease;
@@ -263,9 +271,12 @@
                             {% endif %}
                         </div>
                         
-                        <p class="text-gray-700 mb-4 line-clamp-3">{{ property.description|truncatewords:20 }}</p>
+                        <p class="text-gray-700 mb-4 line-clamp-2 text-sm">{{ property.description|truncatewords:15 }}</p>
                         
                         <div class="flex gap-2">
+                            <button class="flex-1 bg-purple-600 hover:bg-purple-700 text-white text-center py-2 px-4 rounded-lg transition duration-300">
+                                <i class="fas fa-eye mr-2"></i>View Details
+                            </button>
                             <a href="mailto:{{ property.contact_email }}?subject=Inquiry about {{ property.title }}" 
                                class="flex-1 bg-blue-600 hover:bg-blue-700 text-white text-center py-2 px-4 rounded-lg transition duration-300">
                                 <i class="fas fa-envelope mr-2"></i>Email
@@ -430,11 +441,23 @@ function closePropertyModal() {
     document.body.style.overflow = 'auto';
 }
 
-// Close modal when clicking outside
-document.getElementById('propertyModal').addEventListener('click', function(e) {
-    if (e.target === this) {
-        closePropertyModal();
-    }
+// Close modal when clicking outside or pressing Escape
+document.addEventListener('DOMContentLoaded', function() {
+    const modal = document.getElementById('propertyModal');
+    
+    // Close modal when clicking outside
+    modal.addEventListener('click', function(e) {
+        if (e.target === this) {
+            closePropertyModal();
+        }
+    });
+    
+    // Close modal when pressing Escape key
+    document.addEventListener('keydown', function(e) {
+        if (e.key === 'Escape' && !modal.classList.contains('hidden')) {
+            closePropertyModal();
+        }
+    });
 });
 </script>
 
@@ -444,7 +467,7 @@ document.getElementById('propertyModal').addEventListener('click', function(e) {
         <!-- Modal Header -->
         <div class="flex justify-between items-center p-6 border-b">
             <h2 id="modalTitle" class="text-2xl font-bold text-gray-900"></h2>
-            <button onclick="closePropertyModal()" class="text-gray-400 hover:text-gray-600 text-2xl">
+            <button onclick="closePropertyModal()" class="text-gray-400 hover:text-gray-600 hover:bg-gray-100 rounded-full p-2 text-2xl transition duration-300">
                 <i class="fas fa-times"></i>
             </button>
         </div>
@@ -526,6 +549,13 @@ document.getElementById('propertyModal').addEventListener('click', function(e) {
                     </div>
                 </div>
             </div>
+        </div>
+        
+        <!-- Modal Footer -->
+        <div class="flex justify-end p-6 border-t bg-gray-50">
+            <button onclick="closePropertyModal()" class="bg-gray-500 hover:bg-gray-600 text-white px-6 py-2 rounded-lg transition duration-300">
+                <i class="fas fa-times mr-2"></i>Close
+            </button>
         </div>
     </div>
 </div>
