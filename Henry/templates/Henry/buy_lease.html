@@ -80,6 +80,47 @@
         box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.3), 0 4px 6px -2px rgba(0, 0, 0, 0.1) !important;
     }
     
+    /* Modal dark theme styles */
+    .dark-theme #propertyModal .bg-white {
+        background-color: #1f2937 !important;
+    }
+    
+    .dark-theme #propertyModal .text-gray-900 {
+        color: #f9fafb !important;
+    }
+    
+    .dark-theme #propertyModal .text-gray-700 {
+        color: #d1d5db !important;
+    }
+    
+    .dark-theme #propertyModal .text-gray-600 {
+        color: #9ca3af !important;
+    }
+    
+    .dark-theme #propertyModal .bg-gray-50 {
+        background-color: #374151 !important;
+    }
+    
+    .dark-theme #propertyModal .bg-blue-50 {
+        background-color: #1e3a8a !important;
+    }
+    
+    .dark-theme #propertyModal .bg-green-50 {
+        background-color: #14532d !important;
+    }
+    
+    .dark-theme #propertyModal .text-blue-700 {
+        color: #93c5fd !important;
+    }
+    
+    .dark-theme #propertyModal .text-green-700 {
+        color: #86efac !important;
+    }
+    
+    .dark-theme #propertyModal .border-b {
+        border-color: #4b5563 !important;
+    }
+    
     /* Theme toggle button */
     #theme-toggle {
         transition: all 0.3s ease;
@@ -177,7 +218,8 @@
 
             <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
                 {% for property in properties %}
-                <div class="bg-white rounded-lg shadow-lg overflow-hidden hover:shadow-xl transition duration-300 {% if property.featured %}ring-2 ring-yellow-400{% endif %}">
+                <div class="bg-white rounded-lg shadow-lg overflow-hidden hover:shadow-xl transition duration-300 cursor-pointer {% if property.featured %}ring-2 ring-yellow-400{% endif %}" 
+                     onclick="openPropertyModal({{ property.id }}, '{{ property.title|escapejs }}', '{{ property.location|escapejs }}', '{{ property.address|escapejs }}', '{{ property.price }}', '{{ property.property_type }}', '{{ property.bedrooms|default:"" }}', '{{ property.bathrooms|default:"" }}', '{{ property.parking_spaces|default:"" }}', '{{ property.area_sqft|default:"" }}', '{{ property.description|escapejs }}', '{{ property.get_main_image_url|escapejs }}', '{{ property.contact_email|escapejs }}', '{{ property.contact_phone|escapejs }}', {{ property.get_additional_images_list|safe }})">
                     {% if property.featured %}
                     <div class="bg-yellow-400 text-yellow-900 px-3 py-1 text-sm font-semibold text-center">
                         ⭐ FEATURED
@@ -321,7 +363,172 @@ document.addEventListener("DOMContentLoaded", function() {
         }
     });
 });
+
+// Property Modal Functions
+function openPropertyModal(id, title, location, address, price, propertyType, bedrooms, bathrooms, parkingSpaces, areaSqft, description, imageUrl, contactEmail, contactPhone, additionalImages) {
+    const modal = document.getElementById('propertyModal');
+    const modalTitle = document.getElementById('modalTitle');
+    const modalLocation = document.getElementById('modalLocation');
+    const modalAddress = document.getElementById('modalAddress');
+    const modalPrice = document.getElementById('modalPrice');
+    const modalPropertyType = document.getElementById('modalPropertyType');
+    const modalBedrooms = document.getElementById('modalBedrooms');
+    const modalBathrooms = document.getElementById('modalBathrooms');
+    const modalParking = document.getElementById('modalParking');
+    const modalArea = document.getElementById('modalArea');
+    const modalDescription = document.getElementById('modalDescription');
+    const modalImage = document.getElementById('modalImage');
+    const modalContactEmail = document.getElementById('modalContactEmail');
+    const modalContactPhone = document.getElementById('modalContactPhone');
+    const modalAdditionalImages = document.getElementById('modalAdditionalImages');
+    
+    // Populate modal content
+    modalTitle.textContent = title;
+    modalLocation.textContent = location;
+    modalAddress.textContent = address;
+    modalPrice.textContent = '$' + parseFloat(price).toLocaleString() + (propertyType === 'lease' ? '/month' : '');
+    modalPropertyType.textContent = propertyType === 'buy' ? '💰 FOR SALE' : '📋 FOR LEASE';
+    modalDescription.textContent = description;
+    modalImage.src = imageUrl;
+    modalImage.alt = title;
+    
+    // Contact info
+    modalContactEmail.href = 'mailto:' + contactEmail + '?subject=Inquiry about ' + title;
+    modalContactPhone.href = 'tel:' + contactPhone;
+    
+    // Property details
+    modalBedrooms.textContent = bedrooms ? bedrooms + ' bed' + (bedrooms > 1 ? 's' : '') : 'N/A';
+    modalBathrooms.textContent = bathrooms ? bathrooms + ' bath' + (bathrooms > 1 ? 's' : '') : 'N/A';
+    modalParking.textContent = parkingSpaces ? parkingSpaces + ' parking space' + (parkingSpaces > 1 ? 's' : '') : 'N/A';
+    modalArea.textContent = areaSqft ? areaSqft + ' sqft' : 'N/A';
+    
+    // Additional images
+    modalAdditionalImages.innerHTML = '';
+    if (additionalImages && additionalImages.length > 0) {
+        additionalImages.forEach(function(imageUrl) {
+            if (imageUrl.trim()) {
+                const img = document.createElement('img');
+                img.src = imageUrl.trim();
+                img.alt = title;
+                img.className = 'w-full h-32 object-cover rounded-lg';
+                img.onclick = function() {
+                    modalImage.src = imageUrl.trim();
+                };
+                modalAdditionalImages.appendChild(img);
+            }
+        });
+    }
+    
+    // Show modal
+    modal.classList.remove('hidden');
+    document.body.style.overflow = 'hidden';
+}
+
+function closePropertyModal() {
+    const modal = document.getElementById('propertyModal');
+    modal.classList.add('hidden');
+    document.body.style.overflow = 'auto';
+}
+
+// Close modal when clicking outside
+document.getElementById('propertyModal').addEventListener('click', function(e) {
+    if (e.target === this) {
+        closePropertyModal();
+    }
+});
 </script>
+
+<!-- Property Details Modal -->
+<div id="propertyModal" class="hidden fixed inset-0 bg-black bg-opacity-50 z-50 flex items-center justify-center p-4">
+    <div class="bg-white rounded-lg shadow-xl max-w-4xl w-full max-h-[90vh] overflow-y-auto">
+        <!-- Modal Header -->
+        <div class="flex justify-between items-center p-6 border-b">
+            <h2 id="modalTitle" class="text-2xl font-bold text-gray-900"></h2>
+            <button onclick="closePropertyModal()" class="text-gray-400 hover:text-gray-600 text-2xl">
+                <i class="fas fa-times"></i>
+            </button>
+        </div>
+        
+        <!-- Modal Content -->
+        <div class="p-6">
+            <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
+                <!-- Left Column - Image and Basic Info -->
+                <div>
+                    <div class="mb-4">
+                        <img id="modalImage" src="" alt="" class="w-full h-64 object-cover rounded-lg">
+                    </div>
+                    
+                    <!-- Additional Images -->
+                    <div id="modalAdditionalImages" class="grid grid-cols-3 gap-2 mb-4"></div>
+                    
+                    <div class="space-y-3">
+                        <div class="flex items-center">
+                            <i class="fas fa-map-marker-alt text-blue-500 mr-3"></i>
+                            <span id="modalLocation" class="text-gray-700"></span>
+                        </div>
+                        <div class="flex items-center">
+                            <i class="fas fa-home text-blue-500 mr-3"></i>
+                            <span id="modalAddress" class="text-gray-700"></span>
+                        </div>
+                        <div class="flex items-center">
+                            <i class="fas fa-tag text-blue-500 mr-3"></i>
+                            <span id="modalPropertyType" class="text-gray-700"></span>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Right Column - Details and Contact -->
+                <div>
+                    <div class="mb-6">
+                        <div class="text-3xl font-bold text-green-600 mb-4">
+                            <span id="modalPrice"></span>
+                        </div>
+                        
+                        <div class="grid grid-cols-2 gap-4 mb-6">
+                            <div class="text-center p-3 bg-gray-50 rounded-lg">
+                                <i class="fas fa-bed text-blue-500 text-xl mb-2"></i>
+                                <div class="text-sm text-gray-600">Bedrooms</div>
+                                <div id="modalBedrooms" class="font-semibold"></div>
+                            </div>
+                            <div class="text-center p-3 bg-gray-50 rounded-lg">
+                                <i class="fas fa-bath text-blue-500 text-xl mb-2"></i>
+                                <div class="text-sm text-gray-600">Bathrooms</div>
+                                <div id="modalBathrooms" class="font-semibold"></div>
+                            </div>
+                            <div class="text-center p-3 bg-gray-50 rounded-lg">
+                                <i class="fas fa-car text-blue-500 text-xl mb-2"></i>
+                                <div class="text-sm text-gray-600">Parking</div>
+                                <div id="modalParking" class="font-semibold"></div>
+                            </div>
+                            <div class="text-center p-3 bg-gray-50 rounded-lg">
+                                <i class="fas fa-ruler-combined text-blue-500 text-xl mb-2"></i>
+                                <div class="text-sm text-gray-600">Area</div>
+                                <div id="modalArea" class="font-semibold"></div>
+                            </div>
+                        </div>
+                        
+                        <div class="mb-6">
+                            <h3 class="text-lg font-semibold text-gray-900 mb-3">Description</h3>
+                            <p id="modalDescription" class="text-gray-700 leading-relaxed"></p>
+                        </div>
+                        
+                        <div class="space-y-3">
+                            <h3 class="text-lg font-semibold text-gray-900">Contact Information</h3>
+                            <a id="modalContactEmail" href="#" class="flex items-center p-3 bg-blue-50 hover:bg-blue-100 rounded-lg transition duration-300">
+                                <i class="fas fa-envelope text-blue-500 mr-3"></i>
+                                <span class="text-blue-700">Send Email</span>
+                            </a>
+                            <a id="modalContactPhone" href="#" class="flex items-center p-3 bg-green-50 hover:bg-green-100 rounded-lg transition duration-300">
+                                <i class="fas fa-phone text-green-500 mr-3"></i>
+                                <span class="text-green-700">Call Now</span>
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
 
 </body>
 </html>
