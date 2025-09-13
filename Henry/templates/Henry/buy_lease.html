@@ -129,6 +129,22 @@
         background-color: #374151 !important;
     }
     
+    /* Modal responsive fixes */
+    @media (max-width: 640px) {
+        #propertyModal .max-w-5xl {
+            max-width: 95vw !important;
+            margin: 0.5rem !important;
+        }
+        
+        #propertyModal .text-xl {
+            font-size: 1.125rem !important;
+        }
+        
+        #propertyModal .text-2xl {
+            font-size: 1.25rem !important;
+        }
+    }
+
     /* Theme toggle button */
     #theme-toggle {
         transition: all 0.3s ease;
@@ -460,18 +476,18 @@ document.addEventListener('DOMContentLoaded', function() {
 
 <!-- Property Details Modal -->
 <div id="propertyModal" class="hidden fixed inset-0 bg-black bg-opacity-50 z-50 flex items-center justify-center p-4">
-    <div class="bg-white rounded-lg shadow-xl max-w-4xl w-full max-h-[90vh] overflow-y-auto">
+    <div class="bg-white rounded-lg shadow-xl max-w-5xl w-full max-h-[95vh] overflow-y-auto mx-4">
         <!-- Modal Header -->
-        <div class="flex justify-between items-center p-6 border-b">
-            <h2 id="modalTitle" class="text-2xl font-bold text-gray-900"></h2>
-            <button onclick="closePropertyModal()" class="text-gray-400 hover:text-gray-600 hover:bg-gray-100 rounded-full p-2 text-2xl transition duration-300">
+        <div class="flex justify-between items-center p-4 sm:p-6 border-b">
+            <h2 id="modalTitle" class="text-xl sm:text-2xl font-bold text-gray-900 pr-4"></h2>
+            <button onclick="closePropertyModal()" class="text-gray-400 hover:text-gray-600 hover:bg-gray-100 rounded-full p-2 text-xl sm:text-2xl transition duration-300 flex-shrink-0">
                 <i class="fas fa-times"></i>
             </button>
         </div>
         
         <!-- Modal Content -->
-        <div class="p-6">
-            <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
+        <div class="p-4 sm:p-6">
+            <div class="grid grid-cols-1 lg:grid-cols-2 gap-4 lg:gap-6">
                 <!-- Left Column - Image and Basic Info -->
                 <div>
                     <div class="mb-4">
@@ -549,8 +565,8 @@ document.addEventListener('DOMContentLoaded', function() {
         </div>
         
         <!-- Modal Footer -->
-        <div class="flex justify-end p-6 border-t bg-gray-50">
-            <button onclick="closePropertyModal()" class="bg-gray-500 hover:bg-gray-600 text-white px-6 py-2 rounded-lg transition duration-300">
+        <div class="flex justify-end p-4 sm:p-6 border-t bg-gray-50">
+            <button onclick="closePropertyModal()" class="bg-gray-500 hover:bg-gray-600 text-white px-4 sm:px-6 py-2 rounded-lg transition duration-300">
                 <i class="fas fa-times mr-2"></i>Close
             </button>
         </div>
