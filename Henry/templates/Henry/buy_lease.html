@@ -245,19 +245,18 @@
                     </div>
                     
                     <div class="p-6">
-                        <h3 class="text-xl font-bold text-gray-900 mb-2">{{ property.title }}</h3>
-                        <p class="text-gray-600 mb-2">
-                            <i class="fas fa-map-marker-alt text-blue-500 mr-2"></i>
-                            {{ property.location }}
-                        </p>
-                        <p class="text-gray-500 text-sm mb-4">{{ property.address }}</p>
-                        
-                        <div class="flex items-center justify-between mb-4">
+                        <div class="flex justify-between items-start mb-3">
+                            <h3 class="text-xl font-bold text-gray-900">{{ property.title }}</h3>
                             <div class="text-2xl font-bold text-green-600">
                                 ${{ property.price|floatformat:0 }}
                                 {% if property.property_type == 'lease' %}/month{% endif %}
                             </div>
                         </div>
+                        
+                        <p class="text-gray-600 mb-3">
+                            <i class="fas fa-map-marker-alt text-blue-500 mr-2"></i>
+                            {{ property.location }}
+                        </p>
                         
                         <div class="flex items-center gap-4 mb-4 text-sm text-gray-600">
                             {% if property.bedrooms %}
