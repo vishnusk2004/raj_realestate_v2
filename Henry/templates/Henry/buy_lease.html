@@ -144,14 +144,20 @@
             font-size: 1.25rem !important;
         }
         
-        #propertyModal .max-h-\[70vh\] {
-            max-height: 60vh !important;
+        #propertyModal .max-h-\[60vh\] {
+            max-height: 50vh !important;
         }
     }
     
     @media (max-height: 600px) {
-        #propertyModal .max-h-\[70vh\] {
-            max-height: 50vh !important;
+        #propertyModal .max-h-\[60vh\] {
+            max-height: 40vh !important;
+        }
+    }
+    
+    @media (max-height: 500px) {
+        #propertyModal .max-h-\[60vh\] {
+            max-height: 35vh !important;
         }
     }
 
@@ -444,7 +450,7 @@ function openPropertyModal(id, title, location, address, price, propertyType, be
                 const img = document.createElement('img');
                 img.src = imageUrl.trim();
                 img.alt = title;
-                img.className = 'w-full h-32 object-cover rounded-lg';
+                img.className = 'w-full h-24 object-cover rounded-lg';
                 img.onclick = function() {
                     modalImage.src = imageUrl.trim();
                 };
@@ -496,12 +502,12 @@ document.addEventListener('DOMContentLoaded', function() {
         </div>
         
         <!-- Modal Content -->
-        <div class="p-4 sm:p-6 max-h-[70vh] overflow-y-auto">
+        <div class="p-4 sm:p-6 max-h-[60vh] overflow-y-auto">
             <div class="grid grid-cols-1 lg:grid-cols-2 gap-4 lg:gap-6">
                 <!-- Left Column - Image and Basic Info -->
                 <div>
                     <div class="mb-4">
-                        <img id="modalImage" src="" alt="" class="w-full h-64 object-cover rounded-lg">
+                        <img id="modalImage" src="" alt="" class="w-full h-48 sm:h-56 object-cover rounded-lg">
                     </div>
                     
                     <!-- Additional Images -->
