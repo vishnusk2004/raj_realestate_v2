@@ -12,7 +12,7 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
     
-    <style>
+<style>
     body {
         font-family: 'Inter', sans-serif;
     }
@@ -59,6 +59,39 @@
     
     .dark-theme .shadow-lg {
         box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.3), 0 4px 6px -2px rgba(0, 0, 0, 0.1) !important;
+    }
+    
+    /* Blue elements for dark mode */
+    .dark-theme .bg-blue-600 {
+        background-color: #1e40af !important;
+    }
+    
+    .dark-theme .bg-blue-700 {
+        background-color: #1d4ed8 !important;
+    }
+    
+    .dark-theme .bg-blue-900 {
+        background-color: #0f172a !important;
+    }
+    
+    .dark-theme .hover\\:bg-blue-700:hover {
+        background-color: #1e40af !important;
+    }
+    
+    .dark-theme.bg-blue-900 {
+        background-color: #0f172a !important;
+    }
+    
+    /* Fix dropdown visibility in dark mode */
+    .dark-theme select {
+        background-color: #374151 !important;
+        color: #e5e5e5 !important;
+        border-color: #4b5563 !important;
+    }
+    
+    .dark-theme select option {
+        background-color: #374151 !important;
+        color: #e5e5e5 !important;
     }
     
     /* Mortgage Calculator specific dark theme styles */
@@ -474,7 +507,7 @@
             background-attachment: scroll;
         }
     }
-    </style>
+</style>
 </head>
 <body class="bg-gray-50">
 
@@ -526,75 +559,84 @@
     </div>
 </section>
 
-<!-- Calculator Section -->
+<!-- Contact Form Section -->
 <section class="py-20 bg-gray-50">
     <div class="container mx-auto px-4">
-        <div class="max-w-6xl mx-auto">
-            <div class="grid grid-cols-1 lg:grid-cols-2 gap-12">
-                <!-- Calculator Form -->
-                <div class="calculator-container">
-                    <div class="calculator-inner">
-                        <h2 class="text-3xl font-bold mb-8 text-center">Calculate Your Payment</h2>
-                        <form id="mortgage-form">
-                            <div class="input-group">
-                                <label class="form-label">Home Price</label>
-                                <input type="number" id="home-price" value="500000" class="form-input" placeholder="Enter home price">
+        <div class="max-w-4xl mx-auto">
+            <!-- Contact Form -->
+            <div class="results-container">
+                    <h2 class="text-3xl font-bold mb-8 text-center text-gray-900">Get Personalized Mortgage Information</h2>
+                    <p class="text-center text-gray-600 mb-8">Our team will analyze your specific situation and provide you with accurate, up-to-date mortgage information tailored to your needs.</p>
+                    
+                    <form method="post" action="{% url 'mortgage_inquiry' %}" class="space-y-6" id="mortgageInquiryForm">
+                        {% csrf_token %}
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                            <div>
+                                <label class="block text-gray-700 font-semibold mb-2">Name *</label>
+                                <input type="text" name="name" class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent" required>
                             </div>
-                            
-                            <div class="input-group">
-                                <label class="form-label">Down Payment</label>
-                                <input type="number" id="down-payment" value="100000" class="form-input" placeholder="Enter down payment">
+                            <div>
+                                <label class="block text-gray-700 font-semibold mb-2">Email *</label>
+                                <input type="email" name="email" class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent" required>
                             </div>
-                            
-                            <div class="input-group">
-                                <label class="form-label">Loan Term (Years)</label>
-                                <select id="loan-term" class="form-input">
-                                    <option value="30">30 Years</option>
-                                    <option value="20">20 Years</option>
-                                    <option value="15">15 Years</option>
-                                    <option value="10">10 Years</option>
+                        </div>
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                            <div>
+                                <label class="block text-gray-700 font-semibold mb-2">Phone *</label>
+                                <input type="tel" name="phone" class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent" required>
+                            </div>
+                            <div>
+                                <label class="block text-gray-700 font-semibold mb-2">Property Type</label>
+                                <select name="property_type" class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent">
+                                    <option value="">Select Property Type</option>
+                                    <option value="house">House</option>
+                                    <option value="apartment">Apartment</option>
+                                    <option value="condo">Condo</option>
+                                    <option value="townhouse">Townhouse</option>
+                                    <option value="commercial">Commercial</option>
                                 </select>
                             </div>
-                            
-                            <div class="input-group">
-                                <label class="form-label">Interest Rate (%)</label>
-                                <input type="number" id="interest-rate" value="4.5" step="0.1" class="form-input" placeholder="Enter interest rate">
+                        </div>
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                            <div>
+                                <label class="block text-gray-700 font-semibold mb-2">Home Price</label>
+                                <input type="number" name="home_price" class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent" placeholder="Enter home price">
                             </div>
-                            
-                            <button type="submit" class="calculate-btn">
-                                <i class="fas fa-calculator mr-3"></i>
-                                Calculate Payment
-                            </button>
-                        </form>
-                    </div>
+                            <div>
+                                <label class="block text-gray-700 font-semibold mb-2">Down Payment</label>
+                                <input type="number" name="down_payment" class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent" placeholder="Enter down payment amount">
                 </div>
-
-                <!-- Results -->
-                <div class="results-container">
-                    <h2 class="text-3xl font-bold mb-8 text-center text-gray-900">Your Results</h2>
-                    <div class="space-y-4">
-                        <div class="result-item">
-                            <h3 class="result-label">Monthly Payment</h3>
-                            <p class="result-value primary" id="monthly-payment">$2,533</p>
                         </div>
-                        <div class="result-item">
-                            <h3 class="result-label">Principal & Interest</h3>
-                            <p class="result-value" id="principal-interest">$2,027</p>
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                            <div>
+                                <label class="block text-gray-700 font-semibold mb-2">Loan Term (Years)</label>
+                                <select name="loan_term" class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent">
+                                    <option value="">Select Loan Term</option>
+                                    <option value="15">15 Years</option>
+                                    <option value="20">20 Years</option>
+                                    <option value="25">25 Years</option>
+                                    <option value="30">30 Years</option>
+                                </select>
                         </div>
-                        <div class="result-item">
-                            <h3 class="result-label">Property Tax</h3>
-                            <p class="result-value" id="property-tax">$417</p>
+                            <div>
+                                <label class="block text-gray-700 font-semibold mb-2">Credit Score Range</label>
+                                <select name="credit_score" class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent">
+                                    <option value="">Select Credit Score Range</option>
+                                    <option value="excellent">Excellent (750+)</option>
+                                    <option value="good">Good (700-749)</option>
+                                    <option value="fair">Fair (650-699)</option>
+                                    <option value="poor">Poor (Below 650)</option>
+                                </select>
                         </div>
-                        <div class="result-item">
-                            <h3 class="result-label">Home Insurance</h3>
-                            <p class="result-value" id="home-insurance">$89</p>
                         </div>
-                        <div class="result-item">
-                            <h3 class="result-label">Total Interest Paid</h3>
-                            <p class="result-value" id="total-interest">$329,018</p>
+                        <div>
+                            <label class="block text-gray-700 font-semibold mb-2">Additional Information</label>
+                            <textarea name="additional_info" rows="4" class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent" placeholder="Tell us about your specific mortgage needs, questions, or any special circumstances..."></textarea>
                         </div>
-                    </div>
-                </div>
+                        <button type="submit" class="w-full bg-gradient-to-r from-blue-600 to-purple-600 text-white py-3 px-6 rounded-lg font-semibold hover:from-blue-700 hover:to-purple-700 transition duration-300">
+                            Get Personalized Mortgage Information
+                        </button>
+                    </form>
             </div>
         </div>
     </div>
@@ -657,43 +699,6 @@
     </div>
 </section>
 
-<!-- JavaScript for Calculator -->
-<script>
-document.getElementById('mortgage-form').addEventListener('submit', function(e) {
-    e.preventDefault();
-    calculateMortgage();
-});
-
-function calculateMortgage() {
-    const homePrice = parseFloat(document.getElementById('home-price').value);
-    const downPayment = parseFloat(document.getElementById('down-payment').value);
-    const loanTerm = parseInt(document.getElementById('loan-term').value);
-    const interestRate = parseFloat(document.getElementById('interest-rate').value);
-    
-    const loanAmount = homePrice - downPayment;
-    const monthlyRate = interestRate / 100 / 12;
-    const numberOfPayments = loanTerm * 12;
-    
-    // Calculate monthly payment
-    const monthlyPayment = loanAmount * (monthlyRate * Math.pow(1 + monthlyRate, numberOfPayments)) / (Math.pow(1 + monthlyRate, numberOfPayments) - 1);
-    
-    // Calculate other components
-    const propertyTax = (homePrice * 0.01) / 12; // 1% annual property tax
-    const homeInsurance = (homePrice * 0.005) / 12; // 0.5% annual insurance
-    const totalMonthlyPayment = monthlyPayment + propertyTax + homeInsurance;
-    const totalInterest = (monthlyPayment * numberOfPayments) - loanAmount;
-    
-    // Update results
-    document.getElementById('monthly-payment').textContent = '$' + totalMonthlyPayment.toFixed(0);
-    document.getElementById('principal-interest').textContent = '$' + monthlyPayment.toFixed(0);
-    document.getElementById('property-tax').textContent = '$' + propertyTax.toFixed(0);
-    document.getElementById('home-insurance').textContent = '$' + homeInsurance.toFixed(0);
-    document.getElementById('total-interest').textContent = '$' + totalInterest.toFixed(0);
-}
-
-// Calculate on page load
-calculateMortgage();
-</script>
 
 <script>
 // Theme Toggle Functionality
@@ -729,7 +734,115 @@ document.addEventListener("DOMContentLoaded", function() {
         }
     });
 });
+
+// Form submission handling for mortgage inquiry
+document.getElementById('mortgageInquiryForm').addEventListener('submit', function(e) {
+    // Show loading modal
+    document.getElementById('submissionModal').classList.remove('hidden');
+    
+    // The form will submit normally, but we show the loading state
+    // The success message will be handled by Django's messages framework
+});
+
+// Function to close success modal
+function closeSuccessModal() {
+    document.getElementById('successModal').classList.add('hidden');
+}
+
+// Check if there's a success message from Django
+document.addEventListener('DOMContentLoaded', function() {
+    // First, ensure all modals are hidden on page load
+    document.getElementById('submissionModal').classList.add('hidden');
+    document.getElementById('successModal').classList.add('hidden');
+    
+    // Check for Django success messages (they might be in different formats)
+    const successMessages = document.querySelectorAll('.messages .alert-success, .alert-success, .success');
+    if (successMessages.length > 0) {
+        // Hide loading modal if it's showing
+        document.getElementById('submissionModal').classList.add('hidden');
+        // Show success modal
+        document.getElementById('successModal').classList.remove('hidden');
+    }
+    
+    // Check for URL parameters or specific success indicators
+    const urlParams = new URLSearchParams(window.location.search);
+    if (urlParams.get('success') === 'true' || urlParams.get('submitted') === 'true') {
+        document.getElementById('submissionModal').classList.add('hidden');
+        document.getElementById('successModal').classList.remove('hidden');
+    }
+});
+
+// Close modals when clicking outside
+document.getElementById('submissionModal').addEventListener('click', function(e) {
+    if (e.target === this) {
+        this.classList.add('hidden');
+    }
+});
+
+document.getElementById('successModal').addEventListener('click', function(e) {
+    if (e.target === this) {
+        this.classList.add('hidden');
+    }
+});
 </script>
+
+    <!-- Popup Modal for Form Submission -->
+    <div id="submissionModal" class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 hidden">
+        <div class="bg-white dark:bg-gray-800 rounded-2xl p-8 max-w-md mx-4 text-center shadow-2xl">
+            <div class="mb-4">
+                <div class="w-16 h-16 bg-blue-100 dark:bg-blue-900 rounded-full flex items-center justify-center mx-auto mb-4">
+                    <svg class="w-8 h-8 text-blue-600 dark:text-blue-400 animate-spin" fill="none" viewBox="0 0 24 24">
+                        <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
+                        <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+                    </svg>
+                </div>
+                <h3 class="text-xl font-semibold text-gray-900 dark:text-white mb-2">Sending Your Inquiry</h3>
+                <p class="text-gray-600 dark:text-gray-300">Please wait while we process your request...</p>
+            </div>
+        </div>
+    </div>
+
+    <!-- Success Modal -->
+    <div id="successModal" class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 hidden">
+        <div class="bg-white dark:bg-gray-800 rounded-2xl p-8 max-w-md mx-4 text-center shadow-2xl">
+            <div class="mb-4">
+                <div class="w-8 h-8 bg-green-100 dark:bg-green-900 rounded-full flex items-center justify-center mx-auto mb-4">
+                    <svg class="w-4 h-4 text-green-600 dark:text-green-400" fill="none" stroke="currentColor" viewBox="0 0 24 24" style="stroke-width: 3;">
+                        <path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7"></path>
+                    </svg>
+                </div>
+                <h3 class="text-xl font-semibold text-gray-900 dark:text-white mb-2">Inquiry Sent Successfully!</h3>
+                <p class="text-gray-600 dark:text-gray-300 mb-6">Thank you for your interest. Our team will contact you soon with personalized mortgage information.</p>
+                <button onclick="closeSuccessModal()" class="bg-blue-600 hover:bg-blue-700 text-white font-semibold py-2 px-6 rounded-lg transition duration-300">
+                    Close
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <style>
+    /* Modal styles to override any conflicts */
+    #submissionModal, #successModal {
+        display: none !important;
+        visibility: hidden !important;
+        opacity: 0 !important;
+        pointer-events: none !important;
+    }
+
+    #submissionModal:not(.hidden), #successModal:not(.hidden) {
+        display: flex !important;
+        visibility: visible !important;
+        opacity: 1 !important;
+        pointer-events: auto !important;
+    }
+
+    /* Ensure checkmark is small and visible */
+    #successModal svg {
+        width: 16px !important;
+        height: 16px !important;
+        stroke-width: 3 !important;
+    }
+    </style>
 
 {% include 'Henry/footer.html' %}
 

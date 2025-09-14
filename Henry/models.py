@@ -32,6 +32,12 @@ class SellingContact(models.Model):
     message = models.TextField(blank=True, null=True)
     created_at = models.DateTimeField(auto_now_add=True)
     
+    # System tracking fields
+    ip_address = models.GenericIPAddressField(null=True, blank=True, help_text="IP address of the submitter")
+    user_agent = models.TextField(blank=True, null=True, help_text="Browser/device information")
+    referrer = models.URLField(blank=True, null=True, help_text="Page that referred the user")
+    language = models.CharField(max_length=10, blank=True, null=True, help_text="User's preferred language")
+    
     def __str__(self):
         return f"{self.name} - {self.email}"
 
@@ -173,10 +179,170 @@ class OpenHouse(models.Model):
     class Meta:
         ordering = ['open_house_date', 'open_house_time']
         verbose_name = "Open House"
-        verbose_name_plural = "Open Houses"
     
     def __str__(self):
-        return f"{self.title} - {self.open_house_date} at {self.open_house_time}"
+        return f"{self.title} - {self.open_house_date}"
+    
+    @property
+    def is_past(self):
+        """Check if the open house date has passed"""
+        from django.utils import timezone
+        return self.open_house_date < timezone.now().date()
+
+
+class OpenHouseRegistration(models.Model):
+    """Model to store open house visitor registrations"""
+    open_house = models.ForeignKey(OpenHouse, on_delete=models.CASCADE, related_name='registrations')
+    name = models.CharField(max_length=100, help_text="Visitor's full name")
+    email = models.EmailField(help_text="Visitor's email address")
+    phone = models.CharField(max_length=20, help_text="Visitor's phone number")
+    message = models.TextField(blank=True, null=True, help_text="Additional message or questions")
+    interested_in_buying = models.BooleanField(default=False, help_text="Is the visitor interested in buying?")
+    interested_in_leasing = models.BooleanField(default=False, help_text="Is the visitor interested in leasing?")
+    preferred_contact_time = models.CharField(
+        max_length=50, 
+        blank=True, 
+        null=True,
+        choices=[
+            ('morning', 'Morning (9 AM - 12 PM)'),
+            ('afternoon', 'Afternoon (12 PM - 5 PM)'),
+            ('evening', 'Evening (5 PM - 8 PM)'),
+            ('anytime', 'Anytime'),
+        ],
+        help_text="Preferred time to be contacted"
+    )
+    created_at = models.DateTimeField(auto_now_add=True)
+    
+    class Meta:
+        ordering = ['-created_at']
+        verbose_name = "Open House Registration"
+        verbose_name_plural = "Open House Registrations"
+    
+    def __str__(self):
+        return f"{self.name} - {self.open_house.title} ({self.created_at.strftime('%Y-%m-%d')})"
+
+
+class PropertyInquiry(models.Model):
+    """Model to store property inquiry requests from buy-lease page"""
+    name = models.CharField(max_length=100, help_text="Inquirer's full name")
+    email = models.EmailField(help_text="Inquirer's email address")
+    phone = models.CharField(max_length=20, help_text="Inquirer's phone number")
+    property_type = models.CharField(
+        max_length=50,
+        blank=True,
+        null=True,
+        choices=[
+            ('house', 'House'),
+            ('apartment', 'Apartment'),
+            ('condo', 'Condo'),
+            ('townhouse', 'Townhouse'),
+            ('commercial', 'Commercial'),
+        ],
+        help_text="Type of property they're looking for"
+    )
+    budget_range = models.CharField(
+        max_length=50,
+        blank=True,
+        null=True,
+        choices=[
+            ('under-300k', 'Under $300,000'),
+            ('300k-500k', '$300,000 - $500,000'),
+            ('500k-750k', '$500,000 - $750,000'),
+            ('750k-1m', '$750,000 - $1,000,000'),
+            ('over-1m', 'Over $1,000,000'),
+        ],
+        help_text="Budget range for the property"
+    )
+    location = models.CharField(max_length=200, blank=True, null=True, help_text="Preferred location")
+    requirements = models.TextField(blank=True, null=True, help_text="Specific requirements and preferences")
+    created_at = models.DateTimeField(auto_now_add=True)
+    
+    # System tracking fields
+    ip_address = models.GenericIPAddressField(null=True, blank=True, help_text="IP address of the submitter")
+    user_agent = models.TextField(blank=True, null=True, help_text="Browser/device information")
+    referrer = models.URLField(blank=True, null=True, help_text="Page that referred the user")
+    language = models.CharField(max_length=10, blank=True, null=True, help_text="User's preferred language")
+
+    class Meta:
+        ordering = ['-created_at']
+        verbose_name = "Property Inquiry"
+        verbose_name_plural = "Property Inquiries"
+
+    def __str__(self):
+        return f"{self.name} - {self.property_type or 'Any'} - {self.created_at.strftime('%Y-%m-%d')}"
+
+
+class MortgageInquiry(models.Model):
+    """Model to store mortgage inquiry requests from mortgage calculator page"""
+    name = models.CharField(max_length=100, help_text="Inquirer's full name")
+    email = models.EmailField(help_text="Inquirer's email address")
+    phone = models.CharField(max_length=20, help_text="Inquirer's phone number")
+    property_type = models.CharField(
+        max_length=50,
+        blank=True,
+        null=True,
+        choices=[
+            ('house', 'House'),
+            ('apartment', 'Apartment'),
+            ('condo', 'Condo'),
+            ('townhouse', 'Townhouse'),
+            ('commercial', 'Commercial'),
+        ],
+        help_text="Type of property they're interested in"
+    )
+    home_price = models.DecimalField(
+        max_digits=12, 
+        decimal_places=2, 
+        blank=True, 
+        null=True, 
+        help_text="Home price they're considering"
+    )
+    down_payment = models.DecimalField(
+        max_digits=12, 
+        decimal_places=2, 
+        blank=True, 
+        null=True, 
+        help_text="Down payment amount they have"
+    )
+    loan_term = models.IntegerField(
+        blank=True,
+        null=True,
+        choices=[
+            (15, '15 Years'),
+            (20, '20 Years'),
+            (25, '25 Years'),
+            (30, '30 Years'),
+        ],
+        help_text="Preferred loan term in years"
+    )
+    credit_score = models.CharField(
+        max_length=20,
+        blank=True,
+        null=True,
+        choices=[
+            ('excellent', 'Excellent (750+)'),
+            ('good', 'Good (700-749)'),
+            ('fair', 'Fair (650-699)'),
+            ('poor', 'Poor (Below 650)'),
+        ],
+        help_text="Credit score range"
+    )
+    additional_info = models.TextField(blank=True, null=True, help_text="Additional information about their mortgage needs")
+    created_at = models.DateTimeField(auto_now_add=True)
+    
+    # System tracking fields
+    ip_address = models.GenericIPAddressField(null=True, blank=True, help_text="IP address of the submitter")
+    user_agent = models.TextField(blank=True, null=True, help_text="Browser/device information")
+    referrer = models.URLField(blank=True, null=True, help_text="Page that referred the user")
+    language = models.CharField(max_length=10, blank=True, null=True, help_text="User's preferred language")
+
+    class Meta:
+        ordering = ['-created_at']
+        verbose_name = "Mortgage Inquiry"
+        verbose_name_plural = "Mortgage Inquiries"
+
+    def __str__(self):
+        return f"{self.name} - ${self.home_price or 'TBD'} - {self.created_at.strftime('%Y-%m-%d')}"
     
     @property
     def is_past(self):

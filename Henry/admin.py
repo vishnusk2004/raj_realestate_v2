@@ -1,5 +1,5 @@
 from django.contrib import admin
-from .models import Property, SellingContact, BlogTracking, BlogPost, PropertyListing, OpenHouse
+from .models import Property, SellingContact, BlogTracking, BlogPost, PropertyListing, OpenHouse, OpenHouseRegistration, PropertyInquiry, MortgageInquiry
 from .forms import PropertyListingForm
 
 # Register your models here.
@@ -11,10 +11,26 @@ class PropertyAdmin(admin.ModelAdmin):
 
 @admin.register(SellingContact)
 class SellingContactAdmin(admin.ModelAdmin):
-    list_display = ('name', 'email', 'phone', 'property_type', 'created_at')
-    list_filter = ('property_type', 'created_at')
-    search_fields = ('name', 'email', 'phone')
-    readonly_fields = ('created_at',)
+    list_display = ('name', 'email', 'phone', 'property_type', 'ip_address', 'created_at')
+    list_filter = ('property_type', 'created_at', 'language')
+    search_fields = ('name', 'email', 'phone', 'ip_address')
+    readonly_fields = ('created_at', 'ip_address', 'user_agent', 'referrer', 'language')
+    fieldsets = (
+        ('Contact Information', {
+            'fields': ('name', 'email', 'phone')
+        }),
+        ('Property Details', {
+            'fields': ('property_address', 'property_type', 'estimated_value', 'timeline', 'message')
+        }),
+        ('System Information', {
+            'fields': ('ip_address', 'user_agent', 'referrer', 'language'),
+            'classes': ('collapse',)
+        }),
+        ('Timestamps', {
+            'fields': ('created_at',),
+            'classes': ('collapse',)
+        }),
+    )
 
 @admin.register(BlogTracking)
 class BlogTrackingAdmin(admin.ModelAdmin):
@@ -120,6 +136,82 @@ class OpenHouseAdmin(admin.ModelAdmin):
         }),
         ('Timestamps', {
             'fields': ('created_at', 'updated_at', 'is_past'),
+            'classes': ('collapse',)
+        }),
+    )
+
+
+@admin.register(OpenHouseRegistration)
+class OpenHouseRegistrationAdmin(admin.ModelAdmin):
+    list_display = ('name', 'email', 'phone', 'open_house', 'interested_in_buying', 'interested_in_leasing', 'created_at')
+    list_filter = ('interested_in_buying', 'interested_in_leasing', 'preferred_contact_time', 'created_at', 'open_house')
+    search_fields = ('name', 'email', 'phone', 'message')
+    readonly_fields = ('created_at',)
+    fieldsets = (
+        ('Visitor Information', {
+            'fields': ('name', 'email', 'phone', 'message')
+        }),
+        ('Open House', {
+            'fields': ('open_house',)
+        }),
+        ('Interest Details', {
+            'fields': ('interested_in_buying', 'interested_in_leasing', 'preferred_contact_time')
+        }),
+        ('Timestamps', {
+            'fields': ('created_at',),
+            'classes': ('collapse',)
+        }),
+    )
+
+
+@admin.register(PropertyInquiry)
+class PropertyInquiryAdmin(admin.ModelAdmin):
+    list_display = ('name', 'email', 'phone', 'property_type', 'budget_range', 'location', 'ip_address', 'created_at')
+    list_filter = ('property_type', 'budget_range', 'created_at', 'language')
+    search_fields = ('name', 'email', 'phone', 'location', 'requirements', 'ip_address')
+    readonly_fields = ('created_at', 'ip_address', 'user_agent', 'referrer', 'language')
+    ordering = ('-created_at',)
+    fieldsets = (
+        ('Contact Information', {
+            'fields': ('name', 'email', 'phone')
+        }),
+        ('Property Preferences', {
+            'fields': ('property_type', 'budget_range', 'location', 'requirements')
+        }),
+        ('System Information', {
+            'fields': ('ip_address', 'user_agent', 'referrer', 'language'),
+            'classes': ('collapse',)
+        }),
+        ('Timestamps', {
+            'fields': ('created_at',),
+            'classes': ('collapse',)
+        }),
+    )
+
+
+@admin.register(MortgageInquiry)
+class MortgageInquiryAdmin(admin.ModelAdmin):
+    list_display = ('name', 'email', 'phone', 'property_type', 'home_price', 'credit_score', 'ip_address', 'created_at')
+    list_filter = ('property_type', 'credit_score', 'loan_term', 'created_at', 'language')
+    search_fields = ('name', 'email', 'phone', 'additional_info', 'ip_address')
+    readonly_fields = ('created_at', 'ip_address', 'user_agent', 'referrer', 'language')
+    ordering = ('-created_at',)
+    fieldsets = (
+        ('Contact Information', {
+            'fields': ('name', 'email', 'phone')
+        }),
+        ('Property Details', {
+            'fields': ('property_type', 'home_price', 'down_payment', 'loan_term')
+        }),
+        ('Financial Information', {
+            'fields': ('credit_score', 'additional_info')
+        }),
+        ('System Information', {
+            'fields': ('ip_address', 'user_agent', 'referrer', 'language'),
+            'classes': ('collapse',)
+        }),
+        ('Timestamps', {
+            'fields': ('created_at',),
             'classes': ('collapse',)
         }),
     )

@@ -60,6 +60,27 @@
     .dark-theme .shadow-lg {
         box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.3), 0 4px 6px -2px rgba(0, 0, 0, 0.1) !important;
     }
+    
+    /* Blue elements for dark mode */
+    .dark-theme .bg-blue-600 {
+        background-color: #1e40af !important;
+    }
+    
+    .dark-theme .bg-blue-700 {
+        background-color: #1d4ed8 !important;
+    }
+    
+    .dark-theme .bg-blue-900 {
+        background-color: #0f172a !important;
+    }
+    
+    .dark-theme .hover\\:bg-blue-700:hover {
+        background-color: #1e40af !important;
+    }
+    
+    .dark-theme.bg-blue-900 {
+        background-color: #0f172a !important;
+    }
 
     /* Professional form styling */
     .form-container {
@@ -581,6 +602,19 @@
                         <div class="input-group">
                             <label class="form-label">Phone Number *</label>
                             <input type="tel" name="phone" class="form-input w-full" placeholder="Enter your phone number" required>
+                        </div>
+
+                        <!-- Open House Selection -->
+                        <div class="input-group">
+                            <label class="form-label">Select Open House Event *</label>
+                            <select name="open_house_id" class="form-input w-full" required>
+                                <option value="">Choose an open house event</option>
+                                {% for open_house in open_houses %}
+                                <option value="{{ open_house.id }}">
+                                    {{ open_house.title }} - {{ open_house.open_house_date|date:"M d, Y" }} at {{ open_house.open_house_time|time:"g:i A" }}
+                                </option>
+                                {% endfor %}
+                            </select>
                         </div>
 
                         <div class="grid grid-cols-1 md:grid-cols-2 gap-6">

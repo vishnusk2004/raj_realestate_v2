@@ -12,10 +12,13 @@ urlpatterns = [
     path('buying/', views.buying, name='buying'),
     path('selling/', views.selling, name='selling'),
     path('leasing/', views.leasing, name='leasing'),
-    path('home-valuation/', views.home_valuation, name='home_valuation'),
+    # path('home-valuation/', views.home_valuation, name='home_valuation'),  # Commented out - functionality moved to selling page
     path('open-house/', views.open_house, name='open_house'),
     path('mortgage-calculator/', views.mortgage_calculator, name='mortgage_calculator'),
     path('market-insights/', views.market_insights, name='market_insights'),
+    # Inquiry form URLs
+    path('property-inquiry/', views.property_inquiry, name='property_inquiry'),
+    path('mortgage-inquiry/', views.mortgage_inquiry, name='mortgage_inquiry'),
     # Blog tracking URLs
     path('tracked-blog/<uuid:tracking_code>/', views.tracked_blog_detail, name='tracked_blog_detail'),
     path('api/create-tracking-link/', views.create_tracking_link, name='create_tracking_link'),

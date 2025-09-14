@@ -83,6 +83,325 @@
         box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.3), 0 4px 6px -2px rgba(0, 0, 0, 0.1) !important;
     }
     
+    /* Blue elements for dark mode */
+    .dark-theme .bg-blue-600 {
+        background-color: #1e40af !important;
+    }
+    
+    .dark-theme .bg-blue-700 {
+        background-color: #1d4ed8 !important;
+    }
+    
+    .dark-theme .bg-blue-900 {
+        background-color: #0f172a !important;
+    }
+    
+    .dark-theme .hover\\:bg-blue-700:hover {
+        background-color: #1e40af !important;
+    }
+    
+    /* Form styling for both light and dark modes */
+    .dark-theme .bg-blue-900 .bg-white {
+        background-color: #ffffff !important;
+    }
+    
+    .dark-theme .bg-blue-900 .text-gray-700 {
+        color: #374151 !important;
+    }
+    
+    .dark-theme .bg-blue-900 .text-gray-900 {
+        color: #111827 !important;
+    }
+    
+    .dark-theme .bg-blue-900 input,
+    .dark-theme .bg-blue-900 select,
+    .dark-theme .bg-blue-900 textarea {
+        background-color: #ffffff !important;
+        color: #111827 !important;
+        border-color: #d1d5db !important;
+    }
+    
+    .dark-theme .bg-blue-900 label {
+        color: #374151 !important;
+    }
+    
+    .dark-theme.bg-blue-900 {
+        background-color: #0f172a !important;
+    }
+    
+    /* Blue elements in services section for dark mode */
+    .dark-theme .bg-blue-100 {
+        background-color: #1e3a8a !important;
+    }
+    
+    .dark-theme .text-blue-600 {
+        color: #60a5fa !important;
+    }
+    
+    .dark-theme .bg-green-100 {
+        background-color: #166534 !important;
+    }
+    
+    .dark-theme .text-green-600 {
+        color: #4ade80 !important;
+    }
+    
+    .dark-theme .bg-yellow-100 {
+        background-color: #a16207 !important;
+    }
+    
+    .dark-theme .text-yellow-600 {
+        color: #facc15 !important;
+    }
+    
+    /* Success modal button for dark mode */
+    .dark-theme .bg-blue-600 {
+        background-color: #1e40af !important;
+    }
+    
+    .dark-theme .hover\\:bg-blue-700:hover {
+        background-color: #1d4ed8 !important;
+    }
+    
+    /* Fix text visibility in dark mode */
+    .dark-theme .text-gray-900,
+    .dark-theme h2,
+    .dark-theme h3,
+    .dark-theme p {
+        color: #e5e5e5 !important;
+    }
+    
+    .dark-theme .text-gray-700 {
+        color: #d1d5db !important;
+    }
+    
+    .dark-theme .text-gray-600 {
+        color: #9ca3af !important;
+    }
+    
+    /* Ensure services section text is visible in both modes - ultra specific */
+    .services-section h2 {
+        color: #111827 !important;
+    }
+    
+    .services-section p {
+        color: #374151 !important;
+    }
+    
+    .services-section .text-xl {
+        color: #374151 !important;
+    }
+    
+    .services-section .text-gray-700 {
+        color: #374151 !important;
+    }
+    
+    .dark-theme .services-section h2,
+    .dark-theme .services-section h3,
+    .dark-theme .services-section p {
+        color: #e5e5e5 !important;
+    }
+    
+    .dark-theme .services-section .text-xl {
+        color: #d1d5db !important;
+    }
+    
+    .dark-theme .services-section .text-gray-700 {
+        color: #d1d5db !important;
+    }
+    
+    /* Even more specific overrides */
+    body:not(.dark-theme) .services-section p {
+        color: #374151 !important;
+    }
+    
+    body:not(.dark-theme) .services-section .text-xl {
+        color: #374151 !important;
+    }
+    
+    body:not(.dark-theme) .services-section .text-gray-700 {
+        color: #374151 !important;
+    }
+    
+    body.dark-theme .services-section p {
+        color: #d1d5db !important;
+    }
+    
+    body.dark-theme .services-section .text-xl {
+        color: #d1d5db !important;
+    }
+    
+    body.dark-theme .services-section .text-gray-700 {
+        color: #d1d5db !important;
+    }
+    
+    /* Maximum specificity override for the specific text */
+    .max-w-7xl.mx-auto.px-4.sm\\:px-6.lg\\:px-8.py-16.services-section .text-center.mb-16 p {
+        color: #374151 !important;
+    }
+    
+    .dark-theme .max-w-7xl.mx-auto.px-4.sm\\:px-6.lg\\:px-8.py-16.services-section .text-center.mb-16 p {
+        color: #d1d5db !important;
+    }
+    
+    /* Force visibility with inline style override */
+    .services-section p[class*="text-xl"] {
+        color: #374151 !important;
+    }
+    
+    .dark-theme .services-section p[class*="text-xl"] {
+        color: #d1d5db !important;
+    }
+    
+    /* Override inline style for dark mode - ultra specific */
+    .dark-theme p[style*="color: #374151"] {
+        color: #d1d5db !important;
+    }
+    
+    .dark-theme .services-section p[style*="color: #374151"] {
+        color: #d1d5db !important;
+    }
+    
+    .dark-theme .text-center.mb-16 p[style*="color: #374151"] {
+        color: #d1d5db !important;
+    }
+    
+    /* Force dark mode override with maximum specificity */
+    .dark-theme .max-w-7xl.mx-auto.px-4.sm\\:px-6.lg\\:px-8.py-16.services-section .text-center.mb-16 p[style*="color: #374151"] {
+        color: #d1d5db !important;
+    }
+    
+    /* Override all inline styles in dark mode */
+    .dark-theme p[style] {
+        color: #d1d5db !important;
+    }
+    
+    .dark-theme .services-section p[style] {
+        color: #d1d5db !important;
+    }
+    
+    /* Service cards text visibility in dark mode - more specific */
+    .dark-theme .bg-white .service-title {
+        color: #e5e5e5 !important;
+    }
+    
+    .dark-theme .bg-white .service-description {
+        color: #d1d5db !important;
+    }
+    
+    .dark-theme .bg-white .text-gray-900.service-title {
+        color: #e5e5e5 !important;
+    }
+    
+    .dark-theme .bg-white .text-gray-700.service-description {
+        color: #d1d5db !important;
+    }
+    
+    /* Override any inline styles in service cards - ultra specific */
+    .dark-theme .bg-white .service-title[style] {
+        color: #e5e5e5 !important;
+    }
+    
+    .dark-theme .bg-white .service-description[style] {
+        color: #d1d5db !important;
+    }
+    
+    /* Services description specific styling */
+    .services-description {
+        color: #374151 !important;
+    }
+    
+    .dark-theme .services-description {
+        color: #d1d5db !important;
+    }
+    
+    /* Force visibility with maximum specificity */
+    .services-section .services-description {
+        color: #374151 !important;
+    }
+    
+    .dark-theme .services-section .services-description {
+        color: #d1d5db !important;
+    }
+    
+    /* Service cards specific styling */
+    .service-title {
+        color: #111827 !important;
+    }
+    
+    .service-description {
+        color: #374151 !important;
+    }
+    
+    .dark-theme .service-title {
+        color: #e5e5e5 !important;
+    }
+    
+    .dark-theme .service-description {
+        color: #d1d5db !important;
+    }
+    
+    /* Force visibility with maximum specificity */
+    .services-section .service-title {
+        color: #111827 !important;
+    }
+    
+    .services-section .service-description {
+        color: #374151 !important;
+    }
+    
+    .dark-theme .services-section .service-title {
+        color: #e5e5e5 !important;
+    }
+    
+    .dark-theme .services-section .service-description {
+        color: #d1d5db !important;
+    }
+    
+    /* Maximum specificity overrides for service cards */
+    .services-section .bg-white .service-title {
+        color: #111827 !important;
+    }
+    
+    .services-section .bg-white .service-description {
+        color: #374151 !important;
+    }
+    
+    .dark-theme .services-section .bg-white .service-title {
+        color: #e5e5e5 !important;
+    }
+    
+    .dark-theme .services-section .bg-white .service-description {
+        color: #d1d5db !important;
+    }
+    
+    /* Override inline styles with maximum specificity */
+    .dark-theme .services-section .bg-white .service-title[style*="color: #111827"] {
+        color: #e5e5e5 !important;
+    }
+    
+    .dark-theme .services-section .bg-white .service-description[style*="color: #374151"] {
+        color: #d1d5db !important;
+    }
+    
+    /* Direct ID targeting - ALWAYS DARK TEXT for visibility */
+    #service-title-1, #service-title-2, #service-title-3 {
+        color: #111827 !important;
+    }
+    
+    #service-desc-1, #service-desc-2, #service-desc-3 {
+        color: #374151 !important;
+    }
+    
+    /* Force dark text even in dark mode for visibility */
+    .dark-theme #service-title-1, .dark-theme #service-title-2, .dark-theme #service-title-3 {
+        color: #111827 !important;
+    }
+    
+    .dark-theme #service-desc-1, .dark-theme #service-desc-2, .dark-theme #service-desc-3 {
+        color: #374151 !important;
+    }
+    
     /* Theme toggle button */
     #theme-toggle {
         transition: all 0.3s ease;
@@ -454,20 +773,20 @@
     <div class="min-h-screen bg-gray-50">
     <div class="main-content">
     <!-- Hero Section -->
-<div class="bg-gradient-to-r from-blue-900 to-blue-700 text-white py-20" style="background: linear-gradient(to right, #1e3a8a, #1d4ed8); color: #ffffff;">
+    <div class="bg-gradient-to-r from-blue-900 to-blue-700 text-white py-20 dark-theme" style="background: linear-gradient(to right, #1e3a8a, #1d4ed8); color: #ffffff;">
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div class="text-center">
-            <h1 class="text-4xl md:text-6xl font-bold mb-6" style="color: #ffffff !important;">Sell & Evaluate Your Property</h1>
-            <p class="text-xl md:text-2xl mb-8" style="color: #ffffff !important;">Get the best value for your property with our expert team. Professional valuation and selling services.</p>
+            <h1 class="text-4xl md:text-6xl font-bold mb-6 text-white">Sell & Evaluate Your Property</h1>
+            <p class="text-xl md:text-2xl mb-8 text-white">Get the best value for your property with our expert team. Professional valuation and selling services.</p>
         </div>
     </div>
 </div>
 
 <!-- Services Section -->
-<div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16">
+<div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16 services-section">
     <div class="text-center mb-16">
-        <h2 class="text-3xl font-bold mb-4" style="color: #111827 !important;">Our Services</h2>
-        <p class="text-xl" style="color: #374151 !important;">Professional real estate services to help you sell or lease your property</p>
+        <h2 class="text-3xl font-bold mb-4 text-gray-900">Our Services</h2>
+        <p class="text-xl text-gray-700 services-description">Professional real estate services to help you sell or lease your property</p>
     </div>
 
         <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
@@ -476,8 +795,8 @@
                     <div class="bg-blue-100 w-16 h-16 rounded-full flex items-center justify-center mx-auto mb-6">
                         <i class="fas fa-chart-line text-blue-600 text-2xl"></i>
                     </div>
-                    <h3 class="text-xl font-bold mb-4" style="color: #111827 !important;">Property Valuation</h3>
-                    <p style="color: #374151 !important;">Get an accurate market value assessment from our certified appraisers with detailed analysis and market insights.</p>
+                    <h3 class="text-xl font-bold mb-4 text-gray-900 service-title" id="service-title-1">Property Valuation</h3>
+                    <p class="text-gray-700 service-description" id="service-desc-1">Get an accurate market value assessment from our certified appraisers with detailed analysis and market insights.</p>
                 </div>
             </div>
 
@@ -486,8 +805,8 @@
                     <div class="bg-green-100 w-16 h-16 rounded-full flex items-center justify-center mx-auto mb-6">
                         <i class="fas fa-camera text-green-600 text-2xl"></i>
                     </div>
-                    <h3 class="text-xl font-bold mb-4" style="color: #111827 !important;">Professional Marketing</h3>
-                    <p style="color: #374151 !important;">High-quality photos, virtual tours, and targeted marketing campaigns to reach qualified buyers worldwide.</p>
+                    <h3 class="text-xl font-bold mb-4 text-gray-900 service-title" id="service-title-2">Professional Marketing</h3>
+                    <p class="text-gray-700 service-description" id="service-desc-2">High-quality photos, virtual tours, and targeted marketing campaigns to reach qualified buyers worldwide.</p>
                 </div>
             </div>
 
@@ -496,19 +815,19 @@
                     <div class="bg-yellow-100 w-16 h-16 rounded-full flex items-center justify-center mx-auto mb-6">
                         <i class="fas fa-handshake text-yellow-600 text-2xl"></i>
                     </div>
-                    <h3 class="text-xl font-bold mb-4" style="color: #111827 !important;">Full Support</h3>
-                    <p style="color: #374151 !important;">Complete guidance through negotiations, inspections, and closing process with dedicated support.</p>
+                    <h3 class="text-xl font-bold mb-4 text-gray-900 service-title" id="service-title-3">Full Support</h3>
+                    <p class="text-gray-700 service-description" id="service-desc-3">Complete guidance through negotiations, inspections, and closing process with dedicated support.</p>
                 </div>
             </div>
         </div>
 </div>
 
 <!-- Contact Form Section -->
-<div class="bg-blue-900 text-white py-16">
+    <div class="bg-blue-900 text-white py-16 dark-theme">
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div class="text-center mb-12">
-            <h2 class="text-3xl font-bold mb-4" style="color: #ffffff !important;">Ready to Sell or Lease Your Property?</h2>
-            <p class="text-xl" style="color: #ffffff !important;">Fill out the form below and our expert team will contact you within 24 hours with a personalized consultation.</p>
+            <h2 class="text-3xl font-bold mb-4 text-white">Ready to Sell or Lease Your Property?</h2>
+            <p class="text-xl text-white">Fill out the form below and our expert team will contact you within 24 hours with a personalized consultation.</p>
         </div>
 
             <div class="max-w-xl mx-auto">
@@ -528,32 +847,31 @@
                     <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mb-6">
                         <!-- Name -->
                         <div>
-                            <label class="block text-sm font-medium mb-2" style="color: #374151 !important;">Full Name *</label>
-                            <input type="text" name="name" class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
-                                   placeholder="Enter your full name" required style="color: #111827 !important; background-color: #ffffff !important;">
+                            <label class="block text-sm font-medium mb-2 text-gray-700">Full Name *</label>
+                            <input type="text" name="name" class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 bg-white text-gray-900"
+                                   placeholder="Enter your full name" required>
                         </div>
 
                         <!-- Email -->
                         <div>
-                            <label class="block text-sm font-medium mb-2" style="color: #374151 !important;">Email Address *</label>
-                            <input type="email" name="email" class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
-                                   placeholder="Enter your email address" required style="color: #111827 !important; background-color: #ffffff !important;">
+                            <label class="block text-sm font-medium mb-2 text-gray-700">Email Address *</label>
+                            <input type="email" name="email" class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 bg-white text-gray-900"
+                                   placeholder="Enter your email address" required>
                         </div>
                     </div>
 
                     <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mb-6">
                         <!-- Phone -->
                         <div>
-                            <label class="block text-sm font-medium mb-2" style="color: #374151 !important;">Phone Number *</label>
-                            <input type="tel" name="phone" class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
-                                   placeholder="Enter your phone number" required style="color: #111827 !important; background-color: #ffffff !important;">
+                            <label class="block text-sm font-medium mb-2 text-gray-700">Phone Number *</label>
+                            <input type="tel" name="phone" class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 bg-white text-gray-900"
+                                   placeholder="Enter your phone number" required>
                         </div>
 
                         <!-- Property Type -->
                         <div>
-                            <label class="block text-sm font-medium mb-2" style="color: #374151 !important;">Property Type</label>
-                            <select name="property_type" class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
-                                    style="color: #111827 !important; background-color: #ffffff !important;">
+                            <label class="block text-sm font-medium mb-2 text-gray-700">Property Type</label>
+                            <select name="property_type" class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 bg-white text-gray-900">
                                 <option value="">Select property type</option>
                                 <option value="house">House</option>
                                 <option value="condo">Condo</option>
@@ -566,24 +884,23 @@
 
                     <!-- Property Address -->
                     <div class="mb-6">
-                        <label class="block text-sm font-medium mb-2" style="color: #374151 !important;">Property Address *</label>
-                        <input type="text" name="property_address" class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
-                               placeholder="Enter the full address of the property you want to sell/lease" required style="color: #111827 !important; background-color: #ffffff !important;">
+                        <label class="block text-sm font-medium mb-2 text-gray-700">Property Address *</label>
+                        <input type="text" name="property_address" class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 bg-white text-gray-900"
+                               placeholder="Enter the full address of the property you want to sell/lease" required>
                     </div>
 
                     <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mb-6">
                         <!-- Estimated Value -->
                         <div>
-                            <label class="block text-sm font-medium mb-2" style="color: #374151 !important;">Estimated Property Value</label>
-                            <input type="text" name="estimated_value" class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
-                                   placeholder="e.g., $500,000" style="color: #111827 !important; background-color: #ffffff !important;">
+                            <label class="block text-sm font-medium mb-2 text-gray-700">Estimated Property Value</label>
+                            <input type="text" name="estimated_value" class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 bg-white text-gray-900"
+                                   placeholder="e.g., $500,000">
                         </div>
 
                         <!-- Timeline -->
                         <div>
-                            <label class="block text-sm font-medium mb-2" style="color: #374151 !important;">Timeline to Sell/Lease</label>
-                            <select name="timeline" class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
-                                    style="color: #111827 !important; background-color: #ffffff !important;">
+                            <label class="block text-sm font-medium mb-2 text-gray-700">Timeline to Sell/Lease</label>
+                            <select name="timeline" class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 bg-white text-gray-900">
                                 <option value="">Select timeline</option>
                                 <option value="immediately">Immediately</option>
                                 <option value="1-3 months">1-3 months</option>
@@ -596,10 +913,9 @@
 
                     <!-- Message -->
                     <div class="mb-6">
-                        <label class="block text-sm font-medium mb-2" style="color: #374151 !important;">Additional Information</label>
-                        <textarea name="message" class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
-                                  rows="4" placeholder="Tell us more about your property, any specific requirements, or questions you may have..."
-                                  style="color: #111827 !important; background-color: #ffffff !important;"></textarea>
+                        <label class="block text-sm font-medium mb-2 text-gray-700">Additional Information</label>
+                        <textarea name="message" class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 bg-white text-gray-900"
+                                  rows="4" placeholder="Tell us more about your property, any specific requirements, or questions you may have..."></textarea>
                     </div>
 
                     <!-- Submit Button -->
@@ -729,6 +1045,65 @@ document.addEventListener("DOMContentLoaded", function() {
             localStorage.setItem('theme', 'dark');
         }
     });
+    
+    // Force update services description text color
+    function updateServicesDescription() {
+        const servicesDesc = document.querySelector('.services-description');
+        if (servicesDesc) {
+            if (body.classList.contains('dark-theme')) {
+                servicesDesc.style.color = '#d1d5db';
+            } else {
+                servicesDesc.style.color = '#374151';
+            }
+        }
+    }
+    
+    // Force update service cards text color using direct ID targeting
+    function updateServiceCards() {
+        console.log('Updating service cards, dark theme:', body.classList.contains('dark-theme'));
+        
+        // Target each element directly by ID
+        const title1 = document.getElementById('service-title-1');
+        const title2 = document.getElementById('service-title-2');
+        const title3 = document.getElementById('service-title-3');
+        const desc1 = document.getElementById('service-desc-1');
+        const desc2 = document.getElementById('service-desc-2');
+        const desc3 = document.getElementById('service-desc-3');
+        
+        const titles = [title1, title2, title3];
+        const descriptions = [desc1, desc2, desc3];
+        
+        console.log('Found titles:', titles.filter(t => t).length);
+        console.log('Found descriptions:', descriptions.filter(d => d).length);
+        
+        // Update titles - ALWAYS DARK for visibility
+        titles.forEach((title, index) => {
+            if (title) {
+                title.style.cssText = 'color: #111827 !important;';
+                console.log(`Title ${index + 1} set to dark color (always visible):`, title.textContent);
+            }
+        });
+        
+        // Update descriptions - ALWAYS DARK for visibility
+        descriptions.forEach((desc, index) => {
+            if (desc) {
+                desc.style.cssText = 'color: #374151 !important;';
+                console.log(`Description ${index + 1} set to dark color (always visible):`, desc.textContent.substring(0, 50));
+            }
+        });
+    }
+    
+    // Update on theme change
+    themeToggle.addEventListener('click', function() {
+        setTimeout(() => {
+            updateServicesDescription();
+            updateServiceCards();
+        }, 100);
+    });
+    
+    // Update on page load
+    updateServicesDescription();
+    updateServiceCards();
 });
 </script>
 

@@ -68,6 +68,161 @@
         background-color: #1e3a8a !important;
     }
     
+    /* Blue gradient backgrounds for dark mode */
+    .dark-theme.bg-gradient-to-r.from-blue-900.to-blue-700 {
+        background: linear-gradient(to right, #0f172a, #1e3a8a) !important;
+    }
+    
+    .dark-theme.bg-blue-900 {
+        background-color: #0f172a !important;
+    }
+    
+    /* Form container will now change with theme */
+    .form-container {
+        transition: all 0.3s ease;
+    }
+    
+    /* Light mode form styles - with high specificity */
+    .form-container {
+        background-color: #ffffff !important;
+        color: #111827 !important;
+    }
+    
+    .form-container .text-gray-900 {
+        color: #111827 !important;
+    }
+    
+    .form-container .text-gray-700 {
+        color: #374151 !important;
+    }
+    
+    .form-container input,
+    .form-container select,
+    .form-container textarea {
+        background-color: #ffffff !important;
+        color: #111827 !important;
+        border-color: #d1d5db !important;
+    }
+    
+    .form-container label {
+        color: #374151 !important;
+    }
+    
+    /* Dark mode form styles - with high specificity */
+    .dark-theme .form-container {
+        background-color: #2d2d2d !important;
+        color: #e5e5e5 !important;
+    }
+    
+    .dark-theme .form-container .text-gray-900 {
+        color: #e5e5e5 !important;
+    }
+    
+    .dark-theme .form-container .text-gray-700 {
+        color: #d1d5db !important;
+    }
+    
+    .dark-theme .form-container input,
+    .dark-theme .form-container select,
+    .dark-theme .form-container textarea {
+        background-color: #374151 !important;
+        color: #e5e5e5 !important;
+        border-color: #4b5563 !important;
+    }
+    
+    .dark-theme .form-container label {
+        color: #d1d5db !important;
+    }
+    
+    /* Ultra-specific overrides to ensure form changes with theme */
+    body:not(.dark-theme) .form-container {
+        background-color: #ffffff !important;
+    }
+    
+    body:not(.dark-theme) .form-container .text-gray-900 {
+        color: #111827 !important;
+    }
+    
+    body:not(.dark-theme) .form-container .text-gray-700 {
+        color: #374151 !important;
+    }
+    
+    body:not(.dark-theme) .form-container input,
+    body:not(.dark-theme) .form-container select,
+    body:not(.dark-theme) .form-container textarea {
+        background-color: #ffffff !important;
+        color: #111827 !important;
+        border-color: #d1d5db !important;
+    }
+    
+    body:not(.dark-theme) .form-container label {
+        color: #374151 !important;
+    }
+    
+    body.dark-theme .form-container {
+        background-color: #2d2d2d !important;
+    }
+    
+    body.dark-theme .form-container .text-gray-900 {
+        color: #e5e5e5 !important;
+    }
+    
+    body.dark-theme .form-container .text-gray-700 {
+        color: #d1d5db !important;
+    }
+    
+    body.dark-theme .form-container input,
+    body.dark-theme .form-container select,
+    body.dark-theme .form-container textarea {
+        background-color: #374151 !important;
+        color: #e5e5e5 !important;
+        border-color: #4b5563 !important;
+    }
+    
+    body.dark-theme .form-container label {
+        color: #d1d5db !important;
+    }
+    
+    .dark-theme .bg-blue-600 {
+        background-color: #2563eb !important;
+    }
+    
+    /* Fix call to action text visibility in dark mode */
+    .dark-theme .call-to-action h2,
+    .dark-theme .call-to-action p {
+        color: #ffffff !important;
+    }
+    
+    /* Ensure the blue section text is always visible */
+    .bg-blue-900 h2,
+    .bg-blue-900 p {
+        color: #ffffff !important;
+    }
+    
+    .dark-theme .bg-blue-700 {
+        background-color: #1d4ed8 !important;
+    }
+    
+    .dark-theme .bg-blue-100 {
+        background-color: #1e3a8a !important;
+    }
+    
+    .dark-theme .bg-gradient-to-r.from-blue-50.to-indigo-50 {
+        background: linear-gradient(to right, #1e3a8a, #312e81) !important;
+    }
+    
+    .dark-theme .bg-gradient-to-r.from-blue-500.to-blue-600 {
+        background: linear-gradient(to right, #2563eb, #1d4ed8) !important;
+    }
+    
+    .dark-theme .hover\\:from-blue-600:hover {
+        background: linear-gradient(to right, #1d4ed8, #1e40af) !important;
+    }
+    
+    .dark-theme .hover\\:to-blue-700:hover {
+        background: linear-gradient(to right, #1d4ed8, #1e40af) !important;
+    }
+    
     .dark-theme .bg-gray-100 {
         background-color: #374151 !important;
     }
@@ -129,11 +284,63 @@
         background-color: #374151 !important;
     }
     
+    /* Modal CSS - High specificity to override conflicts */
+    #propertyModal {
+        position: fixed !important;
+        top: 0 !important;
+        left: 0 !important;
+        right: 0 !important;
+        bottom: 0 !important;
+        z-index: 9999 !important;
+        display: flex !important;
+        align-items: flex-start !important;
+        justify-content: center !important;
+        padding: 0.5rem !important;
+        overflow-y: auto !important;
+    }
+    
+    #propertyModal.hidden {
+        display: none !important;
+        visibility: hidden !important;
+        opacity: 0 !important;
+        pointer-events: none !important;
+    }
+    
+    .modal-backdrop {
+        position: absolute !important;
+        top: 0 !important;
+        left: 0 !important;
+        right: 0 !important;
+        bottom: 0 !important;
+        background-color: rgba(0, 0, 0, 0.5) !important;
+    }
+    
+    .modal-container {
+        position: relative !important;
+        max-width: 56rem !important; /* max-w-4xl */
+        width: 100% !important;
+        margin: 1rem 0.5rem !important;
+        max-height: 80vh !important;
+        display: flex !important;
+        flex-direction: column !important;
+        background-color: white !important;
+        border-radius: 1rem !important;
+        box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.25), 0 0 0 1px rgba(255, 255, 255, 0.05) !important;
+        backdrop-filter: blur(10px) !important;
+        border: 1px solid rgba(255, 255, 255, 0.2) !important;
+    }
+    
+    .modal-container .flex-1 {
+        flex: 1 1 0% !important;
+        overflow-y: auto !important;
+        padding: 1rem !important;
+    }
+    
     /* Modal responsive fixes */
     @media (max-width: 640px) {
-        #propertyModal .max-w-5xl {
+        .modal-container {
             max-width: 95vw !important;
-            margin: 0.5rem !important;
+            margin: 0.25rem !important;
         }
         
         #propertyModal .text-xl {
@@ -144,20 +351,26 @@
             font-size: 1.25rem !important;
         }
         
-        #propertyModal .max-h-\[60vh\] {
-            max-height: 50vh !important;
+        .modal-container {
+            max-height: 75vh !important;
         }
     }
     
     @media (max-height: 600px) {
-        #propertyModal .max-h-\[60vh\] {
-            max-height: 40vh !important;
+        .modal-container {
+            max-height: 70vh !important;
         }
     }
     
     @media (max-height: 500px) {
-        #propertyModal .max-h-\[60vh\] {
-            max-height: 35vh !important;
+        .modal-container {
+            max-height: 65vh !important;
+        }
+    }
+    
+    @media (max-height: 400px) {
+        .modal-container {
+            max-height: 60vh !important;
         }
     }
 
@@ -207,7 +420,7 @@
 
     <div class="min-h-screen bg-gray-50">
     <!-- Hero Section -->
-    <div class="bg-gradient-to-r from-blue-900 to-blue-700 text-white py-20" style="background: linear-gradient(to right, #1e3a8a, #1d4ed8); color: #ffffff;">
+    <div class="bg-gradient-to-r from-blue-900 to-blue-700 text-white py-20 dark-theme" style="background: linear-gradient(to right, #1e3a8a, #1d4ed8); color: #ffffff;">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <div class="text-center">
                 <h1 class="text-4xl md:text-6xl font-bold mb-6" style="color: #ffffff !important;">Find Your Perfect Property</h1>
@@ -277,41 +490,45 @@
                     </div>
                     
                     <div class="p-6">
-                        <div class="flex justify-between items-start mb-3">
-                            <h3 class="text-xl font-bold text-gray-900">{{ property.title }}</h3>
-                            <div class="text-2xl font-bold text-green-600">
+                        <!-- Title and Price -->
+                        <div class="flex justify-between items-start mb-4">
+                            <h3 class="text-xl font-bold text-gray-900 flex-1 pr-3">{{ property.title }}</h3>
+                            <div class="text-2xl font-bold text-green-600 whitespace-nowrap">
                                 ${{ property.price|floatformat:0 }}
                                 {% if property.property_type == 'lease' %}/month{% endif %}
                             </div>
                         </div>
                         
-                        <p class="text-gray-600 mb-3">
+                        <!-- Location -->
+                        <p class="text-gray-600 mb-4">
                             <i class="fas fa-map-marker-alt text-blue-500 mr-2"></i>
                             {{ property.location }}
                         </p>
                         
-                        <div class="flex items-center gap-4 mb-4 text-sm text-gray-600">
+                        <!-- Property Details -->
+                        <div class="flex items-center gap-4 mb-6 text-sm text-gray-600">
                             {% if property.bedrooms %}
-                            <span><i class="fas fa-bed text-blue-500 mr-1"></i>{{ property.bedrooms }} bed{{ property.bedrooms|pluralize }}</span>
+                            <span class="flex items-center"><i class="fas fa-bed text-blue-500 mr-1"></i>{{ property.bedrooms }} bed{{ property.bedrooms|pluralize }}</span>
                             {% endif %}
                             {% if property.bathrooms %}
-                            <span><i class="fas fa-bath text-blue-500 mr-1"></i>{{ property.bathrooms }} bath{{ property.bathrooms|pluralize }}</span>
+                            <span class="flex items-center"><i class="fas fa-bath text-blue-500 mr-1"></i>{{ property.bathrooms }} bath{{ property.bathrooms|pluralize }}</span>
                             {% endif %}
                             {% if property.area_sqft %}
-                            <span><i class="fas fa-ruler-combined text-blue-500 mr-1"></i>{{ property.area_sqft }} sqft</span>
+                            <span class="flex items-center"><i class="fas fa-ruler-combined text-blue-500 mr-1"></i>{{ property.area_sqft }} sqft</span>
                             {% endif %}
                         </div>
                         
-                        <div class="flex gap-2">
-                            <button class="flex-1 bg-purple-600 hover:bg-purple-700 text-white text-center py-2 px-4 rounded-lg transition duration-300">
+                        <!-- Action Buttons -->
+                        <div class="flex justify-between items-center">
+                            <button class="flex-1 bg-purple-600 hover:bg-purple-700 text-white text-center py-3 px-4 rounded-lg transition duration-300 font-medium mr-3">
                                 <i class="fas fa-eye mr-2"></i>View Details
                             </button>
                             <a href="mailto:{{ property.contact_email }}?subject=Inquiry about {{ property.title }}" 
-                               class="bg-blue-600 hover:bg-blue-700 text-white text-center py-2 px-4 rounded-lg transition duration-300">
+                               class="bg-blue-600 hover:bg-blue-700 text-white text-center py-3 px-4 rounded-lg transition duration-300 flex items-center justify-center min-w-[50px] mr-2">
                                 <i class="fas fa-envelope"></i>
                             </a>
                             <a href="tel:{{ property.contact_phone }}" 
-                               class="bg-green-600 hover:bg-green-700 text-white text-center py-2 px-4 rounded-lg transition duration-300">
+                               class="bg-green-600 hover:bg-green-700 text-white text-center py-3 px-4 rounded-lg transition duration-300 flex items-center justify-center min-w-[50px]">
                                 <i class="fas fa-phone"></i>
                             </a>
                         </div>
@@ -342,20 +559,130 @@
     </div>
 
     <!-- Call to Action -->
-    <div class="bg-blue-900 text-white py-16">
+    <div class="bg-blue-900 text-white py-16 dark-theme call-to-action">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
             <h2 class="text-3xl font-bold mb-4">Can't Find What You're Looking For?</h2>
             <p class="text-xl mb-8">Let us help you find the perfect property. Contact our team today!</p>
-            <div class="flex flex-col sm:flex-row gap-4 justify-center">
+            <div class="flex flex-col sm:flex-row gap-4 justify-center mb-8">
                 <a href="{% url 'selling' %}" class="bg-yellow-500 hover:bg-yellow-600 text-white px-8 py-3 rounded-lg font-semibold transition duration-300">
                     List Your Property
                 </a>
-                <a href="{% url 'home' %}" class="bg-transparent border-2 border-white hover:bg-white hover:text-blue-900 text-white px-8 py-3 rounded-lg font-semibold transition duration-300">
+                <a href="{% url 'selling' %}" class="bg-purple-600 hover:bg-purple-700 text-white px-8 py-3 rounded-lg font-semibold transition duration-300 shadow-lg hover:shadow-xl" style="background-color: #9333ea !important;">
                     Get Property Valuation
                 </a>
             </div>
+            
+            <!-- Property Inquiry Form -->
+            <div class="bg-white rounded-2xl p-8 max-w-4xl mx-auto shadow-2xl border border-gray-100 form-container">
+                <div class="text-center mb-8">
+                    <h3 class="text-3xl font-bold mb-4 text-gray-900">Tell Us What You're Looking For</h3>
+                    <p class="text-lg text-gray-700">Our team will help you find the perfect property</p>
+                </div>
+                
+                <form method="post" action="{% url 'property_inquiry' %}" class="space-y-6" id="propertyInquiryForm">
+                    {% csrf_token %}
+                    
+                    <!-- Contact Information -->
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mb-6">
+                        <div>
+                            <label class="block text-sm font-medium mb-2 text-gray-700">Full Name *</label>
+                            <input type="text" name="name" class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500" 
+                                   placeholder="Enter your full name" required>
+                        </div>
+                        <div>
+                            <label class="block text-sm font-medium mb-2 text-gray-700">Email Address *</label>
+                            <input type="email" name="email" class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500" 
+                                   placeholder="Enter your email address" required>
+                        </div>
+                    </div>
+                    
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mb-6">
+                        <div>
+                            <label class="block text-sm font-medium mb-2 text-gray-700">Phone Number *</label>
+                            <input type="tel" name="phone" class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500" 
+                                   placeholder="Enter your phone number" required>
+                        </div>
+                        <div>
+                            <label class="block text-sm font-medium mb-2 text-gray-700">Property Type</label>
+                            <select name="property_type" class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500">
+                                <option value="">Select property type</option>
+                                <option value="house">House</option>
+                                <option value="apartment">Apartment</option>
+                                <option value="condo">Condo</option>
+                                <option value="townhouse">Townhouse</option>
+                                <option value="commercial">Commercial</option>
+                            </select>
+                        </div>
+                    </div>
+
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mb-6">
+                        <div>
+                            <label class="block text-sm font-medium mb-2 text-gray-700">Budget Range</label>
+                            <select name="budget_range" class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500">
+                                <option value="">Select budget range</option>
+                                <option value="under-300k">Under $300,000</option>
+                                <option value="300k-500k">$300,000 - $500,000</option>
+                                <option value="500k-750k">$500,000 - $750,000</option>
+                                <option value="750k-1m">$750,000 - $1,000,000</option>
+                                <option value="over-1m">Over $1,000,000</option>
+                            </select>
+                        </div>
+                        <div>
+                            <label class="block text-sm font-medium mb-2 text-gray-700">Preferred Location</label>
+                            <input type="text" name="location" class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500" 
+                                   placeholder="e.g., Downtown, Suburbs">
+                        </div>
+                    </div>
+                    
+                    <div class="mb-6">
+                        <label class="block text-sm font-medium mb-2 text-gray-700">Specific Requirements</label>
+                        <textarea name="requirements" rows="4" class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500" 
+                                  placeholder="Tell us about your specific needs, preferences, must-haves, and any questions you may have..."></textarea>
+                    </div>
+                    
+                    <!-- Submit Button -->
+                    <button type="submit" class="w-full bg-blue-600 hover:bg-blue-700 text-white font-semibold py-4 px-6 rounded-lg transition duration-300">
+                        <i class="fas fa-search mr-3"></i>
+                        Find My Perfect Property
+                    </button>
+                </form>
+            </div>
         </div>
     </div>
+    </div>
+
+    <!-- Popup Modal for Form Submission -->
+    <div id="submissionModal" class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 hidden">
+        <div class="bg-white dark:bg-gray-800 rounded-2xl p-8 max-w-md mx-4 text-center shadow-2xl">
+            <div class="mb-4">
+                <div class="w-16 h-16 bg-blue-100 dark:bg-blue-900 rounded-full flex items-center justify-center mx-auto mb-4">
+                    <svg class="w-8 h-8 text-blue-600 dark:text-blue-400 animate-spin" fill="none" viewBox="0 0 24 24">
+                        <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
+                        <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+                    </svg>
+                </div>
+                <h3 class="text-xl font-semibold text-gray-900 dark:text-white mb-2">Sending Your Inquiry</h3>
+                <p class="text-gray-600 dark:text-gray-300">Please wait while we process your request...</p>
+            </div>
+        </div>
+    </div>
+
+    <!-- Success Modal -->
+    <div id="successModal" class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 hidden">
+        <div class="bg-white dark:bg-gray-800 rounded-2xl p-8 max-w-md mx-4 text-center shadow-2xl">
+            <div class="mb-4">
+                <div class="w-8 h-8 bg-green-100 dark:bg-green-900 rounded-full flex items-center justify-center mx-auto mb-4">
+                    <svg class="w-4 h-4 text-green-600 dark:text-green-400" fill="none" stroke="currentColor" viewBox="0 0 24 24" style="stroke-width: 3;">
+                        <path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7"></path>
+                    </svg>
+                </div>
+                <h3 class="text-xl font-semibold text-gray-900 dark:text-white mb-2">Inquiry Sent Successfully!</h3>
+                <p class="text-gray-600 dark:text-gray-300 mb-6">Thank you for your interest. Our team will contact you soon with property recommendations.</p>
+                <button onclick="closeSuccessModal()" class="bg-blue-600 hover:bg-blue-700 text-white font-semibold py-2 px-6 rounded-lg transition duration-300">
+                    Close
+                </button>
+            </div>
+        </div>
     </div>
 
 <style>
@@ -364,6 +691,28 @@
     -webkit-line-clamp: 3;
     -webkit-box-orient: vertical;
     overflow: hidden;
+}
+
+/* Modal styles to override any conflicts */
+#submissionModal, #successModal {
+    display: none !important;
+    visibility: hidden !important;
+    opacity: 0 !important;
+    pointer-events: none !important;
+}
+
+#submissionModal:not(.hidden), #successModal:not(.hidden) {
+    display: flex !important;
+    visibility: visible !important;
+    opacity: 1 !important;
+    pointer-events: auto !important;
+}
+
+/* Ensure checkmark is small and visible */
+#successModal svg {
+    width: 16px !important;
+    height: 16px !important;
+    stroke-width: 3 !important;
 }
 </style>
 
@@ -416,11 +765,11 @@ function openPropertyModal(id, title, location, address, price, propertyType, be
     const modalBathrooms = document.getElementById('modalBathrooms');
     const modalParking = document.getElementById('modalParking');
     const modalArea = document.getElementById('modalArea');
-    const modalDescription = document.getElementById('modalDescription');
+    // Description removed for compact modal
     const modalImage = document.getElementById('modalImage');
     const modalContactEmail = document.getElementById('modalContactEmail');
     const modalContactPhone = document.getElementById('modalContactPhone');
-    const modalAdditionalImages = document.getElementById('modalAdditionalImages');
+    // Additional images removed for compact modal
     
     // Populate modal content
     modalTitle.textContent = title;
@@ -428,9 +777,17 @@ function openPropertyModal(id, title, location, address, price, propertyType, be
     modalAddress.textContent = address;
     modalPrice.textContent = '$' + parseFloat(price).toLocaleString() + (propertyType === 'lease' ? '/month' : '');
     modalPropertyType.textContent = propertyType === 'buy' ? '💰 FOR SALE' : '📋 FOR LEASE';
-    modalDescription.textContent = description;
-    modalImage.src = imageUrl;
-    modalImage.alt = title;
+    // Description removed for compact modal
+    if (imageUrl && imageUrl.trim() !== '') {
+        modalImage.src = imageUrl;
+        modalImage.alt = title;
+        modalImage.style.display = 'block';
+        modalImage.onerror = function() {
+            this.style.display = 'none';
+        };
+    } else {
+        modalImage.style.display = 'none';
+    }
     
     // Contact info
     modalContactEmail.href = 'mailto:' + contactEmail + '?subject=Inquiry about ' + title;
@@ -442,48 +799,56 @@ function openPropertyModal(id, title, location, address, price, propertyType, be
     modalParking.textContent = parkingSpaces ? parkingSpaces + ' parking space' + (parkingSpaces > 1 ? 's' : '') : 'N/A';
     modalArea.textContent = areaSqft ? areaSqft + ' sqft' : 'N/A';
     
-    // Additional images
-    modalAdditionalImages.innerHTML = '';
-    if (additionalImages && additionalImages.length > 0) {
-        additionalImages.forEach(function(imageUrl) {
-            if (imageUrl.trim()) {
-                const img = document.createElement('img');
-                img.src = imageUrl.trim();
-                img.alt = title;
-                img.className = 'w-full h-24 object-cover rounded-lg';
-                img.onclick = function() {
-                    modalImage.src = imageUrl.trim();
-                };
-                modalAdditionalImages.appendChild(img);
-            }
-        });
-    }
+    // Additional images removed for compact modal
     
     // Show modal
     modal.classList.remove('hidden');
+    modal.style.display = 'flex';
+    modal.style.visibility = 'visible';
+    modal.style.opacity = '1';
+    modal.style.pointerEvents = 'auto';
     document.body.style.overflow = 'hidden';
 }
 
 function closePropertyModal() {
     const modal = document.getElementById('propertyModal');
-    modal.classList.add('hidden');
-    document.body.style.overflow = 'auto';
+    if (modal) {
+        // Force hide with multiple methods
+        modal.style.display = 'none !important';
+        modal.style.visibility = 'hidden';
+        modal.style.opacity = '0';
+        modal.style.pointerEvents = 'none';
+        modal.classList.add('hidden');
+        
+        // Reset body overflow
+        document.body.style.overflow = 'auto';
+        document.body.style.paddingRight = '0';
+    }
 }
 
 // Close modal when clicking outside or pressing Escape
 document.addEventListener('DOMContentLoaded', function() {
     const modal = document.getElementById('propertyModal');
+    const backdrop = document.querySelector('.modal-backdrop');
     
-    // Close modal when clicking outside
+    // Close modal when clicking on backdrop
+    if (backdrop) {
+        backdrop.addEventListener('click', function(e) {
+            e.stopPropagation();
+            closePropertyModal();
+        });
+    }
+    
+    // Close modal when clicking outside modal container
     modal.addEventListener('click', function(e) {
-        if (e.target === this) {
+        if (e.target === modal) {
             closePropertyModal();
         }
     });
     
     // Close modal when pressing Escape key
     document.addEventListener('keydown', function(e) {
-        if (e.key === 'Escape' && !modal.classList.contains('hidden')) {
+        if (e.key === 'Escape' && modal.style.display === 'flex') {
             closePropertyModal();
         }
     });
@@ -491,103 +856,148 @@ document.addEventListener('DOMContentLoaded', function() {
 </script>
 
 <!-- Property Details Modal -->
-<div id="propertyModal" class="hidden fixed inset-0 bg-black bg-opacity-50 z-50 flex items-start justify-center p-2 sm:p-4 overflow-y-auto">
-    <div class="bg-white rounded-lg shadow-xl max-w-5xl w-full my-4 mx-2 sm:mx-4">
+<div id="propertyModal" class="hidden">
+    <div class="modal-backdrop"></div>
+    <div class="modal-container">
         <!-- Modal Header -->
-        <div class="flex justify-between items-center p-4 sm:p-6 border-b">
-            <h2 id="modalTitle" class="text-xl sm:text-2xl font-bold text-gray-900 pr-4"></h2>
-            <button onclick="closePropertyModal()" class="text-gray-400 hover:text-gray-600 hover:bg-gray-100 rounded-full p-2 text-xl sm:text-2xl transition duration-300 flex-shrink-0">
+        <div class="flex justify-between items-center p-6 border-b border-gray-100 bg-gradient-to-r from-gray-50 to-white">
+            <h2 id="modalTitle" class="text-2xl sm:text-3xl font-bold text-gray-900 pr-4"></h2>
+            <button onclick="closePropertyModal()" class="text-gray-400 hover:text-gray-600 hover:bg-gray-100 rounded-full p-3 text-xl sm:text-2xl transition-all duration-300 flex-shrink-0 hover:scale-110">
                 <i class="fas fa-times"></i>
             </button>
         </div>
         
         <!-- Modal Content -->
-        <div class="p-4 sm:p-6 max-h-[60vh] overflow-y-auto">
-            <div class="grid grid-cols-1 lg:grid-cols-2 gap-4 lg:gap-6">
-                <!-- Left Column - Image and Basic Info -->
-                <div>
-                    <div class="mb-4">
-                        <img id="modalImage" src="" alt="" class="w-full h-48 sm:h-56 object-cover rounded-lg">
-                    </div>
-                    
-                    <!-- Additional Images -->
-                    <div id="modalAdditionalImages" class="grid grid-cols-3 gap-2 mb-4"></div>
-                    
-                    <div class="space-y-3">
-                        <div class="flex items-center">
-                            <i class="fas fa-map-marker-alt text-blue-500 mr-3"></i>
-                            <span id="modalLocation" class="text-gray-700"></span>
-                        </div>
-                        <div class="flex items-center">
-                            <i class="fas fa-home text-blue-500 mr-3"></i>
-                            <span id="modalAddress" class="text-gray-700"></span>
-                        </div>
-                        <div class="flex items-center">
-                            <i class="fas fa-tag text-blue-500 mr-3"></i>
-                            <span id="modalPropertyType" class="text-gray-700"></span>
-                        </div>
+        <div class="p-6 flex-1 overflow-y-auto">
+            <div class="space-y-6">
+                <!-- Image Section -->
+                <div class="relative">
+                    <img id="modalImage" src="" alt="" class="w-full h-64 object-cover rounded-xl shadow-lg">
+                    <div class="absolute top-4 right-4">
+                        <span id="modalPropertyType" class="bg-white/90 backdrop-blur-sm text-gray-800 px-3 py-1 rounded-full text-sm font-medium shadow-lg"></span>
                     </div>
                 </div>
                 
-                <!-- Right Column - Details and Contact -->
-                <div>
-                    <div class="mb-6">
-                        <div class="text-3xl font-bold text-green-600 mb-4">
-                            <span id="modalPrice"></span>
-                        </div>
-                        
-                        <div class="grid grid-cols-2 gap-4 mb-6">
-                            <div class="text-center p-3 bg-gray-50 rounded-lg">
-                                <i class="fas fa-bed text-blue-500 text-xl mb-2"></i>
-                                <div class="text-sm text-gray-600">Bedrooms</div>
-                                <div id="modalBedrooms" class="font-semibold"></div>
-                            </div>
-                            <div class="text-center p-3 bg-gray-50 rounded-lg">
-                                <i class="fas fa-bath text-blue-500 text-xl mb-2"></i>
-                                <div class="text-sm text-gray-600">Bathrooms</div>
-                                <div id="modalBathrooms" class="font-semibold"></div>
-                            </div>
-                            <div class="text-center p-3 bg-gray-50 rounded-lg">
-                                <i class="fas fa-car text-blue-500 text-xl mb-2"></i>
-                                <div class="text-sm text-gray-600">Parking</div>
-                                <div id="modalParking" class="font-semibold"></div>
-                            </div>
-                            <div class="text-center p-3 bg-gray-50 rounded-lg">
-                                <i class="fas fa-ruler-combined text-blue-500 text-xl mb-2"></i>
-                                <div class="text-sm text-gray-600">Area</div>
-                                <div id="modalArea" class="font-semibold"></div>
-                            </div>
-                        </div>
-                        
-                        <div class="mb-6">
-                            <h3 class="text-lg font-semibold text-gray-900 mb-3">Description</h3>
-                            <p id="modalDescription" class="text-gray-700 leading-relaxed"></p>
-                        </div>
-                        
-                        <div class="space-y-3">
-                            <h3 class="text-lg font-semibold text-gray-900">Contact Information</h3>
-                            <a id="modalContactEmail" href="#" class="flex items-center p-3 bg-blue-50 hover:bg-blue-100 rounded-lg transition duration-300">
-                                <i class="fas fa-envelope text-blue-500 mr-3"></i>
-                                <span class="text-blue-700">Send Email</span>
-                            </a>
-                            <a id="modalContactPhone" href="#" class="flex items-center p-3 bg-green-50 hover:bg-green-100 rounded-lg transition duration-300">
-                                <i class="fas fa-phone text-green-500 mr-3"></i>
-                                <span class="text-green-700">Call Now</span>
-                            </a>
-                        </div>
+                <!-- Price Section -->
+                <div class="text-center">
+                    <div class="text-4xl font-bold text-green-600 mb-2">
+                        <span id="modalPrice"></span>
                     </div>
+                    <div class="text-gray-500 text-sm">Price</div>
+                </div>
+                
+                <!-- Location Section -->
+                <div class="bg-gradient-to-r from-blue-50 to-indigo-50 p-4 rounded-xl">
+                    <div class="flex items-center justify-center mb-2">
+                        <i class="fas fa-map-marker-alt text-blue-600 text-lg mr-2"></i>
+                        <span id="modalLocation" class="text-gray-800 font-medium"></span>
+                    </div>
+                    <div class="text-center text-gray-600 text-sm">
+                        <span id="modalAddress"></span>
+                    </div>
+                </div>
+                
+                <!-- Property Details Grid -->
+                <div class="grid grid-cols-2 gap-4">
+                    <div class="bg-white border border-gray-200 rounded-xl p-4 text-center hover:shadow-md transition duration-300">
+                        <div class="bg-blue-100 w-12 h-12 rounded-full flex items-center justify-center mx-auto mb-3">
+                            <i class="fas fa-bed text-blue-600 text-lg"></i>
+                        </div>
+                        <div class="text-xs text-gray-500 uppercase tracking-wide mb-1">Bedrooms</div>
+                        <div id="modalBedrooms" class="font-bold text-gray-800 text-lg"></div>
+                    </div>
+                    <div class="bg-white border border-gray-200 rounded-xl p-4 text-center hover:shadow-md transition duration-300">
+                        <div class="bg-green-100 w-12 h-12 rounded-full flex items-center justify-center mx-auto mb-3">
+                            <i class="fas fa-bath text-green-600 text-lg"></i>
+                        </div>
+                        <div class="text-xs text-gray-500 uppercase tracking-wide mb-1">Bathrooms</div>
+                        <div id="modalBathrooms" class="font-bold text-gray-800 text-lg"></div>
+                    </div>
+                    <div class="bg-white border border-gray-200 rounded-xl p-4 text-center hover:shadow-md transition duration-300">
+                        <div class="bg-purple-100 w-12 h-12 rounded-full flex items-center justify-center mx-auto mb-3">
+                            <i class="fas fa-car text-purple-600 text-lg"></i>
+                        </div>
+                        <div class="text-xs text-gray-500 uppercase tracking-wide mb-1">Parking</div>
+                        <div id="modalParking" class="font-bold text-gray-800 text-lg"></div>
+                    </div>
+                    <div class="bg-white border border-gray-200 rounded-xl p-4 text-center hover:shadow-md transition duration-300">
+                        <div class="bg-orange-100 w-12 h-12 rounded-full flex items-center justify-center mx-auto mb-3">
+                            <i class="fas fa-ruler-combined text-orange-600 text-lg"></i>
+                        </div>
+                        <div class="text-xs text-gray-500 uppercase tracking-wide mb-1">Area</div>
+                        <div id="modalArea" class="font-bold text-gray-800 text-lg"></div>
+                    </div>
+                </div>
+                
+                <!-- Contact Buttons -->
+                <div class="grid grid-cols-2 gap-4">
+                    <a id="modalContactEmail" href="#" class="group flex items-center justify-center p-4 bg-gradient-to-r from-blue-500 to-blue-600 hover:from-blue-600 hover:to-blue-700 text-white rounded-xl transition-all duration-300 transform hover:scale-105 shadow-lg hover:shadow-xl">
+                        <i class="fas fa-envelope text-lg mr-3 group-hover:animate-pulse"></i>
+                        <span class="font-medium">Send Email</span>
+                    </a>
+                    <a id="modalContactPhone" href="#" class="group flex items-center justify-center p-4 bg-gradient-to-r from-green-500 to-green-600 hover:from-green-600 hover:to-green-700 text-white rounded-xl transition-all duration-300 transform hover:scale-105 shadow-lg hover:shadow-xl">
+                        <i class="fas fa-phone text-lg mr-3 group-hover:animate-pulse"></i>
+                        <span class="font-medium">Call Now</span>
+                    </a>
                 </div>
             </div>
         </div>
         
-        <!-- Modal Footer -->
-        <div class="flex justify-end p-4 sm:p-6 border-t bg-gray-50">
-            <button onclick="closePropertyModal()" class="bg-gray-500 hover:bg-gray-600 text-white px-4 sm:px-6 py-2 rounded-lg transition duration-300">
-                <i class="fas fa-times mr-2"></i>Close
-            </button>
-        </div>
+        <!-- Modal Footer - Removed for cleaner design -->
     </div>
 </div>
+
+<script>
+// Form submission handling
+document.getElementById('propertyInquiryForm').addEventListener('submit', function(e) {
+    // Show loading modal
+    document.getElementById('submissionModal').classList.remove('hidden');
+    
+    // The form will submit normally, but we show the loading state
+    // The success message will be handled by Django's messages framework
+});
+
+// Function to close success modal
+function closeSuccessModal() {
+    document.getElementById('successModal').classList.add('hidden');
+}
+
+// Check if there's a success message from Django
+document.addEventListener('DOMContentLoaded', function() {
+    // First, ensure all modals are hidden on page load
+    document.getElementById('submissionModal').classList.add('hidden');
+    document.getElementById('successModal').classList.add('hidden');
+    
+    // Check for Django success messages (they might be in different formats)
+    const successMessages = document.querySelectorAll('.messages .alert-success, .alert-success, .success');
+    if (successMessages.length > 0) {
+        // Hide loading modal if it's showing
+        document.getElementById('submissionModal').classList.add('hidden');
+        // Show success modal
+        document.getElementById('successModal').classList.remove('hidden');
+    }
+    
+    // Check for URL parameters or specific success indicators
+    const urlParams = new URLSearchParams(window.location.search);
+    if (urlParams.get('success') === 'true' || urlParams.get('submitted') === 'true') {
+        document.getElementById('submissionModal').classList.add('hidden');
+        document.getElementById('successModal').classList.remove('hidden');
+    }
+});
+
+// Close modals when clicking outside
+document.getElementById('submissionModal').addEventListener('click', function(e) {
+    if (e.target === this) {
+        this.classList.add('hidden');
+    }
+});
+
+document.getElementById('successModal').addEventListener('click', function(e) {
+    if (e.target === this) {
+        this.classList.add('hidden');
+    }
+});
+</script>
 
 </body>
 </html>

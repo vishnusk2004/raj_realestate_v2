@@ -10,7 +10,7 @@ from django.contrib import messages
 from django.utils import timezone
 from django.views.decorators.csrf import csrf_exempt
 from django.db import models
-from .models import BlogTracking, BlogPost, PropertyListing, OpenHouse
+from .models import BlogTracking, BlogPost, PropertyListing, OpenHouse, OpenHouseRegistration, PropertyInquiry, MortgageInquiry
 from .forms import BlogPostForm
 import uuid
 import json
@@ -159,6 +159,10 @@ def selling(request):
             timeline = request.POST.get('timeline', '')
             message = request.POST.get('message', '')
             
+            # Get system info
+            from .webhook_utils import get_system_info
+            system_info = get_system_info(request)
+            
             # Create and save the contact
             contact = SellingContact.objects.create(
                 name=name,
@@ -168,7 +172,11 @@ def selling(request):
                 property_type=property_type,
                 estimated_value=estimated_value,
                 timeline=timeline,
-                message=message
+                message=message,
+                ip_address=system_info.get('ip_address'),
+                user_agent=system_info.get('user_agent'),
+                referrer=system_info.get('referrer'),
+                language=system_info.get('language')
             )
             
             messages.success(request, 'Thank you! Our team will contact you within 24 hours.')
@@ -222,15 +230,38 @@ def open_house(request):
             name = request.POST.get('name')
             email = request.POST.get('email')
             phone = request.POST.get('phone')
-            message = request.POST.get('message')
+            message = request.POST.get('message', '')
+            property_type = request.POST.get('property_type', '')
+            budget_range = request.POST.get('budget_range', '')
+            preferred_date = request.POST.get('preferred_date', '')
+            preferred_time = request.POST.get('preferred_time', '')
+            open_house_id = request.POST.get('open_house_id')
             
-            # Create a simple contact record (you can create a model for this if needed)
-            # For now, we'll just show success message
-            messages.success(request, 'Your inquiry has been submitted successfully! We will contact you within 24 hours.')
+            # Validate required fields
+            if not all([name, email, phone, open_house_id]):
+                messages.error(request, 'Please fill in all required fields.')
+                return redirect('open_house')
+            
+            # Get the selected open house
+            open_house_obj = get_object_or_404(OpenHouse, id=open_house_id, published=True)
+            
+            # Create the registration
+            registration = OpenHouseRegistration.objects.create(
+                open_house=open_house_obj,
+                name=name,
+                email=email,
+                phone=phone,
+                message=f"Property Type: {property_type}\nBudget Range: {budget_range}\nPreferred Date: {preferred_date}\nPreferred Time: {preferred_time}\n\nAdditional Information: {message}",
+                interested_in_buying=True,  # Default to True since they're interested in open houses
+                interested_in_leasing=False,
+                preferred_contact_time=preferred_time.lower() if preferred_time else 'anytime'
+            )
+            
+            messages.success(request, f'Thank you for registering for "{open_house_obj.title}"! We will contact you within 24 hours.')
             return redirect('open_house')  # Redirect to clear the POST data
             
         except Exception as e:
-            messages.error(request, 'There was an error submitting your inquiry. Please try again.')
+            messages.error(request, f'There was an error submitting your registration. Please try again. Error: {str(e)}')
     
     # Get all published open house events
     open_houses = OpenHouse.objects.filter(published=True).order_by('open_house_date', 'open_house_time')
@@ -536,3 +567,162 @@ def buy_lease(request):
         'brand_name': settings.BRAND_NAME
     }
     return render(request, 'Henry/buy_lease.html', context)
+
+
+def property_inquiry(request):
+    """Handle property inquiry form submissions from buy-lease page"""
+    if request.method == 'POST':
+        try:
+            # Get form data
+            name = request.POST.get('name')
+            email = request.POST.get('email')
+            phone = request.POST.get('phone')
+            property_type = request.POST.get('property_type', '')
+            budget_range = request.POST.get('budget_range', '')
+            location = request.POST.get('location', '')
+            requirements = request.POST.get('requirements', '')
+            
+            # Validate required fields
+            if not all([name, email, phone]):
+                messages.error(request, 'Please fill in all required fields.')
+                return redirect('buy_lease')
+            
+            # Get system info
+            from .webhook_utils import get_client_ip, get_system_info
+            system_info = get_system_info(request)
+            
+            # Create the inquiry
+            inquiry = PropertyInquiry.objects.create(
+                name=name,
+                email=email,
+                phone=phone,
+                property_type=property_type if property_type else None,
+                budget_range=budget_range if budget_range else None,
+                location=location if location else None,
+                requirements=requirements if requirements else None,
+                ip_address=system_info.get('ip_address'),
+                user_agent=system_info.get('user_agent'),
+                referrer=system_info.get('referrer'),
+                language=system_info.get('language')
+            )
+            
+            # Send to CRM via webhook
+            from .webhook_utils import send_to_crm, format_property_inquiry_data
+            form_data = {
+                'name': name,
+                'email': email,
+                'phone': phone,
+                'property_type': property_type,
+                'budget_range': budget_range,
+                'location': location,
+                'message': requirements,
+                'interested_in_buying': request.POST.get('interested_in_buying', ''),
+                'interested_in_leasing': request.POST.get('interested_in_leasing', ''),
+                'preferred_contact_time': request.POST.get('preferred_contact_time', '')
+            }
+            lead_data = format_property_inquiry_data(form_data)
+            send_to_crm('property_inquiry', lead_data, request)
+            
+            messages.success(request, f'Thank you for your inquiry, {name}! Our team will contact you within 24 hours to help you find the perfect property.')
+            return redirect('buy_lease' + '?submitted=true')
+            
+        except Exception as e:
+            messages.error(request, f'There was an error submitting your inquiry. Please try again. Error: {str(e)}')
+            return redirect('buy_lease')
+    
+    # If not POST, redirect to buy_lease page
+    return redirect('buy_lease')
+
+
+def mortgage_inquiry(request):
+    """Handle mortgage inquiry form submissions from mortgage calculator page"""
+    if request.method == 'POST':
+        try:
+            # Get form data
+            name = request.POST.get('name')
+            email = request.POST.get('email')
+            phone = request.POST.get('phone')
+            property_type = request.POST.get('property_type', '')
+            home_price = request.POST.get('home_price', '')
+            down_payment = request.POST.get('down_payment', '')
+            loan_term = request.POST.get('loan_term', '')
+            credit_score = request.POST.get('credit_score', '')
+            additional_info = request.POST.get('additional_info', '')
+            
+            # Validate required fields
+            if not all([name, email, phone]):
+                messages.error(request, 'Please fill in all required fields.')
+                return redirect('mortgage_calculator')
+            
+            # Convert numeric fields
+            home_price_decimal = None
+            down_payment_decimal = None
+            loan_term_int = None
+            
+            if home_price:
+                try:
+                    home_price_decimal = float(home_price)
+                except ValueError:
+                    pass
+            
+            if down_payment:
+                try:
+                    down_payment_decimal = float(down_payment)
+                except ValueError:
+                    pass
+            
+            if loan_term:
+                try:
+                    loan_term_int = int(loan_term)
+                except ValueError:
+                    pass
+            
+            # Get system info
+            from .webhook_utils import get_client_ip, get_system_info
+            system_info = get_system_info(request)
+            
+            # Create the inquiry
+            inquiry = MortgageInquiry.objects.create(
+                name=name,
+                email=email,
+                phone=phone,
+                property_type=property_type if property_type else None,
+                home_price=home_price_decimal,
+                down_payment=down_payment_decimal,
+                loan_term=loan_term_int,
+                credit_score=credit_score if credit_score else None,
+                additional_info=additional_info if additional_info else None,
+                ip_address=system_info.get('ip_address'),
+                user_agent=system_info.get('user_agent'),
+                referrer=system_info.get('referrer'),
+                language=system_info.get('language')
+            )
+            
+            # Send to CRM via webhook
+            from .webhook_utils import send_to_crm, format_mortgage_inquiry_data
+            form_data = {
+                'name': name,
+                'email': email,
+                'phone': phone,
+                'property_type': property_type,
+                'home_price': home_price,
+                'down_payment': down_payment,
+                'loan_term': loan_term,
+                'interest_rate': request.POST.get('interest_rate', ''),
+                'calculated_payment': request.POST.get('calculated_payment', ''),
+                'location': request.POST.get('location', ''),
+                'message': additional_info,
+                'preferred_contact_time': request.POST.get('preferred_contact_time', '')
+            }
+            lead_data = format_mortgage_inquiry_data(form_data)
+            send_to_crm('mortgage_inquiry', lead_data, request)
+            
+            messages.success(request, f'Thank you for your mortgage inquiry, {name}! Our team will analyze your situation and provide you with personalized mortgage information within 24 hours.')
+            return redirect('mortgage_calculator' + '?submitted=true')
+            
+        except Exception as e:
+            messages.error(request, f'There was an error submitting your inquiry. Please try again. Error: {str(e)}')
+            return redirect('mortgage_calculator')
+    
+    # If not POST, redirect to mortgage calculator page
+    return redirect('mortgage_calculator')
