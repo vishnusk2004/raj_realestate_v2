@@ -20,8 +20,8 @@ class Command(BaseCommand):
                 'area_sqft': 1200,
                 'description': 'Beautiful modern condo in the heart of downtown Toronto. Features floor-to-ceiling windows, granite countertops, and a stunning city view. Walking distance to restaurants, shopping, and public transit.',
                 'image_url': 'https://images.unsplash.com/photo-1560448204-e02f11c3d0e2?w=800&h=600&fit=crop',
-                'contact_email': 'sales@henryoakreality.com',
-                'contact_phone': '(416) 555-0123',
+                'contact_email': 'raj.gupta@kw.com',
+                'contact_phone': '(832) 785-0140',
                 'featured': True,
                 'published': True
             },
@@ -37,8 +37,8 @@ class Command(BaseCommand):
                 'area_sqft': 2200,
                 'description': 'Perfect family home with a large backyard, finished basement, and updated kitchen. Located in a quiet neighborhood with excellent schools nearby.',
                 'image_url': 'https://images.unsplash.com/photo-1570129477492-45c003edd2be?w=800&h=600&fit=crop',
-                'contact_email': 'sales@henryoakreality.com',
-                'contact_phone': '(416) 555-0123',
+                'contact_email': 'raj.gupta@kw.com',
+                'contact_phone': '(832) 785-0140',
                 'featured': False,
                 'published': True
             },
@@ -54,8 +54,8 @@ class Command(BaseCommand):
                 'area_sqft': 1800,
                 'description': 'Stunning penthouse with panoramic city views, private terrace, and premium finishes throughout. Includes concierge service and access to building amenities.',
                 'image_url': 'https://images.unsplash.com/photo-1512917774080-9991f1c4c750?w=800&h=600&fit=crop',
-                'contact_email': 'sales@henryoakreality.com',
-                'contact_phone': '(416) 555-0123',
+                'contact_email': 'raj.gupta@kw.com',
+                'contact_phone': '(832) 785-0140',
                 'featured': True,
                 'published': True
             }
@@ -75,8 +75,8 @@ class Command(BaseCommand):
                 'area_sqft': 600,
                 'description': 'Fully furnished studio apartment in the heart of the Entertainment District. Perfect for young professionals. Includes all utilities and high-speed internet.',
                 'image_url': 'https://images.unsplash.com/photo-1522708323590-d24dbb6b0267?w=800&h=600&fit=crop',
-                'contact_email': 'leasing@henryoakreality.com',
-                'contact_phone': '(416) 555-0456',
+                'contact_email': 'raj@the-bandpteam.com',
+                'contact_phone': '(832) 785-0140',
                 'featured': False,
                 'published': True
             },
@@ -92,8 +92,8 @@ class Command(BaseCommand):
                 'area_sqft': 1100,
                 'description': 'Bright and spacious 2-bedroom apartment with in-suite laundry, balcony, and parking. Close to subway station and shopping centers.',
                 'image_url': 'https://images.unsplash.com/photo-1560448204-603b3fc33ddc?w=800&h=600&fit=crop',
-                'contact_email': 'leasing@henryoakreality.com',
-                'contact_phone': '(416) 555-0456',
+                'contact_email': 'raj@the-bandpteam.com',
+                'contact_phone': '(832) 785-0140',
                 'featured': True,
                 'published': True
             },
@@ -109,8 +109,8 @@ class Command(BaseCommand):
                 'area_sqft': 1800,
                 'description': 'Executive townhouse with modern finishes, private garage, and backyard. Ideal for families or professionals seeking luxury living.',
                 'image_url': 'https://images.unsplash.com/photo-1564013799919-ab600027ffc6?w=800&h=600&fit=crop',
-                'contact_email': 'leasing@henryoakreality.com',
-                'contact_phone': '(416) 555-0456',
+                'contact_email': 'raj@the-bandpteam.com',
+                'contact_phone': '(832) 785-0140',
                 'featured': False,
                 'published': True
             }

@@ -21,8 +21,8 @@ class Command(BaseCommand):
                 'image_url': 'https://images.unsplash.com/photo-1560448204-e02f11c3d0e2?ixlib=rb-4.0.3&auto=format&fit=crop&w=1000&q=80',
                 'open_house_date': date.today() + timedelta(days=2),
                 'open_house_time': time(10, 0),  # 10:00 AM
-                'contact_email': 'abhi.gupta82@gmail.com',
-                'contact_phone': '+1 (315) 395-8315',
+                'contact_email': 'raj.gupta@kw.com',
+                'contact_phone': '(832) 785-0140',
                 'published': True
             },
             {
@@ -36,8 +36,8 @@ class Command(BaseCommand):
                 'image_url': 'https://images.unsplash.com/photo-1570129477492-45c003edd2be?ixlib=rb-4.0.3&auto=format&fit=crop&w=1000&q=80',
                 'open_house_date': date.today() + timedelta(days=3),
                 'open_house_time': time(14, 0),  # 2:00 PM
-                'contact_email': 'abhi.gupta82@gmail.com',
-                'contact_phone': '+1 (315) 395-8315',
+                'contact_email': 'raj.gupta@kw.com',
+                'contact_phone': '(832) 785-0140',
                 'published': True
             },
             {
@@ -51,8 +51,8 @@ class Command(BaseCommand):
                 'image_url': 'https://images.unsplash.com/photo-1600596542815-ffad4c1539a9?ixlib=rb-4.0.3&auto=format&fit=crop&w=1000&q=80',
                 'open_house_date': date.today() + timedelta(days=4),
                 'open_house_time': time(11, 0),  # 11:00 AM
-                'contact_email': 'abhi.gupta82@gmail.com',
-                'contact_phone': '+1 (315) 395-8315',
+                'contact_email': 'raj.gupta@kw.com',
+                'contact_phone': '(832) 785-0140',
                 'published': True
             }
         ]
