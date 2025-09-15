@@ -26,3 +26,9 @@ services:
         fromDatabase:
           name: henry-realestate-db
           property: connectionString
+      - key: ADMIN_USERNAME
+        value: admin
+      - key: ADMIN_EMAIL
+        value: raj.gupta@kw.com
+      - key: ADMIN_PASSWORD
+        generateValue: true

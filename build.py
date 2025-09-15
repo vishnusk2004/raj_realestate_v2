@@ -17,4 +17,10 @@ django.setup()
 from django.core.management import execute_from_command_line
 execute_from_command_line(['manage.py', 'collectstatic', '--noinput'])
 
+# Run migrations
+execute_from_command_line(['manage.py', 'migrate', '--noinput'])
+
+# Create superuser
+execute_from_command_line(['manage.py', 'create_superuser', '--noinput'])
+
 print("Build completed successfully!")
