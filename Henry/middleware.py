@@ -18,6 +18,45 @@ class LinkTrackingMiddleware(MiddlewareMixin):
         if path.startswith('/admin/') or path.startswith('/static/') or path.startswith('/media/'):
             return None
             
+        # Check for simple tracking format: /?url=https://facebook.com/page&code=ju123
+        if path == '/' and request.GET.get('url') and request.GET.get('code'):
+            url = request.GET.get('url')
+            customer_code = request.GET.get('code')
+            
+            # Determine platform from URL
+            platform = self._get_platform_from_url(url)
+            if platform:
+                # Get system information
+                ip_address = get_client_ip(request)
+                user_agent = request.META.get('HTTP_USER_AGENT', '')
+                referrer = request.META.get('HTTP_REFERER', '')
+                language = request.META.get('HTTP_ACCEPT_LANGUAGE', '').split(',')[0] if request.META.get('HTTP_ACCEPT_LANGUAGE') else ''
+                
+                # Create or update tracking record
+                tracking_record, created = LinkTracking.objects.get_or_create(
+                    customer_code=customer_code,
+                    page_type=platform,
+                    page_id=None,
+                    defaults={
+                        'original_url': url,
+                        'tracked_url': request.build_absolute_uri(),
+                    }
+                )
+                
+                tracking_record.record_click(
+                    ip_address=ip_address,
+                    user_agent=user_agent,
+                    referrer=referrer,
+                    language=language
+                )
+                
+                try:
+                    send_link_tracking_to_crm(tracking_record, request)
+                except Exception as e:
+                    logger.error(f"Failed to send link tracking to CRM: {str(e)}")
+                
+                return HttpResponseRedirect(url)
+        
         # Get the current path and query string
         query_string = request.META.get('QUERY_STRING', '')
         
@@ -144,6 +183,25 @@ class LinkTrackingMiddleware(MiddlewareMixin):
                 logger.error(f"Failed to send link tracking to CRM: {str(e)}")
             
             # Redirect to the clean URL (without tracking code)
-            return HttpResponseRedirect(original_url)
-        
+                return HttpResponseRedirect(original_url)
+
         return None
+    
+    def _get_platform_from_url(self, url):
+        """Determine platform from URL"""
+        url_lower = url.lower()
+        
+        if 'facebook.com' in url_lower:
+            return 'facebook'
+        elif 'instagram.com' in url_lower:
+            return 'instagram'
+        elif 'twitter.com' in url_lower or 'x.com' in url_lower:
+            return 'twitter'
+        elif 'linkedin.com' in url_lower:
+            return 'linkedin'
+        elif 't.me' in url_lower or 'telegram.me' in url_lower:
+            return 'telegram'
+        elif 'youtube.com' in url_lower or 'youtu.be' in url_lower:
+            return 'youtube'
+        else:
+            return 'external'  # Generic external link
