@@ -413,10 +413,97 @@
     </style>
     
     <style>
-        /* Fallback styles to ensure visibility */
+        /* Fallback styles to ensure visibility - excluding navbar */
         body { background-color: #f9fafb !important; color: #111827 !important; }
         
-        /* Navbar styling is now handled globally in navbar.html */
+        /* Navbar protection - ensure navbar styles are not overridden */
+        nav { 
+            background-color: #1e40af !important;
+            position: sticky !important;
+            top: 0 !important;
+            z-index: 50 !important;
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06) !important;
+        }
+        
+        /* Protect all Tailwind classes used in navbar */
+        nav.bg-blue-800,
+        nav .bg-blue-800 {
+            background-color: #1e40af !important;
+        }
+        
+        nav .text-white,
+        nav .text-lg,
+        nav .font-semibold,
+        nav .font-medium {
+            color: #ffffff !important;
+        }
+        
+        nav ul li a {
+            color: #ffffff !important;
+            font-weight: 500 !important;
+        }
+        
+        nav ul li a:hover,
+        nav .hover\\:text-blue-300:hover {
+            color: #93c5fd !important;
+        }
+        
+        nav .hover\\:bg-blue-700:hover {
+            background-color: #1d4ed8 !important;
+        }
+        
+        nav .transition-colors {
+            transition: color 0.2s ease-in-out !important;
+        }
+        
+        nav .duration-200 {
+            transition-duration: 0.2s !important;
+        }
+        
+        #theme-toggle { 
+            display: block !important; 
+            visibility: visible !important; 
+            opacity: 1 !important; 
+        }
+        
+        #theme-icon { 
+            display: inline-block !important; 
+            visibility: visible !important; 
+            opacity: 1 !important; 
+            color: #ffffff !important; 
+            font-size: 1.125rem !important;
+        }
+        
+        /* Ensure Font Awesome icons are visible */
+        nav .fas,
+        nav .fa-moon,
+        nav .fa-sun {
+            font-family: "Font Awesome 6 Free" !important;
+            font-weight: 900 !important;
+            display: inline-block !important;
+            visibility: visible !important;
+            opacity: 1 !important;
+        }
+        
+        /* Override any conflicting styles from page CSS */
+        nav * {
+            color: #ffffff !important;
+        }
+        
+        nav .text-gray-900,
+        nav .text-gray-700,
+        nav .text-gray-600 {
+            color: #ffffff !important;
+        }
+        
+        /* Ensure navbar uses default font, not Inter */
+        nav {
+            font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif !important;
+        }
+        
+        nav * {
+            font-family: inherit !important;
+        }
         
         /* Page-specific styles - excluding navbar */
         .main-content .text-white { color: #ffffff !important; }
@@ -772,7 +859,7 @@
 
     <div class="min-h-screen bg-gray-50">
     <div class="main-content">
-    <!-- Hero Section -->
+<!-- Hero Section -->
     <div class="bg-gradient-to-r from-blue-900 to-blue-700 text-white py-20 dark-theme" style="background: linear-gradient(to right, #1e3a8a, #1d4ed8); color: #ffffff;">
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div class="text-center">
@@ -928,10 +1015,10 @@
                 </form>
             </div>
         </div>
+            </div>
+        </div>
     </div>
-    </div>
-    </div>
-    </div>
+</div>
 
 {% include 'Henry/footer.html' %}
 

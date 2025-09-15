@@ -214,31 +214,30 @@ class MortgageInquiryAdmin(admin.ModelAdmin):
             'fields': ('created_at',),
             'classes': ('collapse',)
         }),
-    )
-
-
-@admin.register(LinkTracking)
-class LinkTrackingAdmin(admin.ModelAdmin):
-    list_display = ('customer_code', 'page_type', 'page_id', 'click_count', 'first_clicked_at', 'last_clicked_at', 'ip_address')
-    list_filter = ('page_type', 'first_clicked_at', 'last_clicked_at', 'created_at')
-    search_fields = ('customer_code', 'customer_name', 'customer_email', 'ip_address')
-    readonly_fields = ('created_at', 'updated_at', 'first_clicked_at', 'last_clicked_at', 'click_count', 'ip_address', 'user_agent', 'referrer', 'language')
-    fieldsets = (
-        ('Tracking Information', {
-            'fields': ('customer_code', 'page_type', 'page_id', 'original_url', 'tracked_url')
-        }),
-        ('Customer Information', {
-            'fields': ('customer_name', 'customer_email')
-        }),
-        ('Click Statistics', {
-            'fields': ('click_count', 'first_clicked_at', 'last_clicked_at')
-        }),
-        ('System Information', {
-            'fields': ('ip_address', 'user_agent', 'referrer', 'language'),
-            'classes': ('collapse',)
-        }),
-        ('Timestamps', {
-            'fields': ('created_at', 'updated_at'),
-            'classes': ('collapse',)
-        }),
-    )
+    ) 
+ @ a d m i n . r e g i s t e r ( L i n k T r a c k i n g )  
+ c l a s s   L i n k T r a c k i n g A d m i n ( a d m i n . M o d e l A d m i n ) :  
+         l i s t _ d i s p l a y   =   ( ' c u s t o m e r _ c o d e ' ,   ' p a g e _ t y p e ' ,   ' p a g e _ i d ' ,   ' c l i c k _ c o u n t ' ,   ' f i r s t _ c l i c k e d _ a t ' ,   ' l a s t _ c l i c k e d _ a t ' ,   ' i p _ a d d r e s s ' )  
+         l i s t _ f i l t e r   =   ( ' p a g e _ t y p e ' ,   ' f i r s t _ c l i c k e d _ a t ' ,   ' l a s t _ c l i c k e d _ a t ' ,   ' c r e a t e d _ a t ' )  
+         s e a r c h _ f i e l d s   =   ( ' c u s t o m e r _ c o d e ' ,   ' c u s t o m e r _ n a m e ' ,   ' c u s t o m e r _ e m a i l ' ,   ' i p _ a d d r e s s ' )  
+         r e a d o n l y _ f i e l d s   =   ( ' c r e a t e d _ a t ' ,   ' u p d a t e d _ a t ' ,   ' f i r s t _ c l i c k e d _ a t ' ,   ' l a s t _ c l i c k e d _ a t ' ,   ' c l i c k _ c o u n t ' ,   ' i p _ a d d r e s s ' ,   ' u s e r _ a g e n t ' ,   ' r e f e r r e r ' ,   ' l a n g u a g e ' )  
+         f i e l d s e t s   =   (  
+                 ( ' T r a c k i n g   I n f o r m a t i o n ' ,   {  
+                         ' f i e l d s ' :   ( ' c u s t o m e r _ c o d e ' ,   ' p a g e _ t y p e ' ,   ' p a g e _ i d ' ,   ' o r i g i n a l _ u r l ' ,   ' t r a c k e d _ u r l ' )  
+                 } ) ,  
+                 ( ' C u s t o m e r   I n f o r m a t i o n ' ,   {  
+                         ' f i e l d s ' :   ( ' c u s t o m e r _ n a m e ' ,   ' c u s t o m e r _ e m a i l ' )  
+                 } ) ,  
+                 ( ' C l i c k   S t a t i s t i c s ' ,   {  
+                         ' f i e l d s ' :   ( ' c l i c k _ c o u n t ' ,   ' f i r s t _ c l i c k e d _ a t ' ,   ' l a s t _ c l i c k e d _ a t ' )  
+                 } ) ,  
+                 ( ' S y s t e m   I n f o r m a t i o n ' ,   {  
+                         ' f i e l d s ' :   ( ' i p _ a d d r e s s ' ,   ' u s e r _ a g e n t ' ,   ' r e f e r r e r ' ,   ' l a n g u a g e ' ) ,  
+                         ' c l a s s e s ' :   ( ' c o l l a p s e ' , )  
+                 } ) ,  
+                 ( ' T i m e s t a m p s ' ,   {  
+                         ' f i e l d s ' :   ( ' c r e a t e d _ a t ' ,   ' u p d a t e d _ a t ' ) ,  
+                         ' c l a s s e s ' :   ( ' c o l l a p s e ' , )  
+                 } ) ,  
+         )  
+ 

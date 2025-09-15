@@ -76,6 +76,82 @@ class BlogTracking(models.Model):
             self.save()
 
 
+class LinkTracking(models.Model):
+    """Model to track all types of link clicks with customer codes"""
+    PAGE_TYPES = [
+        ('blog', 'Blog Post'),
+        ('buy', 'Buy/Lease Page'),
+        ('sell', 'Selling Page'),
+        ('open_house', 'Open House'),
+        ('mortgage', 'Mortgage Calculator'),
+        ('home', 'Home Page'),
+        ('contact', 'Contact Page'),
+        ('facebook', 'Facebook'),
+        ('instagram', 'Instagram'),
+        ('twitter', 'Twitter'),
+        ('linkedin', 'LinkedIn'),
+        ('telegram', 'Telegram'),
+        ('youtube', 'YouTube'),
+    ]
+    
+    customer_code = models.CharField(max_length=50, help_text="Unique customer code (e.g., NAE1495)")
+    page_type = models.CharField(max_length=20, choices=PAGE_TYPES, help_text="Type of page being tracked")
+    page_id = models.CharField(max_length=50, blank=True, null=True, help_text="ID of the specific page (e.g., blog post ID)")
+    original_url = models.URLField(help_text="The original URL without tracking code")
+    tracked_url = models.URLField(help_text="The URL with tracking code")
+    
+    # Customer information
+    customer_name = models.CharField(max_length=200, blank=True, null=True, help_text="Customer name if available")
+    customer_email = models.EmailField(blank=True, null=True, help_text="Customer email if available")
+    
+    # Tracking data
+    first_clicked_at = models.DateTimeField(null=True, blank=True, help_text="When the link was first clicked")
+    last_clicked_at = models.DateTimeField(null=True, blank=True, help_text="When the link was last clicked")
+    click_count = models.IntegerField(default=0, help_text="Total number of clicks")
+    
+    # System information
+    ip_address = models.GenericIPAddressField(null=True, blank=True, help_text="IP address of the clicker")
+    user_agent = models.TextField(blank=True, null=True, help_text="Browser/device information")
+    referrer = models.URLField(blank=True, null=True, help_text="Page that referred the user")
+    language = models.CharField(max_length=10, blank=True, null=True, help_text="User's preferred language")
+    
+    created_at = models.DateTimeField(auto_now_add=True)
+    updated_at = models.DateTimeField(auto_now=True)
+    
+    class Meta:
+        unique_together = ['customer_code', 'page_type', 'page_id']
+        ordering = ['-last_clicked_at', '-created_at']
+        verbose_name = "Link Tracking"
+        verbose_name_plural = "Link Trackings"
+    
+    def __str__(self):
+        return f"{self.customer_code} - {self.get_page_type_display()} - {self.click_count} clicks"
+    
+    def record_click(self, ip_address=None, user_agent=None, referrer=None, language=None):
+        """Record a click on this tracked link"""
+        now = timezone.now()
+        
+        # Set first click time if this is the first click
+        if not self.first_clicked_at:
+            self.first_clicked_at = now
+        
+        # Update last click time and increment count
+        self.last_clicked_at = now
+        self.click_count += 1
+        
+        # Update system information
+        if ip_address:
+            self.ip_address = ip_address
+        if user_agent:
+            self.user_agent = user_agent
+        if referrer:
+            self.referrer = referrer
+        if language:
+            self.language = language
+            
+        self.save()
+
+
 class PropertyListing(models.Model):
     """Model to store property listings for Buy/Lease section"""
     PROPERTY_TYPE_CHOICES = [
@@ -138,6 +214,7 @@ class BlogPost(models.Model):
     content = models.TextField()
     excerpt = models.TextField(max_length=500, blank=True, help_text="Short description for blog listing")
     image_url = models.URLField(max_length=500, blank=True, help_text="Main image URL for the blog post")
+    image_file = models.ImageField(upload_to='blog_images/', blank=True, null=True, help_text="Upload an image file (alternative to image URL)")
     featured = models.BooleanField(default=False, help_text="Featured posts appear first")
     published = models.BooleanField(default=True, help_text="Only published posts are visible")
     created_at = models.DateTimeField(auto_now_add=True)
@@ -147,6 +224,12 @@ class BlogPost(models.Model):
         ordering = ['-featured', '-created_at']
         verbose_name = "Blog Post"
         verbose_name_plural = "Blog Posts"
+    
+    def get_image_url(self):
+        """Return the image URL, preferring uploaded file over URL"""
+        if self.image_file:
+            return self.image_file.url
+        return self.image_url
     
     def __str__(self):
         return self.title

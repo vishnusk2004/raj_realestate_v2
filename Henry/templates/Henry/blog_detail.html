@@ -11,6 +11,95 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
     
     <style>
+        /* Navbar protection - ensure navbar styles are not overridden */
+        nav { 
+            background-color: #1e40af !important; 
+            position: sticky !important;
+            top: 0 !important;
+            z-index: 50 !important;
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06) !important;
+        }
+        
+        /* Protect all Tailwind classes used in navbar */
+        nav.bg-blue-800,
+        nav .bg-blue-800 {
+            background-color: #1e40af !important;
+        }
+        
+        nav .text-white,
+        nav .text-lg,
+        nav .font-semibold,
+        nav .font-medium {
+            color: #ffffff !important;
+        }
+        
+        nav ul li a {
+            color: #ffffff !important;
+            font-weight: 500 !important;
+        }
+        
+        nav ul li a:hover,
+        nav .hover\\:text-blue-300:hover {
+            color: #93c5fd !important;
+        }
+        
+        nav .hover\\:bg-blue-700:hover {
+            background-color: #1d4ed8 !important;
+        }
+        
+        nav .transition-colors {
+            transition: color 0.2s ease-in-out !important;
+        }
+        
+        nav .duration-200 {
+            transition-duration: 0.2s !important;
+        }
+        
+        #theme-toggle { 
+            display: block !important; 
+            visibility: visible !important; 
+            opacity: 1 !important; 
+        }
+        
+        #theme-icon { 
+            display: inline-block !important; 
+            visibility: visible !important; 
+            opacity: 1 !important; 
+            color: #ffffff !important; 
+            font-size: 1.125rem !important;
+        }
+        
+        /* Ensure Font Awesome icons are visible */
+        nav .fas,
+        nav .fa-moon,
+        nav .fa-sun {
+            font-family: "Font Awesome 6 Free" !important;
+            font-weight: 900 !important;
+            display: inline-block !important;
+            visibility: visible !important;
+            opacity: 1 !important;
+        }
+        
+        /* Override any conflicting styles from page CSS */
+        nav * {
+            color: #ffffff !important;
+        }
+        
+        nav .text-gray-900,
+        nav .text-gray-700,
+        nav .text-gray-600 {
+            color: #ffffff !important;
+        }
+        
+        /* Ensure navbar uses default font */
+        nav {
+            font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif !important;
+        }
+        
+        nav * {
+            font-family: inherit !important;
+        }
+        
         /* Dark theme styles */
         .dark-theme {
             background-color: #1a1a1a !important;
@@ -35,6 +124,23 @@
         
         .dark-theme .text-gray-600 {
             color: #9ca3af !important;
+        }
+        
+        /* Specific blog title styling for dark mode */
+        .dark-theme h1,
+        .dark-theme h2,
+        .dark-theme h3,
+        .dark-theme h4,
+        .dark-theme h5,
+        .dark-theme h6 {
+            color: #ffffff !important;
+        }
+        
+        .dark-theme .text-4xl,
+        .dark-theme .text-3xl,
+        .dark-theme .text-2xl,
+        .dark-theme .text-xl {
+            color: #ffffff !important;
         }
         
         .dark-theme .bg-blue-50 {
@@ -103,7 +209,7 @@
 
         <!-- Featured Image -->
         <div class="mb-8">
-            <img src="{{ post.image_url }}" alt="{{ post.title }}" class="w-full h-64 md:h-96 object-cover rounded-lg shadow-lg">
+            <img src="{{ post.get_image_url }}" alt="{{ post.title }}" class="w-full h-64 md:h-96 object-cover rounded-lg shadow-lg">
         </div>
 
         <!-- Blog Content -->
@@ -135,7 +241,7 @@
                     <div class="grid gap-6 md:grid-cols-2">
                         {% for related_post in related_posts %}
                         <a href="{% url 'blog_detail' related_post.id %}" class="bg-white rounded-lg overflow-hidden hover:shadow-lg transition-shadow duration-300 block shadow-lg">
-                            <img src="{{ related_post.image_url }}" alt="{{ related_post.title }}" class="w-full h-32 object-cover">
+                            <img src="{{ related_post.get_image_url }}" alt="{{ related_post.title }}" class="w-full h-32 object-cover">
                             <div class="p-4">
                                 <h4 class="text-gray-900 font-semibold mb-2">{{ related_post.title }}</h4>
                                 <p class="text-gray-600 text-sm">{{ related_post.excerpt|truncatewords:15 }}</p>

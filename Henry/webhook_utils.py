@@ -9,6 +9,32 @@ logger = logging.getLogger(__name__)
 # CRM Webhook URL
 CRM_WEBHOOK_URL = "https://workflow-automation.podio.com/catch/8g78a8102321zec"
 
+def format_link_tracking_data(tracking_record, request=None):
+    """
+    Format link tracking data for CRM webhook
+    
+    Args:
+        tracking_record: LinkTracking model instance
+        request: Django request object for additional context
+    
+    Returns:
+        dict: Formatted tracking data
+    """
+    return {
+        "customer_code": tracking_record.customer_code,
+        "page_type": tracking_record.page_type,
+        "page_id": tracking_record.page_id,
+        "original_url": tracking_record.original_url,
+        "tracked_url": tracking_record.tracked_url,
+        "customer_name": tracking_record.customer_name,
+        "customer_email": tracking_record.customer_email,
+        "click_count": tracking_record.click_count,
+        "first_clicked_at": tracking_record.first_clicked_at.isoformat() if tracking_record.first_clicked_at else None,
+        "last_clicked_at": tracking_record.last_clicked_at.isoformat() if tracking_record.last_clicked_at else None,
+        "system_info": get_system_info(request) if request else {}
+    }
+
+
 def send_to_crm(form_type, lead_data, request=None):
     """
     Send form data to CRM webhook
@@ -196,3 +222,47 @@ def format_selling_contact_data(form_data):
             "message": form_data.get('message', '')
         }
     }
+
+
+def send_link_tracking_to_crm(tracking_record, request=None):
+    """
+    Send link tracking data to CRM webhook
+    
+    Args:
+        tracking_record: LinkTracking model instance
+        request: Django request object for additional context
+    
+    Returns:
+        bool: True if successful, False otherwise
+    """
+    try:
+        # Format the tracking data
+        tracking_data = format_link_tracking_data(tracking_record, request)
+        
+        # Prepare the payload
+        payload = {
+            "form_type": "link_tracking",
+            "timestamp": datetime.utcnow().isoformat() + "Z",
+            "source_page": f"{tracking_record.page_type}_{tracking_record.page_id or 'page'}",
+            "tracking_data": tracking_data,
+            "system_info": get_system_info(request) if request else {}
+        }
+        
+        # Send to CRM
+        response = requests.post(
+            CRM_WEBHOOK_URL,
+            json=payload,
+            headers={'Content-Type': 'application/json'},
+            timeout=10
+        )
+        
+        if response.status_code == 200:
+            logger.info(f"Link tracking data sent to CRM successfully for customer {tracking_record.customer_code}")
+            return True
+        else:
+            logger.error(f"CRM webhook returned status {response.status_code}: {response.text}")
+            return False
+            
+    except Exception as e:
+        logger.error(f"Failed to send link tracking data to CRM: {str(e)}")
+        return False
