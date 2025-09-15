@@ -24,9 +24,9 @@ urlpatterns = [
     path('api/create-tracking-link/', views.create_tracking_link, name='create_tracking_link'),
     path('tracking-dashboard/', views.tracking_dashboard, name='tracking_dashboard'),
     
-    # Blog admin URLs
-    path('admin/blog/', views.blog_admin, name='blog_admin'),
-    path('admin/blog/add/', views.blog_add, name='blog_add'),
-    path('admin/blog/edit/<int:post_id>/', views.blog_edit, name='blog_edit'),
-    path('admin/blog/delete/<int:post_id>/', views.blog_delete, name='blog_delete'),
+    # Blog admin URLs (moved to avoid conflict with Django admin)
+    path('blog-admin/', views.blog_admin, name='blog_admin'),
+    path('blog-admin/add/', views.blog_add, name='blog_add'),
+    path('blog-admin/edit/<int:post_id>/', views.blog_edit, name='blog_edit'),
+    path('blog-admin/delete/<int:post_id>/', views.blog_delete, name='blog_delete'),
 ]

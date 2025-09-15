@@ -13,8 +13,12 @@ class LinkTrackingMiddleware(MiddlewareMixin):
     """
     
     def process_request(self, request):
-        # Get the current path and query string
+        # Skip admin URLs and other system URLs
         path = request.path
+        if path.startswith('/admin/') or path.startswith('/static/') or path.startswith('/media/'):
+            return None
+            
+        # Get the current path and query string
         query_string = request.META.get('QUERY_STRING', '')
         
         # If there's a query string, we need to reconstruct the full URL
