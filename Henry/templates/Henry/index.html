@@ -127,6 +127,225 @@
     #theme-icon {
         transition: transform 0.3s ease;
     }
+    
+    /* Mobile-specific optimizations */
+    @media (max-width: 768px) {
+        /* Hero Section Mobile */
+        .hero-title {
+            font-size: 1.875rem !important; /* text-3xl */
+            line-height: 2.25rem !important;
+            margin-bottom: 1rem !important;
+        }
+        
+        .hero-subtitle {
+            font-size: 1rem !important; /* text-base */
+            line-height: 1.5rem !important;
+            margin-bottom: 1.5rem !important;
+        }
+        
+        .hero-actions {
+            grid-template-columns: 1fr !important;
+            gap: 0.75rem !important;
+            max-width: 20rem !important;
+            margin: 0 auto !important;
+        }
+        
+        .hero-action-btn {
+            padding: 0.75rem 1rem !important;
+            font-size: 0.875rem !important;
+            text-align: center !important;
+        }
+        
+        /* Testimonials Mobile */
+        .testimonials-grid {
+            grid-template-columns: 1fr !important;
+            gap: 1rem !important;
+        }
+        
+        .testimonial-card {
+            padding: 1rem !important;
+        }
+        
+        .testimonial-avatar {
+            width: 3rem !important;
+            height: 3rem !important;
+        }
+        
+        .testimonial-name {
+            font-size: 1.125rem !important;
+        }
+        
+        .testimonial-role {
+            font-size: 0.75rem !important;
+        }
+        
+        .testimonial-text {
+            font-size: 0.875rem !important;
+            line-height: 1.4 !important;
+        }
+        
+        /* Company History Mobile */
+        .company-section {
+            padding: 2rem 1rem !important;
+        }
+        
+        .company-title {
+            font-size: 2rem !important;
+            margin-bottom: 1rem !important;
+        }
+        
+        .company-subtitle {
+            font-size: 1rem !important;
+            line-height: 1.5 !important;
+        }
+        
+        .founder-image {
+            width: 16rem !important;
+            height: 16rem !important;
+            margin: 0 auto 1.5rem !important;
+        }
+        
+        .founder-content {
+            text-align: center !important;
+        }
+        
+        .founder-title {
+            font-size: 1.5rem !important;
+            margin-bottom: 1rem !important;
+        }
+        
+        .founder-text {
+            font-size: 0.875rem !important;
+            line-height: 1.5 !important;
+            margin-bottom: 1rem !important;
+        }
+        
+        .partners-title {
+            font-size: 1.5rem !important;
+            margin-bottom: 2rem !important;
+        }
+        
+        .partners-grid {
+            grid-template-columns: 1fr !important;
+            gap: 2rem !important;
+        }
+        
+        .partner-logo {
+            height: 4rem !important;
+        }
+        
+        .partner-title {
+            font-size: 1.125rem !important;
+        }
+        
+        .partner-text {
+            font-size: 0.875rem !important;
+            line-height: 1.5 !important;
+        }
+        
+        /* Properties Section Mobile */
+        .properties-grid {
+            grid-template-columns: 1fr !important;
+            gap: 1rem !important;
+        }
+        
+        .property-card {
+            margin-bottom: 1rem !important;
+        }
+        
+        .property-image {
+            height: 12rem !important;
+        }
+        
+        .property-price {
+            font-size: 1rem !important;
+        }
+        
+        .property-location {
+            font-size: 0.75rem !important;
+        }
+        
+        .property-details {
+            font-size: 0.625rem !important;
+        }
+        
+        /* Stats Section Mobile */
+        .stats-section {
+            padding: 2rem 1rem !important;
+        }
+        
+        .stats-title {
+            font-size: 2rem !important;
+            margin-bottom: 2rem !important;
+        }
+        
+        .stats-grid {
+            grid-template-columns: 1fr !important;
+            gap: 2rem !important;
+        }
+        
+        .stat-number {
+            font-size: 3rem !important;
+        }
+        
+        .stat-label {
+            font-size: 1rem !important;
+        }
+        
+        .stats-buttons {
+            flex-direction: column !important;
+            gap: 0.75rem !important;
+            margin-top: 2rem !important;
+        }
+        
+        .stats-btn {
+            padding: 0.75rem 1.5rem !important;
+            font-size: 0.875rem !important;
+        }
+        
+        /* Additional mobile improvements */
+        .container {
+            padding-left: 1rem !important;
+            padding-right: 1rem !important;
+        }
+        
+        /* Better touch targets for mobile */
+        .hero-action-btn, .stats-btn {
+            min-height: 44px !important;
+            display: flex !important;
+            align-items: center !important;
+            justify-content: center !important;
+        }
+        
+        /* Improve text readability on mobile */
+        body {
+            font-size: 16px !important;
+            line-height: 1.5 !important;
+        }
+        
+        /* Better spacing for mobile */
+        section {
+            padding-top: 2rem !important;
+            padding-bottom: 2rem !important;
+        }
+        
+        /* Optimize video for mobile */
+        video {
+            object-fit: cover !important;
+            width: 100% !important;
+            height: 100vh !important;
+        }
+        
+        /* Better mobile navigation */
+        .navbar {
+            padding: 0.5rem 1rem !important;
+        }
+        
+        /* Improve card shadows on mobile */
+        .testimonial-card, .property-card {
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1) !important;
+        }
+    }
     </style>
 
 </head>
@@ -181,15 +400,15 @@
         <!-- Content -->
         <div class="relative z-10 h-full flex items-center justify-center text-white text-center">
             <div class="px-4">
-                <h1 class="text-4xl font-bold mb-4">Find Your Dream Home with {{ brand_name }}</h1>
-                <p class="text-lg mb-6">Discover the best properties and insights with our AI-powered real estate solutions.</p>
+                <h1 class="hero-title text-4xl font-bold mb-4">Find Your Dream Home with {{ brand_name }}</h1>
+                <p class="hero-subtitle text-lg mb-6">Discover the best properties and insights with our AI-powered real estate solutions.</p>
                 
                 <!-- Action Options Grid -->
-                <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4 max-w-4xl mx-auto">
-                    <a href="{% url 'selling' %}" class="bg-blue-600 text-white px-6 py-3 rounded shadow hover:bg-blue-700 transition">Sell Your Home</a>
-                    <a href="{% url 'selling' %}" class="bg-green-600 text-white px-6 py-3 rounded shadow hover:bg-green-700 transition">Lease Property</a>
-                    <a href="{% url 'open_house' %}" class="bg-purple-600 text-white px-6 py-3 rounded shadow hover:bg-purple-700 transition">Open Houses</a>
-                    <a href="{% url 'mortgage_calculator' %}" class="bg-orange-600 text-white px-6 py-3 rounded shadow hover:bg-orange-700 transition">Mortgage Calculator</a>
+                <div class="hero-actions grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4 max-w-4xl mx-auto">
+                    <a href="{% url 'selling' %}" class="hero-action-btn bg-blue-600 text-white px-6 py-3 rounded shadow hover:bg-blue-700 transition">Sell Your Home</a>
+                    <a href="{% url 'selling' %}" class="hero-action-btn bg-green-600 text-white px-6 py-3 rounded shadow hover:bg-green-700 transition">Lease Property</a>
+                    <a href="{% url 'open_house' %}" class="hero-action-btn bg-purple-600 text-white px-6 py-3 rounded shadow hover:bg-purple-700 transition">Open Houses</a>
+                    <a href="{% url 'mortgage_calculator' %}" class="hero-action-btn bg-orange-600 text-white px-6 py-3 rounded shadow hover:bg-orange-700 transition">Mortgage Calculator</a>
                 </div>
             </div>
         </div>
@@ -200,21 +419,21 @@
         <div class="container mx-auto max-w-5xl">
             <h2 class="text-4xl font-bold text-center mb-10 text-gray-900">What Our Clients Say</h2>
 
-            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+            <div class="testimonials-grid grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
                 <!-- Testimonial Card 1 -->
                 <div class="testimonial-card bg-white p-6 rounded-lg shadow-lg">
                     <div class="flex items-center mb-4">
-                        <div class="w-14 h-14 rounded-full bg-blue-100 flex items-center justify-center mr-4">
+                        <div class="testimonial-avatar w-14 h-14 rounded-full bg-blue-100 flex items-center justify-center mr-4">
                             <svg class="w-8 h-8 text-blue-600" fill="currentColor" viewBox="0 0 24 24">
                                 <path d="M12 12c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm0 2c-2.67 0-8 1.34-8 4v2h16v-2c0-2.66-5.33-4-8-4z"/>
                             </svg>
                         </div>
                         <div>
-                            <h3 class="text-xl font-semibold text-gray-900">Michael Chen</h3>
-                            <p class="text-gray-600 text-sm">First-time Homebuyer, Houston, TX</p>
+                            <h3 class="testimonial-name text-xl font-semibold text-gray-900">Michael Chen</h3>
+                            <p class="testimonial-role text-gray-600 text-sm">First-time Homebuyer, Houston, TX</p>
                         </div>
                     </div>
-                    <p class="text-gray-700">"Raj and his team made our first home purchase incredibly smooth. They explained every step of the process and negotiated an amazing deal for us. We couldn't be happier with our new home!"</p>
+                    <p class="testimonial-text text-gray-700">"Raj and his team made our first home purchase incredibly smooth. They explained every step of the process and negotiated an amazing deal for us. We couldn't be happier with our new home!"</p>
                     <div class="mt-4 text-yellow-400">
                         <i class="fas fa-star"></i>
                         <i class="fas fa-star"></i>
@@ -227,17 +446,17 @@
                 <!-- Testimonial Card 2 -->
                 <div class="testimonial-card bg-white p-6 rounded-lg shadow-lg">
                     <div class="flex items-center mb-4">
-                        <div class="w-14 h-14 rounded-full bg-blue-100 flex items-center justify-center mr-4">
+                        <div class="testimonial-avatar w-14 h-14 rounded-full bg-blue-100 flex items-center justify-center mr-4">
                             <svg class="w-8 h-8 text-blue-600" fill="currentColor" viewBox="0 0 24 24">
                                 <path d="M12 12c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm0 2c-2.67 0-8 1.34-8 4v2h16v-2c0-2.66-5.33-4-8-4z"/>
                             </svg>
                         </div>
                         <div>
-                            <h3 class="text-xl font-semibold text-gray-900">Jennifer Martinez</h3>
-                            <p class="text-gray-600 text-sm">Property Investor, Dallas, TX</p>
+                            <h3 class="testimonial-name text-xl font-semibold text-gray-900">Jennifer Martinez</h3>
+                            <p class="testimonial-role text-gray-600 text-sm">Property Investor, Dallas, TX</p>
                         </div>
                     </div>
-                    <p class="text-gray-700">"As a real estate investor, I've worked with many agents, but Raj's market knowledge and negotiation skills are unmatched. He helped me acquire three properties this year alone. Highly professional!"</p>
+                    <p class="testimonial-text text-gray-700">"As a real estate investor, I've worked with many agents, but Raj's market knowledge and negotiation skills are unmatched. He helped me acquire three properties this year alone. Highly professional!"</p>
                     <div class="mt-4 text-yellow-400">
                         <i class="fas fa-star"></i>
                         <i class="fas fa-star"></i>
@@ -250,17 +469,17 @@
                 <!-- Testimonial Card 3 -->
                 <div class="testimonial-card bg-white p-6 rounded-lg shadow-lg">
                     <div class="flex items-center mb-4">
-                        <div class="w-14 h-14 rounded-full bg-blue-100 flex items-center justify-center mr-4">
+                        <div class="testimonial-avatar w-14 h-14 rounded-full bg-blue-100 flex items-center justify-center mr-4">
                             <svg class="w-8 h-8 text-blue-600" fill="currentColor" viewBox="0 0 24 24">
                                 <path d="M12 12c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm0 2c-2.67 0-8 1.34-8 4v2h16v-2c0-2.66-5.33-4-8-4z"/>
                             </svg>
                         </div>
                         <div>
-                            <h3 class="text-xl font-semibold text-gray-900">David Thompson</h3>
-                            <p class="text-gray-600 text-sm">Retiree, Austin, TX</p>
+                            <h3 class="testimonial-name text-xl font-semibold text-gray-900">David Thompson</h3>
+                            <p class="testimonial-role text-gray-600 text-sm">Retiree, Austin, TX</p>
                         </div>
                     </div>
-                    <p class="text-gray-700">"After 30 years in our family home, selling was emotional. Raj understood this and guided us through the entire process with compassion and expertise. We got top dollar and a smooth closing!"</p>
+                    <p class="testimonial-text text-gray-700">"After 30 years in our family home, selling was emotional. Raj understood this and guided us through the entire process with compassion and expertise. We got top dollar and a smooth closing!"</p>
                     <div class="mt-4 text-yellow-400">
                         <i class="fas fa-star"></i>
                         <i class="fas fa-star"></i>
@@ -274,11 +493,11 @@
     </section>
 
     <!-- Company History & Team Section -->
-    <section class="bg-white py-16 px-4">
+    <section class="company-section bg-white py-16 px-4">
         <div class="container mx-auto max-w-6xl">
             <div class="text-center mb-12">
-                <h2 class="text-4xl font-bold text-gray-900 mb-4">Our Story & Partners</h2>
-                <p class="text-xl text-gray-600 max-w-3xl mx-auto">Built on a foundation of family values and strategic partnerships, we continue to serve our community with excellence in real estate.</p>
+                <h2 class="company-title text-4xl font-bold text-gray-900 mb-4">Our Story & Partners</h2>
+                <p class="company-subtitle text-xl text-gray-600 max-w-3xl mx-auto">Built on a foundation of family values and strategic partnerships, we continue to serve our community with excellence in real estate.</p>
             </div>
 
             <!-- Founder Section -->
@@ -286,16 +505,16 @@
                 <div class="flex flex-col lg:flex-row items-center gap-8">
                     <div class="lg:w-1/3">
                         <div class="relative">
-                            <img src="{% static 'Images/raj_image.png' %}" alt="Company Founder" class="w-80 h-80 object-cover rounded-lg shadow-xl mx-auto">
+                            <img src="{% static 'Images/raj_image.png' %}" alt="Company Founder" class="founder-image w-80 h-80 object-cover rounded-lg shadow-xl mx-auto">
                             <div class="absolute inset-0 bg-gradient-to-t from-black/20 to-transparent rounded-lg"></div>
                         </div>
                     </div>
-                    <div class="lg:w-2/3">
-                        <h3 class="text-3xl font-bold text-gray-900 mb-4">Founded with Vision</h3>
-                        <p class="text-lg text-gray-700 mb-6 leading-relaxed">
+                    <div class="founder-content lg:w-2/3">
+                        <h3 class="founder-title text-3xl font-bold text-gray-900 mb-4">Founded with Vision</h3>
+                        <p class="founder-text text-lg text-gray-700 mb-6 leading-relaxed">
                             Our company was founded by a visionary leader who believed in the power of real estate to transform communities and create lasting value. With decades of experience and an unwavering commitment to excellence, our founder established the principles that continue to guide us today.
                         </p>
-                        <p class="text-lg text-gray-700 leading-relaxed">
+                        <p class="founder-text text-lg text-gray-700 leading-relaxed">
                             From humble beginnings to becoming a trusted name in real estate, our journey has been marked by integrity, innovation, and an unshakeable dedication to our clients' success.
                         </p>
                     </div>
@@ -304,15 +523,15 @@
 
             <!-- Partners Section -->
             <div class="border-t border-gray-200 pt-20">
-                <h3 class="text-3xl font-bold text-gray-900 text-center mb-16 mt-8">Our Strategic Partners</h3>
-                <div class="grid grid-cols-1 md:grid-cols-2 gap-12 items-center">
+                <h3 class="partners-title text-3xl font-bold text-gray-900 text-center mb-16 mt-8">Our Strategic Partners</h3>
+                <div class="partners-grid grid grid-cols-1 md:grid-cols-2 gap-12 items-center">
                     <!-- Keller Williams Southwest -->
                     <div class="text-center">
                         <div class="bg-gray-50 p-8 rounded-lg shadow-lg mb-6">
-                            <img src="{% static 'Images/keller_williams_southwest_logo.png' %}" alt="Keller Williams Southwest" class="h-20 mx-auto object-contain">
+                            <img src="{% static 'Images/keller_williams_southwest_logo.png' %}" alt="Keller Williams Southwest" class="partner-logo h-20 mx-auto object-contain">
                         </div>
-                        <h4 class="text-xl font-semibold text-gray-900 mb-3">Keller Williams Southwest</h4>
-                        <p class="text-gray-600 leading-relaxed">
+                        <h4 class="partner-title text-xl font-semibold text-gray-900 mb-3">Keller Williams Southwest</h4>
+                        <p class="partner-text text-gray-600 leading-relaxed">
                             Our partnership with Keller Williams Southwest brings together cutting-edge technology, comprehensive training, and a culture of collaboration that empowers our agents to deliver exceptional results.
                         </p>
                     </div>
@@ -320,10 +539,10 @@
                     <!-- The B&P Team -->
                     <div class="text-center">
                         <div class="bg-gray-50 p-8 rounded-lg shadow-lg mb-6">
-                            <img src="{% static 'Images/B&P_team.png' %}" alt="The B&P Team" class="h-20 mx-auto object-contain">
+                            <img src="{% static 'Images/B&P_team.png' %}" alt="The B&P Team" class="partner-logo h-20 mx-auto object-contain">
                         </div>
-                        <h4 class="text-xl font-semibold text-gray-900 mb-3">The B&P Team</h4>
-                        <p class="text-gray-600 leading-relaxed">
+                        <h4 class="partner-title text-xl font-semibold text-gray-900 mb-3">The B&P Team</h4>
+                        <p class="partner-text text-gray-600 leading-relaxed">
                             Our collaboration with The B&P Team combines decades of local market expertise with innovative marketing strategies, ensuring our clients receive the most comprehensive and effective real estate services.
                         </p>
                     </div>
@@ -336,16 +555,16 @@
     <section class="bg-gray-50 py-8">
         <div class="container mx-auto px-4">
             <h2 class="text-3xl font-bold text-gray-900 text-center mb-6">Recently Sold and Leased</h2>
-            <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
+            <div class="properties-grid grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
 
                 <!-- Property Card 1 -->
-                <div class="relative rounded-lg overflow-hidden shadow-lg bg-white">
-                    <img src="https://static.wixstatic.com/media/4eb8f6_12dd7f5ab6cb49b5974019a73f043f79~mv2_d_2800_1600_s_2.png/v1/fill/w_1205,h_689,al_c,q_90,usm_0.66_1.00_0.01,enc_auto/4eb8f6_12dd7f5ab6cb49b5974019a73f043f79~mv2_d_2800_1600_s_2.png" alt="Property 1" class="w-full h-64 object-cover">
+                <div class="property-card relative rounded-lg overflow-hidden shadow-lg bg-white">
+                    <img src="https://static.wixstatic.com/media/4eb8f6_12dd7f5ab6cb49b5974019a73f043f79~mv2_d_2800_1600_s_2.png/v1/fill/w_1205,h_689,al_c,q_90,usm_0.66_1.00_0.01,enc_auto/4eb8f6_12dd7f5ab6cb49b5974019a73f043f79~mv2_d_2800_1600_s_2.png" alt="Property 1" class="property-image w-full h-64 object-cover">
                     <div class="absolute top-2 left-2 bg-blue-600 text-white px-2 py-1 text-xs font-semibold uppercase">Sold</div>
                     <div class="p-4">
-                        <h3 class="text-lg font-bold text-gray-800">$58,500,000</h3>
-                        <p class="text-gray-600 text-sm">New York, NY</p>
-                        <p class="text-gray-600 text-xs mt-1">0 Beds • 45,000 sq.ft.</p>
+                        <h3 class="property-price text-lg font-bold text-gray-800">$58,500,000</h3>
+                        <p class="property-location text-gray-600 text-sm">New York, NY</p>
+                        <p class="property-details text-gray-600 text-xs mt-1">0 Beds • 45,000 sq.ft.</p>
                     </div>
                 </div>
 
@@ -430,36 +649,36 @@
     </section>
 
     <!-- Stats Section with Join Us and Contact Us -->
-    <section class="bg-blue-900 py-16 text-white dark-theme" id="stats-section">
+    <section class="stats-section bg-blue-900 py-16 text-white dark-theme" id="stats-section">
         <div class="container mx-auto px-4 text-center">
-            <h2 class="text-4xl font-bold text-white mb-6">Our Achievements</h2>
+            <h2 class="stats-title text-4xl font-bold text-white mb-6">Our Achievements</h2>
 
-            <div class="grid grid-cols-1 md:grid-cols-3 gap-12">
+            <div class="stats-grid grid grid-cols-1 md:grid-cols-3 gap-12">
                 <!-- Satisfied Customers -->
                 <div>
-                    <div class="text-6xl font-bold text-blue-400" id="customers">0</div>
-                    <p class="text-xl text-gray-300 mt-2" style="color: #d1d5db !important;">Satisfied Customers</p>
+                    <div class="stat-number text-6xl font-bold text-blue-400" id="customers">0</div>
+                    <p class="stat-label text-xl text-gray-300 mt-2" style="color: #d1d5db !important;">Satisfied Customers</p>
                 </div>
 
                 <!-- Completed Projects -->
                 <div>
-                    <div class="text-6xl font-bold text-green-400" id="projects">0</div>
-                    <p class="text-xl text-gray-300 mt-2" style="color: #d1d5db !important;">Completed Projects</p>
+                    <div class="stat-number text-6xl font-bold text-green-400" id="projects">0</div>
+                    <p class="stat-label text-xl text-gray-300 mt-2" style="color: #d1d5db !important;">Completed Projects</p>
                 </div>
 
                 <!-- Years of Experience -->
                 <div>
-                    <div class="text-6xl font-bold text-purple-400" id="experience">0</div>
-                    <p class="text-xl text-gray-300 mt-2" style="color: #d1d5db !important;">Years of Experience</p>
+                    <div class="stat-number text-6xl font-bold text-purple-400" id="experience">0</div>
+                    <p class="stat-label text-xl text-gray-300 mt-2" style="color: #d1d5db !important;">Years of Experience</p>
                 </div>
             </div>
 
             <!-- Join Us and Contact Us Buttons -->
-            <div class="mt-12 flex flex-col sm:flex-row gap-4 justify-center">
-                <a href="#contact" class="inline-block bg-yellow-500 text-white font-semibold px-8 py-3 rounded-full shadow-lg hover:bg-yellow-600 transition-colors duration-300">
+            <div class="stats-buttons mt-12 flex flex-col sm:flex-row gap-4 justify-center">
+                <a href="#contact" class="stats-btn inline-block bg-yellow-500 text-white font-semibold px-8 py-3 rounded-full shadow-lg hover:bg-yellow-600 transition-colors duration-300">
                     JOIN US
                 </a>
-                <a href="#contact" class="inline-block bg-green-600 text-white font-semibold px-8 py-3 rounded-full shadow-lg hover:bg-green-700 transition-colors duration-300">
+                <a href="#contact" class="stats-btn inline-block bg-green-600 text-white font-semibold px-8 py-3 rounded-full shadow-lg hover:bg-green-700 transition-colors duration-300">
                     CONTACT US
                 </a>
             </div>

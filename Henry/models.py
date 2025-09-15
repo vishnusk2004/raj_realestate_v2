@@ -251,7 +251,7 @@ class OpenHouse(models.Model):
     area_sqft = models.IntegerField(null=True, blank=True, help_text="Area in square feet")
     description = models.TextField(help_text="Property description", default="Property description")
     image_url = models.URLField(max_length=500, help_text="Property image URL", default="https://via.placeholder.com/400x300")
-    open_house_date = models.DateField(help_text="Date of the open house")
+    open_house_date = models.DateField(null=False, blank=False, help_text="Date of the open house")
     open_house_time = models.TimeField(help_text="Time of the open house")
     contact_email = models.EmailField(help_text="Contact email for inquiries", default="raj.gupta@kw.com")
     contact_phone = models.CharField(max_length=20, help_text="Contact phone number", default="(832) 785-0140")
@@ -264,12 +264,15 @@ class OpenHouse(models.Model):
         verbose_name = "Open House"
     
     def __str__(self):
-        return f"{self.title} - {self.open_house_date}"
+        date_str = self.open_house_date.strftime('%Y-%m-%d') if self.open_house_date else 'No Date'
+        return f"{self.title} - {date_str}"
     
     @property
     def is_past(self):
         """Check if the open house date has passed"""
         from django.utils import timezone
+        if self.open_house_date is None:
+            return False
         return self.open_house_date < timezone.now().date()
 
 
