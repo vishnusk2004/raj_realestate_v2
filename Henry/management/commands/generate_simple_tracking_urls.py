@@ -33,8 +33,40 @@ class Command(BaseCommand):
         )
         self.stdout.write('=' * 70)
         
-        # Define social media URLs
-        social_media_urls = [
+        # Define tracking URLs (both internal and external)
+        tracking_urls = [
+            # Internal Pages
+            {
+                'platform': 'Home Page',
+                'url': f'{base_url}/',
+                'description': 'Track home page visits'
+            },
+            {
+                'platform': 'Blog Post',
+                'url': f'{base_url}/blog/2/',
+                'description': 'Track specific blog post visits'
+            },
+            {
+                'platform': 'Selling Page',
+                'url': f'{base_url}/selling/',
+                'description': 'Track selling page visits'
+            },
+            {
+                'platform': 'Buy/Lease Page',
+                'url': f'{base_url}/buy-lease/',
+                'description': 'Track buy/lease page visits'
+            },
+            {
+                'platform': 'Open House',
+                'url': f'{base_url}/open-house/',
+                'description': 'Track open house page visits'
+            },
+            {
+                'platform': 'Mortgage Calculator',
+                'url': f'{base_url}/mortgage-calculator/',
+                'description': 'Track mortgage calculator visits'
+            },
+            # Social Media
             {
                 'platform': 'Facebook',
                 'url': 'https://facebook.com/rajrealestate',
@@ -80,25 +112,25 @@ class Command(BaseCommand):
         self.stdout.write('\n📱 Sample Simple Tracking URLs:')
         self.stdout.write('-' * 50)
         
-        for social in social_media_urls[:3]:  # Show first 3 examples
-            encoded_url = urllib.parse.quote(social['url'], safe='')
+        for item in tracking_urls[:3]:  # Show first 3 examples
+            encoded_url = urllib.parse.quote(item['url'], safe='')
             tracking_url = f"{base_url}/?url={encoded_url}&code={customer_code}"
-            self.stdout.write(f'{social["platform"]}: {tracking_url}')
+            self.stdout.write(f'{item["platform"]}: {tracking_url}')
         
         self.stdout.write('-' * 50)
         
         self.stdout.write('\n🔗 All Simple Tracking URLs:')
         self.stdout.write('-' * 70)
         
-        for i, social in enumerate(social_media_urls, 1):
+        for i, item in enumerate(tracking_urls, 1):
             # Encode the URL for the tracking URL
-            encoded_url = urllib.parse.quote(social['url'], safe='')
+            encoded_url = urllib.parse.quote(item['url'], safe='')
             tracking_url = f"{base_url}/?url={encoded_url}&code={customer_code}"
             
-            self.stdout.write(f'{i}. {social["platform"]}')
-            self.stdout.write(f'   Original URL: {social["url"]}')
+            self.stdout.write(f'{i}. {item["platform"]}')
+            self.stdout.write(f'   Original URL: {item["url"]}')
             self.stdout.write(f'   Tracking URL: {tracking_url}')
-            self.stdout.write(f'   Purpose: {social["description"]}')
+            self.stdout.write(f'   Purpose: {item["description"]}')
             self.stdout.write('')
         
         self.stdout.write('\n📊 How Simple Tracking Works:')

@@ -19,13 +19,23 @@ class LinkTrackingMiddleware(MiddlewareMixin):
             return None
             
         # Check for simple tracking format: /?url=https://facebook.com/page&code=ju123
+        # Also supports internal pages: /?url=/blog/2/&code=ju123
         if path == '/' and request.GET.get('url') and request.GET.get('code'):
             url = request.GET.get('url')
             customer_code = request.GET.get('code')
             
-            # Determine platform from URL
-            platform = self._get_platform_from_url(url)
-            if platform:
+            # Determine if it's an internal or external URL
+            if url.startswith('/') or url.startswith(request.get_host()):
+                # Internal URL - determine page type and ID
+                page_type, page_id = self._get_internal_page_info(url, request)
+                original_url = url if url.startswith('http') else request.build_absolute_uri(url)
+            else:
+                # External URL - determine platform
+                page_type = self._get_platform_from_url(url)
+                page_id = None
+                original_url = url
+            
+            if page_type:
                 # Get system information
                 ip_address = get_client_ip(request)
                 user_agent = request.META.get('HTTP_USER_AGENT', '')
@@ -35,10 +45,10 @@ class LinkTrackingMiddleware(MiddlewareMixin):
                 # Create or update tracking record
                 tracking_record, created = LinkTracking.objects.get_or_create(
                     customer_code=customer_code,
-                    page_type=platform,
-                    page_id=None,
+                    page_type=page_type,
+                    page_id=page_id,
                     defaults={
-                        'original_url': url,
+                        'original_url': original_url,
                         'tracked_url': request.build_absolute_uri(),
                     }
                 )
@@ -55,7 +65,7 @@ class LinkTrackingMiddleware(MiddlewareMixin):
                 except Exception as e:
                     logger.error(f"Failed to send link tracking to CRM: {str(e)}")
                 
-                return HttpResponseRedirect(url)
+                return HttpResponseRedirect(original_url)
         
         # Get the current path and query string
         query_string = request.META.get('QUERY_STRING', '')
@@ -205,3 +215,38 @@ class LinkTrackingMiddleware(MiddlewareMixin):
             return 'youtube'
         else:
             return 'external'  # Generic external link
+    
+    def _get_internal_page_info(self, url, request):
+        """Determine page type and ID from internal URL"""
+        # Remove domain if present
+        if url.startswith('http'):
+            from urllib.parse import urlparse
+            parsed = urlparse(url)
+            path = parsed.path
+        else:
+            path = url
+        
+        # Remove leading slash
+        path = path.lstrip('/')
+        
+        # Map URL patterns to page types
+        if path.startswith('blog/'):
+            # Extract blog post ID: /blog/2/ -> page_type='blog', page_id='2'
+            parts = path.split('/')
+            if len(parts) >= 2 and parts[1].isdigit():
+                return 'blog', parts[1]
+            else:
+                return 'blog', None
+        elif path.startswith('buy-lease/'):
+            return 'buy', None
+        elif path.startswith('selling/'):
+            return 'sell', None
+        elif path.startswith('open-house/'):
+            return 'open_house', None
+        elif path.startswith('mortgage-calculator/'):
+            return 'mortgage', None
+        elif path == '' or path == '/':
+            return 'home', None
+        else:
+            # Generic internal page
+            return 'internal', None
