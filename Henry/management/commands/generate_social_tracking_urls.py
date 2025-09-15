@@ -77,6 +77,13 @@ class Command(BaseCommand):
             self.stdout.write(f'Follow us on {social["platform"].title()}: {tracking_url}')
         self.stdout.write('-' * 50)
         
+        # Show example with unencoded URL (like the production issue)
+        self.stdout.write('\n🔧 Production Example (Unencoded URL):')
+        self.stdout.write('-' * 50)
+        example_url = f"https://henry-realestate.onrender.com/facebook/https://www.facebook.com/share/1JAgT6ZhjL/{customer_code}"
+        self.stdout.write(f"Facebook Share: {example_url}")
+        self.stdout.write("✅ This format now works with mixed case customer codes!")
+        
         self.stdout.write('\n🔗 Generated Social Media Tracking URLs:')
         self.stdout.write('-' * 70)
         

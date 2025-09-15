@@ -27,8 +27,8 @@ class LinkTrackingMiddleware(MiddlewareMixin):
         # Matches: /blog/2/NAE1495, /open-house/NAE1495, /facebook/https://facebook.com/page/NAE1495, etc.
         
         # First try social media pattern: /facebook/https://facebook.com/page/NAE1495
-        # Updated to handle URLs with query parameters like ?v=oSboc9BzlXc
-        social_media_pattern = r'^/(facebook|instagram|twitter|linkedin|telegram|youtube)/(.+)/([A-Z0-9]{3,})/?$'
+        # Updated to handle URLs with query parameters and mixed case customer codes
+        social_media_pattern = r'^/(facebook|instagram|twitter|linkedin|telegram|youtube)/(.+)/([A-Za-z0-9]{3,})/?$'
         match = re.match(social_media_pattern, full_path)
         
         if match:
@@ -43,7 +43,7 @@ class LinkTrackingMiddleware(MiddlewareMixin):
             page_id = None
         else:
             # Try pattern with page ID: /blog/2/NAE1495
-            pattern_with_id = r'^/([^/]+)/([^/]+)/([A-Z0-9]{3,})/?$'
+            pattern_with_id = r'^/([^/]+)/([^/]+)/([A-Za-z0-9]{3,})/?$'
             match = re.match(pattern_with_id, full_path)
             
             if match:
@@ -51,7 +51,7 @@ class LinkTrackingMiddleware(MiddlewareMixin):
                 original_url = None
             else:
                 # Try pattern without page ID: /open-house/NAE1495
-                pattern_without_id = r'^/([^/]+)/([A-Z0-9]{3,})/?$'
+                pattern_without_id = r'^/([^/]+)/([A-Za-z0-9]{3,})/?$'
                 match = re.match(pattern_without_id, full_path)
                 
                 if match:
@@ -60,7 +60,7 @@ class LinkTrackingMiddleware(MiddlewareMixin):
                     original_url = None
                 else:
                     # Try root pattern: /NAE1495
-                    pattern_root = r'^/([A-Z0-9]{3,})/?$'
+                    pattern_root = r'^/([A-Za-z0-9]{3,})/?$'
                     match = re.match(pattern_root, full_path)
                     
                     if match:
