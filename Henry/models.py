@@ -36,7 +36,7 @@ class SellingContact(models.Model):
     ip_address = models.GenericIPAddressField(null=True, blank=True, help_text="IP address of the submitter")
     user_agent = models.TextField(blank=True, null=True, help_text="Browser/device information")
     referrer = models.URLField(blank=True, null=True, help_text="Page that referred the user")
-    language = models.CharField(max_length=10, blank=True, null=True, help_text="User's preferred language")
+    language = models.CharField(max_length=50, blank=True, null=True, help_text="User's preferred language")
     
     def __str__(self):
         return f"{self.name} - {self.email}"
@@ -113,7 +113,7 @@ class LinkTracking(models.Model):
     ip_address = models.GenericIPAddressField(null=True, blank=True, help_text="IP address of the clicker")
     user_agent = models.TextField(blank=True, null=True, help_text="Browser/device information")
     referrer = models.URLField(blank=True, null=True, help_text="Page that referred the user")
-    language = models.CharField(max_length=10, blank=True, null=True, help_text="User's preferred language")
+    language = models.CharField(max_length=50, blank=True, null=True, help_text="User's preferred language")
     
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
@@ -379,7 +379,7 @@ class PropertyInquiry(models.Model):
     ip_address = models.GenericIPAddressField(null=True, blank=True, help_text="IP address of the submitter")
     user_agent = models.TextField(blank=True, null=True, help_text="Browser/device information")
     referrer = models.URLField(blank=True, null=True, help_text="Page that referred the user")
-    language = models.CharField(max_length=10, blank=True, null=True, help_text="User's preferred language")
+    language = models.CharField(max_length=50, blank=True, null=True, help_text="User's preferred language")
 
     class Meta:
         ordering = ['-created_at']
@@ -452,7 +452,7 @@ class MortgageInquiry(models.Model):
     ip_address = models.GenericIPAddressField(null=True, blank=True, help_text="IP address of the submitter")
     user_agent = models.TextField(blank=True, null=True, help_text="Browser/device information")
     referrer = models.URLField(blank=True, null=True, help_text="Page that referred the user")
-    language = models.CharField(max_length=10, blank=True, null=True, help_text="User's preferred language")
+    language = models.CharField(max_length=50, blank=True, null=True, help_text="User's preferred language")
 
     class Meta:
         ordering = ['-created_at']

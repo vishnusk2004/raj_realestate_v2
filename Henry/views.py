@@ -60,7 +60,7 @@ def home(request):
             ip_address = get_client_ip(request)
             user_agent = request.META.get('HTTP_USER_AGENT', '')
             referrer = request.META.get('HTTP_REFERER', '')
-            language = request.META.get('HTTP_ACCEPT_LANGUAGE', '').split(',')[0] if request.META.get('HTTP_ACCEPT_LANGUAGE') else ''
+            language = request.META.get('HTTP_ACCEPT_LANGUAGE', '').split(',')[0][:50] if request.META.get('HTTP_ACCEPT_LANGUAGE') else ''
             
             # Create or update tracking record
             tracking_record, created = LinkTracking.objects.get_or_create(
@@ -161,7 +161,7 @@ def blog_detail(request, post_id):
             ip_address = get_client_ip(request)
             user_agent = request.META.get('HTTP_USER_AGENT', '')
             referrer = request.META.get('HTTP_REFERER', '')
-            language = request.META.get('HTTP_ACCEPT_LANGUAGE', '').split(',')[0] if request.META.get('HTTP_ACCEPT_LANGUAGE') else ''
+            language = request.META.get('HTTP_ACCEPT_LANGUAGE', '').split(',')[0][:50] if request.META.get('HTTP_ACCEPT_LANGUAGE') else ''
             
             # Create or update tracking record
             tracking_record, created = LinkTracking.objects.get_or_create(
