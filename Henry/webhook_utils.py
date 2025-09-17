@@ -6,8 +6,9 @@ import logging
 
 logger = logging.getLogger(__name__)
 
-# CRM Webhook URL
-CRM_WEBHOOK_URL = "https://workflow-automation.podio.com/catch/8g78a8102321zec"
+# CRM Webhook URLs
+FORM_WEBHOOK_URL = "https://workflow-automation.podio.com/catch/8g78a8102321zec"  # For form submissions
+LINK_TRACKING_WEBHOOK_URL = "https://workflow-automation.podio.com/catch/sajz0io9683p7b0"  # For link tracking
 
 def format_link_tracking_data(tracking_record, request=None):
     """
@@ -56,7 +57,7 @@ def send_to_crm(form_type, lead_data, request=None):
         
         # Send to CRM
         response = requests.post(
-            CRM_WEBHOOK_URL,
+            FORM_WEBHOOK_URL,
             json=payload,
             headers={
                 'Content-Type': 'application/json',
@@ -250,7 +251,7 @@ def send_link_tracking_to_crm(tracking_record, request=None):
         
         # Send to CRM
         response = requests.post(
-            CRM_WEBHOOK_URL,
+            LINK_TRACKING_WEBHOOK_URL,
             json=payload,
             headers={'Content-Type': 'application/json'},
             timeout=10

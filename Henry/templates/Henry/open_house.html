@@ -9,6 +9,7 @@
     <title>Open House - {{ brand_name }}</title>
     {% tailwind_css %}
     <link rel="stylesheet" href="{% static 'css/dist/styles.css' %}">
+    <link rel="stylesheet" href="{% static 'css/modal-gallery.css' %}">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
     
@@ -75,15 +76,17 @@
         font-size: 1.125rem !important;
     }
     
-    /* Ensure Font Awesome icons are visible */
+    /* Font Awesome icon protection */
     nav .fas,
     nav .fa-moon,
     nav .fa-sun {
         font-family: "Font Awesome 6 Free" !important;
         font-weight: 900 !important;
         display: inline-block !important;
-        visibility: visible !important;
-        opacity: 1 !important;
+        font-style: normal !important;
+        font-variant: normal !important;
+        text-rendering: auto !important;
+        line-height: 1 !important;
     }
     
     /* Override any conflicting styles from page CSS */
@@ -478,6 +481,225 @@
         .hero-bg {
             background-attachment: scroll;
         }
+        
+        /* Mobile optimizations */
+        .container {
+            padding-left: 1rem !important;
+            padding-right: 1rem !important;
+        }
+        
+        .open-house-title {
+            font-size: 2rem !important;
+            line-height: 2.5rem !important;
+            margin-bottom: 1rem !important;
+        }
+        
+        .open-house-subtitle {
+            font-size: 1rem !important;
+            margin-bottom: 2rem !important;
+        }
+        
+        .open-house-grid {
+            grid-template-columns: 1fr !important;
+            gap: 1.5rem !important;
+        }
+        
+        .open-house-card {
+            padding: 1.5rem !important;
+        }
+        
+        .open-house-image {
+            height: 200px !important;
+            margin-bottom: 1rem !important;
+        }
+        
+        .open-house-title-text {
+            font-size: 1.25rem !important;
+            line-height: 1.75rem !important;
+            margin-bottom: 0.75rem !important;
+        }
+        
+        .open-house-price {
+            font-size: 1.5rem !important;
+            margin-bottom: 0.75rem !important;
+        }
+        
+        .open-house-details {
+            font-size: 0.875rem !important;
+            margin-bottom: 1rem !important;
+        }
+        
+        .open-house-description {
+            font-size: 0.875rem !important;
+            line-height: 1.5rem !important;
+            margin-bottom: 1rem !important;
+        }
+        
+        .open-house-date {
+            font-size: 0.875rem !important;
+            margin-bottom: 1rem !important;
+        }
+        
+        .open-house-button {
+            padding: 0.75rem 1.5rem !important;
+            font-size: 0.875rem !important;
+            width: 100% !important;
+        }
+        
+        /* Mobile menu styles */
+        #mobile-menu-toggle {
+            display: none;
+            background: none;
+            border: none;
+            color: white;
+            font-size: 1.5rem;
+            cursor: pointer;
+            padding: 0.5rem;
+        }
+
+        #mobile-menu {
+            display: none;
+            position: absolute;
+            top: 100%;
+            left: 0;
+            right: 0;
+            background-color: #1e40af;
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+            z-index: 40;
+        }
+
+        #mobile-menu.show {
+            display: block;
+        }
+
+        #mobile-menu ul {
+            list-style: none;
+            padding: 1rem;
+            margin: 0;
+        }
+
+        #mobile-menu ul li {
+            margin-bottom: 0.5rem;
+        }
+
+        #mobile-menu ul li a {
+            display: block;
+            padding: 0.75rem 1rem;
+            color: white;
+            text-decoration: none;
+            border-radius: 0.375rem;
+            transition: background-color 0.2s;
+        }
+
+        #mobile-menu ul li a:hover {
+            background-color: #1d4ed8;
+            color: #93c5fd;
+        }
+
+        /* Mobile responsive styles */
+        @media (max-width: 768px) {
+            #mobile-menu-toggle {
+                display: block;
+            }
+            
+            .desktop-menu {
+                display: none;
+            }
+        }
+
+        @media (min-width: 769px) {
+            #mobile-menu {
+                display: none !important;
+            }
+        }
+        
+        /* Image Gallery Improvements */
+        .image-gallery-container {
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .image-gallery-container:hover .gallery-nav {
+            opacity: 1;
+        }
+        
+        .gallery-nav {
+            opacity: 0;
+            transition: opacity 0.3s ease;
+        }
+        
+        .thumbnail-strip {
+            scrollbar-width: thin;
+            scrollbar-color: #cbd5e0 #f7fafc;
+        }
+        
+        .thumbnail-strip::-webkit-scrollbar {
+            height: 4px;
+        }
+        
+        .thumbnail-strip::-webkit-scrollbar-track {
+            background: #f7fafc;
+        }
+        
+        .thumbnail-strip::-webkit-scrollbar-thumb {
+            background: #cbd5e0;
+            border-radius: 2px;
+        }
+        
+        .thumbnail-strip::-webkit-scrollbar-thumb:hover {
+            background: #a0aec0;
+        }
+        
+        .modal-thumbnail {
+            transition: all 0.2s ease;
+        }
+        
+        .modal-thumbnail:hover {
+            transform: scale(1.05);
+        }
+        
+        .modal-thumbnail.active {
+            border-color: #3b82f6 !important;
+            box-shadow: 0 0 0 2px rgba(59, 130, 246, 0.2);
+        }
+        
+        /* Modal improvements */
+        #imageModal {
+            backdrop-filter: blur(4px);
+        }
+        
+        #imageModal .modal-content {
+            max-height: 90vh;
+            overflow: hidden;
+        }
+        
+        #modalImage {
+            max-width: 100%;
+            max-height: 70vh;
+            width: auto;
+            height: auto;
+            object-fit: contain;
+        }
+        
+        /* Mobile modal adjustments */
+        @media (max-width: 768px) {
+            #imageModal {
+                padding: 1rem;
+            }
+            
+            #imageModal .modal-content {
+                max-height: 85vh;
+            }
+            
+            #modalImage {
+                max-height: 60vh;
+            }
+            
+            .modal-thumbnail {
+                width: 3rem !important;
+                height: 2rem !important;
+            }
+        }
     }
     </style>
 </head>
@@ -579,7 +801,50 @@
             <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
                 {% for open_house in open_houses %}
                 <div class="bg-white rounded-lg overflow-hidden shadow-lg hover:shadow-xl transition-shadow duration-300">
-                    <img src="{{ open_house.image_url }}" alt="{{ open_house.title }}" class="w-full h-48 object-cover">
+                    <!-- Image Gallery Container -->
+                    <div class="property-gallery-container">
+                        <!-- Main Image -->
+                        <img src="{{ open_house.get_main_image_url }}" alt="{{ open_house.title }}" 
+                             class="property-gallery-image"
+                             onclick="showImageModal('{{ open_house.get_main_image_url }}', '{{ open_house.title }}')">
+                        
+                        <!-- Image Counter Badge -->
+                        {% if open_house.images.exists %}
+                        <div class="property-image-counter">
+                            <i class="fas fa-images" style="margin-right: 0.25rem;"></i>{{ open_house.images.count|add:1 }} photos
+                        </div>
+                        {% endif %}
+                        
+                        <!-- Gallery Navigation Arrows (if multiple images) -->
+                        {% if open_house.images.exists %}
+                        <button class="property-gallery-nav prev gallery-nav" onclick="navigateToImage(this, 'prev')">
+                            <i class="fas fa-chevron-left"></i>
+                        </button>
+                        <button class="property-gallery-nav next gallery-nav" onclick="navigateToImage(this, 'next')">
+                            <i class="fas fa-chevron-right"></i>
+                        </button>
+                        {% endif %}
+                    </div>
+                    
+                    <!-- Thumbnail Strip (Improved) -->
+                    {% if open_house.images.exists %}
+                    <div class="property-thumbnail-strip">
+                        <div class="property-thumbnail-container">
+                            <!-- Main image thumbnail -->
+                            <img src="{{ open_house.get_main_image_url }}" alt="{{ open_house.title }}" 
+                                 class="property-thumbnail active"
+                                 onclick="showImageModal('{{ open_house.get_main_image_url }}', '{{ open_house.title }}')">
+                            
+                            <!-- Additional images thumbnails -->
+                            {% for image in open_house.images.all %}
+                            <img src="{{ image.get_image_url }}" alt="{{ image.caption|default:open_house.title }}" 
+                                 class="property-thumbnail"
+                                 onclick="showImageModal('{{ image.get_image_url }}', '{{ image.caption|default:open_house.title }}')">
+                            {% endfor %}
+                        </div>
+                    </div>
+                    {% endif %}
+                    
                     <div class="p-6">
                         <div class="flex justify-between items-start mb-4">
                             <h3 class="text-xl font-bold text-gray-900">{{ open_house.title }}</h3>
@@ -812,7 +1077,7 @@
                     bathrooms: {{ open_house.bathrooms|default:"0" }},
                     area: {{ open_house.area_sqft|default:"0" }},
                     description: "{{ open_house.description|escapejs }}",
-                    image: "{{ open_house.image_url }}",
+                    image: "{{ open_house.get_main_image_url }}",
                     contact_email: "{{ open_house.contact_email }}",
                     contact_phone: "{{ open_house.contact_phone }}"
                 }{% if not forloop.last %},{% endif %}
@@ -987,8 +1252,272 @@
                 localStorage.setItem('theme', 'dark');
             }
         });
+        
+        // Mobile menu toggle functionality
+        const mobileMenuToggle = document.getElementById('mobile-menu-toggle');
+        const mobileMenu = document.getElementById('mobile-menu');
+        
+        if (mobileMenuToggle && mobileMenu) {
+            mobileMenuToggle.addEventListener('click', function() {
+                mobileMenu.classList.toggle('show');
+            });
+            
+            // Close mobile menu when clicking outside
+            document.addEventListener('click', function(event) {
+                if (!mobileMenuToggle.contains(event.target) && !mobileMenu.contains(event.target)) {
+                    mobileMenu.classList.remove('show');
+                }
+            });
+        }
+        
+        // Mobile theme toggle
+        const themeToggleMobile = document.getElementById('theme-toggle-mobile');
+        const themeIconMobile = document.getElementById('theme-icon-mobile');
+        
+        if (themeToggleMobile && themeIconMobile) {
+            themeToggleMobile.addEventListener('click', function() {
+                // Trigger the main theme toggle
+                const mainThemeToggle = document.getElementById('theme-toggle');
+                if (mainThemeToggle) {
+                    mainThemeToggle.click();
+                }
+            });
+        }
     });
     </script>
+
+<!-- Image Modal -->
+<div id="imageModal" class="image-modal-backdrop hidden">
+    <div class="image-modal-container">
+        <!-- Modal Header -->
+        <div class="image-modal-header">
+            <h3 id="modalTitle" class="image-modal-title"></h3>
+            <div class="image-modal-header-right">
+                <span id="imageCounter" class="image-modal-counter"></span>
+                <button onclick="closeImageModal()" class="image-modal-close">&times;</button>
+            </div>
+        </div>
+        
+        <!-- Modal Content -->
+        <div class="image-modal-content">
+            <!-- Navigation Arrows -->
+            <button id="modalPrevBtn" onclick="previousImage()" class="image-modal-nav prev">
+                <i class="fas fa-chevron-left"></i>
+            </button>
+            <button id="modalNextBtn" onclick="nextImage()" class="image-modal-nav next">
+                <i class="fas fa-chevron-right"></i>
+            </button>
+            
+            <!-- Image Container -->
+            <div class="image-modal-image-container">
+                <img id="modalImage" src="" alt="" class="image-modal-image">
+            </div>
+        </div>
+        
+        <!-- Thumbnail Strip in Modal -->
+        <div id="modalThumbnails" class="image-modal-thumbnails">
+            <div class="image-modal-thumbnail-strip">
+                <!-- Thumbnails will be populated by JavaScript -->
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+// Image modal functions
+let currentImageIndex = 0;
+let currentImages = [];
+
+function showImageModal(imageUrl, caption) {
+    // Find all images for this property
+    const propertyCard = event.target.closest('.bg-white.rounded-lg');
+    
+    // Get all images from both main image and thumbnail strip
+    const mainImage = propertyCard.querySelector('.property-gallery-image');
+    const thumbnailImages = propertyCard.querySelectorAll('.property-thumbnail');
+    
+    // Combine all images
+    const allImages = [mainImage, ...Array.from(thumbnailImages)];
+    
+    // Remove duplicates and filter out null/undefined
+    const uniqueImages = allImages.filter((img, index, self) => 
+        img && img.src && self.findIndex(s => s.src === img.src) === index
+    );
+    
+    currentImages = uniqueImages.map(img => ({
+        url: img.src,
+        caption: img.alt
+    }));
+    
+    // Find current image index
+    currentImageIndex = currentImages.findIndex(img => img.url === imageUrl);
+    
+    // Update modal content
+    document.getElementById('modalImage').src = imageUrl;
+    document.getElementById('modalTitle').textContent = caption;
+    updateImageCounter();
+    populateModalThumbnails();
+    updateNavigationButtons();
+    
+    document.getElementById('imageModal').classList.remove('hidden');
+    
+    // Debug logging
+    console.log('Modal opened with images:', currentImages.length, 'current index:', currentImageIndex);
+    
+}
+
+function updateImageCounter() {
+    const counter = document.getElementById('imageCounter');
+    counter.textContent = `${currentImageIndex + 1} of ${currentImages.length}`;
+}
+
+function populateModalThumbnails() {
+    const container = document.querySelector('#modalThumbnails .image-modal-thumbnail-strip');
+    container.innerHTML = '';
+    
+    currentImages.forEach((image, index) => {
+        const thumbnail = document.createElement('img');
+        thumbnail.src = image.url;
+        thumbnail.alt = image.caption;
+        thumbnail.className = `image-modal-thumbnail ${
+            index === currentImageIndex ? 'active' : ''
+        }`;
+        thumbnail.onclick = () => {
+            currentImageIndex = index;
+            document.getElementById('modalImage').src = image.url;
+            document.getElementById('modalTitle').textContent = image.caption;
+            updateImageCounter();
+            updateNavigationButtons();
+            populateModalThumbnails(); // Refresh thumbnails to update active state
+        };
+        container.appendChild(thumbnail);
+    });
+}
+
+function updateNavigationButtons() {
+    const prevBtn = document.getElementById('modalPrevBtn');
+    const nextBtn = document.getElementById('modalNextBtn');
+    
+    if (currentImages.length <= 1) {
+        prevBtn.classList.add('hidden');
+        nextBtn.classList.add('hidden');
+    } else {
+        prevBtn.classList.remove('hidden');
+        nextBtn.classList.remove('hidden');
+    }
+}
+
+function navigateToImage(button, direction) {
+    // Find the property card and get all images
+    const propertyCard = button.closest('.bg-white.rounded-lg');
+    const allImages = propertyCard.querySelectorAll('img[onclick*="showImageModal"]');
+    const images = Array.from(allImages).map(img => ({
+        url: img.src,
+        caption: img.alt
+    }));
+    
+    // Find current image index
+    const currentImg = propertyCard.querySelector('.property-gallery-image');
+    let currentIndex = images.findIndex(img => img.url === currentImg.src);
+    
+    // Navigate
+    if (direction === 'next') {
+        currentIndex = (currentIndex + 1) % images.length;
+    } else {
+        currentIndex = currentIndex === 0 ? images.length - 1 : currentIndex - 1;
+    }
+    
+    // Update the main image
+    const newImage = images[currentIndex];
+    currentImg.src = newImage.url;
+    currentImg.alt = newImage.caption;
+    
+    // Update the onclick attribute
+    currentImg.setAttribute('onclick', `showImageModal('${newImage.url}', '${newImage.caption}')`);
+    
+    // Update thumbnail active states
+    const thumbnails = propertyCard.querySelectorAll('.property-thumbnail');
+    thumbnails.forEach((thumb, index) => {
+        if (index === currentIndex) {
+            thumb.classList.add('active');
+        } else {
+            thumb.classList.remove('active');
+        }
+    });
+}
+
+function closeImageModal() {
+    document.getElementById('imageModal').classList.add('hidden');
+    currentImages = [];
+    currentImageIndex = 0;
+}
+
+function nextImage() {
+    console.log('nextImage called - currentImages:', currentImages.length, 'currentIndex:', currentImageIndex);
+    if (currentImages.length <= 1) {
+        console.log('Not enough images to navigate');
+        return;
+    }
+    
+    currentImageIndex = (currentImageIndex + 1) % currentImages.length;
+    const image = currentImages[currentImageIndex];
+    console.log('Moving to image:', currentImageIndex, image);
+    
+    document.getElementById('modalImage').src = image.url;
+    document.getElementById('modalTitle').textContent = image.caption;
+    updateImageCounter();
+    populateModalThumbnails();
+}
+
+function previousImage() {
+    console.log('previousImage called - currentImages:', currentImages.length, 'currentIndex:', currentImageIndex);
+    if (currentImages.length <= 1) {
+        console.log('Not enough images to navigate');
+        return;
+    }
+    
+    currentImageIndex = currentImageIndex === 0 ? currentImages.length - 1 : currentImageIndex - 1;
+    const image = currentImages[currentImageIndex];
+    console.log('Moving to image:', currentImageIndex, image);
+    
+    document.getElementById('modalImage').src = image.url;
+    document.getElementById('modalTitle').textContent = image.caption;
+    updateImageCounter();
+    populateModalThumbnails();
+}
+
+// Close modal when clicking outside
+document.getElementById('imageModal').addEventListener('click', function(e) {
+    if (e.target === this || e.target.classList.contains('modal-backdrop')) {
+        closeImageModal();
+    }
+});
+
+// Keyboard navigation
+document.addEventListener('keydown', function(e) {
+    if (document.getElementById('imageModal').classList.contains('hidden')) return;
+    
+    if (e.key === 'Escape') {
+        closeImageModal();
+    } else if (e.key === 'ArrowLeft') {
+        previousImage();
+    } else if (e.key === 'ArrowRight') {
+        nextImage();
+    }
+});
+
+// Mobile menu toggle functionality
+document.addEventListener('DOMContentLoaded', function() {
+    const mobileMenuToggle = document.getElementById('mobile-menu-toggle');
+    const mobileMenu = document.getElementById('mobile-menu');
+    
+    if (mobileMenuToggle && mobileMenu) {
+        mobileMenuToggle.addEventListener('click', function() {
+            mobileMenu.classList.toggle('show');
+        });
+    }
+});
+</script>
 
 </body>
 </html>

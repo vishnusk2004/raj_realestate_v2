@@ -35,36 +35,42 @@ class Command(BaseCommand):
         
         # Define tracking URLs (both internal and external)
         tracking_urls = [
-            # Internal Pages
+            # Internal Pages - NEW SIMPLIFIED FORMAT
             {
-                'platform': 'Home Page',
+                'platform': 'Home Page (Simplified)',
                 'url': f'{base_url}/',
-                'description': 'Track home page visits'
+                'description': 'Track home page visits - NEW FORMAT',
+                'simplified_url': f'{base_url}/?code={customer_code}'
             },
             {
-                'platform': 'Blog Post',
+                'platform': 'Blog Post (Simplified)',
                 'url': f'{base_url}/blog/2/',
-                'description': 'Track specific blog post visits'
+                'description': 'Track specific blog post visits - NEW FORMAT',
+                'simplified_url': f'{base_url}/blog/2/?code={customer_code}'
             },
             {
-                'platform': 'Selling Page',
+                'platform': 'Selling Page (Simplified)',
                 'url': f'{base_url}/selling/',
-                'description': 'Track selling page visits'
+                'description': 'Track selling page visits - NEW FORMAT',
+                'simplified_url': f'{base_url}/selling/?code={customer_code}'
             },
             {
-                'platform': 'Buy/Lease Page',
+                'platform': 'Buy/Lease Page (Simplified)',
                 'url': f'{base_url}/buy-lease/',
-                'description': 'Track buy/lease page visits'
+                'description': 'Track buy/lease page visits - NEW FORMAT',
+                'simplified_url': f'{base_url}/buy-lease/?code={customer_code}'
             },
             {
-                'platform': 'Open House',
+                'platform': 'Open House (Simplified)',
                 'url': f'{base_url}/open-house/',
-                'description': 'Track open house page visits'
+                'description': 'Track open house page visits - NEW FORMAT',
+                'simplified_url': f'{base_url}/open-house/?code={customer_code}'
             },
             {
-                'platform': 'Mortgage Calculator',
+                'platform': 'Mortgage Calculator (Simplified)',
                 'url': f'{base_url}/mortgage-calculator/',
-                'description': 'Track mortgage calculator visits'
+                'description': 'Track mortgage calculator visits - NEW FORMAT',
+                'simplified_url': f'{base_url}/mortgage-calculator/?code={customer_code}'
             },
             # Social Media
             {
@@ -123,13 +129,22 @@ class Command(BaseCommand):
         self.stdout.write('-' * 70)
         
         for i, item in enumerate(tracking_urls, 1):
-            # Encode the URL for the tracking URL
-            encoded_url = urllib.parse.quote(item['url'], safe='')
-            tracking_url = f"{base_url}/?url={encoded_url}&code={customer_code}"
-            
             self.stdout.write(f'{i}. {item["platform"]}')
             self.stdout.write(f'   Original URL: {item["url"]}')
-            self.stdout.write(f'   Tracking URL: {tracking_url}')
+            
+            # Show simplified URL if available, otherwise show old format
+            if 'simplified_url' in item:
+                self.stdout.write(f'   NEW Tracking URL: {item["simplified_url"]}')
+                # Also show old format for comparison
+                encoded_url = urllib.parse.quote(item['url'], safe='')
+                old_tracking_url = f"{base_url}/?url={encoded_url}&code={customer_code}"
+                self.stdout.write(f'   OLD Tracking URL: {old_tracking_url}')
+            else:
+                # For external URLs, use old format
+                encoded_url = urllib.parse.quote(item['url'], safe='')
+                tracking_url = f"{base_url}/?url={encoded_url}&code={customer_code}"
+                self.stdout.write(f'   Tracking URL: {tracking_url}')
+            
             self.stdout.write(f'   Purpose: {item["description"]}')
             self.stdout.write('')
         
@@ -156,7 +171,7 @@ class Command(BaseCommand):
         
         self.stdout.write('\n✅ Simple Tracking Ready!')
         self.stdout.write(f'📈 View tracking data at: {base_url}/admin/Henry/linktracking/')
-        self.stdout.write('🔗 Podio webhook URL: https://workflow-automation.podio.com/catch/8g78a8102321zec')
+        self.stdout.write('🔗 Link Tracking Webhook URL: https://workflow-automation.podio.com/catch/sajz0io9683p7b0')
         
         self.stdout.write('\n💡 Benefits of Simple URLs:')
         self.stdout.write('-' * 50)

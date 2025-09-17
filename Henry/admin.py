@@ -1,5 +1,5 @@
 from django.contrib import admin
-from .models import Property, SellingContact, BlogTracking, BlogPost, PropertyListing, OpenHouse, OpenHouseRegistration, PropertyInquiry, MortgageInquiry, LinkTracking
+from .models import Property, SellingContact, BlogTracking, BlogPost, PropertyListing, OpenHouse, OpenHouseImage, OpenHouseRegistration, PropertyInquiry, MortgageInquiry, LinkTracking
 from .forms import PropertyListingForm
 
 # Register your models here.
@@ -112,18 +112,29 @@ class BlogPostAdmin(admin.ModelAdmin):
     )
 
 
+class OpenHouseImageInline(admin.TabularInline):
+    model = OpenHouseImage
+    extra = 1
+    fields = ('image_file', 'image_url', 'caption', 'is_primary', 'order')
+    ordering = ('order',)
+
 @admin.register(OpenHouse)
 class OpenHouseAdmin(admin.ModelAdmin):
     list_display = ('title', 'property_address', 'price', 'open_house_date', 'open_house_time', 'published', 'is_past')
     list_filter = ('published', 'open_house_date', 'created_at')
     search_fields = ('title', 'property_address', 'description')
     readonly_fields = ('created_at', 'updated_at', 'is_past')
+    inlines = [OpenHouseImageInline]
     fieldsets = (
         ('Basic Information', {
             'fields': ('title', 'property_address', 'price')
         }),
         ('Property Details', {
-            'fields': ('bedrooms', 'bathrooms', 'area_sqft', 'description', 'image_url')
+            'fields': ('bedrooms', 'bathrooms', 'area_sqft', 'description')
+        }),
+        ('Main Image', {
+            'fields': ('image_file', 'image_url'),
+            'description': 'Upload a main image file or provide an image URL'
         }),
         ('Open House Details', {
             'fields': ('open_house_date', 'open_house_time')
@@ -239,6 +250,25 @@ class LinkTrackingAdmin(admin.ModelAdmin):
         }),
         ('Timestamps', {
             'fields': ('created_at', 'updated_at'),
+            'classes': ('collapse',)
+        }),
+    )
+
+@admin.register(OpenHouseImage)
+class OpenHouseImageAdmin(admin.ModelAdmin):
+    list_display = ('open_house', 'caption', 'is_primary', 'order', 'created_at')
+    list_filter = ('is_primary', 'created_at', 'open_house')
+    search_fields = ('open_house__title', 'caption')
+    ordering = ('open_house', 'order')
+    fieldsets = (
+        ('Image Information', {
+            'fields': ('open_house', 'image_file', 'image_url', 'caption')
+        }),
+        ('Display Settings', {
+            'fields': ('is_primary', 'order')
+        }),
+        ('Timestamps', {
+            'fields': ('created_at',),
             'classes': ('collapse',)
         }),
     )

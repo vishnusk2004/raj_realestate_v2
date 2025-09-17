@@ -10,7 +10,7 @@ from django.contrib import messages
 from django.utils import timezone
 from django.views.decorators.csrf import csrf_exempt
 from django.db import models
-from .models import BlogTracking, BlogPost, PropertyListing, OpenHouse, OpenHouseRegistration, PropertyInquiry, MortgageInquiry
+from .models import BlogTracking, BlogPost, PropertyListing, OpenHouse, OpenHouseRegistration, PropertyInquiry, MortgageInquiry, LinkTracking
 from .forms import BlogPostForm
 import uuid
 import json
@@ -26,7 +26,7 @@ def send_podium_webhook(tracking_data):
     Send tracking data to Podium webhook
     """
     try:
-        podium_url = "https://workflow-automation.podio.com/catch/8g78a8102321zec"
+        podium_url = "https://workflow-automation.podio.com/catch/sajz0io9683p7b0"
         
         payload = {
             "event": "blog_link_opened",
@@ -50,6 +50,42 @@ def send_podium_webhook(tracking_data):
 
 def home(request):
     try:
+        # Check for tracking code
+        customer_code = request.GET.get('code')
+        if customer_code:
+            # Handle tracking
+            from .webhook_utils import get_client_ip, send_link_tracking_to_crm
+            
+            # Get system information
+            ip_address = get_client_ip(request)
+            user_agent = request.META.get('HTTP_USER_AGENT', '')
+            referrer = request.META.get('HTTP_REFERER', '')
+            language = request.META.get('HTTP_ACCEPT_LANGUAGE', '').split(',')[0] if request.META.get('HTTP_ACCEPT_LANGUAGE') else ''
+            
+            # Create or update tracking record
+            tracking_record, created = LinkTracking.objects.get_or_create(
+                customer_code=customer_code,
+                page_type='home',
+                page_id=None,
+                defaults={
+                    'original_url': '/',
+                    'tracked_url': request.build_absolute_uri(),
+                }
+            )
+            
+            tracking_record.record_click(
+                ip_address=ip_address,
+                user_agent=user_agent,
+                referrer=referrer,
+                language=language
+            )
+            
+            # Send to CRM
+            try:
+                send_link_tracking_to_crm(tracking_record, request)
+            except Exception as e:
+                print(f"Failed to send link tracking to CRM: {str(e)}")
+        
         featured_properties = Property.objects.all()[:8]  # Get the first 8 properties or however many you want to display
 
         # Update each property's image_url to only contain the first URL
@@ -113,8 +149,44 @@ def blog(request):
 
 
 def blog_detail(request, post_id):
-    """Blog detail page view"""
+    """Blog detail page view with optional tracking"""
     try:
+        # Check for tracking code
+        customer_code = request.GET.get('code')
+        if customer_code:
+            # Handle tracking
+            from .webhook_utils import get_client_ip, send_link_tracking_to_crm
+            
+            # Get system information
+            ip_address = get_client_ip(request)
+            user_agent = request.META.get('HTTP_USER_AGENT', '')
+            referrer = request.META.get('HTTP_REFERER', '')
+            language = request.META.get('HTTP_ACCEPT_LANGUAGE', '').split(',')[0] if request.META.get('HTTP_ACCEPT_LANGUAGE') else ''
+            
+            # Create or update tracking record
+            tracking_record, created = LinkTracking.objects.get_or_create(
+                customer_code=customer_code,
+                page_type='blog',
+                page_id=str(post_id),
+                defaults={
+                    'original_url': f'/blog/{post_id}/',
+                    'tracked_url': request.build_absolute_uri(),
+                }
+            )
+            
+            tracking_record.record_click(
+                ip_address=ip_address,
+                user_agent=user_agent,
+                referrer=referrer,
+                language=language
+            )
+            
+            # Send to CRM
+            try:
+                send_link_tracking_to_crm(tracking_record, request)
+            except Exception as e:
+                print(f"Failed to send link tracking to CRM: {str(e)}")
+        
         # Get the specific blog post from database
         post = get_object_or_404(BlogPost, id=post_id, published=True)
         
@@ -624,7 +696,7 @@ def property_inquiry(request):
             send_to_crm('property_inquiry', lead_data, request)
             
             messages.success(request, f'Thank you for your inquiry, {name}! Our team will contact you within 24 hours to help you find the perfect property.')
-            return redirect('buy_lease' + '?submitted=true')
+            return redirect('buy_lease')
             
         except Exception as e:
             messages.error(request, f'There was an error submitting your inquiry. Please try again. Error: {str(e)}')
@@ -718,7 +790,7 @@ def mortgage_inquiry(request):
             send_to_crm('mortgage_inquiry', lead_data, request)
             
             messages.success(request, f'Thank you for your mortgage inquiry, {name}! Our team will analyze your situation and provide you with personalized mortgage information within 24 hours.')
-            return redirect('mortgage_calculator' + '?submitted=true')
+            return redirect('mortgage_calculator')
             
         except Exception as e:
             messages.error(request, f'There was an error submitting your inquiry. Please try again. Error: {str(e)}')
@@ -726,3 +798,5 @@ def mortgage_inquiry(request):
     
     # If not POST, redirect to mortgage calculator page
     return redirect('mortgage_calculator')
+
+

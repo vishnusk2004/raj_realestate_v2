@@ -149,8 +149,9 @@ Monitor link tracking data at:
 
 ### CRM Integration
 
-The application automatically sends data to the Podio CRM webhook:
-- URL: `https://workflow-automation.podio.com/catch/8g78a8102321zec`
+The application automatically sends data to the Podio CRM webhooks:
+- **Form Submissions**: `https://workflow-automation.podio.com/catch/8g78a8102321zec`
+- **Link Tracking**: `https://workflow-automation.podio.com/catch/sajz0io9683p7b0`
 
 ## Troubleshooting
 

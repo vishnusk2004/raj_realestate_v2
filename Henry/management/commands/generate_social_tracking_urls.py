@@ -120,4 +120,4 @@ class Command(BaseCommand):
         
         self.stdout.write('\n✅ Social Media Tracking Ready!')
         self.stdout.write(f'📈 View tracking data at: {base_url}/admin/Henry/linktracking/')
-        self.stdout.write('🔗 Podio webhook URL: https://workflow-automation.podio.com/catch/8g78a8102321zec')
+        self.stdout.write('🔗 Link Tracking Webhook URL: https://workflow-automation.podio.com/catch/sajz0io9683p7b0')

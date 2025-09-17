@@ -1,70 +1,85 @@
 {% load static %}
-
-<style>
-/* Theme toggle button */
-#theme-toggle {
-    transition: all 0.3s ease;
-}
-
-#theme-icon {
-    transition: transform 0.3s ease;
-}
-
-/* Simple navbar protection - only override specific conflicting properties */
-nav {
-    background-color: #1e40af !important;
-    position: sticky !important;
-    top: 0 !important;
-    z-index: 50 !important;
-    box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06) !important;
-}
-
-nav .text-white {
-    color: #ffffff !important;
-}
-
-nav ul li a {
-    color: #ffffff !important;
-    font-weight: 500 !important;
-}
-
-nav ul li a:hover {
-    color: #93c5fd !important;
-}
-
-#theme-toggle {
-    display: block !important;
-    visibility: visible !important;
-    opacity: 1 !important;
-}
-
-#theme-icon {
-    display: inline-block !important;
-    visibility: visible !important;
-    opacity: 1 !important;
-    color: #ffffff !important;
-}
-</style>
+<link rel="stylesheet" href="{% static 'css/navbar.css' %}">
 
 <!-- Navbar -->
-<nav class="bg-blue-800 shadow-lg w-full sticky top-0 z-50">
-    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div class="flex justify-between items-center py-4">
-            <div class="text-white text-lg font-semibold">{{ brand_name }}</div>
-            <ul class="flex flex-wrap items-center space-x-4 md:space-x-6 text-white font-medium">
-                <li><a href="{% url 'home' %}" class="hover:text-blue-300 transition-colors duration-200">Home</a></li>
-                <li><a href="{% url 'buy_lease' %}" class="hover:text-blue-300 transition-colors duration-200">Buy / Lease</a></li>
-                <li><a href="{% url 'selling' %}" class="hover:text-blue-300 transition-colors duration-200">Sell & Evaluate</a></li>
-                <li><a href="{% url 'blog' %}" class="hover:text-blue-300 transition-colors duration-200">Blog</a></li>
-                <li><a href="{% url 'open_house' %}" class="hover:text-blue-300 transition-colors duration-200">Open House</a></li>
-                <li><a href="{% url 'mortgage_calculator' %}" class="hover:text-blue-300 transition-colors duration-200">Mortgage Calculator</a></li>
+<nav class="navbar-container">
+    <div class="navbar-content">
+        <div class="navbar-flex">
+            <div class="navbar-brand">{{ brand_name }}</div>
+            
+            <!-- Mobile menu toggle -->
+            <button id="mobile-menu-toggle" class="navbar-mobile-toggle">
+                <i class="fas fa-bars"></i>
+            </button>
+            
+            <!-- Desktop menu -->
+            <ul class="navbar-desktop-menu">
+                <li><a href="{% url 'home' %}">Home</a></li>
+                <li><a href="{% url 'buy_lease' %}">Buy / Lease</a></li>
+                <li><a href="{% url 'selling' %}">Sell & Evaluate</a></li>
+                <li><a href="{% url 'blog' %}">Blog</a></li>
+                <li><a href="{% url 'open_house' %}">Open House</a></li>
+                <li><a href="{% url 'mortgage_calculator' %}">Mortgage Calculator</a></li>
                 <li>
                     <!-- Theme Toggle Button -->
-                    <button id="theme-toggle" class="p-2 rounded-lg hover:bg-blue-700 transition-colors duration-200" title="Toggle theme">
-                        <i id="theme-icon" class="fas fa-moon text-white text-base"></i>
+                    <button id="theme-toggle" class="navbar-theme-toggle" title="Toggle theme">
+                        <i id="theme-icon" class="fas fa-moon navbar-theme-icon"></i>
+                    </button>
+                </li>
+            </ul>
+        </div>
+        
+        <!-- Mobile menu -->
+        <div id="mobile-menu" class="navbar-mobile-menu">
+            <ul>
+                <li><a href="{% url 'home' %}">Home</a></li>
+                <li><a href="{% url 'buy_lease' %}">Buy / Lease</a></li>
+                <li><a href="{% url 'selling' %}">Sell & Evaluate</a></li>
+                <li><a href="{% url 'blog' %}">Blog</a></li>
+                <li><a href="{% url 'open_house' %}">Open House</a></li>
+                <li><a href="{% url 'mortgage_calculator' %}">Mortgage Calculator</a></li>
+                <li>
+                    <button id="theme-toggle-mobile" class="navbar-mobile-theme-toggle" title="Toggle theme">
+                        <i id="theme-icon-mobile" class="fas fa-moon navbar-mobile-theme-icon"></i>
+                        Toggle Theme
                     </button>
                 </li>
             </ul>
         </div>
     </div>
 </nav>
+
+<script>
+// Mobile menu toggle functionality
+document.addEventListener('DOMContentLoaded', function() {
+    const mobileMenuToggle = document.getElementById('mobile-menu-toggle');
+    const mobileMenu = document.getElementById('mobile-menu');
+    
+    if (mobileMenuToggle && mobileMenu) {
+        mobileMenuToggle.addEventListener('click', function() {
+            mobileMenu.classList.toggle('active');
+        });
+        
+        // Close mobile menu when clicking outside
+        document.addEventListener('click', function(event) {
+            if (!mobileMenuToggle.contains(event.target) && !mobileMenu.contains(event.target)) {
+                mobileMenu.classList.remove('active');
+            }
+        });
+    }
+    
+    // Mobile theme toggle
+    const themeToggleMobile = document.getElementById('theme-toggle-mobile');
+    const themeIconMobile = document.getElementById('theme-icon-mobile');
+    
+    if (themeToggleMobile && themeIconMobile) {
+        themeToggleMobile.addEventListener('click', function() {
+            // Trigger the main theme toggle
+            const mainThemeToggle = document.getElementById('theme-toggle');
+            if (mainThemeToggle) {
+                mainThemeToggle.click();
+            }
+        });
+    }
+});
+</script>
