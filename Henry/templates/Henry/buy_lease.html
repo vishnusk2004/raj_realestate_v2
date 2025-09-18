@@ -618,7 +618,7 @@
             <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
                 {% for property in properties %}
                 <div class="bg-white rounded-lg shadow-lg overflow-hidden hover:shadow-xl transition duration-300 cursor-pointer {% if property.featured %}ring-2 ring-yellow-400{% endif %}" 
-                     onclick="openPropertyModal({{ property.id }}, '{{ property.title|escapejs }}', '{{ property.location|escapejs }}', '{{ property.address|escapejs }}', '{{ property.price }}', '{{ property.property_type }}', '{{ property.bedrooms|default:"" }}', '{{ property.bathrooms|default:"" }}', '{{ property.parking_spaces|default:"" }}', '{{ property.area_sqft|default:"" }}', '{{ property.description|escapejs }}', '{{ property.get_main_image_url|escapejs }}', '{{ property.contact_email|escapejs }}', '{{ property.contact_phone|escapejs }}', {{ property.get_additional_images_list|safe }})">
+                     onclick="openPropertyModal({{ property.id }}, '{{ property.title|escapejs }}', '{{ property.location|escapejs }}', '{{ property.address|escapejs }}', '{{ property.price }}', '{{ property.property_type }}', '{{ property.bedrooms|default:"" }}', '{{ property.bathrooms|default:"" }}', '{{ property.parking_spaces|default:"" }}', '{{ property.area_sqft|default:"" }}', '{{ property.description|escapejs }}', '{{ property.get_main_image_url|escapejs }}', '{{ property.contact_email|escapejs }}', '{{ property.contact_phone|escapejs }}', {{ property.images.all|length }}, [{% for image in property.images.all %}'{{ image.get_image_url|escapejs }}'{% if not forloop.last %},{% endif %}{% endfor %}])">
                     {% if property.featured %}
                     <div class="bg-yellow-400 text-yellow-900 px-3 py-1 text-sm font-semibold text-center">
                         ⭐ FEATURED
@@ -900,7 +900,7 @@ document.addEventListener("DOMContentLoaded", function() {
 });
 
 // Property Modal Functions
-function openPropertyModal(id, title, location, address, price, propertyType, bedrooms, bathrooms, parkingSpaces, areaSqft, description, imageUrl, contactEmail, contactPhone, additionalImages) {
+function openPropertyModal(id, title, location, address, price, propertyType, bedrooms, bathrooms, parkingSpaces, areaSqft, description, imageUrl, contactEmail, contactPhone, imageCount, additionalImages) {
     const modal = document.getElementById('propertyModal');
     const modalTitle = document.getElementById('modalTitle');
     const modalLocation = document.getElementById('modalLocation');
@@ -938,6 +938,30 @@ function openPropertyModal(id, title, location, address, price, propertyType, be
     // Contact info
     modalContactEmail.href = 'mailto:' + contactEmail + '?subject=Inquiry about ' + title;
     modalContactPhone.href = 'tel:' + contactPhone;
+    
+    // Handle additional images
+    currentImages = additionalImages || [];
+    currentImageIndex = 0;
+    
+    const imageGallery = document.getElementById('imageGallery');
+    if (currentImages.length > 1) {
+        imageGallery.classList.remove('hidden');
+        imageGallery.innerHTML = '';
+        
+        currentImages.forEach((imageUrl, index) => {
+            const img = document.createElement('img');
+            img.src = imageUrl;
+            img.alt = `Property image ${index + 1}`;
+            img.className = 'w-full h-20 object-cover rounded cursor-pointer hover:opacity-75 transition-opacity';
+            img.onclick = () => {
+                currentImageIndex = index;
+                openImageModal();
+            };
+            imageGallery.appendChild(img);
+        });
+    } else {
+        imageGallery.classList.add('hidden');
+    }
     
     // Property details
     modalBedrooms.textContent = bedrooms ? bedrooms + ' bed' + (bedrooms > 1 ? 's' : '') : 'N/A';
@@ -1018,9 +1042,12 @@ document.addEventListener('DOMContentLoaded', function() {
             <div class="space-y-6">
                 <!-- Image Section -->
                 <div class="relative">
-                    <img id="modalImage" src="" alt="" class="w-full h-64 object-cover rounded-xl shadow-lg">
+                    <img id="modalImage" src="" alt="" class="w-full h-64 object-cover rounded-xl shadow-lg cursor-pointer" onclick="openImageModal()">
                     <div class="absolute top-4 right-4">
                         <span id="modalPropertyType" class="bg-white/90 backdrop-blur-sm text-gray-800 px-3 py-1 rounded-full text-sm font-medium shadow-lg"></span>
+                    </div>
+                    <div id="imageGallery" class="hidden mt-4 grid grid-cols-2 md:grid-cols-4 gap-2">
+                        <!-- Additional images will be populated here -->
                     </div>
                 </div>
                 
@@ -1176,7 +1203,78 @@ document.addEventListener('DOMContentLoaded', function() {
         });
     }
 });
+
+// Image Gallery Variables
+let currentImages = [];
+let currentImageIndex = 0;
+
+// Image Modal Functions
+function openImageModal() {
+    if (currentImages.length > 0) {
+        document.getElementById('imageModal').classList.remove('hidden');
+        document.getElementById('modalImageFull').src = currentImages[currentImageIndex];
+        updateImageNavigation();
+    }
+}
+
+function closeImageModal() {
+    document.getElementById('imageModal').classList.add('hidden');
+}
+
+function previousImage() {
+    if (currentImages.length > 0) {
+        currentImageIndex = (currentImageIndex - 1 + currentImages.length) % currentImages.length;
+        document.getElementById('modalImageFull').src = currentImages[currentImageIndex];
+        updateImageNavigation();
+    }
+}
+
+function nextImage() {
+    if (currentImages.length > 0) {
+        currentImageIndex = (currentImageIndex + 1) % currentImages.length;
+        document.getElementById('modalImageFull').src = currentImages[currentImageIndex];
+        updateImageNavigation();
+    }
+}
+
+function updateImageNavigation() {
+    const prevBtn = document.getElementById('prevImage');
+    const nextBtn = document.getElementById('nextImage');
+    
+    if (currentImages.length <= 1) {
+        prevBtn.style.display = 'none';
+        nextBtn.style.display = 'none';
+    } else {
+        prevBtn.style.display = 'block';
+        nextBtn.style.display = 'block';
+    }
+}
+
+// Close image modal with Escape key
+document.addEventListener('keydown', function(e) {
+    if (e.key === 'Escape') {
+        closeImageModal();
+    }
+});
 </script>
+
+<!-- Image Modal -->
+<div id="imageModal" class="hidden fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-75">
+    <div class="relative max-w-4xl max-h-full p-4">
+        <button onclick="closeImageModal()" class="absolute top-4 right-4 text-white hover:text-gray-300 text-2xl z-10">
+            <i class="fas fa-times"></i>
+        </button>
+        <img id="modalImageFull" src="" alt="" class="max-w-full max-h-full object-contain">
+        <div class="flex justify-center mt-4 space-x-2">
+            <button id="prevImage" onclick="previousImage()" class="bg-white/20 hover:bg-white/30 text-white px-4 py-2 rounded">
+                <i class="fas fa-chevron-left"></i>
+            </button>
+            <button id="nextImage" onclick="nextImage()" class="bg-white/20 hover:bg-white/30 text-white px-4 py-2 rounded">
+                <i class="fas fa-chevron-right"></i>
+            </button>
+        </div>
+    </div>
+</div>
 
 </body>
 </html>
