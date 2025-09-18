@@ -285,6 +285,27 @@
         background-color: #374151 !important;
     }
     
+    /* Image Modal Theme Support */
+    .dark-theme #imageModal {
+        background-color: rgba(17, 24, 39, 0.95) !important;
+    }
+    
+    .dark-theme #imageModal .bg-white\/80 {
+        background-color: rgba(31, 41, 55, 0.8) !important;
+    }
+    
+    .dark-theme #imageModal .bg-gray-200 {
+        background-color: #374151 !important;
+    }
+    
+    .dark-theme #imageModal .hover\:bg-gray-300:hover {
+        background-color: #4b5563 !important;
+    }
+    
+    .dark-theme #imageModal .text-gray-700 {
+        color: #d1d5db !important;
+    }
+    
     /* Modal CSS - High specificity to override conflicts */
     #propertyModal {
         position: fixed !important;
@@ -1259,17 +1280,17 @@ document.addEventListener('keydown', function(e) {
 </script>
 
 <!-- Image Modal -->
-<div id="imageModal" class="hidden fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-75">
+<div id="imageModal" class="hidden fixed inset-0 z-50 flex items-center justify-center bg-white bg-opacity-95 dark:bg-gray-900 dark:bg-opacity-95">
     <div class="relative max-w-4xl max-h-full p-4">
-        <button onclick="closeImageModal()" class="absolute top-4 right-4 text-white hover:text-gray-300 text-2xl z-10">
+        <button onclick="closeImageModal()" class="absolute top-4 right-4 text-gray-600 hover:text-gray-800 dark:text-gray-300 dark:hover:text-white text-2xl z-10 bg-white/80 dark:bg-gray-800/80 rounded-full p-2 hover:bg-white dark:hover:bg-gray-700 transition-colors">
             <i class="fas fa-times"></i>
         </button>
-        <img id="modalImageFull" src="" alt="" class="max-w-full max-h-full object-contain">
+        <img id="modalImageFull" src="" alt="" class="max-w-full max-h-full object-contain rounded-lg shadow-2xl">
         <div class="flex justify-center mt-4 space-x-2">
-            <button id="prevImage" onclick="previousImage()" class="bg-white/20 hover:bg-white/30 text-white px-4 py-2 rounded">
+            <button id="prevImage" onclick="previousImage()" class="bg-gray-200 hover:bg-gray-300 dark:bg-gray-700 dark:hover:bg-gray-600 text-gray-700 dark:text-gray-300 px-4 py-2 rounded-lg transition-colors">
                 <i class="fas fa-chevron-left"></i>
             </button>
-            <button id="nextImage" onclick="nextImage()" class="bg-white/20 hover:bg-white/30 text-white px-4 py-2 rounded">
+            <button id="nextImage" onclick="nextImage()" class="bg-gray-200 hover:bg-gray-300 dark:bg-gray-700 dark:hover:bg-gray-600 text-gray-700 dark:text-gray-300 px-4 py-2 rounded-lg transition-colors">
                 <i class="fas fa-chevron-right"></i>
             </button>
         </div>
