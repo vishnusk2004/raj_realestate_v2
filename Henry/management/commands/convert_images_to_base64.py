@@ -4,7 +4,7 @@ Management command to convert existing uploaded images to base64
 """
 from django.core.management.base import BaseCommand
 from django.conf import settings
-from Henry.models import OpenHouse, OpenHouseImage, PropertyListing
+from Henry.models import OpenHouse, OpenHouseImage, PropertyListing, PropertyListingImage
 from Henry.image_utils import image_to_base64
 import os
 
@@ -110,6 +110,34 @@ class Command(BaseCommand):
                         converted_count += 1
                 else:
                     self.stdout.write(f"  ❌ File missing: {img.image_file.name}")
+        
+        # Convert PropertyListingImage gallery images
+        property_listing_images = PropertyListingImage.objects.filter(image_file__isnull=False).exclude(image_file='')
+        
+        for pli in property_listing_images:
+            if pli.image_file and pli.image_file.name and not pli.image_base64:
+                self.stdout.write(f"\n📋 Converting gallery image for: {pli.property_listing.title}")
+                
+                # Check if file exists
+                file_path = os.path.join(settings.MEDIA_ROOT, pli.image_file.name)
+                if os.path.exists(file_path):
+                    self.stdout.write(f"  ✅ File exists: {pli.image_file.name}")
+                    
+                    if not dry_run:
+                        # Convert to base64
+                        base64_data = image_to_base64(pli.image_file)
+                        if base64_data:
+                            pli.image_base64 = base64_data
+                            pli.save()
+                            self.stdout.write(f"  ✅ Converted to base64")
+                            converted_count += 1
+                        else:
+                            self.stdout.write(f"  ❌ Failed to convert to base64")
+                    else:
+                        self.stdout.write(f"  🔄 Would convert to base64")
+                        converted_count += 1
+                else:
+                    self.stdout.write(f"  ❌ File missing: {pli.image_file.name}")
         
         if dry_run:
             self.stdout.write(f"\n🔍 DRY RUN: Would convert {converted_count} images to base64")

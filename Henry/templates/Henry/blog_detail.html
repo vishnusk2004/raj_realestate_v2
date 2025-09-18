@@ -362,7 +362,7 @@
 
         <!-- Blog Content -->
         <div class="prose prose-lg max-w-none">
-            <div class="text-gray-700 leading-relaxed">
+            <div class="leading-relaxed" style="{{ post.get_content_style }}">
                 {{ post.content|safe }}
             </div>
         </div>

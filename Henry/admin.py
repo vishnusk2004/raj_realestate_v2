@@ -1,6 +1,13 @@
 from django.contrib import admin
-from .models import Property, SellingContact, BlogTracking, BlogPost, PropertyListing, OpenHouse, OpenHouseImage, OpenHouseRegistration, PropertyInquiry, MortgageInquiry, LinkTracking
-from .forms import PropertyListingForm
+from .models import Property, SellingContact, BlogTracking, BlogPost, PropertyListing, PropertyListingImage, OpenHouse, OpenHouseImage, OpenHouseRegistration, PropertyInquiry, MortgageInquiry, LinkTracking
+from .forms import PropertyListingForm, BlogPostForm
+
+# Inline admin classes
+class PropertyListingImageInline(admin.TabularInline):
+    model = PropertyListingImage
+    extra = 1
+    fields = ('image_file', 'image_url', 'caption', 'is_primary', 'order')
+    ordering = ('order',)
 
 # Register your models here.
 @admin.register(Property)
@@ -60,6 +67,7 @@ class BlogTrackingAdmin(admin.ModelAdmin):
 @admin.register(PropertyListing)
 class PropertyListingAdmin(admin.ModelAdmin):
     form = PropertyListingForm
+    inlines = [PropertyListingImageInline]
     list_display = ('title', 'property_type', 'price', 'location', 'bedrooms', 'bathrooms', 'featured', 'published', 'created_at')
     list_filter = ('property_type', 'featured', 'published', 'bedrooms', 'bathrooms', 'created_at')
     search_fields = ('title', 'location', 'address', 'description')
@@ -71,9 +79,9 @@ class PropertyListingAdmin(admin.ModelAdmin):
         ('Property Details', {
             'fields': ('bedrooms', 'bathrooms', 'parking_spaces', 'area_sqft', 'description')
         }),
-        ('Images', {
-            'fields': ('image_file', 'image_url', 'additional_images'),
-            'description': 'You can either upload an image file or provide an image URL/data URL. If both are provided, the uploaded file will be used. Data URLs (base64) are supported for direct image embedding.'
+        ('Main Image', {
+            'fields': ('image_file', 'image_url'),
+            'description': 'Main property image. You can either upload an image file or provide an image URL/data URL. If both are provided, the uploaded file will be used. Data URLs (base64) are supported for direct image embedding.'
         }),
         ('Contact Information', {
             'fields': ('contact_email', 'contact_phone')
@@ -90,6 +98,7 @@ class PropertyListingAdmin(admin.ModelAdmin):
 
 @admin.register(BlogPost)
 class BlogPostAdmin(admin.ModelAdmin):
+    form = BlogPostForm
     list_display = ('title', 'author', 'featured', 'published', 'created_at')
     list_filter = ('featured', 'published', 'created_at', 'author')
     search_fields = ('title', 'content', 'author')
@@ -100,7 +109,12 @@ class BlogPostAdmin(admin.ModelAdmin):
             'fields': ('title', 'slug', 'author', 'excerpt')
         }),
         ('Content', {
-            'fields': ('content', 'image_url', 'image_file')
+            'fields': ('content', 'image_url', 'image_file'),
+            'description': 'Use HTML tags for rich formatting. Supported tags: &lt;h1&gt;-&lt;h6&gt;, &lt;p&gt;, &lt;strong&gt;, &lt;em&gt;, &lt;ul&gt;, &lt;ol&gt;, &lt;li&gt;, &lt;table&gt;, &lt;tr&gt;, &lt;td&gt;, &lt;th&gt;, &lt;img&gt;, &lt;br&gt;, &lt;hr&gt;, &lt;a&gt;'
+        }),
+        ('Text Formatting', {
+            'fields': ('text_color', 'font_family', 'font_size', 'line_height', 'background_color'),
+            'description': 'Customize the appearance of your blog post text'
         }),
         ('Settings', {
             'fields': ('featured', 'published')

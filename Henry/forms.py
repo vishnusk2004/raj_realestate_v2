@@ -1,70 +1,56 @@
+#!/usr/bin/env python
+"""
+Custom forms for Django admin
+"""
 from django import forms
-from .models import BlogPost, PropertyListing, OpenHouseRegistration
-
-
-class BlogPostForm(forms.ModelForm):
-    class Meta:
-        model = BlogPost
-        fields = ['title', 'author', 'excerpt', 'content', 'image_url', 'featured', 'published']
-        widgets = {
-            'title': forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'Enter blog post title'}),
-            'author': forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'Enter author name'}),
-            'excerpt': forms.Textarea(attrs={'class': 'form-control', 'rows': 3, 'placeholder': 'Enter a brief excerpt'}),
-            'content': forms.Textarea(attrs={'class': 'form-control', 'rows': 15, 'placeholder': 'Enter the full blog post content (HTML allowed)'}),
-            'image_url': forms.URLInput(attrs={'class': 'form-control', 'placeholder': 'Enter image URL'}),
-            'featured': forms.CheckboxInput(attrs={'class': 'form-check-input'}),
-            'published': forms.CheckboxInput(attrs={'class': 'form-check-input'}),
-        }
-        labels = {
-            'title': 'Title',
-            'author': 'Author',
-            'excerpt': 'Excerpt',
-            'content': 'Content',
-            'image_url': 'Image URL',
-            'featured': 'Featured Post',
-            'published': 'Published',
-        }
-
+from .models import BlogPost, PropertyListing
+from .widgets import RichTextWidget, ColorPickerWidget
 
 class PropertyListingForm(forms.ModelForm):
+    """Custom form for PropertyListing"""
+    
     class Meta:
         model = PropertyListing
-        fields = ['title', 'property_type', 'price', 'location', 'address', 'bedrooms', 'bathrooms', 
-                 'parking_spaces', 'area_sqft', 'description', 'image_file', 'image_url', 
-                 'additional_images', 'contact_email', 'contact_phone', 'featured', 'published']
-        widgets = {
-            'image_url': forms.Textarea(attrs={
-                'class': 'form-control', 
-                'rows': 4, 
-                'placeholder': 'Enter image URL or paste base64 data URL (data:image/...)',
-                'style': 'font-family: monospace; font-size: 12px;'
-            }),
-        }
+        fields = '__all__'
 
-
-class OpenHouseRegistrationForm(forms.ModelForm):
+class BlogPostForm(forms.ModelForm):
+    """Custom form for BlogPost with rich text editing"""
+    
     class Meta:
-        model = OpenHouseRegistration
-        fields = ['name', 'email', 'phone', 'message', 'interested_in_buying', 'interested_in_leasing', 'preferred_contact_time']
+        model = BlogPost
+        fields = '__all__'
         widgets = {
-            'name': forms.TextInput(attrs={
-                'class': 'w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent',
-                'placeholder': 'Your full name'
-            }),
-            'email': forms.EmailInput(attrs={
-                'class': 'w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent',
-                'placeholder': 'your.email@example.com'
-            }),
-            'phone': forms.TextInput(attrs={
-                'class': 'w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent',
-                'placeholder': '+1 (555) 123-4567'
-            }),
-            'message': forms.Textarea(attrs={
-                'class': 'w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent',
-                'rows': 4,
-                'placeholder': 'Any questions or additional information...'
-            }),
-            'preferred_contact_time': forms.Select(attrs={
-                'class': 'w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent'
-            }),
+            'content': RichTextWidget(attrs={'rows': 20, 'cols': 80}),
+            'text_color': ColorPickerWidget(),
+            'background_color': ColorPickerWidget(),
+            'font_family': forms.Select(choices=[
+                ('Arial', 'Arial'),
+                ('Georgia', 'Georgia'),
+                ('Times New Roman', 'Times New Roman'),
+                ('Helvetica', 'Helvetica'),
+                ('Verdana', 'Verdana'),
+                ('Courier New', 'Courier New'),
+                ('Trebuchet MS', 'Trebuchet MS'),
+                ('Arial Black', 'Arial Black'),
+                ('Comic Sans MS', 'Comic Sans MS'),
+                ('Impact', 'Impact'),
+            ]),
+            'font_size': forms.Select(choices=[
+                ('12px', '12px (Small)'),
+                ('14px', '14px (Regular)'),
+                ('16px', '16px (Medium)'),
+                ('18px', '18px (Large)'),
+                ('20px', '20px (X-Large)'),
+                ('24px', '24px (XX-Large)'),
+                ('1.2em', '1.2em (Relative)'),
+                ('1.4em', '1.4em (Relative)'),
+                ('1.6em', '1.6em (Relative)'),
+            ]),
+            'line_height': forms.Select(choices=[
+                ('1.2', '1.2 (Tight)'),
+                ('1.4', '1.4 (Normal)'),
+                ('1.6', '1.6 (Comfortable)'),
+                ('1.8', '1.8 (Loose)'),
+                ('2.0', '2.0 (Very Loose)'),
+            ]),
         }

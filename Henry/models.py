@@ -149,7 +149,7 @@ class LinkTracking(models.Model):
         if language:
             self.language = language
             
-        self.save()
+            self.save()
 
 
 class PropertyListing(models.Model):
@@ -238,14 +238,22 @@ class PropertyListing(models.Model):
 
 
 class BlogPost(models.Model):
-    """Model to store blog posts"""
+    """Model to store blog posts with rich text content"""
     title = models.CharField(max_length=200)
     slug = models.SlugField(max_length=200, unique=True, blank=True)
     author = models.CharField(max_length=100, default="Henry Oak Reality")
-    content = models.TextField()
+    content = models.TextField(help_text="Rich text content with HTML formatting")
     excerpt = models.TextField(max_length=500, blank=True, help_text="Short description for blog listing")
     image_url = models.URLField(max_length=500, blank=True, help_text="Main image URL for the blog post")
     image_file = models.ImageField(upload_to='blog_images/', blank=True, null=True, help_text="Upload an image file (alternative to image URL)")
+    
+    # Rich text formatting options
+    text_color = models.CharField(max_length=7, default="#000000", help_text="Text color (hex code, e.g., #000000)")
+    font_family = models.CharField(max_length=50, default="Arial", help_text="Font family (e.g., Arial, Georgia, Times New Roman)")
+    font_size = models.CharField(max_length=10, default="16px", help_text="Font size (e.g., 16px, 1.2em)")
+    line_height = models.CharField(max_length=10, default="1.6", help_text="Line height (e.g., 1.6, 24px)")
+    background_color = models.CharField(max_length=7, blank=True, help_text="Background color (hex code, optional)")
+    
     featured = models.BooleanField(default=False, help_text="Featured posts appear first")
     published = models.BooleanField(default=True, help_text="Only published posts are visible")
     created_at = models.DateTimeField(auto_now_add=True)
@@ -265,10 +273,100 @@ class BlogPost(models.Model):
     def __str__(self):
         return self.title
     
+    def get_formatted_content(self):
+        """Return content with applied formatting styles"""
+        if not self.content:
+            return ""
+        
+        # Create style attributes
+        style_parts = [
+            f"color: {self.text_color}",
+            f"font-family: {self.font_family}",
+            f"font-size: {self.font_size}",
+            f"line-height: {self.line_height}",
+        ]
+        
+        if self.background_color:
+            style_parts.append(f"background-color: {self.background_color}")
+        
+        style_attr = "; ".join(style_parts)
+        
+        # Wrap content in styled div
+        return f'<div style="{style_attr}">{self.content}</div>'
+    
+    def get_content_style(self):
+        """Return CSS style string for the content"""
+        style_parts = [
+            f"color: {self.text_color}",
+            f"font-family: {self.font_family}",
+            f"font-size: {self.font_size}",
+            f"line-height: {self.line_height}",
+        ]
+        
+        if self.background_color:
+            style_parts.append(f"background-color: {self.background_color}")
+        
+        return "; ".join(style_parts)
+    
     def save(self, *args, **kwargs):
         if not self.slug:
             # Create slug from title if not provided
             self.slug = self.title.lower().replace(' ', '-').replace('&', 'and')
+        super().save(*args, **kwargs)
+
+
+class PropertyListingImage(models.Model):
+    """Model to store multiple images for property listings"""
+    property_listing = models.ForeignKey(PropertyListing, on_delete=models.CASCADE, related_name='images')
+    image_file = models.ImageField(upload_to='properties/gallery/', help_text="Upload property image")
+    image_url = models.URLField(max_length=500, blank=True, help_text="Alternative: Property image URL")
+    image_base64 = models.TextField(blank=True, null=True, help_text="Base64 encoded image data")
+    caption = models.CharField(max_length=200, blank=True, help_text="Optional image caption")
+    is_primary = models.BooleanField(default=False, help_text="Mark as primary image for the property")
+    order = models.PositiveIntegerField(default=0, help_text="Order of display (0 = first)")
+    created_at = models.DateTimeField(auto_now_add=True)
+    
+    class Meta:
+        ordering = ['order', 'created_at']
+        verbose_name = "Property Listing Image"
+        verbose_name_plural = "Property Listing Images"
+    
+    def get_image_url(self):
+        """Return the image URL - prefer base64, then file, then URL"""
+        # First priority: base64 data
+        if self.image_base64:
+            from .image_utils import get_image_data_url
+            return get_image_data_url(self.image_base64)
+        
+        # Second priority: uploaded file
+        if self.image_file and self.image_file.name:
+            # In production, if the file exists but might not be accessible,
+            # fall back to the image_url if available
+            try:
+                # Check if we're in production (no DEBUG mode)
+                from django.conf import settings
+                if not settings.DEBUG and self.image_url:
+                    return self.image_url
+                return self.image_file.url
+            except:
+                # If there's any error accessing the file, fall back to URL
+                if self.image_url:
+                    return self.image_url
+                return self.image_file.url
+        
+        # Third priority: URL field
+        return self.image_url
+    
+    def __str__(self):
+        return f"{self.property_listing.title} - Image {self.order + 1}"
+    
+    def save(self, *args, **kwargs):
+        """Override save to automatically convert uploaded images to base64"""
+        # Convert uploaded file to base64 if present and no base64 exists
+        if self.image_file and self.image_file.name and not self.image_base64:
+            from .image_utils import image_to_base64
+            self.image_base64 = image_to_base64(self.image_file)
+        
         super().save(*args, **kwargs)
 
 
