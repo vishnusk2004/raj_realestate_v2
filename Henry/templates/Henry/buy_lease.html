@@ -799,6 +799,83 @@
         transition-duration: 300ms !important;
     }
     
+    /* Enhanced Image Section Styling */
+    #propertyModal .bg-gray-50 {
+        background-color: #f9fafb !important;
+    }
+    
+    #propertyModal .rounded-2xl {
+        border-radius: 1rem !important;
+    }
+    
+    #propertyModal .shadow-inner {
+        box-shadow: inset 0 2px 4px 0 rgba(0, 0, 0, 0.06) !important;
+    }
+    
+    #propertyModal .h-80 {
+        height: 20rem !important;
+    }
+    
+    #propertyModal .group-hover\\:shadow-2xl:hover {
+        box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.25) !important;
+    }
+    
+    #propertyModal .group-hover\\:scale-\\[1\\.02\\]:hover {
+        transform: scale(1.02) !important;
+    }
+    
+    #propertyModal .bg-white\\/95 {
+        background-color: rgba(255, 255, 255, 0.95) !important;
+    }
+    
+    #propertyModal .backdrop-blur-sm {
+        backdrop-filter: blur(4px) !important;
+    }
+    
+    #propertyModal .border-gray-200 {
+        border-color: #e5e7eb !important;
+    }
+    
+    #propertyModal .bg-black\\/70 {
+        background-color: rgba(0, 0, 0, 0.7) !important;
+    }
+    
+    #propertyModal .bg-black\\/10 {
+        background-color: rgba(0, 0, 0, 0.1) !important;
+    }
+    
+    #propertyModal .bg-white\\/90 {
+        background-color: rgba(255, 255, 255, 0.9) !important;
+    }
+    
+    #propertyModal .h-20 {
+        height: 5rem !important;
+    }
+    
+    #propertyModal .rounded-lg {
+        border-radius: 0.5rem !important;
+    }
+    
+    #propertyModal .hover\\:scale-105:hover {
+        transform: scale(1.05) !important;
+    }
+    
+    #propertyModal .shadow-md {
+        box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06) !important;
+    }
+    
+    #propertyModal .hover\\:shadow-lg:hover {
+        box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05) !important;
+    }
+    
+    #propertyModal .text-blue-600 {
+        color: #2563eb !important;
+    }
+    
+    #propertyModal .gap-3 {
+        gap: 0.75rem !important;
+    }
+    
     /* Theme toggle button */
     #theme-toggle {
         transition: all 0.3s ease;
@@ -1378,23 +1455,36 @@ function openPropertyModal(id, title, location, address, price, propertyType, be
     currentImageIndex = 0;
     
     const imageGallery = document.getElementById('imageGallery');
+    const galleryGrid = imageGallery.querySelector('.grid');
+    
     if (currentImages.length > 1) {
         imageGallery.classList.remove('hidden');
-        imageGallery.innerHTML = '';
+        galleryGrid.innerHTML = '';
         
-        currentImages.forEach((imageUrl, index) => {
+        // Update image count badge
+        document.getElementById('imageCount').textContent = currentImages.length;
+        document.getElementById('imageCountPlural').textContent = currentImages.length > 1 ? 's' : '';
+        
+        // Show additional images (skip the first one as it's the main image)
+        currentImages.slice(1).forEach((imageUrl, index) => {
             const img = document.createElement('img');
             img.src = imageUrl;
-            img.alt = `Property image ${index + 1}`;
-            img.className = 'w-full h-20 object-cover rounded cursor-pointer hover:opacity-75 transition-opacity';
+            img.alt = `Property image ${index + 2}`;
+            img.className = 'w-full h-20 object-cover rounded-lg cursor-pointer hover:opacity-80 hover:scale-105 transition-all duration-300 shadow-md hover:shadow-lg';
             img.onclick = () => {
-                currentImageIndex = index;
+                // Switch main image and open modal
+                modalImage.src = imageUrl;
+                currentImageIndex = index + 1; // +1 because we skipped the main image
                 openImageModal();
             };
-            imageGallery.appendChild(img);
+            galleryGrid.appendChild(img);
         });
     } else {
         imageGallery.classList.add('hidden');
+        
+        // Update image count badge for single image
+        document.getElementById('imageCount').textContent = '1';
+        document.getElementById('imageCountPlural').textContent = '';
     }
     
     // Property details
@@ -1475,13 +1565,40 @@ document.addEventListener('DOMContentLoaded', function() {
         <div class="p-6 flex-1 modal-content-scrollable">
             <div class="space-y-6">
                 <!-- Image Section -->
-                <div class="relative">
-                    <img id="modalImage" src="" alt="" class="w-full h-64 object-cover rounded-xl shadow-lg cursor-pointer" onclick="openImageModal()">
-                    <div class="absolute top-4 right-4">
-                        <span id="modalPropertyType" class="bg-white/90 backdrop-blur-sm text-gray-800 px-3 py-1 rounded-full text-sm font-medium shadow-lg"></span>
+                <div class="relative bg-gray-50 rounded-2xl p-4 shadow-inner">
+                    <!-- Main Image Container -->
+                    <div class="relative group">
+                        <img id="modalImage" src="" alt="" class="w-full h-80 object-cover rounded-xl shadow-lg cursor-pointer transition-all duration-300 group-hover:shadow-2xl group-hover:scale-[1.02]" onclick="openImageModal()">
+                        
+                        <!-- Property Type Badge -->
+                        <div class="absolute top-4 right-4">
+                            <span id="modalPropertyType" class="bg-white/95 backdrop-blur-sm text-gray-800 px-4 py-2 rounded-full text-sm font-semibold shadow-lg border border-gray-200"></span>
+                        </div>
+                        
+                        <!-- Image Count Badge -->
+                        <div id="imageCountBadge" class="absolute top-4 left-4 bg-black/70 text-white px-3 py-1 rounded-full text-sm font-medium backdrop-blur-sm">
+                            <i class="fas fa-images mr-1"></i>
+                            <span id="imageCount">1</span> image<span id="imageCountPlural">s</span>
+                        </div>
+                        
+                        <!-- Click to View Fullscreen Hint -->
+                        <div class="absolute inset-0 bg-black/0 group-hover:bg-black/10 transition-all duration-300 rounded-xl flex items-center justify-center">
+                            <div class="opacity-0 group-hover:opacity-100 transition-opacity duration-300 bg-white/90 text-gray-800 px-4 py-2 rounded-full text-sm font-medium shadow-lg">
+                                <i class="fas fa-expand mr-2"></i>
+                                Click to view fullscreen
+                            </div>
+                        </div>
                     </div>
-                    <div id="imageGallery" class="hidden mt-4 grid grid-cols-2 md:grid-cols-4 gap-2">
-                        <!-- Additional images will be populated here -->
+                    
+                    <!-- Additional Images Gallery -->
+                    <div id="imageGallery" class="hidden mt-6">
+                        <h3 class="text-lg font-semibold text-gray-800 mb-4 flex items-center">
+                            <i class="fas fa-images mr-2 text-blue-600"></i>
+                            Additional Images
+                        </h3>
+                        <div class="grid grid-cols-2 md:grid-cols-4 gap-3">
+                            <!-- Additional images will be populated here -->
+                        </div>
                     </div>
                 </div>
                 
