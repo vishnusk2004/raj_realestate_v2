@@ -302,6 +302,8 @@
     #imageModal img {
         max-width: 90vw !important;
         max-height: 80vh !important;
+        width: auto !important;
+        height: auto !important;
         object-fit: contain !important;
         border-radius: 8px !important;
     }
@@ -331,7 +333,7 @@
         align-items: center !important;
         justify-content: center !important;
         padding: 20px !important;
-        background-color: rgba(0, 0, 0, 0.5) !important;
+        background-color: rgba(0, 0, 0, 0.6) !important;
     }
     
     #propertyModal.hidden {
@@ -349,14 +351,200 @@
     
     .modal-container {
         background: white !important;
-        border-radius: 8px !important;
-        box-shadow: 0 10px 25px rgba(0, 0, 0, 0.3) !important;
-        max-width: 600px !important;
+        border-radius: 12px !important;
+        box-shadow: 0 20px 40px rgba(0, 0, 0, 0.4) !important;
+        max-width: 700px !important;
         width: 100% !important;
-        max-height: 80vh !important;
+        max-height: 85vh !important;
         overflow: hidden !important;
         position: relative !important;
         z-index: 10 !important;
+    }
+    
+    /* Ensure all images in modal are same size */
+    #propertyModal img {
+        width: 100% !important;
+        height: 300px !important;
+        object-fit: cover !important;
+        border-radius: 8px !important;
+    }
+    
+    #imageGallery img {
+        width: 100% !important;
+        height: 80px !important;
+        object-fit: cover !important;
+        border-radius: 4px !important;
+        cursor: pointer !important;
+    }
+    
+    #imageGallery img:hover {
+        opacity: 0.8 !important;
+    }
+    
+    /* Ensure all property card images are same size */
+    .property-card img {
+        width: 100% !important;
+        height: 250px !important;
+        object-fit: cover !important;
+        border-radius: 8px !important;
+    }
+    
+    /* Override any conflicting styles */
+    .bg-cover {
+        background-size: cover !important;
+        background-position: center !important;
+    }
+    
+    /* Modal content styling */
+    #propertyModal .space-y-6 > * + * {
+        margin-top: 1.5rem !important;
+    }
+    
+    #propertyModal .grid {
+        display: grid !important;
+    }
+    
+    #propertyModal .grid-cols-2 {
+        grid-template-columns: repeat(2, minmax(0, 1fr)) !important;
+    }
+    
+    #propertyModal .gap-4 {
+        gap: 1rem !important;
+    }
+    
+    #propertyModal .text-center {
+        text-align: center !important;
+    }
+    
+    #propertyModal .font-bold {
+        font-weight: 700 !important;
+    }
+    
+    #propertyModal .text-4xl {
+        font-size: 2.25rem !important;
+        line-height: 2.5rem !important;
+    }
+    
+    #propertyModal .text-green-600 {
+        color: #16a34a !important;
+    }
+    
+    #propertyModal .text-blue-600 {
+        color: #2563eb !important;
+    }
+    
+    #propertyModal .bg-blue-50 {
+        background-color: #eff6ff !important;
+    }
+    
+    #propertyModal .bg-white {
+        background-color: #ffffff !important;
+    }
+    
+    #propertyModal .border {
+        border-width: 1px !important;
+    }
+    
+    #propertyModal .border-gray-200 {
+        border-color: #e5e7eb !important;
+    }
+    
+    #propertyModal .rounded-xl {
+        border-radius: 0.75rem !important;
+    }
+    
+    #propertyModal .p-4 {
+        padding: 1rem !important;
+    }
+    
+    #propertyModal .mb-2 {
+        margin-bottom: 0.5rem !important;
+    }
+    
+    #propertyModal .mb-3 {
+        margin-bottom: 0.75rem !important;
+    }
+    
+    #propertyModal .mx-auto {
+        margin-left: auto !important;
+        margin-right: auto !important;
+    }
+    
+    #propertyModal .w-12 {
+        width: 3rem !important;
+    }
+    
+    #propertyModal .h-12 {
+        height: 3rem !important;
+    }
+    
+    #propertyModal .bg-blue-100 {
+        background-color: #dbeafe !important;
+    }
+    
+    #propertyModal .rounded-full {
+        border-radius: 9999px !important;
+    }
+    
+    #propertyModal .flex {
+        display: flex !important;
+    }
+    
+    #propertyModal .items-center {
+        align-items: center !important;
+    }
+    
+    #propertyModal .justify-center {
+        justify-content: center !important;
+    }
+    
+    #propertyModal .text-lg {
+        font-size: 1.125rem !important;
+        line-height: 1.75rem !important;
+    }
+    
+    #propertyModal .text-sm {
+        font-size: 0.875rem !important;
+        line-height: 1.25rem !important;
+    }
+    
+    #propertyModal .text-xs {
+        font-size: 0.75rem !important;
+        line-height: 1rem !important;
+    }
+    
+    #propertyModal .uppercase {
+        text-transform: uppercase !important;
+    }
+    
+    #propertyModal .tracking-wide {
+        letter-spacing: 0.025em !important;
+    }
+    
+    #propertyModal .text-gray-500 {
+        color: #6b7280 !important;
+    }
+    
+    #propertyModal .text-gray-800 {
+        color: #1f2937 !important;
+    }
+    
+    #propertyModal .text-gray-600 {
+        color: #4b5563 !important;
+    }
+    
+    #propertyModal .hover\\:shadow-md:hover {
+        box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06) !important;
+    }
+    
+    #propertyModal .transition {
+        transition-property: color, background-color, border-color, text-decoration-color, fill, stroke, opacity, box-shadow, transform, filter, backdrop-filter !important;
+        transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1) !important;
+        transition-duration: 150ms !important;
+    }
+    
+    #propertyModal .duration-300 {
+        transition-duration: 300ms !important;
     }
     
     
@@ -1059,9 +1247,9 @@ document.addEventListener('DOMContentLoaded', function() {
     <div class="modal-backdrop"></div>
     <div class="modal-container">
         <!-- Modal Header -->
-        <div class="flex justify-between items-center p-6 border-b border-gray-100 bg-gradient-to-r from-gray-50 to-white">
-            <h2 id="modalTitle" class="text-2xl sm:text-3xl font-bold text-gray-900 pr-4"></h2>
-            <button onclick="closePropertyModal()" class="text-gray-400 hover:text-gray-600 hover:bg-gray-100 rounded-full p-3 text-xl sm:text-2xl transition-all duration-300 flex-shrink-0 hover:scale-110">
+        <div class="flex justify-between items-center p-6 border-b border-gray-200 bg-white">
+            <h2 id="modalTitle" class="text-2xl font-bold text-gray-900 pr-4"></h2>
+            <button onclick="closePropertyModal()" class="text-gray-500 hover:text-gray-700 hover:bg-gray-100 rounded-full p-2 text-xl transition-all duration-200">
                 <i class="fas fa-times"></i>
             </button>
         </div>
