@@ -1580,7 +1580,7 @@ document.addEventListener('DOMContentLoaded', function() {
                 <div class="relative bg-gray-50 rounded-2xl p-4 shadow-inner">
                     <!-- Main Image Container -->
                     <div class="relative group">
-                        <img id="modalImage" src="" alt="" class="w-full h-80 object-cover rounded-xl shadow-lg cursor-pointer transition-all duration-300 group-hover:shadow-2xl group-hover:scale-[1.02]" onclick="currentImageIndex = 0; openImageModal();">
+                        <img id="modalImage" src="" alt="" class="w-full h-80 object-cover rounded-xl shadow-lg transition-all duration-300 group-hover:shadow-2xl group-hover:scale-[1.02]">
                         
                         <!-- Property Type Badge -->
                         <div class="absolute top-4 right-4">
@@ -1594,7 +1594,7 @@ document.addEventListener('DOMContentLoaded', function() {
                         </div>
                         
                         <!-- Click to View Fullscreen Hint -->
-                        <div class="absolute inset-0 bg-black/0 group-hover:bg-black/10 transition-all duration-300 rounded-xl flex items-center justify-center">
+                        <div class="absolute inset-0 bg-black/0 group-hover:bg-black/10 transition-all duration-300 rounded-xl flex items-center justify-center cursor-pointer" onclick="currentImageIndex = 0; openImageModal();">
                             <div class="opacity-0 group-hover:opacity-100 transition-opacity duration-300 bg-white/90 text-gray-800 px-4 py-2 rounded-full text-sm font-medium shadow-lg">
                                 <i class="fas fa-expand mr-2"></i>
                                 Click to view fullscreen
