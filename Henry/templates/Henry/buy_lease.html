@@ -1451,22 +1451,26 @@ function openPropertyModal(id, title, location, address, price, propertyType, be
     modalContactPhone.href = 'tel:' + contactPhone;
     
     // Handle additional images
-    currentImages = additionalImages || [];
+    console.log('Additional images received:', additionalImages);
+    console.log('Image count:', imageCount);
+    
+    currentImages = [imageUrl, ...(additionalImages || [])];
     currentImageIndex = 0;
     
     const imageGallery = document.getElementById('imageGallery');
     const galleryGrid = imageGallery.querySelector('.grid');
     
-    if (currentImages.length > 1) {
+    if (additionalImages && additionalImages.length > 0) {
         imageGallery.classList.remove('hidden');
         galleryGrid.innerHTML = '';
         
         // Update image count badge
-        document.getElementById('imageCount').textContent = currentImages.length;
-        document.getElementById('imageCountPlural').textContent = currentImages.length > 1 ? 's' : '';
+        const totalImages = 1 + additionalImages.length;
+        document.getElementById('imageCount').textContent = totalImages;
+        document.getElementById('imageCountPlural').textContent = totalImages > 1 ? 's' : '';
         
-        // Show additional images (skip the first one as it's the main image)
-        currentImages.slice(1).forEach((imageUrl, index) => {
+        // Show additional images
+        additionalImages.forEach((imageUrl, index) => {
             const img = document.createElement('img');
             img.src = imageUrl;
             img.alt = `Property image ${index + 2}`;
@@ -1474,7 +1478,7 @@ function openPropertyModal(id, title, location, address, price, propertyType, be
             img.onclick = () => {
                 // Switch main image and open modal
                 modalImage.src = imageUrl;
-                currentImageIndex = index + 1; // +1 because we skipped the main image
+                currentImageIndex = index + 1; // +1 because main image is at index 0
                 openImageModal();
             };
             galleryGrid.appendChild(img);
@@ -1761,14 +1765,6 @@ let currentImageIndex = 0;
 
 // Image Modal Functions
 function openImageModal() {
-    // Get the main image and additional images
-    const mainImage = document.getElementById('modalImage').src;
-    const additionalImages = Array.from(document.querySelectorAll('#imageGallery img')).map(img => img.src);
-    
-    // Combine main image with additional images
-    currentImages = [mainImage, ...additionalImages];
-    currentImageIndex = 0;
-    
     if (currentImages.length > 0) {
         document.getElementById('imageModal').classList.remove('hidden');
         document.getElementById('modalImageFull').src = currentImages[currentImageIndex];
