@@ -194,7 +194,13 @@ class PropertyListing(models.Model):
         return []
     
     def get_main_image_url(self):
-        """Return the main image URL - either from URL field or uploaded file"""
+        """Return the main image URL - prefer base64, then file, then URL"""
+        # First priority: base64 data
+        if self.image_base64:
+            from .image_utils import get_image_data_url
+            return get_image_data_url(self.image_base64)
+        
+        # Second priority: uploaded file
         if self.image_file and self.image_file.name:
             # In production, if the file exists but might not be accessible,
             # fall back to the image_url if available
@@ -209,12 +215,15 @@ class PropertyListing(models.Model):
                 if self.image_url:
                     return self.image_url
                 return self.image_file.url
+        
+        # Third priority: URL field
         elif self.image_url:
             # Check if it's a data URL or regular URL
             if self.image_url.startswith('data:'):
                 return self.image_url
             else:
                 return self.image_url
+        
         return None
 
 
@@ -264,6 +273,7 @@ class OpenHouse(models.Model):
     description = models.TextField(help_text="Property description", default="Property description")
     image_url = models.URLField(max_length=500, help_text="Property image URL", default="https://via.placeholder.com/400x300", blank=True)
     image_file = models.ImageField(upload_to='openhouse_images/', blank=True, null=True, help_text="Upload a main image file (alternative to image URL)")
+    image_base64 = models.TextField(blank=True, null=True, help_text="Base64 encoded image data")
     open_house_date = models.DateField(null=False, blank=False, help_text="Date of the open house")
     open_house_time = models.TimeField(help_text="Time of the open house")
     contact_email = models.EmailField(help_text="Contact email for inquiries", default="raj.gupta@kw.com")
@@ -276,15 +286,51 @@ class OpenHouse(models.Model):
         ordering = ['open_house_date', 'open_house_time']
         verbose_name = "Open House"
     
-    def get_main_image_url(self):
-        """Return the main image URL, preferring uploaded file over URL"""
-        if self.image_file:
-            return self.image_file.url
-        return self.image_url
-    
     def __str__(self):
         date_str = self.open_house_date.strftime('%Y-%m-%d') if self.open_house_date else 'No Date'
         return f"{self.title} - {date_str}"
+    
+    def get_main_image_url(self):
+        """Return the main image URL - prefer base64, then file, then URL"""
+        # First priority: base64 data
+        if self.image_base64:
+            from .image_utils import get_image_data_url
+            return get_image_data_url(self.image_base64)
+        
+        # Second priority: uploaded file
+        if self.image_file and self.image_file.name:
+            # In production, if the file exists but might not be accessible,
+            # fall back to the image_url if available
+            try:
+                # Check if we're in production (no DEBUG mode)
+                from django.conf import settings
+                if not settings.DEBUG and self.image_url:
+                    return self.image_url
+                return self.image_file.url
+            except:
+                # If there's any error accessing the file, fall back to URL
+                if self.image_url:
+                    return self.image_url
+                return self.image_file.url
+        
+        # Third priority: URL field
+        elif self.image_url:
+            # Check if it's a data URL or regular URL
+            if self.image_url.startswith('data:'):
+                return self.image_url
+            else:
+                return self.image_url
+        
+        return None
+    
+    def save(self, *args, **kwargs):
+        """Override save to automatically convert uploaded images to base64"""
+        # Convert uploaded file to base64 if present and no base64 exists
+        if self.image_file and self.image_file.name and not self.image_base64:
+            from .image_utils import image_to_base64
+            self.image_base64 = image_to_base64(self.image_file)
+        
+        super().save(*args, **kwargs)
     
     @property
     def is_past(self):
@@ -300,6 +346,7 @@ class OpenHouseImage(models.Model):
     open_house = models.ForeignKey(OpenHouse, on_delete=models.CASCADE, related_name='images')
     image_file = models.ImageField(upload_to='openhouse_images/gallery/', help_text="Upload property image")
     image_url = models.URLField(max_length=500, blank=True, help_text="Alternative: Property image URL")
+    image_base64 = models.TextField(blank=True, null=True, help_text="Base64 encoded image data")
     caption = models.CharField(max_length=200, blank=True, help_text="Optional image caption")
     is_primary = models.BooleanField(default=False, help_text="Mark as primary image for the property")
     order = models.PositiveIntegerField(default=0, help_text="Order of display (0 = first)")
@@ -311,7 +358,13 @@ class OpenHouseImage(models.Model):
         verbose_name_plural = "Open House Images"
     
     def get_image_url(self):
-        """Return the image URL, preferring uploaded file over URL"""
+        """Return the image URL - prefer base64, then file, then URL"""
+        # First priority: base64 data
+        if self.image_base64:
+            from .image_utils import get_image_data_url
+            return get_image_data_url(self.image_base64)
+        
+        # Second priority: uploaded file
         if self.image_file and self.image_file.name:
             # In production, if the file exists but might not be accessible,
             # fall back to the image_url if available
@@ -326,10 +379,21 @@ class OpenHouseImage(models.Model):
                 if self.image_url:
                     return self.image_url
                 return self.image_file.url
+        
+        # Third priority: URL field
         return self.image_url
     
     def __str__(self):
         return f"{self.open_house.title} - Image {self.order + 1}"
+    
+    def save(self, *args, **kwargs):
+        """Override save to automatically convert uploaded images to base64"""
+        # Convert uploaded file to base64 if present and no base64 exists
+        if self.image_file and self.image_file.name and not self.image_base64:
+            from .image_utils import image_to_base64
+            self.image_base64 = image_to_base64(self.image_file)
+        
+        super().save(*args, **kwargs)
 
 
 class OpenHouseRegistration(models.Model):
