@@ -1610,23 +1610,23 @@ document.addEventListener('DOMContentLoaded', function() {
                 </div>
                 
                 <!-- Price Section -->
-                <div class="text-center bg-gradient-to-r from-blue-600 to-blue-700 text-white rounded-2xl p-8 shadow-xl">
+                <div class="text-center text-white rounded-2xl p-8 shadow-xl" style="background: linear-gradient(to right, #2563eb, #1d4ed8);">
                     <div class="text-6xl font-bold mb-2 tracking-tight">
                         <span id="modalPrice"></span>
                     </div>
-                    <div class="text-blue-100 text-sm font-semibold uppercase tracking-widest">Asking Price</div>
+                    <div class="text-sm font-semibold uppercase tracking-widest" style="color: #dbeafe;">Asking Price</div>
                 </div>
                 
                 <!-- Location Section -->
-                <div class="bg-gradient-to-r from-green-50 to-green-100 border border-green-200 rounded-2xl p-6 shadow-lg">
+                <div class="rounded-2xl p-6 shadow-lg" style="background: linear-gradient(to right, #f0fdf4, #dcfce7); border: 1px solid #bbf7d0;">
                     <div class="text-center">
                         <div class="flex items-center justify-center mb-3">
-                            <div class="bg-green-600 p-2 rounded-full mr-3">
+                            <div class="p-2 rounded-full mr-3" style="background-color: #16a34a;">
                                 <i class="fas fa-map-marker-alt text-white text-lg"></i>
                             </div>
-                            <span id="modalLocation" class="text-green-800 font-bold text-xl"></span>
+                            <span id="modalLocation" class="font-bold text-xl" style="color: #166534;"></span>
                         </div>
-                        <div class="text-green-700 text-sm font-medium">
+                        <div class="text-sm font-medium" style="color: #15803d;">
                             <span id="modalAddress"></span>
                         </div>
                     </div>
@@ -1634,43 +1634,43 @@ document.addEventListener('DOMContentLoaded', function() {
                 
                 <!-- Property Details Grid -->
                 <div class="grid grid-cols-2 gap-6">
-                    <div class="bg-gradient-to-br from-blue-50 to-blue-100 border border-blue-200 rounded-xl p-6 text-center hover:shadow-lg hover:scale-105 transition-all duration-300">
-                        <div class="bg-blue-600 w-14 h-14 rounded-full flex items-center justify-center mx-auto mb-4 shadow-lg">
+                    <div class="rounded-xl p-6 text-center hover:shadow-lg hover:scale-105 transition-all duration-300" style="background: linear-gradient(to bottom right, #eff6ff, #dbeafe); border: 1px solid #93c5fd;">
+                        <div class="w-14 h-14 rounded-full flex items-center justify-center mx-auto mb-4 shadow-lg" style="background-color: #2563eb;">
                             <i class="fas fa-bed text-white text-xl"></i>
                         </div>
-                        <div class="text-xs text-blue-600 uppercase tracking-wide mb-2 font-semibold">Bedrooms</div>
-                        <div id="modalBedrooms" class="font-bold text-blue-800 text-2xl"></div>
+                        <div class="text-xs uppercase tracking-wide mb-2 font-semibold" style="color: #2563eb;">Bedrooms</div>
+                        <div id="modalBedrooms" class="font-bold text-2xl" style="color: #1e40af;"></div>
                     </div>
-                    <div class="bg-gradient-to-br from-green-50 to-green-100 border border-green-200 rounded-xl p-6 text-center hover:shadow-lg hover:scale-105 transition-all duration-300">
-                        <div class="bg-green-600 w-14 h-14 rounded-full flex items-center justify-center mx-auto mb-4 shadow-lg">
+                    <div class="rounded-xl p-6 text-center hover:shadow-lg hover:scale-105 transition-all duration-300" style="background: linear-gradient(to bottom right, #f0fdf4, #dcfce7); border: 1px solid #86efac;">
+                        <div class="w-14 h-14 rounded-full flex items-center justify-center mx-auto mb-4 shadow-lg" style="background-color: #16a34a;">
                             <i class="fas fa-bath text-white text-xl"></i>
                         </div>
-                        <div class="text-xs text-green-600 uppercase tracking-wide mb-2 font-semibold">Bathrooms</div>
-                        <div id="modalBathrooms" class="font-bold text-green-800 text-2xl"></div>
+                        <div class="text-xs uppercase tracking-wide mb-2 font-semibold" style="color: #16a34a;">Bathrooms</div>
+                        <div id="modalBathrooms" class="font-bold text-2xl" style="color: #15803d;"></div>
                     </div>
-                    <div class="bg-gradient-to-br from-purple-50 to-purple-100 border border-purple-200 rounded-xl p-6 text-center hover:shadow-lg hover:scale-105 transition-all duration-300">
-                        <div class="bg-purple-600 w-14 h-14 rounded-full flex items-center justify-center mx-auto mb-4 shadow-lg">
+                    <div class="rounded-xl p-6 text-center hover:shadow-lg hover:scale-105 transition-all duration-300" style="background: linear-gradient(to bottom right, #faf5ff, #f3e8ff); border: 1px solid #c4b5fd;">
+                        <div class="w-14 h-14 rounded-full flex items-center justify-center mx-auto mb-4 shadow-lg" style="background-color: #9333ea;">
                             <i class="fas fa-car text-white text-xl"></i>
                         </div>
-                        <div class="text-xs text-purple-600 uppercase tracking-wide mb-2 font-semibold">Parking</div>
-                        <div id="modalParking" class="font-bold text-purple-800 text-2xl"></div>
+                        <div class="text-xs uppercase tracking-wide mb-2 font-semibold" style="color: #9333ea;">Parking</div>
+                        <div id="modalParking" class="font-bold text-2xl" style="color: #7c3aed;"></div>
                     </div>
-                    <div class="bg-gradient-to-br from-orange-50 to-orange-100 border border-orange-200 rounded-xl p-6 text-center hover:shadow-lg hover:scale-105 transition-all duration-300">
-                        <div class="bg-orange-600 w-14 h-14 rounded-full flex items-center justify-center mx-auto mb-4 shadow-lg">
+                    <div class="rounded-xl p-6 text-center hover:shadow-lg hover:scale-105 transition-all duration-300" style="background: linear-gradient(to bottom right, #fff7ed, #fed7aa); border: 1px solid #fdba74;">
+                        <div class="w-14 h-14 rounded-full flex items-center justify-center mx-auto mb-4 shadow-lg" style="background-color: #ea580c;">
                             <i class="fas fa-ruler-combined text-white text-xl"></i>
                         </div>
-                        <div class="text-xs text-orange-600 uppercase tracking-wide mb-2 font-semibold">Area (sq ft)</div>
-                        <div id="modalArea" class="font-bold text-orange-800 text-2xl"></div>
+                        <div class="text-xs uppercase tracking-wide mb-2 font-semibold" style="color: #ea580c;">Area (sq ft)</div>
+                        <div id="modalArea" class="font-bold text-2xl" style="color: #c2410c;"></div>
                     </div>
                 </div>
                 
                 <!-- Contact Buttons -->
                 <div class="grid grid-cols-2 gap-6">
-                    <a id="modalContactEmail" href="#" class="flex items-center justify-center p-5 bg-blue-600 hover:bg-blue-700 text-white rounded-xl transition-all duration-300 shadow-lg hover:shadow-xl transform hover:scale-105">
+                    <a id="modalContactEmail" href="#" class="flex items-center justify-center p-5 text-white rounded-xl transition-all duration-300 shadow-lg hover:shadow-xl transform hover:scale-105" style="background-color: #2563eb;" onmouseover="this.style.backgroundColor='#1d4ed8'" onmouseout="this.style.backgroundColor='#2563eb'">
                         <i class="fas fa-envelope text-lg mr-3"></i>
                         <span class="font-semibold text-lg">Email Us</span>
                     </a>
-                    <a id="modalContactPhone" href="#" class="flex items-center justify-center p-5 bg-green-600 hover:bg-green-700 text-white rounded-xl transition-all duration-300 shadow-lg hover:shadow-xl transform hover:scale-105">
+                    <a id="modalContactPhone" href="#" class="flex items-center justify-center p-5 text-white rounded-xl transition-all duration-300 shadow-lg hover:shadow-xl transform hover:scale-105" style="background-color: #16a34a;" onmouseover="this.style.backgroundColor='#15803d'" onmouseout="this.style.backgroundColor='#16a34a'">
                         <i class="fas fa-phone text-lg mr-3"></i>
                         <span class="font-semibold text-lg">Call Now</span>
                     </a>
