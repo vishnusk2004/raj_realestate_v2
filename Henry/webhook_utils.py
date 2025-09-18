@@ -177,16 +177,24 @@ def format_open_house_data(form_data):
             "phone": form_data.get('phone', '')
         },
         "form_specific_data": {
-            "interested_in_buying": form_data.get('interested_in_buying') == 'on',
-            "interested_in_leasing": form_data.get('interested_in_leasing') == 'on',
+            "open_house_id": form_data.get('open_house_id', ''),
+            "open_house_title": form_data.get('open_house_title', ''),
+            "open_house_address": form_data.get('open_house_address', ''),
+            "open_house_price": form_data.get('open_house_price', ''),
+            "property_type": form_data.get('property_type', ''),
+            "budget_range": form_data.get('budget_range', ''),
+            "preferred_date": form_data.get('preferred_date', ''),
+            "preferred_time": form_data.get('preferred_time', ''),
+            "interested_in_buying": form_data.get('interested_in_buying', False),
+            "interested_in_leasing": form_data.get('interested_in_leasing', False),
             "preferred_contact_time": form_data.get('preferred_contact_time', '')
         },
         "property_interest": {
-            "property_type": "open_house",
-            "budget_range": "",
-            "location": "",
-            "interested_in_buying": form_data.get('interested_in_buying') == 'on',
-            "interested_in_leasing": form_data.get('interested_in_leasing') == 'on'
+            "property_type": form_data.get('property_type', 'open_house'),
+            "budget_range": form_data.get('budget_range', ''),
+            "location": form_data.get('open_house_address', ''),
+            "interested_in_buying": form_data.get('interested_in_buying', False),
+            "interested_in_leasing": form_data.get('interested_in_leasing', False)
         },
         "preferences": {
             "preferred_contact_time": form_data.get('preferred_contact_time', ''),

@@ -251,6 +251,22 @@ def selling(request):
                 language=system_info.get('language')
             )
             
+            # Send to CRM via webhook
+            from .webhook_utils import send_to_crm, format_selling_contact_data
+            form_data = {
+                'name': name,
+                'email': email,
+                'phone': phone,
+                'property_address': property_address,
+                'property_type': property_type,
+                'estimated_value': estimated_value,
+                'timeline': timeline,
+                'message': message,
+                'preferred_contact_time': request.POST.get('preferred_contact_time', '')
+            }
+            lead_data = format_selling_contact_data(form_data)
+            send_to_crm('selling_contact', lead_data, request)
+            
             messages.success(request, 'Thank you! Our team will contact you within 24 hours.')
             return redirect('selling')
             
@@ -328,6 +344,28 @@ def open_house(request):
                 interested_in_leasing=False,
                 preferred_contact_time=preferred_time.lower() if preferred_time else 'anytime'
             )
+            
+            # Send to CRM via webhook
+            from .webhook_utils import send_to_crm, format_open_house_data
+            form_data = {
+                'name': name,
+                'email': email,
+                'phone': phone,
+                'message': message,
+                'property_type': property_type,
+                'budget_range': budget_range,
+                'preferred_date': preferred_date,
+                'preferred_time': preferred_time,
+                'open_house_id': open_house_id,
+                'open_house_title': open_house_obj.title,
+                'open_house_address': open_house_obj.property_address,
+                'open_house_price': str(open_house_obj.price),
+                'interested_in_buying': True,
+                'interested_in_leasing': False,
+                'preferred_contact_time': preferred_time.lower() if preferred_time else 'anytime'
+            }
+            lead_data = format_open_house_data(form_data)
+            send_to_crm('open_house_registration', lead_data, request)
             
             messages.success(request, f'Thank you for registering for "{open_house_obj.title}"! We will contact you within 24 hours.')
             return redirect('open_house')  # Redirect to clear the POST data
