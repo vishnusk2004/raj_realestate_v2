@@ -1432,7 +1432,10 @@ function openPropertyModal(id, title, location, address, price, propertyType, be
     modalTitle.textContent = title;
     modalLocation.textContent = location;
     modalAddress.textContent = address;
-    modalPrice.textContent = '$' + parseFloat(price).toLocaleString() + (propertyType === 'lease' ? '/month' : '');
+    // Format price with proper comma separation
+    const numericPrice = parseFloat(price);
+    const formattedPrice = isNaN(numericPrice) ? 'N/A' : '$' + numericPrice.toLocaleString() + (propertyType === 'lease' ? '/month' : '');
+    modalPrice.textContent = formattedPrice;
     modalPropertyType.textContent = propertyType === 'buy' ? '💰 FOR SALE' : '📋 FOR LEASE';
     // Description removed for compact modal
     if (imageUrl && imageUrl.trim() !== '') {
@@ -1492,7 +1495,10 @@ function openPropertyModal(id, title, location, address, price, propertyType, be
     modalBedrooms.textContent = bedrooms ? bedrooms + ' bed' + (bedrooms > 1 ? 's' : '') : 'N/A';
     modalBathrooms.textContent = bathrooms ? bathrooms + ' bath' + (bathrooms > 1 ? 's' : '') : 'N/A';
     modalParking.textContent = parkingSpaces ? parkingSpaces + ' parking space' + (parkingSpaces > 1 ? 's' : '') : 'N/A';
-    modalArea.textContent = areaSqft ? areaSqft + ' sqft' : 'N/A';
+    // Format area with commas
+    const numericArea = parseFloat(areaSqft);
+    const formattedArea = isNaN(numericArea) ? 'N/A' : numericArea.toLocaleString() + ' sqft';
+    modalArea.textContent = formattedArea;
     
     // Additional images removed for compact modal
     
@@ -1604,65 +1610,68 @@ document.addEventListener('DOMContentLoaded', function() {
                 </div>
                 
                 <!-- Price Section -->
-                <div class="text-center bg-white border border-gray-200 p-6 rounded-lg shadow-sm">
-                    <div class="text-4xl font-bold text-gray-900 mb-2">
+                <div class="text-center bg-gradient-to-br from-gray-50 to-gray-100 border border-gray-200 p-8 rounded-xl shadow-sm">
+                    <div class="text-5xl font-bold text-gray-900 mb-3 tracking-tight">
                         <span id="modalPrice"></span>
                     </div>
-                    <div class="text-gray-500 text-sm font-medium uppercase tracking-wide">Asking Price</div>
+                    <div class="text-gray-600 text-sm font-semibold uppercase tracking-wider">Asking Price</div>
+                    <div class="w-16 h-1 bg-gray-300 mx-auto mt-4 rounded-full"></div>
                 </div>
                 
                 <!-- Location Section -->
-                <div class="bg-white border border-gray-200 p-4 rounded-lg shadow-sm">
-                    <div class="flex items-center justify-center mb-2">
-                        <i class="fas fa-map-marker-alt text-gray-400 text-lg mr-2"></i>
-                        <span id="modalLocation" class="text-gray-900 font-semibold"></span>
+                <div class="bg-white border border-gray-200 p-6 rounded-xl shadow-sm">
+                    <div class="flex items-center justify-center mb-3">
+                        <div class="bg-gray-100 p-2 rounded-full mr-3">
+                            <i class="fas fa-map-marker-alt text-gray-600 text-lg"></i>
+                        </div>
+                        <span id="modalLocation" class="text-gray-900 font-bold text-lg"></span>
                     </div>
-                    <div class="text-center text-gray-600 text-sm">
+                    <div class="text-center text-gray-600 text-sm font-medium">
                         <span id="modalAddress"></span>
                     </div>
                 </div>
                 
                 <!-- Property Details Grid -->
-                <div class="grid grid-cols-2 gap-4">
-                    <div class="bg-white border border-gray-200 rounded-lg p-5 text-center hover:shadow-md transition-all duration-200">
-                        <div class="bg-gray-100 w-12 h-12 rounded-full flex items-center justify-center mx-auto mb-3">
-                            <i class="fas fa-bed text-gray-600 text-lg"></i>
+                <div class="grid grid-cols-2 gap-6">
+                    <div class="bg-white border border-gray-200 rounded-xl p-6 text-center hover:shadow-lg hover:border-gray-300 transition-all duration-300">
+                        <div class="bg-gray-50 w-14 h-14 rounded-full flex items-center justify-center mx-auto mb-4 border border-gray-200">
+                            <i class="fas fa-bed text-gray-700 text-xl"></i>
                         </div>
-                        <div class="text-xs text-gray-500 uppercase tracking-wide mb-1 font-medium">Bedrooms</div>
-                        <div id="modalBedrooms" class="font-bold text-gray-900 text-xl"></div>
+                        <div class="text-xs text-gray-500 uppercase tracking-wider mb-2 font-semibold">Bedrooms</div>
+                        <div id="modalBedrooms" class="font-bold text-gray-900 text-2xl"></div>
                     </div>
-                    <div class="bg-white border border-gray-200 rounded-lg p-5 text-center hover:shadow-md transition-all duration-200">
-                        <div class="bg-gray-100 w-12 h-12 rounded-full flex items-center justify-center mx-auto mb-3">
-                            <i class="fas fa-bath text-gray-600 text-lg"></i>
+                    <div class="bg-white border border-gray-200 rounded-xl p-6 text-center hover:shadow-lg hover:border-gray-300 transition-all duration-300">
+                        <div class="bg-gray-50 w-14 h-14 rounded-full flex items-center justify-center mx-auto mb-4 border border-gray-200">
+                            <i class="fas fa-bath text-gray-700 text-xl"></i>
                         </div>
-                        <div class="text-xs text-gray-500 uppercase tracking-wide mb-1 font-medium">Bathrooms</div>
-                        <div id="modalBathrooms" class="font-bold text-gray-900 text-xl"></div>
+                        <div class="text-xs text-gray-500 uppercase tracking-wider mb-2 font-semibold">Bathrooms</div>
+                        <div id="modalBathrooms" class="font-bold text-gray-900 text-2xl"></div>
                     </div>
-                    <div class="bg-white border border-gray-200 rounded-lg p-5 text-center hover:shadow-md transition-all duration-200">
-                        <div class="bg-gray-100 w-12 h-12 rounded-full flex items-center justify-center mx-auto mb-3">
-                            <i class="fas fa-car text-gray-600 text-lg"></i>
+                    <div class="bg-white border border-gray-200 rounded-xl p-6 text-center hover:shadow-lg hover:border-gray-300 transition-all duration-300">
+                        <div class="bg-gray-50 w-14 h-14 rounded-full flex items-center justify-center mx-auto mb-4 border border-gray-200">
+                            <i class="fas fa-car text-gray-700 text-xl"></i>
                         </div>
-                        <div class="text-xs text-gray-500 uppercase tracking-wide mb-1 font-medium">Parking</div>
-                        <div id="modalParking" class="font-bold text-gray-900 text-xl"></div>
+                        <div class="text-xs text-gray-500 uppercase tracking-wider mb-2 font-semibold">Parking</div>
+                        <div id="modalParking" class="font-bold text-gray-900 text-2xl"></div>
                     </div>
-                    <div class="bg-white border border-gray-200 rounded-lg p-5 text-center hover:shadow-md transition-all duration-200">
-                        <div class="bg-gray-100 w-12 h-12 rounded-full flex items-center justify-center mx-auto mb-3">
-                            <i class="fas fa-ruler-combined text-gray-600 text-lg"></i>
+                    <div class="bg-white border border-gray-200 rounded-xl p-6 text-center hover:shadow-lg hover:border-gray-300 transition-all duration-300">
+                        <div class="bg-gray-50 w-14 h-14 rounded-full flex items-center justify-center mx-auto mb-4 border border-gray-200">
+                            <i class="fas fa-ruler-combined text-gray-700 text-xl"></i>
                         </div>
-                        <div class="text-xs text-gray-500 uppercase tracking-wide mb-1 font-medium">Area (sq ft)</div>
-                        <div id="modalArea" class="font-bold text-gray-900 text-xl"></div>
+                        <div class="text-xs text-gray-500 uppercase tracking-wider mb-2 font-semibold">Area (sq ft)</div>
+                        <div id="modalArea" class="font-bold text-gray-900 text-2xl"></div>
                     </div>
                 </div>
                 
                 <!-- Contact Buttons -->
-                <div class="grid grid-cols-2 gap-4">
-                    <a id="modalContactEmail" href="#" class="group flex items-center justify-center p-4 bg-gray-900 hover:bg-gray-800 text-white rounded-lg transition-all duration-200 shadow-sm hover:shadow-md">
-                        <i class="fas fa-envelope text-lg mr-2"></i>
-                        <span class="font-medium">Email Us</span>
+                <div class="grid grid-cols-2 gap-6">
+                    <a id="modalContactEmail" href="#" class="group flex items-center justify-center p-5 bg-gray-900 hover:bg-gray-800 text-white rounded-xl transition-all duration-300 shadow-lg hover:shadow-xl">
+                        <i class="fas fa-envelope text-lg mr-3"></i>
+                        <span class="font-semibold text-lg">Email Us</span>
                     </a>
-                    <a id="modalContactPhone" href="#" class="group flex items-center justify-center p-4 bg-gray-900 hover:bg-gray-800 text-white rounded-lg transition-all duration-200 shadow-sm hover:shadow-md">
-                        <i class="fas fa-phone text-lg mr-2"></i>
-                        <span class="font-medium">Call Now</span>
+                    <a id="modalContactPhone" href="#" class="group flex items-center justify-center p-5 bg-gray-900 hover:bg-gray-800 text-white rounded-xl transition-all duration-300 shadow-lg hover:shadow-xl">
+                        <i class="fas fa-phone text-lg mr-3"></i>
+                        <span class="font-semibold text-lg">Call Now</span>
                     </a>
                 </div>
             </div>
