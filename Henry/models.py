@@ -252,7 +252,6 @@ class BlogPost(models.Model):
     font_family = models.CharField(max_length=50, default="Arial", help_text="Font family (e.g., Arial, Georgia, Times New Roman)")
     font_size = models.CharField(max_length=10, default="16px", help_text="Font size (e.g., 16px, 1.2em)")
     line_height = models.CharField(max_length=10, default="1.6", help_text="Line height (e.g., 1.6, 24px)")
-    background_color = models.CharField(max_length=7, blank=True, help_text="Background color (hex code, optional)")
     
     featured = models.BooleanField(default=False, help_text="Featured posts appear first")
     published = models.BooleanField(default=True, help_text="Only published posts are visible")
@@ -286,9 +285,6 @@ class BlogPost(models.Model):
             f"line-height: {self.line_height}",
         ]
         
-        if self.background_color:
-            style_parts.append(f"background-color: {self.background_color}")
-        
         style_attr = "; ".join(style_parts)
         
         # Wrap content in styled div
@@ -302,9 +298,6 @@ class BlogPost(models.Model):
             f"font-size: {self.font_size}",
             f"line-height: {self.line_height}",
         ]
-        
-        if self.background_color:
-            style_parts.append(f"background-color: {self.background_color}")
         
         return "; ".join(style_parts)
     

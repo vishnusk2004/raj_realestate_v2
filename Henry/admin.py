@@ -113,7 +113,7 @@ class BlogPostAdmin(admin.ModelAdmin):
             'description': 'Use HTML tags for rich formatting. Supported tags: &lt;h1&gt;-&lt;h6&gt;, &lt;p&gt;, &lt;strong&gt;, &lt;em&gt;, &lt;ul&gt;, &lt;ol&gt;, &lt;li&gt;, &lt;table&gt;, &lt;tr&gt;, &lt;td&gt;, &lt;th&gt;, &lt;img&gt;, &lt;br&gt;, &lt;hr&gt;, &lt;a&gt;'
         }),
         ('Text Formatting', {
-            'fields': ('text_color', 'font_family', 'font_size', 'line_height', 'background_color'),
+            'fields': ('text_color', 'font_family', 'font_size', 'line_height'),
             'description': 'Customize the appearance of your blog post text'
         }),
         ('Settings', {

@@ -22,7 +22,6 @@ class BlogPostForm(forms.ModelForm):
         widgets = {
             'content': RichTextWidget(attrs={'rows': 20, 'cols': 80}),
             'text_color': ColorPickerWidget(),
-            'background_color': ColorPickerWidget(),
             'font_family': forms.Select(choices=[
                 ('Arial', 'Arial'),
                 ('Georgia', 'Georgia'),
