@@ -395,10 +395,11 @@
         bottom: 0 !important;
         z-index: 9999 !important;
         display: flex !important;
-        align-items: center !important;
+        align-items: flex-start !important;
         justify-content: center !important;
         padding: 20px !important;
         background-color: rgba(0, 0, 0, 0.6) !important;
+        overflow-y: auto !important;
     }
     
     #propertyModal.hidden {
@@ -424,7 +425,9 @@
         overflow: hidden !important;
         position: relative !important;
         z-index: 10 !important;
-        margin: 20px !important;
+        margin: 20px auto !important;
+        margin-top: 50px !important;
+        margin-bottom: 50px !important;
     }
     
     /* Ensure all images in modal are same size */
@@ -698,8 +701,18 @@
         
         /* Navbar styling is now handled globally in navbar.html */
         
-        /* Mobile optimizations */
-        @media (max-width: 768px) {
+    /* Mobile optimizations */
+    @media (max-width: 768px) {
+        .modal-container {
+            margin: 10px !important;
+            margin-top: 20px !important;
+            margin-bottom: 20px !important;
+            max-height: 95vh !important;
+        }
+        
+        #propertyModal {
+            padding: 10px !important;
+        }
             .container {
                 padding-left: 1rem !important;
                 padding-right: 1rem !important;
@@ -1321,7 +1334,7 @@ document.addEventListener('DOMContentLoaded', function() {
         </div>
         
         <!-- Modal Content -->
-        <div class="p-6 flex-1 overflow-y-auto">
+        <div class="p-6 flex-1 overflow-y-auto" style="max-height: calc(90vh - 120px);">
             <div class="space-y-6">
                 <!-- Image Section -->
                 <div class="relative">
