@@ -1580,7 +1580,7 @@ document.addEventListener('DOMContentLoaded', function() {
                 <div class="relative bg-gray-50 rounded-2xl p-4 shadow-inner">
                     <!-- Main Image Container -->
                     <div class="relative group">
-                        <img id="modalImage" src="" alt="" class="w-full h-80 object-cover rounded-xl shadow-lg cursor-pointer transition-all duration-300 group-hover:shadow-2xl group-hover:scale-[1.02]" onclick="openImageModal()">
+                        <img id="modalImage" src="" alt="" class="w-full h-80 object-cover rounded-xl shadow-lg cursor-pointer transition-all duration-300 group-hover:shadow-2xl group-hover:scale-[1.02]" onclick="currentImageIndex = 0; openImageModal();">
                         
                         <!-- Property Type Badge -->
                         <div class="absolute top-4 right-4">
@@ -1603,12 +1603,12 @@ document.addEventListener('DOMContentLoaded', function() {
                     </div>
                     
                     <!-- Additional Images Gallery -->
-                    <div id="imageGallery" class="hidden mt-6">
-                        <h3 class="text-lg font-semibold text-gray-800 mb-4 flex items-center">
+                    <div id="imageGallery" class="hidden mt-8">
+                        <h3 class="text-lg font-semibold text-gray-800 mb-6 flex items-center">
                             <i class="fas fa-images mr-2 text-blue-600"></i>
                             Additional Images
                         </h3>
-                        <div class="grid grid-cols-2 md:grid-cols-4 gap-3">
+                        <div class="grid grid-cols-2 md:grid-cols-4 gap-4">
                             <!-- Additional images will be populated here -->
                         </div>
                     </div>
@@ -1781,11 +1781,19 @@ let currentImageIndex = 0;
 
 // Image Modal Functions
 function openImageModal() {
+    // Always open the modal, even if no additional images
+    document.getElementById('imageModal').classList.remove('hidden');
+    
     if (currentImages.length > 0) {
-        document.getElementById('imageModal').classList.remove('hidden');
+        // If we have additional images, show the current one
         document.getElementById('modalImageFull').src = currentImages[currentImageIndex];
-        updateImageNavigation();
+    } else {
+        // If no additional images, show the main image
+        const mainImage = document.getElementById('modalImage');
+        document.getElementById('modalImageFull').src = mainImage.src;
     }
+    
+    updateImageNavigation();
 }
 
 function closeImageModal() {
