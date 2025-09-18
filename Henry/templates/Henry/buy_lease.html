@@ -515,6 +515,290 @@
         overflow-y: auto;
     }
     
+    /* Fix button visibility and alignment */
+    #propertyModal .grid {
+        display: grid !important;
+    }
+    
+    #propertyModal .grid-cols-2 {
+        grid-template-columns: repeat(2, minmax(0, 1fr)) !important;
+    }
+    
+    #propertyModal .gap-4 {
+        gap: 1rem !important;
+    }
+    
+    #propertyModal .text-center {
+        text-align: center !important;
+    }
+    
+    #propertyModal .flex {
+        display: flex !important;
+    }
+    
+    #propertyModal .items-center {
+        align-items: center !important;
+    }
+    
+    #propertyModal .justify-center {
+        justify-content: center !important;
+    }
+    
+    #propertyModal .justify-between {
+        justify-content: space-between !important;
+    }
+    
+    #propertyModal .p-5 {
+        padding: 1.25rem !important;
+    }
+    
+    #propertyModal .p-6 {
+        padding: 1.5rem !important;
+    }
+    
+    #propertyModal .text-lg {
+        font-size: 1.125rem !important;
+        line-height: 1.75rem !important;
+    }
+    
+    #propertyModal .font-semibold {
+        font-weight: 600 !important;
+    }
+    
+    #propertyModal .bg-gradient-to-r {
+        background-image: linear-gradient(to right, var(--tw-gradient-stops)) !important;
+    }
+    
+    #propertyModal .from-blue-500 {
+        --tw-gradient-from: #3b82f6 !important;
+        --tw-gradient-to: rgb(59 130 246 / 0) !important;
+        --tw-gradient-stops: var(--tw-gradient-from), var(--tw-gradient-to) !important;
+    }
+    
+    #propertyModal .to-blue-600 {
+        --tw-gradient-to: #2563eb !important;
+    }
+    
+    #propertyModal .from-green-500 {
+        --tw-gradient-from: #22c55e !important;
+        --tw-gradient-to: rgb(34 197 94 / 0) !important;
+        --tw-gradient-stops: var(--tw-gradient-from), var(--tw-gradient-to) !important;
+    }
+    
+    #propertyModal .to-green-600 {
+        --tw-gradient-to: #16a34a !important;
+    }
+    
+    #propertyModal .text-white {
+        color: #ffffff !important;
+    }
+    
+    #propertyModal .rounded-xl {
+        border-radius: 0.75rem !important;
+    }
+    
+    #propertyModal .shadow-lg {
+        box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05) !important;
+    }
+    
+    #propertyModal .hover\\:scale-105:hover {
+        transform: scale(1.05) !important;
+    }
+    
+    #propertyModal .hover\\:shadow-xl:hover {
+        box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04) !important;
+    }
+    
+    #propertyModal .transition-all {
+        transition-property: all !important;
+        transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1) !important;
+        transition-duration: 150ms !important;
+    }
+    
+    #propertyModal .duration-300 {
+        transition-duration: 300ms !important;
+    }
+    
+    #propertyModal .transform {
+        transform: translate(var(--tw-translate-x), var(--tw-translate-y)) rotate(var(--tw-rotate)) skewX(var(--tw-skew-x)) skewY(var(--tw-skew-y)) scaleX(var(--tw-scale-x)) scaleY(var(--tw-scale-y)) !important;
+    }
+    
+    #propertyModal .group:hover .group-hover\\:animate-pulse {
+        animation: pulse 2s cubic-bezier(0.4, 0, 0.6, 1) infinite !important;
+    }
+    
+    /* Property details grid specific fixes */
+    #propertyModal .space-y-6 > * + * {
+        margin-top: 1.5rem !important;
+    }
+    
+    #propertyModal .mb-3 {
+        margin-bottom: 0.75rem !important;
+    }
+    
+    #propertyModal .mb-2 {
+        margin-bottom: 0.5rem !important;
+    }
+    
+    #propertyModal .mb-1 {
+        margin-bottom: 0.25rem !important;
+    }
+    
+    #propertyModal .mx-auto {
+        margin-left: auto !important;
+        margin-right: auto !important;
+    }
+    
+    #propertyModal .w-14 {
+        width: 3.5rem !important;
+    }
+    
+    #propertyModal .h-14 {
+        height: 3.5rem !important;
+    }
+    
+    #propertyModal .text-xl {
+        font-size: 1.25rem !important;
+        line-height: 1.75rem !important;
+    }
+    
+    #propertyModal .text-xs {
+        font-size: 0.75rem !important;
+        line-height: 1rem !important;
+    }
+    
+    #propertyModal .uppercase {
+        text-transform: uppercase !important;
+    }
+    
+    #propertyModal .tracking-wide {
+        letter-spacing: 0.025em !important;
+    }
+    
+    #propertyModal .font-semibold {
+        font-weight: 600 !important;
+    }
+    
+    #propertyModal .font-bold {
+        font-weight: 700 !important;
+    }
+    
+    #propertyModal .text-gray-800 {
+        color: #1f2937 !important;
+    }
+    
+    #propertyModal .text-gray-600 {
+        color: #4b5563 !important;
+    }
+    
+    #propertyModal .text-blue-600 {
+        color: #2563eb !important;
+    }
+    
+    #propertyModal .text-green-600 {
+        color: #22c55e !important;
+    }
+    
+    #propertyModal .text-purple-600 {
+        color: #a855f7 !important;
+    }
+    
+    #propertyModal .text-orange-600 {
+        color: #f97316 !important;
+    }
+    
+    #propertyModal .bg-blue-500 {
+        background-color: #3b82f6 !important;
+    }
+    
+    #propertyModal .bg-green-500 {
+        background-color: #22c55e !important;
+    }
+    
+    #propertyModal .bg-purple-500 {
+        background-color: #a855f7 !important;
+    }
+    
+    #propertyModal .bg-orange-500 {
+        background-color: #f97316 !important;
+    }
+    
+    #propertyModal .bg-gradient-to-br {
+        background-image: linear-gradient(to bottom right, var(--tw-gradient-stops)) !important;
+    }
+    
+    #propertyModal .from-blue-50 {
+        --tw-gradient-from: #eff6ff !important;
+        --tw-gradient-to: rgb(239 246 255 / 0) !important;
+        --tw-gradient-stops: var(--tw-gradient-from), var(--tw-gradient-to) !important;
+    }
+    
+    #propertyModal .to-blue-100 {
+        --tw-gradient-to: #dbeafe !important;
+    }
+    
+    #propertyModal .from-green-50 {
+        --tw-gradient-from: #f0fdf4 !important;
+        --tw-gradient-to: rgb(240 253 244 / 0) !important;
+        --tw-gradient-stops: var(--tw-gradient-from), var(--tw-gradient-to) !important;
+    }
+    
+    #propertyModal .to-green-100 {
+        --tw-gradient-to: #dcfce7 !important;
+    }
+    
+    #propertyModal .from-purple-50 {
+        --tw-gradient-from: #faf5ff !important;
+        --tw-gradient-to: rgb(250 245 255 / 0) !important;
+        --tw-gradient-stops: var(--tw-gradient-from), var(--tw-gradient-to) !important;
+    }
+    
+    #propertyModal .to-purple-100 {
+        --tw-gradient-to: #f3e8ff !important;
+    }
+    
+    #propertyModal .from-orange-50 {
+        --tw-gradient-from: #fff7ed !important;
+        --tw-gradient-to: rgb(255 247 237 / 0) !important;
+        --tw-gradient-stops: var(--tw-gradient-from), var(--tw-gradient-to) !important;
+    }
+    
+    #propertyModal .to-orange-100 {
+        --tw-gradient-to: #ffedd5 !important;
+    }
+    
+    #propertyModal .border-blue-200 {
+        border-color: #dbeafe !important;
+    }
+    
+    #propertyModal .border-green-200 {
+        border-color: #bbf7d0 !important;
+    }
+    
+    #propertyModal .border-purple-200 {
+        border-color: #e9d5ff !important;
+    }
+    
+    #propertyModal .border-orange-200 {
+        border-color: #fed7aa !important;
+    }
+    
+    #propertyModal .shadow-md {
+        box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06) !important;
+    }
+    
+    #propertyModal .hover\\:shadow-lg:hover {
+        box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05) !important;
+    }
+    
+    #propertyModal .hover\\:scale-105:hover {
+        transform: scale(1.05) !important;
+    }
+    
+    #propertyModal .duration-300 {
+        transition-duration: 300ms !important;
+    }
+    
     /* Theme toggle button */
     #theme-toggle {
         transition: all 0.3s ease;
@@ -1360,6 +1644,14 @@ let currentImageIndex = 0;
 
 // Image Modal Functions
 function openImageModal() {
+    // Get the main image and additional images
+    const mainImage = document.getElementById('modalImage').src;
+    const additionalImages = Array.from(document.querySelectorAll('#imageGallery img')).map(img => img.src);
+    
+    // Combine main image with additional images
+    currentImages = [mainImage, ...additionalImages];
+    currentImageIndex = 0;
+    
     if (currentImages.length > 0) {
         document.getElementById('imageModal').classList.remove('hidden');
         document.getElementById('modalImageFull').src = currentImages[currentImageIndex];
