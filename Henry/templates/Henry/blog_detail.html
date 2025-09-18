@@ -528,8 +528,8 @@
 
         <!-- Blog Content -->
         <div class="prose prose-lg max-w-none">
-            <div class="leading-relaxed" style="{{ post.get_content_style }}">
-                {{ post.content|safe }}
+            <div class="leading-relaxed">
+                {{ post.get_formatted_content|safe }}
             </div>
         </div>
 

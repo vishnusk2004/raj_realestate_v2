@@ -110,7 +110,12 @@ class BlogPostAdmin(admin.ModelAdmin):
         }),
         ('Content', {
             'fields': ('content', 'image_url', 'image_file'),
-            'description': 'Use HTML tags for rich formatting. Supported tags: &lt;h1&gt;-&lt;h6&gt;, &lt;p&gt;, &lt;strong&gt;, &lt;em&gt;, &lt;ul&gt;, &lt;ol&gt;, &lt;li&gt;, &lt;table&gt;, &lt;tr&gt;, &lt;td&gt;, &lt;th&gt;, &lt;img&gt;, &lt;br&gt;, &lt;hr&gt;, &lt;a&gt;'
+            'description': 'Use HTML tags for rich formatting. Supported tags: &lt;h1&gt;-&lt;h6&gt;, &lt;p&gt;, &lt;strong&gt;, &lt;em&gt;, &lt;ul&gt;, &lt;ol&gt;, &lt;li&gt;, &lt;table&gt;, &lt;tr&gt;, &lt;td&gt;, &lt;th&gt;, &lt;img&gt;, &lt;br&gt;, &lt;hr&gt;, &lt;a&gt;. Use {{image_1}}, {{image_2}}, etc. to insert uploaded images anywhere in your content.'
+        }),
+        ('Content Images', {
+            'fields': ('image_1', 'image_2', 'image_3', 'image_4', 'image_5'),
+            'description': 'Upload images to use in your blog content. Reference them in your content using {{image_1}}, {{image_2}}, etc.',
+            'classes': ('collapse',)
         }),
         ('Live Preview', {
             'fields': ('content_preview',),

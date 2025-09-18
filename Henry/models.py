@@ -237,15 +237,44 @@ class PropertyListing(models.Model):
         return None
 
 
+class BlogPostImage(models.Model):
+    """Model to store multiple images for blog posts"""
+    blog_post = models.ForeignKey('BlogPost', related_name='images', on_delete=models.CASCADE)
+    image = models.ImageField(upload_to='blog_images/gallery/')
+    caption = models.CharField(max_length=200, blank=True, help_text='Optional caption for the image')
+    order = models.PositiveIntegerField(default=0, help_text='Order of display')
+    
+    class Meta:
+        ordering = ['order', 'id']
+        verbose_name = "Blog Post Image"
+        verbose_name_plural = "Blog Post Images"
+    
+    def __str__(self):
+        return f"{self.blog_post.title} - Image {self.order}"
+    
+    def get_image_url(self):
+        """Return the image URL"""
+        if self.image:
+            return self.image.url
+        return None
+
+
 class BlogPost(models.Model):
     """Model to store blog posts with rich text content"""
     title = models.CharField(max_length=200)
     slug = models.SlugField(max_length=200, unique=True, blank=True)
     author = models.CharField(max_length=100, default="Henry Oak Reality")
-    content = models.TextField(help_text="Rich text content with HTML formatting")
+    content = models.TextField(help_text="Rich text content with HTML formatting. Use {{image_1}}, {{image_2}}, etc. to insert uploaded images anywhere in your content.")
     excerpt = models.TextField(max_length=500, blank=True, help_text="Short description for blog listing")
     image_url = models.URLField(max_length=500, blank=True, help_text="Main image URL for the blog post")
     image_file = models.ImageField(upload_to='blog_images/', blank=True, null=True, help_text="Upload an image file (alternative to image URL)")
+    
+    # Additional images for content
+    image_1 = models.ImageField(upload_to='blog_images/content/', blank=True, null=True, help_text="Content image 1 - use {{image_1}} in content")
+    image_2 = models.ImageField(upload_to='blog_images/content/', blank=True, null=True, help_text="Content image 2 - use {{image_2}} in content")
+    image_3 = models.ImageField(upload_to='blog_images/content/', blank=True, null=True, help_text="Content image 3 - use {{image_3}} in content")
+    image_4 = models.ImageField(upload_to='blog_images/content/', blank=True, null=True, help_text="Content image 4 - use {{image_4}} in content")
+    image_5 = models.ImageField(upload_to='blog_images/content/', blank=True, null=True, help_text="Content image 5 - use {{image_5}} in content")
     
     # Rich text formatting options
     text_color = models.CharField(max_length=7, default="#000000", help_text="Text color (hex code, e.g., #000000)")
@@ -273,9 +302,12 @@ class BlogPost(models.Model):
         return self.title
     
     def get_formatted_content(self):
-        """Return content with applied formatting styles"""
+        """Return content with applied formatting styles and image placeholders replaced"""
         if not self.content:
             return ""
+        
+        # Process content to replace image placeholders
+        processed_content = self.process_image_placeholders(self.content)
         
         # Create style attributes
         style_parts = [
@@ -288,7 +320,41 @@ class BlogPost(models.Model):
         style_attr = "; ".join(style_parts)
         
         # Wrap content in styled div
-        return f'<div style="{style_attr}">{self.content}</div>'
+        return f'<div style="{style_attr}">{processed_content}</div>'
+    
+    def process_image_placeholders(self, content):
+        """Replace {{image_1}}, {{image_2}}, etc. with actual image HTML"""
+        import re
+        
+        # Dictionary of image fields and their URLs
+        image_fields = {
+            'image_1': self.image_1,
+            'image_2': self.image_2,
+            'image_3': self.image_3,
+            'image_4': self.image_4,
+            'image_5': self.image_5,
+        }
+        
+        processed_content = content
+        
+        # Replace each image placeholder
+        for field_name, image_field in image_fields.items():
+            if image_field and image_field.name:
+                # Create image HTML with responsive styling
+                image_html = f'''
+                <div style="text-align: center; margin: 20px 0;">
+                    <img src="{image_field.url}" 
+                         alt="Blog content image" 
+                         style="max-width: 100%; height: auto; border-radius: 8px; box-shadow: 0 4px 6px rgba(0,0,0,0.1);">
+                </div>
+                '''
+                # Replace the placeholder with the image HTML
+                processed_content = processed_content.replace(f'{{{{{field_name}}}}}', image_html)
+            else:
+                # Remove placeholder if no image is uploaded
+                processed_content = processed_content.replace(f'{{{{{field_name}}}}}', '')
+        
+        return processed_content
     
     def get_content_style(self):
         """Return CSS style string for the content"""

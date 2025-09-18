@@ -159,11 +159,18 @@ document.addEventListener('DOMContentLoaded', function() {
         if (!previewContent) return;
         
         // Get current values
-        const content = contentField.value || 'No content to preview';
+        let content = contentField.value || 'No content to preview';
         const textColor = textColorField ? textColorField.value : '#000000';
         const fontFamily = fontFamilyField ? fontFamilyField.value : 'Arial';
         const fontSize = fontSizeField ? fontSizeField.value : '16px';
         const lineHeight = lineHeightField ? lineHeightField.value : '1.6';
+        
+        // Process image placeholders for preview
+        content = content.replace(/\{\{image_1\}\}/g, '<div style="text-align: center; margin: 20px 0; padding: 20px; background: #f0f0f0; border: 2px dashed #ccc; border-radius: 8px;"><em>Image 1 placeholder</em></div>');
+        content = content.replace(/\{\{image_2\}\}/g, '<div style="text-align: center; margin: 20px 0; padding: 20px; background: #f0f0f0; border: 2px dashed #ccc; border-radius: 8px;"><em>Image 2 placeholder</em></div>');
+        content = content.replace(/\{\{image_3\}\}/g, '<div style="text-align: center; margin: 20px 0; padding: 20px; background: #f0f0f0; border: 2px dashed #ccc; border-radius: 8px;"><em>Image 3 placeholder</em></div>');
+        content = content.replace(/\{\{image_4\}\}/g, '<div style="text-align: center; margin: 20px 0; padding: 20px; background: #f0f0f0; border: 2px dashed #ccc; border-radius: 8px;"><em>Image 4 placeholder</em></div>');
+        content = content.replace(/\{\{image_5\}\}/g, '<div style="text-align: center; margin: 20px 0; padding: 20px; background: #f0f0f0; border: 2px dashed #ccc; border-radius: 8px;"><em>Image 5 placeholder</em></div>');
         
         // Create styled content
         const styledContent = `
