@@ -171,6 +171,7 @@ class PropertyListing(models.Model):
     description = models.TextField(help_text="Detailed property description")
     image_url = models.TextField(blank=True, help_text="Main property image URL or base64 data URL (optional if uploading file)")
     image_file = models.ImageField(upload_to='properties/', blank=True, null=True, help_text="Upload property image (optional if providing URL)")
+    image_base64 = models.TextField(blank=True, null=True, help_text="Base64 encoded image data")
     additional_images = models.TextField(blank=True, help_text="Additional image URLs (one per line)")
     featured = models.BooleanField(default=False, help_text="Featured properties appear first")
     published = models.BooleanField(default=True, help_text="Only published properties are visible")
@@ -186,6 +187,15 @@ class PropertyListing(models.Model):
     
     def __str__(self):
         return f"{self.title} - {self.get_property_type_display()}"
+    
+    def save(self, *args, **kwargs):
+        """Override save to automatically convert uploaded images to base64"""
+        # Convert uploaded file to base64 if present and no base64 exists
+        if self.image_file and self.image_file.name and not self.image_base64:
+            from .image_utils import image_to_base64
+            self.image_base64 = image_to_base64(self.image_file)
+        
+        super().save(*args, **kwargs)
     
     def get_additional_images_list(self):
         """Return list of additional image URLs"""
