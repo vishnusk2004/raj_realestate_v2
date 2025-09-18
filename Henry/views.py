@@ -663,19 +663,19 @@ def property_inquiry(request):
             from .webhook_utils import get_client_ip, get_system_info
             system_info = get_system_info(request)
             
-            # Create the inquiry
+            # Create the inquiry with safety truncation
             inquiry = PropertyInquiry.objects.create(
-                name=name,
+                name=name[:100] if name else None,  # Truncate to 100 chars
                 email=email,
-                phone=phone,
-                property_type=property_type if property_type else None,
-                budget_range=budget_range if budget_range else None,
-                location=location if location else None,
-                requirements=requirements if requirements else None,
+                phone=phone[:20] if phone else None,  # Truncate to 20 chars
+                property_type=property_type[:50] if property_type else None,  # Truncate to 50 chars
+                budget_range=budget_range[:50] if budget_range else None,  # Truncate to 50 chars
+                location=location[:200] if location else None,  # Truncate to 200 chars
+                requirements=requirements if requirements else None,  # TextField, no truncation needed
                 ip_address=system_info.get('ip_address'),
-                user_agent=system_info.get('user_agent'),
+                user_agent=system_info.get('user_agent'),  # TextField, no truncation needed
                 referrer=system_info.get('referrer'),
-                language=system_info.get('language')
+                language=system_info.get('language')[:50] if system_info.get('language') else None  # Truncate to 50 chars
             )
             
             # Send to CRM via webhook
@@ -753,21 +753,21 @@ def mortgage_inquiry(request):
             from .webhook_utils import get_client_ip, get_system_info
             system_info = get_system_info(request)
             
-            # Create the inquiry
+            # Create the inquiry with safety truncation
             inquiry = MortgageInquiry.objects.create(
-                name=name,
+                name=name[:100] if name else None,  # Truncate to 100 chars
                 email=email,
-                phone=phone,
-                property_type=property_type if property_type else None,
+                phone=phone[:20] if phone else None,  # Truncate to 20 chars
+                property_type=property_type[:50] if property_type else None,  # Truncate to 50 chars
                 home_price=home_price_decimal,
                 down_payment=down_payment_decimal,
                 loan_term=loan_term_int,
-                credit_score=credit_score if credit_score else None,
-                additional_info=additional_info if additional_info else None,
+                credit_score=credit_score[:50] if credit_score else None,  # Truncate to 50 chars
+                additional_info=additional_info if additional_info else None,  # TextField, no truncation needed
                 ip_address=system_info.get('ip_address'),
-                user_agent=system_info.get('user_agent'),
+                user_agent=system_info.get('user_agent'),  # TextField, no truncation needed
                 referrer=system_info.get('referrer'),
-                language=system_info.get('language')
+                language=system_info.get('language')[:50] if system_info.get('language') else None  # Truncate to 50 chars
             )
             
             # Send to CRM via webhook

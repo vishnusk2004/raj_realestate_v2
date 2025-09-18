@@ -94,9 +94,9 @@ class LinkTracking(models.Model):
         ('youtube', 'YouTube'),
     ]
     
-    customer_code = models.CharField(max_length=50, help_text="Unique customer code (e.g., NAE1495)")
+    customer_code = models.CharField(max_length=100, help_text="Unique customer code (e.g., NAE1495)")
     page_type = models.CharField(max_length=20, choices=PAGE_TYPES, help_text="Type of page being tracked")
-    page_id = models.CharField(max_length=50, blank=True, null=True, help_text="ID of the specific page (e.g., blog post ID)")
+    page_id = models.CharField(max_length=100, blank=True, null=True, help_text="ID of the specific page (e.g., blog post ID)")
     original_url = models.URLField(help_text="The original URL without tracking code")
     tracked_url = models.URLField(help_text="The URL with tracking code")
     
