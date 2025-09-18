@@ -269,12 +269,19 @@ class BlogPost(models.Model):
     image_url = models.URLField(max_length=500, blank=True, help_text="Main image URL for the blog post")
     image_file = models.ImageField(upload_to='blog_images/', blank=True, null=True, help_text="Upload an image file (alternative to image URL)")
     
-    # Additional images for content
-    image_1 = models.ImageField(upload_to='blog_images/content/', blank=True, null=True, help_text="Content image 1 - use {{image_1}} in content")
-    image_2 = models.ImageField(upload_to='blog_images/content/', blank=True, null=True, help_text="Content image 2 - use {{image_2}} in content")
-    image_3 = models.ImageField(upload_to='blog_images/content/', blank=True, null=True, help_text="Content image 3 - use {{image_3}} in content")
-    image_4 = models.ImageField(upload_to='blog_images/content/', blank=True, null=True, help_text="Content image 4 - use {{image_4}} in content")
-    image_5 = models.ImageField(upload_to='blog_images/content/', blank=True, null=True, help_text="Content image 5 - use {{image_5}} in content")
+    # Additional images for content (base64 storage)
+    image_1_base64 = models.TextField(blank=True, null=True, help_text="Content image 1 (base64) - use {{image_1}} in content")
+    image_2_base64 = models.TextField(blank=True, null=True, help_text="Content image 2 (base64) - use {{image_2}} in content")
+    image_3_base64 = models.TextField(blank=True, null=True, help_text="Content image 3 (base64) - use {{image_3}} in content")
+    image_4_base64 = models.TextField(blank=True, null=True, help_text="Content image 4 (base64) - use {{image_4}} in content")
+    image_5_base64 = models.TextField(blank=True, null=True, help_text="Content image 5 (base64) - use {{image_5}} in content")
+    
+    # Keep original ImageField for admin upload (will be converted to base64)
+    image_1 = models.ImageField(upload_to='blog_images/content/', blank=True, null=True, help_text="Content image 1 - will be converted to base64")
+    image_2 = models.ImageField(upload_to='blog_images/content/', blank=True, null=True, help_text="Content image 2 - will be converted to base64")
+    image_3 = models.ImageField(upload_to='blog_images/content/', blank=True, null=True, help_text="Content image 3 - will be converted to base64")
+    image_4 = models.ImageField(upload_to='blog_images/content/', blank=True, null=True, help_text="Content image 4 - will be converted to base64")
+    image_5 = models.ImageField(upload_to='blog_images/content/', blank=True, null=True, help_text="Content image 5 - will be converted to base64")
     
     # Rich text formatting options
     text_color = models.CharField(max_length=7, default="#000000", help_text="Text color (hex code, e.g., #000000)")
@@ -323,27 +330,27 @@ class BlogPost(models.Model):
         return f'<div style="{style_attr}">{processed_content}</div>'
     
     def process_image_placeholders(self, content):
-        """Replace {{image_1}}, {{image_2}}, etc. with actual image HTML"""
+        """Replace {{image_1}}, {{image_2}}, etc. with actual image HTML using base64 data"""
         import re
         
-        # Dictionary of image fields and their URLs
+        # Dictionary of base64 image fields
         image_fields = {
-            'image_1': self.image_1,
-            'image_2': self.image_2,
-            'image_3': self.image_3,
-            'image_4': self.image_4,
-            'image_5': self.image_5,
+            'image_1': self.image_1_base64,
+            'image_2': self.image_2_base64,
+            'image_3': self.image_3_base64,
+            'image_4': self.image_4_base64,
+            'image_5': self.image_5_base64,
         }
         
         processed_content = content
         
         # Replace each image placeholder
-        for field_name, image_field in image_fields.items():
-            if image_field and image_field.name:
-                # Create image HTML with responsive styling
+        for field_name, base64_data in image_fields.items():
+            if base64_data and base64_data.strip():
+                # Create image HTML with responsive styling using base64 data
                 image_html = f'''
                 <div style="text-align: center; margin: 20px 0;">
-                    <img src="{image_field.url}" 
+                    <img src="{base64_data}" 
                          alt="Blog content image" 
                          style="max-width: 100%; height: auto; border-radius: 8px; box-shadow: 0 4px 6px rgba(0,0,0,0.1);">
                 </div>
@@ -402,10 +409,62 @@ class BlogPost(models.Model):
     content_preview.allow_tags = True
     content_preview.short_description = "Content Preview"
     
+    def convert_image_to_base64(self, image_field):
+        """Convert uploaded image to base64 data URL"""
+        if image_field and image_field.name:
+            try:
+                from PIL import Image
+                import base64
+                import io
+                
+                # Open and process the image
+                img = Image.open(image_field)
+                
+                # Convert to RGB if necessary (for PNG with transparency)
+                if img.mode in ('RGBA', 'LA', 'P'):
+                    img = img.convert('RGB')
+                
+                # Resize if too large (max 1200px width)
+                if img.width > 1200:
+                    ratio = 1200 / img.width
+                    new_height = int(img.height * ratio)
+                    img = img.resize((1200, new_height), Image.Resampling.LANCZOS)
+                
+                # Convert to base64
+                buffer = io.BytesIO()
+                img.save(buffer, format='JPEG', quality=85, optimize=True)
+                img_data = buffer.getvalue()
+                base64_data = base64.b64encode(img_data).decode('utf-8')
+                
+                return f"data:image/jpeg;base64,{base64_data}"
+            except Exception as e:
+                print(f"Error converting image to base64: {e}")
+                return None
+        return None
+    
     def save(self, *args, **kwargs):
         if not self.slug:
             # Create slug from title if not provided
             self.slug = self.title.lower().replace(' ', '-').replace('&', 'and')
+            # Ensure slug is unique
+            original_slug = self.slug
+            counter = 1
+            while BlogPost.objects.filter(slug=self.slug).exclude(pk=self.pk).exists():
+                self.slug = f"{original_slug}-{counter}"
+                counter += 1
+        
+        # Convert uploaded images to base64
+        if self.image_1 and not self.image_1_base64:
+            self.image_1_base64 = self.convert_image_to_base64(self.image_1)
+        if self.image_2 and not self.image_2_base64:
+            self.image_2_base64 = self.convert_image_to_base64(self.image_2)
+        if self.image_3 and not self.image_3_base64:
+            self.image_3_base64 = self.convert_image_to_base64(self.image_3)
+        if self.image_4 and not self.image_4_base64:
+            self.image_4_base64 = self.convert_image_to_base64(self.image_4)
+        if self.image_5 and not self.image_5_base64:
+            self.image_5_base64 = self.convert_image_to_base64(self.image_5)
+        
         super().save(*args, **kwargs)
 
 

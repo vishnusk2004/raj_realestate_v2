@@ -114,7 +114,12 @@ class BlogPostAdmin(admin.ModelAdmin):
         }),
         ('Content Images', {
             'fields': ('image_1', 'image_2', 'image_3', 'image_4', 'image_5'),
-            'description': 'Upload images to use in your blog content. Reference them in your content using {{image_1}}, {{image_2}}, etc.',
+            'description': 'Upload images to use in your blog content. Reference them in your content using {{image_1}}, {{image_2}}, etc. Images will be automatically converted to base64 for storage.',
+            'classes': ('collapse',)
+        }),
+        ('Base64 Image Data', {
+            'fields': ('image_1_base64', 'image_2_base64', 'image_3_base64', 'image_4_base64', 'image_5_base64'),
+            'description': 'Base64 encoded image data (automatically generated from uploaded images)',
             'classes': ('collapse',)
         }),
         ('Live Preview', {
