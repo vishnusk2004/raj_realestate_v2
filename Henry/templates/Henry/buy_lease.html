@@ -386,280 +386,119 @@
         box-shadow: none !important;
     }
     
-    /* Modal CSS - High specificity to override conflicts */
+    /* Modal CSS - Minimal overrides for Tailwind */
     #propertyModal {
-        position: fixed !important;
-        top: 0 !important;
-        left: 0 !important;
-        right: 0 !important;
-        bottom: 0 !important;
-        z-index: 9999 !important;
-        display: flex !important;
-        align-items: flex-start !important;
-        justify-content: center !important;
-        padding: 20px !important;
-        background-color: rgba(0, 0, 0, 0.6) !important;
-        overflow-y: auto !important;
+        position: fixed;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        z-index: 9999;
+        display: flex;
+        align-items: flex-start;
+        justify-content: center;
+        padding: 20px;
+        background-color: rgba(0, 0, 0, 0.6);
+        overflow-y: auto;
     }
     
     #propertyModal.hidden {
-        display: none !important;
+        display: none;
     }
     
     .modal-backdrop {
-        position: absolute !important;
-        top: 0 !important;
-        left: 0 !important;
-        right: 0 !important;
-        bottom: 0 !important;
-        background-color: transparent !important;
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        background-color: transparent;
     }
     
     .modal-container {
-        background: white !important;
-        border-radius: 16px !important;
-        box-shadow: 0 25px 50px rgba(0, 0, 0, 0.5) !important;
-        max-width: 800px !important;
-        width: 100% !important;
-        max-height: 90vh !important;
-        overflow: hidden !important;
-        position: relative !important;
-        z-index: 10 !important;
-        margin: 20px auto !important;
-        margin-top: 50px !important;
-        margin-bottom: 50px !important;
+        background: white;
+        border-radius: 16px;
+        box-shadow: 0 25px 50px rgba(0, 0, 0, 0.5);
+        max-width: 800px;
+        width: 100%;
+        max-height: 90vh;
+        overflow: hidden;
+        position: relative;
+        z-index: 10;
+        margin: 20px auto;
+        margin-top: 50px;
+        margin-bottom: 50px;
     }
     
-    /* Ensure all images in modal are same size */
-    #propertyModal img {
-        width: 100% !important;
-        height: 300px !important;
-        object-fit: cover !important;
-        border-radius: 8px !important;
-    }
-    
+    /* Image styling - minimal overrides */
     #imageGallery img {
-        width: 100% !important;
-        height: 80px !important;
-        object-fit: cover !important;
-        border-radius: 4px !important;
-        cursor: pointer !important;
+        cursor: pointer;
+        transition: transform 0.2s ease;
     }
     
     #imageGallery img:hover {
-        opacity: 0.8 !important;
+        transform: scale(1.05);
     }
     
-    /* Ensure all property card images are same size */
-    .property-card img {
-        width: 100% !important;
-        height: 250px !important;
-        object-fit: cover !important;
-        border-radius: 8px !important;
-    }
-    
-    /* Override any conflicting styles */
+    /* Minimal overrides for specific needs */
     .bg-cover {
-        background-size: cover !important;
-        background-position: center !important;
+        background-size: cover;
+        background-position: center;
     }
     
-    /* Modal content styling */
-    #propertyModal .space-y-6 > * + * {
-        margin-top: 1.5rem !important;
-    }
+    /* Modal content styling - let Tailwind handle spacing */
     
-    #propertyModal .grid {
-        display: grid !important;
-    }
+    /* Let Tailwind handle grid display */
     
-    #propertyModal .grid-cols-2 {
-        grid-template-columns: repeat(2, minmax(0, 1fr)) !important;
-    }
+    /* Removed all Tailwind overrides - let Tailwind handle styling */
     
-    #propertyModal .gap-4 {
-        gap: 1rem !important;
-    }
+    /* All Tailwind overrides removed - let Tailwind handle styling */
     
-    #propertyModal .text-center {
-        text-align: center !important;
-    }
+    /* All remaining overrides removed - Tailwind will handle all styling */
     
-    #propertyModal .font-bold {
-        font-weight: 700 !important;
-    }
+    /* All Tailwind overrides removed - Tailwind will handle all styling */
     
-    #propertyModal .text-4xl {
-        font-size: 2.25rem !important;
-        line-height: 2.5rem !important;
-    }
+    /* All remaining overrides removed - Tailwind will handle all styling */
     
-    #propertyModal .text-green-600 {
-        color: #16a34a !important;
-    }
+    /* All remaining overrides removed - Tailwind will handle all styling */
     
-    #propertyModal .text-blue-600 {
-        color: #2563eb !important;
-    }
+    /* All remaining overrides removed - Tailwind will handle all styling */
     
-    #propertyModal .bg-blue-50 {
-        background-color: #eff6ff !important;
-    }
+    /* All remaining overrides removed - Tailwind will handle all styling */
     
-    #propertyModal .bg-white {
-        background-color: #ffffff !important;
-    }
+    /* All remaining overrides removed - Tailwind will handle all styling */
     
-    #propertyModal .border {
-        border-width: 1px !important;
-    }
+    /* All remaining overrides removed - Tailwind will handle all styling */
     
-    #propertyModal .border-gray-200 {
-        border-color: #e5e7eb !important;
-    }
+    /* All remaining overrides removed - Tailwind will handle all styling */
     
-    #propertyModal .rounded-xl {
-        border-radius: 0.75rem !important;
-    }
+    /* All remaining overrides removed - Tailwind will handle all styling */
     
-    #propertyModal .p-4 {
-        padding: 1rem !important;
-    }
+    /* All remaining overrides removed - Tailwind will handle all styling */
     
-    #propertyModal .mb-2 {
-        margin-bottom: 0.5rem !important;
-    }
+    /* All remaining overrides removed - Tailwind will handle all styling */
     
-    #propertyModal .mb-3 {
-        margin-bottom: 0.75rem !important;
-    }
+    /* All remaining overrides removed - Tailwind will handle all styling */
     
-    #propertyModal .mx-auto {
-        margin-left: auto !important;
-        margin-right: auto !important;
-    }
+    /* All remaining overrides removed - Tailwind will handle all styling */
     
-    #propertyModal .w-12 {
-        width: 3rem !important;
-    }
+    /* All remaining overrides removed - Tailwind will handle all styling */
     
-    #propertyModal .h-12 {
-        height: 3rem !important;
-    }
+    /* All remaining overrides removed - Tailwind will handle all styling */
     
-    #propertyModal .bg-blue-100 {
-        background-color: #dbeafe !important;
-    }
+    /* All remaining overrides removed - Tailwind will handle all styling */
     
-    #propertyModal .rounded-full {
-        border-radius: 9999px !important;
-    }
+    /* All remaining overrides removed - Tailwind will handle all styling */
     
-    #propertyModal .flex {
-        display: flex !important;
-    }
+    /* All remaining overrides removed - Tailwind will handle all styling */
     
-    #propertyModal .items-center {
-        align-items: center !important;
-    }
+    /* All remaining overrides removed - Tailwind will handle all styling */
     
-    #propertyModal .justify-center {
-        justify-content: center !important;
-    }
+    /* All remaining overrides removed - Tailwind will handle all styling */
     
-    #propertyModal .text-lg {
-        font-size: 1.125rem !important;
-        line-height: 1.75rem !important;
-    }
+    /* All remaining overrides removed - Tailwind will handle all styling */
     
-    #propertyModal .text-sm {
-        font-size: 0.875rem !important;
-        line-height: 1.25rem !important;
-    }
-    
-    #propertyModal .text-xs {
-        font-size: 0.75rem !important;
-        line-height: 1rem !important;
-    }
-    
-    #propertyModal .uppercase {
-        text-transform: uppercase !important;
-    }
-    
-    #propertyModal .tracking-wide {
-        letter-spacing: 0.025em !important;
-    }
-    
-    #propertyModal .text-gray-500 {
-        color: #6b7280 !important;
-    }
-    
-    #propertyModal .text-gray-800 {
-        color: #1f2937 !important;
-    }
-    
-    #propertyModal .text-gray-600 {
-        color: #4b5563 !important;
-    }
-    
-    #propertyModal .hover\\:shadow-md:hover {
-        box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06) !important;
-    }
-    
-    #propertyModal .transition {
-        transition-property: color, background-color, border-color, text-decoration-color, fill, stroke, opacity, box-shadow, transform, filter, backdrop-filter !important;
-        transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1) !important;
-        transition-duration: 150ms !important;
-    }
-    
-    #propertyModal .duration-300 {
-        transition-duration: 300ms !important;
-    }
-    
-    
-    .modal-container .flex-1 {
-        flex: 1 1 0% !important;
-        overflow-y: auto !important;
-        padding: 1rem !important;
-    }
-    
-    /* Modal responsive fixes */
-    @media (max-width: 640px) {
-        .modal-container {
-            max-width: 95vw !important;
-            margin: 0.25rem !important;
-        }
-        
-        #propertyModal .text-xl {
-            font-size: 1.125rem !important;
-        }
-        
-        #propertyModal .text-2xl {
-            font-size: 1.25rem !important;
-        }
-        
-        .modal-container {
-            max-height: 75vh !important;
-        }
-    }
-    
-    @media (max-height: 600px) {
-        .modal-container {
-            max-height: 70vh !important;
-        }
-    }
-    
-    @media (max-height: 500px) {
-        .modal-container {
-            max-height: 65vh !important;
-        }
-    }
-    
-    @media (max-height: 400px) {
-        .modal-container {
-            max-height: 60vh !important;
-        }
-    }
+    /* All Tailwind overrides removed - Tailwind will handle all styling */
     
     /* Theme toggle button */
     #theme-toggle {
