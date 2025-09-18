@@ -1151,7 +1151,7 @@
                         <div class="flex justify-between items-start mb-4">
                             <h3 class="text-xl font-bold text-gray-900 flex-1 pr-3">{{ property.title }}</h3>
                             <div class="text-2xl font-bold text-green-600 whitespace-nowrap">
-                                ${{ property.price|floatformat:0 }}
+                                $<span class="price-format">{{ property.price|floatformat:0 }}</span>
                                 {% if property.property_type == 'lease' %}/month{% endif %}
                             </div>
                         </div>
@@ -1171,7 +1171,7 @@
                             <span class="flex items-center"><i class="fas fa-bath text-blue-500 mr-1"></i>{{ property.bathrooms }} bath{{ property.bathrooms|pluralize }}</span>
                             {% endif %}
                             {% if property.area_sqft %}
-                            <span class="flex items-center"><i class="fas fa-ruler-combined text-blue-500 mr-1"></i>{{ property.area_sqft }} sqft</span>
+                            <span class="flex items-center"><i class="fas fa-ruler-combined text-blue-500 mr-1"></i><span class="area-format">{{ property.area_sqft }}</span> sqft</span>
                             {% endif %}
                         </div>
                         
@@ -1551,6 +1551,27 @@ document.addEventListener('DOMContentLoaded', function() {
     document.addEventListener('keydown', function(e) {
         if (e.key === 'Escape' && modal.style.display === 'flex') {
             closePropertyModal();
+        }
+    });
+});
+
+// Format numbers with commas
+document.addEventListener('DOMContentLoaded', function() {
+    // Format prices
+    const priceElements = document.querySelectorAll('.price-format');
+    priceElements.forEach(function(element) {
+        const price = parseFloat(element.textContent);
+        if (!isNaN(price)) {
+            element.textContent = price.toLocaleString();
+        }
+    });
+    
+    // Format area
+    const areaElements = document.querySelectorAll('.area-format');
+    areaElements.forEach(function(element) {
+        const area = parseFloat(element.textContent);
+        if (!isNaN(area)) {
+            element.textContent = area.toLocaleString();
         }
     });
 });
