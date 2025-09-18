@@ -165,43 +165,13 @@ document.addEventListener('DOMContentLoaded', function() {
         const fontSize = fontSizeField ? fontSizeField.value : '16px';
         const lineHeight = lineHeightField ? lineHeightField.value : '1.6';
         
-        // Process image placeholders for preview - show actual images if available
-        const image1Field = document.querySelector('#id_image_1_base64');
-        const image2Field = document.querySelector('#id_image_2_base64');
-        const image3Field = document.querySelector('#id_image_3_base64');
-        const image4Field = document.querySelector('#id_image_4_base64');
-        const image5Field = document.querySelector('#id_image_5_base64');
-        
-        // Replace placeholders with actual images or placeholders
-        if (image1Field && image1Field.value) {
-            content = content.replace(/\{\{image_1\}\}/g, `<div style="text-align: center; margin: 20px 0;"><img src="${image1Field.value}" alt="Image 1" style="max-width: 100%; height: auto; border-radius: 8px; box-shadow: 0 4px 6px rgba(0,0,0,0.1);"></div>`);
-        } else {
-            content = content.replace(/\{\{image_1\}\}/g, '<div style="text-align: center; margin: 20px 0; padding: 20px; background: #f0f0f0; border: 2px dashed #ccc; border-radius: 8px;"><em>Image 1 placeholder</em></div>');
-        }
-        
-        if (image2Field && image2Field.value) {
-            content = content.replace(/\{\{image_2\}\}/g, `<div style="text-align: center; margin: 20px 0;"><img src="${image2Field.value}" alt="Image 2" style="max-width: 100%; height: auto; border-radius: 8px; box-shadow: 0 4px 6px rgba(0,0,0,0.1);"></div>`);
-        } else {
-            content = content.replace(/\{\{image_2\}\}/g, '<div style="text-align: center; margin: 20px 0; padding: 20px; background: #f0f0f0; border: 2px dashed #ccc; border-radius: 8px;"><em>Image 2 placeholder</em></div>');
-        }
-        
-        if (image3Field && image3Field.value) {
-            content = content.replace(/\{\{image_3\}\}/g, `<div style="text-align: center; margin: 20px 0;"><img src="${image3Field.value}" alt="Image 3" style="max-width: 100%; height: auto; border-radius: 8px; box-shadow: 0 4px 6px rgba(0,0,0,0.1);"></div>`);
-        } else {
-            content = content.replace(/\{\{image_3\}\}/g, '<div style="text-align: center; margin: 20px 0; padding: 20px; background: #f0f0f0; border: 2px dashed #ccc; border-radius: 8px;"><em>Image 3 placeholder</em></div>');
-        }
-        
-        if (image4Field && image4Field.value) {
-            content = content.replace(/\{\{image_4\}\}/g, `<div style="text-align: center; margin: 20px 0;"><img src="${image4Field.value}" alt="Image 4" style="max-width: 100%; height: auto; border-radius: 8px; box-shadow: 0 4px 6px rgba(0,0,0,0.1);"></div>`);
-        } else {
-            content = content.replace(/\{\{image_4\}\}/g, '<div style="text-align: center; margin: 20px 0; padding: 20px; background: #f0f0f0; border: 2px dashed #ccc; border-radius: 8px;"><em>Image 4 placeholder</em></div>');
-        }
-        
-        if (image5Field && image5Field.value) {
-            content = content.replace(/\{\{image_5\}\}/g, `<div style="text-align: center; margin: 20px 0;"><img src="${image5Field.value}" alt="Image 5" style="max-width: 100%; height: auto; border-radius: 8px; box-shadow: 0 4px 6px rgba(0,0,0,0.1);"></div>`);
-        } else {
-            content = content.replace(/\{\{image_5\}\}/g, '<div style="text-align: center; margin: 20px 0; padding: 20px; background: #f0f0f0; border: 2px dashed #ccc; border-radius: 8px;"><em>Image 5 placeholder</em></div>');
-        }
+        // Process image placeholders for preview - show placeholders for now
+        // The server-side preview will show actual images
+        content = content.replace(/\{\{image_1\}\}/g, '<div style="text-align: center; margin: 20px 0; padding: 20px; background: #f0f0f0; border: 2px dashed #ccc; border-radius: 8px;"><em>Image 1 placeholder</em></div>');
+        content = content.replace(/\{\{image_2\}\}/g, '<div style="text-align: center; margin: 20px 0; padding: 20px; background: #f0f0f0; border: 2px dashed #ccc; border-radius: 8px;"><em>Image 2 placeholder</em></div>');
+        content = content.replace(/\{\{image_3\}\}/g, '<div style="text-align: center; margin: 20px 0; padding: 20px; background: #f0f0f0; border: 2px dashed #ccc; border-radius: 8px;"><em>Image 3 placeholder</em></div>');
+        content = content.replace(/\{\{image_4\}\}/g, '<div style="text-align: center; margin: 20px 0; padding: 20px; background: #f0f0f0; border: 2px dashed #ccc; border-radius: 8px;"><em>Image 4 placeholder</em></div>');
+        content = content.replace(/\{\{image_5\}\}/g, '<div style="text-align: center; margin: 20px 0; padding: 20px; background: #f0f0f0; border: 2px dashed #ccc; border-radius: 8px;"><em>Image 5 placeholder</em></div>');
         
         // Create styled content
         const styledContent = `

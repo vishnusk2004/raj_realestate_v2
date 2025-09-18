@@ -375,12 +375,24 @@ class BlogPost(models.Model):
         return "; ".join(style_parts)
     
     def content_preview(self):
-        """Return formatted content for admin preview"""
+        """Return formatted content for admin preview with actual images"""
         if not self.content:
             return "No content to preview"
         
-        # Get the formatted content with styling
-        formatted_content = self.get_formatted_content()
+        # Process content to replace image placeholders with actual images
+        processed_content = self.process_image_placeholders(self.content)
+        
+        # Create style attributes
+        style_parts = [
+            f"color: {self.text_color}",
+            f"font-family: {self.font_family}",
+            f"font-size: {self.font_size}",
+            f"line-height: {self.line_height}",
+        ]
+        style_attr = "; ".join(style_parts)
+        
+        # Wrap content in styled div
+        formatted_content = f'<div style="{style_attr}">{processed_content}</div>'
         
         # Add some basic CSS for better preview
         preview_html = f"""
