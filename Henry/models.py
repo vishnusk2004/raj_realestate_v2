@@ -301,6 +301,41 @@ class BlogPost(models.Model):
         
         return "; ".join(style_parts)
     
+    def content_preview(self):
+        """Return formatted content for admin preview"""
+        if not self.content:
+            return "No content to preview"
+        
+        # Get the formatted content with styling
+        formatted_content = self.get_formatted_content()
+        
+        # Add some basic CSS for better preview
+        preview_html = f"""
+        <div style="
+            border: 1px solid #ddd; 
+            padding: 20px; 
+            margin: 10px 0; 
+            background: #f9f9f9; 
+            border-radius: 5px;
+            max-height: 400px; 
+            overflow-y: auto;
+        ">
+            <h4 style="margin-top: 0; color: #666;">Preview:</h4>
+            <div style="
+                background: white; 
+                padding: 15px; 
+                border-radius: 3px; 
+                border: 1px solid #eee;
+            ">
+                {formatted_content}
+            </div>
+        </div>
+        """
+        return preview_html
+    
+    content_preview.allow_tags = True
+    content_preview.short_description = "Content Preview"
+    
     def save(self, *args, **kwargs):
         if not self.slug:
             # Create slug from title if not provided
