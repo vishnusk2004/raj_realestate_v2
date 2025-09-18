@@ -195,8 +195,20 @@ class PropertyListing(models.Model):
     
     def get_main_image_url(self):
         """Return the main image URL - either from URL field or uploaded file"""
-        if self.image_file:
-            return self.image_file.url
+        if self.image_file and self.image_file.name:
+            # In production, if the file exists but might not be accessible,
+            # fall back to the image_url if available
+            try:
+                # Check if we're in production (no DEBUG mode)
+                from django.conf import settings
+                if not settings.DEBUG and self.image_url:
+                    return self.image_url
+                return self.image_file.url
+            except:
+                # If there's any error accessing the file, fall back to URL
+                if self.image_url:
+                    return self.image_url
+                return self.image_file.url
         elif self.image_url:
             # Check if it's a data URL or regular URL
             if self.image_url.startswith('data:'):
@@ -300,8 +312,20 @@ class OpenHouseImage(models.Model):
     
     def get_image_url(self):
         """Return the image URL, preferring uploaded file over URL"""
-        if self.image_file:
-            return self.image_file.url
+        if self.image_file and self.image_file.name:
+            # In production, if the file exists but might not be accessible,
+            # fall back to the image_url if available
+            try:
+                # Check if we're in production (no DEBUG mode)
+                from django.conf import settings
+                if not settings.DEBUG and self.image_url:
+                    return self.image_url
+                return self.image_file.url
+            except:
+                # If there's any error accessing the file, fall back to URL
+                if self.image_url:
+                    return self.image_url
+                return self.image_file.url
         return self.image_url
     
     def __str__(self):

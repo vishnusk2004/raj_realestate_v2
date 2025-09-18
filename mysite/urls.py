@@ -36,3 +36,7 @@ urlpatterns = [
 if settings.DEBUG:
     urlpatterns += static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)
     urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
+else:
+    # In production, also serve media files through Django
+    # This is not ideal for production but necessary for Render
+    urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

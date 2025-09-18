@@ -192,6 +192,13 @@ STATICFILES_FINDERS = [
 MEDIA_URL = '/media/'
 MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 
+# Production media serving configuration
+if not DEBUG:
+    # In production, we need to serve media files through Django
+    # This is not ideal for production but works for Render
+    MEDIA_URL = '/media/'
+    # Add media serving to URL patterns in production
+
 # Default primary key field type
 # https://docs.djangoproject.com/en/5.1/ref/settings/#default-auto-field
 
