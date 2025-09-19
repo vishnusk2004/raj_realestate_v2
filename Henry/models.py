@@ -268,6 +268,7 @@ class BlogPost(models.Model):
     excerpt = models.TextField(max_length=500, blank=True, help_text="Short description for blog listing")
     image_url = models.URLField(max_length=500, blank=True, help_text="Main image URL for the blog post")
     image_file = models.ImageField(upload_to='blog_images/', blank=True, null=True, help_text="Upload an image file (alternative to image URL)")
+    image_base64 = models.TextField(blank=True, null=True, help_text="Base64 encoded main image data")
     
     # Additional images for content (base64 storage)
     image_1_base64 = models.TextField(blank=True, null=True, help_text="Content image 1 (base64) - use {{image_1}} in content")
@@ -300,9 +301,17 @@ class BlogPost(models.Model):
         verbose_name_plural = "Blog Posts"
     
     def get_image_url(self):
-        """Return the image URL, preferring uploaded file over URL"""
-        if self.image_file:
+        """Return the image URL - prefer base64, then file, then URL"""
+        # First priority: base64 data
+        if self.image_base64:
+            from .image_utils import get_image_data_url
+            return get_image_data_url(self.image_base64)
+        
+        # Second priority: uploaded file
+        if self.image_file and self.image_file.name:
             return self.image_file.url
+        
+        # Third priority: URL
         return self.image_url
     
     def __str__(self):
@@ -464,6 +473,11 @@ class BlogPost(models.Model):
             while BlogPost.objects.filter(slug=self.slug).exclude(pk=self.pk).exists():
                 self.slug = f"{original_slug}-{counter}"
                 counter += 1
+        
+        # Convert main image to base64 if present and no base64 exists
+        if self.image_file and self.image_file.name and not self.image_base64:
+            from .image_utils import image_to_base64
+            self.image_base64 = image_to_base64(self.image_file)
         
         # Convert uploaded images to base64
         if self.image_1 and not self.image_1_base64:
