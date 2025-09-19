@@ -851,7 +851,7 @@
                             <span class="bg-blue-600 text-white px-3 py-1 text-sm font-semibold rounded-full">Open House</span>
                         </div>
                         <p class="text-gray-700 mb-2">{{ open_house.property_address }}</p>
-                        <p class="text-2xl font-bold text-blue-600 mb-4">${{ open_house.price|floatformat:0|add:"," }}</p>
+                        <p class="text-2xl font-bold text-blue-600 mb-4 price-format">${{ open_house.price|floatformat:0 }}</p>
                         <div class="flex justify-between text-gray-600 text-sm mb-4">
                             <span>{{ open_house.bedrooms|default:"0" }} Beds</span>
                             <span>{{ open_house.bathrooms|default:"0" }} Baths</span>
@@ -1071,7 +1071,7 @@
                     year: {{ open_house.open_house_date.year }}, 
                     time: "{{ open_house.open_house_time|time:'g:i A' }}", 
                     property: "{{ open_house.title|escapejs }}", 
-                    price: "${{ open_house.price|floatformat:0|add:"," }}",
+                    price: "${{ open_house.price|floatformat:0 }}",
                     address: "{{ open_house.property_address|escapejs }}",
                     bedrooms: {{ open_house.bedrooms|default:"0" }},
                     bathrooms: {{ open_house.bathrooms|default:"0" }},
@@ -1516,6 +1516,17 @@ document.addEventListener('DOMContentLoaded', function() {
             mobileMenu.classList.toggle('show');
         });
     }
+});
+
+// Format prices with commas
+document.addEventListener('DOMContentLoaded', function() {
+    const priceElements = document.querySelectorAll('.price-format');
+    priceElements.forEach(function(element) {
+        const price = parseFloat(element.textContent.replace('$', ''));
+        if (!isNaN(price)) {
+            element.textContent = '$' + price.toLocaleString();
+        }
+    });
 });
 </script>
 
