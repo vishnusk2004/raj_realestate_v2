@@ -1,0 +1,289 @@
+{% load static %}
+{% load humanize %}
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sell & Evaluate - {{ brand_name }}</title>
+    <meta name="description" content="Get top dollar for your property with {{ brand_name }}. Professional real estate services with AI-powered insights.">
+    <link rel="icon" type="image/svg+xml" href="{% static 'favicon.svg' %}">
+    
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Playfair+Display:wght@400;500;600;700&display=swap" rel="stylesheet">
+    
+    <!-- Custom CSS -->
+    <link rel="stylesheet" href="{% static 'css/django-main.css' %}">
+    
+</head>
+<body>
+    {% include 'Raj/navbar.html' %}
+
+    <main class="flex-1">
+        <div class="min-h-screen bg-surface-gradient">
+            <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
+    <div class="text-center mb-16">
+                    <div class="inline-flex items-center rounded-full border px-2.5 py-0.5 text-xs font-semibold transition-colors focus:outline-none focus:ring-2 focus:ring-ring focus:ring-offset-2 hover:bg-primary/80 mb-4 bg-accent/10 text-accent-foreground border-accent/20">Sell Your Property</div>
+                    <h1 class="text-4xl md:text-5xl font-bold text-foreground mb-6">Get Top Dollar for Your Property</h1>
+                    <p class="text-xl text-muted-foreground max-w-3xl mx-auto mb-8">Our expert team combines market knowledge with AI-powered insights to help you sell your property quickly and for the best price. Join thousands of satisfied sellers who chose {{ brand_name }}.</p>
+                    <div class="flex flex-col sm:flex-row gap-4 justify-center">
+                        <button class="inline-flex items-center justify-center gap-2 whitespace-nowrap text-sm ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 [&_svg]:pointer-events-none [&_svg]:size-4 [&_svg]:shrink-0 hover:bg-primary/90 h-11 rounded-md px-8 bg-primary hover:bg-primary-dark text-primary-foreground font-semibold border border-primary shadow-md hover:shadow-lg">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-dollar-sign w-5 h-5 mr-2">
+                                <line x1="12" x2="12" y1="2" y2="22"></line>
+                                <path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"></path>
+                            </svg>
+                            Get Free Property Evaluation
+                        </button>
+                        <button class="inline-flex items-center justify-center gap-2 whitespace-nowrap text-sm font-medium ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 [&_svg]:pointer-events-none [&_svg]:size-4 [&_svg]:shrink-0 border bg-background h-11 rounded-md px-8 border-primary text-primary hover:bg-primary hover:text-primary-foreground">Learn About Our Process</button>
+                </div>
+            </div>
+
+                <div class="grid md:grid-cols-2 lg:grid-cols-4 gap-6 mb-16">
+                    <div class="rounded-lg border bg-card text-card-foreground shadow-sm p-6 text-center shadow-soft hover:shadow-medium transition-all duration-300 animate-fade-in">
+                        <div class="bg-accent/10 w-16 h-16 rounded-full flex items-center justify-center mx-auto mb-4">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-trending-up w-8 h-8 text-accent">
+                                <polyline points="22 7 13.5 15.5 8.5 10.5 2 17"></polyline>
+                                <polyline points="16 7 22 7 22 13"></polyline>
+                            </svg>
+                    </div>
+                        <h3 class="text-lg font-semibold text-foreground mb-2">Maximum Market Value</h3>
+                        <p class="text-muted-foreground text-sm leading-relaxed">Our AI-powered analysis ensures you get the best possible price for your property</p>
+                    </div>
+                    <div class="rounded-lg border bg-card text-card-foreground shadow-sm p-6 text-center shadow-soft hover:shadow-medium transition-all duration-300 animate-fade-in">
+                        <div class="bg-accent/10 w-16 h-16 rounded-full flex items-center justify-center mx-auto mb-4">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-clock w-8 h-8 text-accent">
+                                <circle cx="12" cy="12" r="10"></circle>
+                                <polyline points="12 6 12 12 16 14"></polyline>
+                            </svg>
+                </div>
+                        <h3 class="text-lg font-semibold text-foreground mb-2">Fast Sales Process</h3>
+                        <p class="text-muted-foreground text-sm leading-relaxed">Average time to sale is 30% faster than industry standard</p>
+            </div>
+                    <div class="rounded-lg border bg-card text-card-foreground shadow-sm p-6 text-center shadow-soft hover:shadow-medium transition-all duration-300 animate-fade-in">
+                        <div class="bg-accent/10 w-16 h-16 rounded-full flex items-center justify-center mx-auto mb-4">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-shield w-8 h-8 text-accent">
+                                <path d="M20 13c0 5-3.5 7.5-7.66 8.95a1 1 0 0 1-.67-.01C7.5 20.5 4 18 4 13V6a1 1 0 0 1 1-1c2 0 4.5-1.2 6.24-2.72a1.17 1.17 0 0 1 1.52 0C14.51 3.81 17 5 19 5a1 1 0 0 1 1 1z"></path>
+                            </svg>
+        </div>
+                        <h3 class="text-lg font-semibold text-foreground mb-2">Expert Guidance</h3>
+                        <p class="text-muted-foreground text-sm leading-relaxed">Professional support through every step of the selling process</p>
+                    </div>
+                    <div class="rounded-lg border bg-card text-card-foreground shadow-sm p-6 text-center shadow-soft hover:shadow-medium transition-all duration-300 animate-fade-in">
+                        <div class="bg-accent/10 w-16 h-16 rounded-full flex items-center justify-center mx-auto mb-4">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-award w-8 h-8 text-accent">
+                                <path d="m15.477 12.89 1.515 8.526a.5.5 0 0 1-.81.47l-3.58-2.687a1 1 0 0 0-1.197 0l-3.586 2.686a.5.5 0 0 1-.81-.469l1.514-8.526"></path>
+                                <circle cx="12" cy="8" r="6"></circle>
+                            </svg>
+                        </div>
+                        <h3 class="text-lg font-semibold text-foreground mb-2">Proven Track Record</h3>
+                        <p class="text-muted-foreground text-sm leading-relaxed">500+ successful sales with 98% client satisfaction rate</p>
+                        </div>
+                    </div>
+
+                <div class="rounded-lg border bg-card text-card-foreground shadow-sm p-8 md:p-12 mb-16 shadow-medium">
+                    <div class="grid lg:grid-cols-2 gap-12 items-center">
+                        <div>
+                            <h2 class="text-3xl md:text-4xl font-bold text-foreground mb-6">Why Sell With {{ brand_name }}?</h2>
+                            <div class="space-y-4 mb-8">
+                                <div class="flex items-start space-x-3">
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-circle-check-big w-6 h-6 text-accent mt-1 flex-shrink-0">
+                                        <path d="M21.801 10A10 10 0 1 1 17 3.335"></path>
+                                        <path d="m9 11 3 3L22 4"></path>
+                                    </svg>
+                                    <div>
+                                        <h4 class="font-semibold text-foreground mb-1">AI-Powered Market Analysis</h4>
+                                        <p class="text-muted-foreground text-sm">Advanced algorithms analyze market trends to price your property competitively</p>
+                                    </div>
+                                </div>
+                                <div class="flex items-start space-x-3">
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-circle-check-big w-6 h-6 text-accent mt-1 flex-shrink-0">
+                                        <path d="M21.801 10A10 10 0 1 1 17 3.335"></path>
+                                        <path d="m9 11 3 3L22 4"></path>
+                                    </svg>
+                                    <div>
+                                        <h4 class="font-semibold text-foreground mb-1">Professional Marketing</h4>
+                                        <p class="text-muted-foreground text-sm">High-quality photography, virtual tours, and targeted advertising campaigns</p>
+                                    </div>
+                                </div>
+                                <div class="flex items-start space-x-3">
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-circle-check-big w-6 h-6 text-accent mt-1 flex-shrink-0">
+                                        <path d="M21.801 10A10 10 0 1 1 17 3.335"></path>
+                                        <path d="m9 11 3 3L22 4"></path>
+                                    </svg>
+                                    <div>
+                                        <h4 class="font-semibold text-foreground mb-1">Expert Negotiation</h4>
+                                        <p class="text-muted-foreground text-sm">Skilled agents who know how to get the best deal for your property</p>
+                                    </div>
+                                </div>
+                                <div class="flex items-start space-x-3">
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-circle-check-big w-6 h-6 text-accent mt-1 flex-shrink-0">
+                                        <path d="M21.801 10A10 10 0 1 1 17 3.335"></path>
+                                        <path d="m9 11 3 3L22 4"></path>
+                                    </svg>
+                                    <div>
+                                        <h4 class="font-semibold text-foreground mb-1">Full-Service Support</h4>
+                                        <p class="text-muted-foreground text-sm">From listing to closing, we handle every detail of your sale</p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="bg-primary text-primary-foreground rounded-2xl p-8">
+                            <h3 class="text-2xl font-bold mb-6">Success Statistics</h3>
+                            <div class="grid grid-cols-2 gap-6">
+                                <div class="text-center">
+                                    <div class="text-3xl font-bold text-accent mb-2">98%</div>
+                                    <div class="text-sm text-primary-foreground/80">Client Satisfaction</div>
+                                </div>
+                                <div class="text-center">
+                                    <div class="text-3xl font-bold text-accent mb-2">30%</div>
+                                    <div class="text-sm text-primary-foreground/80">Faster Sales</div>
+                                </div>
+                                <div class="text-center">
+                                    <div class="text-3xl font-bold text-accent mb-2">500+</div>
+                                    <div class="text-sm text-primary-foreground/80">Properties Sold</div>
+                                </div>
+                                <div class="text-center">
+                                    <div class="text-3xl font-bold text-accent mb-2">15+</div>
+                                    <div class="text-sm text-primary-foreground/80">Years Experience</div>
+                                </div>
+                            </div>
+                        </div>
+                        </div>
+                    </div>
+
+                <div class="mb-16">
+                    <div class="text-center mb-12">
+                        <h2 class="text-3xl md:text-4xl font-bold text-foreground mb-4">Our Proven Selling Process</h2>
+                        <p class="text-muted-foreground text-lg max-w-2xl mx-auto">We've refined our process to ensure maximum results for every client. Here's how we'll help you sell your property.</p>
+                    </div>
+                    <div class="grid md:grid-cols-2 lg:grid-cols-4 gap-6">
+                        <div class="rounded-lg border bg-card text-card-foreground shadow-sm p-6 text-center shadow-soft hover:shadow-medium transition-all duration-300">
+                            <div class="bg-accent text-accent-foreground w-12 h-12 rounded-full flex items-center justify-center mx-auto mb-4 text-xl font-bold">1</div>
+                            <h3 class="text-lg font-semibold text-foreground mb-3">Property Evaluation</h3>
+                            <p class="text-muted-foreground text-sm leading-relaxed">We conduct a comprehensive analysis of your property and market conditions</p>
+                        </div>
+                        <div class="rounded-lg border bg-card text-card-foreground shadow-sm p-6 text-center shadow-soft hover:shadow-medium transition-all duration-300">
+                            <div class="bg-accent text-accent-foreground w-12 h-12 rounded-full flex items-center justify-center mx-auto mb-4 text-xl font-bold">2</div>
+                            <h3 class="text-lg font-semibold text-foreground mb-3">Strategic Pricing</h3>
+                            <p class="text-muted-foreground text-sm leading-relaxed">Our experts set the optimal price to attract buyers and maximize returns</p>
+                        </div>
+                        <div class="rounded-lg border bg-card text-card-foreground shadow-sm p-6 text-center shadow-soft hover:shadow-medium transition-all duration-300">
+                            <div class="bg-accent text-accent-foreground w-12 h-12 rounded-full flex items-center justify-center mx-auto mb-4 text-xl font-bold">3</div>
+                            <h3 class="text-lg font-semibold text-foreground mb-3">Professional Marketing</h3>
+                            <p class="text-muted-foreground text-sm leading-relaxed">High-quality photography, virtual tours, and multi-channel marketing</p>
+                        </div>
+                        <div class="rounded-lg border bg-card text-card-foreground shadow-sm p-6 text-center shadow-soft hover:shadow-medium transition-all duration-300">
+                            <div class="bg-accent text-accent-foreground w-12 h-12 rounded-full flex items-center justify-center mx-auto mb-4 text-xl font-bold">4</div>
+                            <h3 class="text-lg font-semibold text-foreground mb-3">Closing Support</h3>
+                            <p class="text-muted-foreground text-sm leading-relaxed">Full support through negotiations, inspections, and closing procedures</p>
+                        </div>
+                        </div>
+                    </div>
+
+                <!-- Contact Form -->
+                <div class="rounded-lg border bg-card text-card-foreground shadow-sm p-8 shadow-strong">
+                    <div class="text-center mb-8">
+                        <h2 class="text-3xl font-bold text-foreground mb-4">Ready to Sell Your Property?</h2>
+                        <p class="text-muted-foreground text-lg max-w-2xl mx-auto">Fill out the form below and our expert team will contact you within 24 hours with a comprehensive market analysis and selling strategy for your property.</p>
+                    </div>
+                    <form method="POST" action="{% url 'selling' %}" class="grid md:grid-cols-2 gap-6 max-w-4xl mx-auto">
+                        {% csrf_token %}
+                        <div class="space-y-2">
+                            <label class="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70" for="ownerName">Full Name</label>
+                            <div class="relative">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-user absolute left-3 top-3 h-4 w-4 text-muted-foreground">
+                                    <path d="M19 21v-2a4 4 0 0 0-4-4H9a4 4 0 0 0-4 4v2"></path>
+                                    <circle cx="12" cy="7" r="4"></circle>
+                                </svg>
+                                <input type="text" name="name" required class="flex h-10 w-full rounded-md border border-input bg-background px-3 py-2 text-base ring-offset-background file:border-0 file:bg-transparent file:text-sm file:font-medium file:text-foreground placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50 md:text-sm pl-10" id="ownerName" placeholder="Enter your full name">
+            </div>
+        </div>
+                        <div class="space-y-2">
+                            <label class="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70" for="ownerEmail">Email Address</label>
+                            <div class="relative">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-mail absolute left-3 top-3 h-4 w-4 text-muted-foreground">
+                                    <rect width="20" height="16" x="2" y="4" rx="2"></rect>
+                                    <path d="m22 7-8.97 5.7a1.94 1.94 0 0 1-2.06 0L2 7"></path>
+                                </svg>
+                                <input type="email" class="flex h-10 w-full rounded-md border border-input bg-background px-3 py-2 text-base ring-offset-background file:border-0 file:bg-transparent file:text-sm file:font-medium file:text-foreground placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50 md:text-sm pl-10" id="ownerEmail" placeholder="Enter your email">
+            </div>
+        </div>
+                        <div class="space-y-2">
+                            <label class="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70" for="ownerPhone">Phone Number</label>
+                            <div class="relative">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-phone absolute left-3 top-3 h-4 w-4 text-muted-foreground">
+                                    <path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"></path>
+                                </svg>
+                                <input class="flex h-10 w-full rounded-md border border-input bg-background px-3 py-2 text-base ring-offset-background file:border-0 file:bg-transparent file:text-sm file:font-medium file:text-foreground placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50 md:text-sm pl-10" id="ownerPhone" placeholder="Enter your phone number">
+    </div>
+</div>
+                        <div class="space-y-2">
+                            <label class="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70" for="propertyAddress">Property Address</label>
+                            <div class="relative">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-map-pin absolute left-3 top-3 h-4 w-4 text-muted-foreground">
+                                    <path d="M20 10c0 4.993-5.539 10.193-7.399 11.799a1 1 0 0 1-1.202 0C9.539 20.193 4 14.993 4 10a8 8 0 0 1 16 0"></path>
+                                    <circle cx="12" cy="10" r="3"></circle>
+                                </svg>
+                                <input class="flex h-10 w-full rounded-md border border-input bg-background px-3 py-2 text-base ring-offset-background file:border-0 file:bg-transparent file:text-sm file:font-medium file:text-foreground placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50 md:text-sm pl-10" id="propertyAddress" placeholder="Enter property address">
+            </div>
+        </div>
+                        <div class="space-y-2">
+                            <label class="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70" for="propertyTypeSelect">Property Type</label>
+                            <button type="button" role="combobox" aria-controls="radix-:r78:" aria-expanded="false" aria-autocomplete="none" dir="ltr" data-state="closed" data-placeholder="" class="flex h-10 w-full items-center justify-between rounded-md border border-input bg-background px-3 py-2 text-sm ring-offset-background placeholder:text-muted-foreground focus:outline-none focus:ring-2 focus:ring-ring focus:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50 [&>span]:line-clamp-1">
+                                <span style="pointer-events: none;">Select property type</span>
+                                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-chevron-down h-4 w-4 opacity-50" aria-hidden="true">
+                                    <path d="m6 9 6 6 6-6"></path>
+                                </svg>
+                            </button>
+                        </div>
+                        <div class="space-y-2">
+                            <label class="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70" for="timeframe">Selling Timeframe</label>
+                            <button type="button" role="combobox" aria-controls="radix-:r79:" aria-expanded="false" aria-autocomplete="none" dir="ltr" data-state="closed" data-placeholder="" class="flex h-10 w-full items-center justify-between rounded-md border border-input bg-background px-3 py-2 text-sm ring-offset-background placeholder:text-muted-foreground focus:outline-none focus:ring-2 focus:ring-ring focus:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50 [&>span]:line-clamp-1">
+                                <span style="pointer-events: none;">When do you want to sell?</span>
+                                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-chevron-down h-4 w-4 opacity-50" aria-hidden="true">
+                                    <path d="m6 9 6 6 6-6"></path>
+                                </svg>
+        </button>
+    </div>
+                        <div class="space-y-2">
+                            <label class="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70" for="estimatedValue">Estimated Property Value</label>
+                            <div class="relative">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-dollar-sign absolute left-3 top-3 h-4 w-4 text-muted-foreground">
+                                    <line x1="12" x2="12" y1="2" y2="22"></line>
+                                    <path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"></path>
+                                </svg>
+                                <input class="flex h-10 w-full rounded-md border border-input bg-background px-3 py-2 text-base ring-offset-background file:border-0 file:bg-transparent file:text-sm file:font-medium file:text-foreground placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50 md:text-sm pl-10" id="estimatedValue" placeholder="Your estimated value">
+                            </div>
+                        </div>
+                        <div class="space-y-2">
+                            <label class="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70" for="propertySize">Property Size (sq ft)</label>
+                            <div class="relative">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-house absolute left-3 top-3 h-4 w-4 text-muted-foreground">
+                                    <path d="M15 21v-8a1 1 0 0 0-1-1h-4a1 1 0 0 0-1 1v8"></path>
+                                    <path d="M3 10a2 2 0 0 1 .709-1.528l7-5.999a2 2 0 0 1 2.582 0l7 5.999A2 2 0 0 1 21 10v9a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"></path>
+                                </svg>
+                                <input class="flex h-10 w-full rounded-md border border-input bg-background px-3 py-2 text-base ring-offset-background file:border-0 file:bg-transparent file:text-sm file:font-medium file:text-foreground placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50 md:text-sm pl-10" id="propertySize" placeholder="Enter property size">
+                            </div>
+                        </div>
+                        <div class="md:col-span-2 space-y-2">
+                            <label class="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70" for="propertyDetails">Property Details & Goals</label>
+                            <textarea class="flex w-full rounded-md border border-input bg-background px-3 py-2 text-sm ring-offset-background placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50 min-h-[120px]" id="propertyDetails" placeholder="Tell us about your property, any unique features, recent improvements, and your selling goals..."></textarea>
+                        </div>
+                        <div class="md:col-span-2 text-center">
+                            <button class="inline-flex items-center justify-center gap-2 whitespace-nowrap text-sm ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 [&_svg]:pointer-events-none [&_svg]:size-4 [&_svg]:shrink-0 hover:bg-primary/90 h-11 rounded-md bg-primary hover:bg-primary-dark text-primary-foreground font-semibold px-12 py-4 border border-primary shadow-md hover:shadow-lg">Get Free Property Evaluation</button>
+                            <p class="text-sm text-muted-foreground mt-4">Our team will contact you within 24 hours with your personalized market analysis</p>
+</div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </main>
+    
+    {% include 'Raj/footer.html' %}
+    
+    <script src="{% static 'js/django-main.js' %}"></script>
+</body>
+</html>

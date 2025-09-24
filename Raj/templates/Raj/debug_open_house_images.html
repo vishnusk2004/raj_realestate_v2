@@ -1,0 +1,54 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Debug Open House Images - {{ open_house.title }}</title>
+    <link rel="icon" type="image/svg+xml" href="{% static 'favicon.svg' %}">
+</head>
+<body>
+    <h1>Debug Open House Images: {{ open_house.title }}</h1>
+    
+    <h2>Main Image (open_house.get_main_image_url):</h2>
+    {% if open_house.get_main_image_url %}
+        <img src="{{ open_house.get_main_image_url }}" alt="Main image" style="max-width: 500px; border: 1px solid green;">
+        <p>Source: <code>{{ open_house.get_main_image_url|slice:":100" }}...</code></p>
+    {% else %}
+        <p>No main image</p>
+    {% endif %}
+    
+    <h2>Additional Images (open_house.images.all):</h2>
+    {% for image in open_house.images.all %}
+        <div style="margin-bottom: 20px; border: 1px solid #ccc; padding: 10px;">
+            <h3>Image {{ forloop.counter }}</h3>
+            <p><strong>Caption:</strong> {{ image.caption|default:"No caption" }}</p>
+            <p><strong>Is Primary:</strong> {{ image.is_primary }}</p>
+            <p><strong>Order:</strong> {{ image.order }}</p>
+            
+            <h4>Using image.get_image_url:</h4>
+            {% if image.get_image_url %}
+                <img src="{{ image.get_image_url }}" alt="Image {{ forloop.counter }}" style="max-width: 300px; border: 1px solid blue;">
+                <p>Source: <code>{{ image.get_image_url|slice:":100" }}...</code></p>
+            {% else %}
+                <p>No image from get_image_url</p>
+            {% endif %}
+            
+            <h4>Direct field access:</h4>
+            {% if image.image_base64 %}
+                <p><strong>Base64:</strong> <code>{{ image.image_base64|slice:":50" }}...</code></p>
+            {% endif %}
+            {% if image.image_file %}
+                <p><strong>File:</strong> {{ image.image_file.url }}</p>
+            {% endif %}
+            {% if image.image_url %}
+                <p><strong>URL:</strong> {{ image.image_url }}</p>
+            {% endif %}
+        </div>
+    {% empty %}
+        <p>No additional images found</p>
+    {% endfor %}
+    
+    <p>Check console for any errors.</p>
+</body>
+</html>

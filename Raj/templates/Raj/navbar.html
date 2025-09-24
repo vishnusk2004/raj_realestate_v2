@@ -1,0 +1,127 @@
+{% load static %}
+
+<!-- Navbar -->
+<nav class="bg-background/95 backdrop-blur-sm border-b shadow-soft sticky top-0 z-50">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div class="flex justify-between items-center h-16">
+            <a class="flex items-center space-x-2" href="{% url 'home' %}">
+                <div class="w-8 h-8 bg-accent-gradient rounded-lg flex items-center justify-center">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-building h-5 w-5 text-primary">
+                        <rect width="16" height="20" x="4" y="2" rx="2" ry="2"></rect>
+                        <path d="M9 22v-4h6v4"></path>
+                        <path d="M8 6h.01"></path>
+                        <path d="M16 6h.01"></path>
+                        <path d="M12 6h.01"></path>
+                        <path d="M12 10h.01"></path>
+                        <path d="M12 14h.01"></path>
+                        <path d="M16 10h.01"></path>
+                        <path d="M16 14h.01"></path>
+                        <path d="M8 10h.01"></path>
+                        <path d="M8 14h.01"></path>
+                    </svg>
+                </div>
+                <span class="text-xl font-bold text-primary">{{ brand_name }}</span>
+            </a>
+            <div class="hidden md:flex items-center space-x-1">
+                <a class="px-4 py-2 rounded-lg text-sm font-medium transition-all duration-200 flex items-center space-x-2 {% if request.resolver_match.url_name == 'home' %}bg-primary text-primary-foreground shadow-medium{% else %}text-muted-foreground hover:text-primary hover:bg-secondary{% endif %}" href="{% url 'home' %}">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-house h-4 w-4">
+                        <path d="M15 21v-8a1 1 0 0 0-1-1h-4a1 1 0 0 0-1 1v8"></path>
+                        <path d="M3 10a2 2 0 0 1 .709-1.528l7-5.999a2 2 0 0 1 2.582 0l7 5.999A2 2 0 0 1 21 10v9a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"></path>
+                    </svg>
+                    <span>Home</span>
+                </a>
+                <a class="px-4 py-2 rounded-lg text-sm font-medium transition-all duration-200 flex items-center space-x-2 {% if request.resolver_match.url_name == 'buy_lease' %}bg-primary text-primary-foreground shadow-medium{% else %}text-muted-foreground hover:text-primary hover:bg-secondary{% endif %}" href="{% url 'buy_lease' %}">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-building h-4 w-4">
+                        <rect width="16" height="20" x="4" y="2" rx="2" ry="2"></rect>
+                        <path d="M9 22v-4h6v4"></path>
+                        <path d="M8 6h.01"></path>
+                        <path d="M16 6h.01"></path>
+                        <path d="M12 6h.01"></path>
+                        <path d="M12 10h.01"></path>
+                        <path d="M12 14h.01"></path>
+                        <path d="M16 10h.01"></path>
+                        <path d="M16 14h.01"></path>
+                        <path d="M8 10h.01"></path>
+                        <path d="M8 14h.01"></path>
+                    </svg>
+                    <span>Buy / Lease</span>
+                </a>
+                <a class="px-4 py-2 rounded-lg text-sm font-medium transition-all duration-200 flex items-center space-x-2 {% if request.resolver_match.url_name == 'selling' %}bg-primary text-primary-foreground shadow-medium{% else %}text-muted-foreground hover:text-primary hover:bg-secondary{% endif %}" href="{% url 'selling' %}">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-piggy-bank h-4 w-4">
+                        <path d="M19 5c-1.5 0-2.8 1.4-3 2-3.5-1.5-11-.3-11 5 0 1.8 0 3 2 4.5V20h4v-2h3v2h4v-4c1-.5 1.7-1 2-2h2v-4h-2c0-1-.5-1.5-1-2V5z"></path>
+                        <path d="M2 9v1c0 1.1.9 2 2 2h1"></path>
+                        <path d="M16 11h.01"></path>
+                    </svg>
+                    <span>Sell & Evaluate</span>
+                </a>
+                <a class="px-4 py-2 rounded-lg text-sm font-medium transition-all duration-200 flex items-center space-x-2 {% if request.resolver_match.url_name == 'blog' %}bg-primary text-primary-foreground shadow-medium{% else %}text-muted-foreground hover:text-primary hover:bg-secondary{% endif %}" href="{% url 'blog' %}">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-book-open h-4 w-4">
+                        <path d="M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2z"></path>
+                        <path d="M22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7z"></path>
+                    </svg>
+                    <span>Blog</span>
+                </a>
+                <a class="px-4 py-2 rounded-lg text-sm font-medium transition-all duration-200 flex items-center space-x-2 {% if request.resolver_match.url_name == 'open_house' %}bg-primary text-primary-foreground shadow-medium{% else %}text-muted-foreground hover:text-primary hover:bg-secondary{% endif %}" href="{% url 'open_house' %}">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-calendar h-4 w-4">
+                        <path d="M8 2v4"></path>
+                        <path d="M16 2v4"></path>
+                        <rect width="18" height="18" x="3" y="4" rx="2"></rect>
+                        <path d="M3 10h18"></path>
+                    </svg>
+                    <span>Open House</span>
+                </a>
+                <a class="px-4 py-2 rounded-lg text-sm font-medium transition-all duration-200 flex items-center space-x-2 {% if request.resolver_match.url_name == 'mortgage_calculator' %}bg-primary text-primary-foreground shadow-medium{% else %}text-muted-foreground hover:text-primary hover:bg-secondary{% endif %}" href="{% url 'mortgage_calculator' %}">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-calculator h-4 w-4">
+                        <rect width="16" height="20" x="4" y="2" rx="2"></rect>
+                        <line x1="8" x2="16" y1="6" y2="6"></line>
+                        <line x1="16" x2="16" y1="14" y2="18"></line>
+                        <path d="M16 10h.01"></path>
+                        <path d="M12 10h.01"></path>
+                        <path d="M8 10h.01"></path>
+                        <path d="M12 14h.01"></path>
+                        <path d="M8 14h.01"></path>
+                    </svg>
+                    <span>Mortgage Calculator</span>
+                </a>
+            </div>
+            <div class="md:hidden">
+                <button id="mobile-menu-toggle" class="inline-flex items-center justify-center p-2 rounded-md text-foreground hover:text-primary hover:bg-accent focus:outline-none focus:ring-2 focus:ring-inset focus:ring-primary">
+                    <svg class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16" />
+                    </svg>
+            </button>
+            </div>
+        </div>
+    </div>
+    <div id="mobile-menu" class="md:hidden hidden">
+        <div class="px-2 pt-2 pb-3 space-y-1 sm:px-3 bg-background border-t border-border">
+            <a href="{% url 'home' %}" class="text-foreground hover:text-primary hover:bg-accent block px-3 py-2 rounded-md text-base font-medium">Home</a>
+            <a href="{% url 'buy_lease' %}" class="text-foreground hover:text-primary hover:bg-accent block px-3 py-2 rounded-md text-base font-medium">Buy / Lease</a>
+            <a href="{% url 'selling' %}" class="text-foreground hover:text-primary hover:bg-accent block px-3 py-2 rounded-md text-base font-medium">Sell & Evaluate</a>
+            <a href="{% url 'blog' %}" class="text-foreground hover:text-primary hover:bg-accent block px-3 py-2 rounded-md text-base font-medium">Blog</a>
+            <a href="{% url 'open_house' %}" class="text-foreground hover:text-primary hover:bg-accent block px-3 py-2 rounded-md text-base font-medium">Open House</a>
+            <a href="{% url 'mortgage_calculator' %}" class="text-foreground hover:text-primary hover:bg-accent block px-3 py-2 rounded-md text-base font-medium">Mortgage Calculator</a>
+        </div>
+    </div>
+</nav>
+
+<script>
+// Mobile menu toggle functionality
+document.addEventListener('DOMContentLoaded', function() {
+    const mobileMenuToggle = document.getElementById('mobile-menu-toggle');
+    const mobileMenu = document.getElementById('mobile-menu');
+    
+    if (mobileMenuToggle && mobileMenu) {
+        mobileMenuToggle.addEventListener('click', function() {
+            mobileMenu.classList.toggle('hidden');
+        });
+        
+        // Close mobile menu when clicking outside
+        document.addEventListener('click', function(event) {
+            if (!mobileMenuToggle.contains(event.target) && !mobileMenu.contains(event.target)) {
+                mobileMenu.classList.add('hidden');
+            }
+        });
+    }
+});
+</script>

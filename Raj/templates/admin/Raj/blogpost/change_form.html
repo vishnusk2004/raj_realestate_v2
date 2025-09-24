@@ -1,0 +1,288 @@
+{% extends "admin/change_form.html" %}
+{% load static %}
+
+{% block extrahead %}
+{{ block.super }}
+<style>
+    .preview-container {
+        border: 1px solid #ddd;
+        padding: 15px;
+        margin: 10px 0;
+        background: #f9f9f9;
+        border-radius: 5px;
+        max-height: 400px;
+        overflow-y: auto;
+    }
+    
+    .preview-content {
+        background: white;
+        padding: 15px;
+        border-radius: 3px;
+        border: 1px solid #eee;
+        min-height: 100px;
+        color: #000 !important;
+        font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif !important;
+        /* Complete isolation from admin CSS */
+        all: initial !important;
+        font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif !important;
+        color: #000 !important;
+        background: white !important;
+        padding: 15px !important;
+        border-radius: 3px !important;
+        border: 1px solid #eee !important;
+        min-height: 100px !important;
+        display: block !important;
+        box-sizing: border-box !important;
+    }
+    
+    .preview-header {
+        margin-top: 0;
+        color: #666;
+        font-size: 14px;
+        font-weight: bold;
+    }
+    
+    /* Completely isolated preview content - no external CSS interference */
+    .preview-content {
+        /* Reset everything and create isolated environment */
+        all: initial !important;
+        font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif !important;
+        color: #000 !important;
+        background: white !important;
+        padding: 15px !important;
+        border-radius: 3px !important;
+        border: 1px solid #eee !important;
+        min-height: 100px !important;
+        display: block !important;
+        box-sizing: border-box !important;
+        line-height: 1.6 !important;
+        font-size: 16px !important;
+    }
+    
+    /* Isolated content styling - exactly matching real page */
+    .preview-content * {
+        all: unset !important;
+        display: revert !important;
+        box-sizing: border-box !important;
+    }
+    
+    .preview-content h1 {
+        font-size: 2.25rem !important;
+        font-weight: 600 !important;
+        line-height: 1.2 !important;
+        margin-top: 1.5em !important;
+        margin-bottom: 0.5em !important;
+        color: #000 !important;
+        display: block !important;
+    }
+    
+    .preview-content h2 {
+        font-size: 1.875rem !important;
+        font-weight: 600 !important;
+        line-height: 1.3 !important;
+        margin-top: 1.5em !important;
+        margin-bottom: 0.5em !important;
+        color: #000 !important;
+        display: block !important;
+    }
+    
+    .preview-content h3 {
+        font-size: 1.5rem !important;
+        font-weight: 600 !important;
+        line-height: 1.4 !important;
+        margin-top: 1.5em !important;
+        margin-bottom: 0.5em !important;
+        color: #000 !important;
+        display: block !important;
+    }
+    
+    .preview-content h4 {
+        font-size: 1.25rem !important;
+        font-weight: 600 !important;
+        line-height: 1.4 !important;
+        margin-top: 1.5em !important;
+        margin-bottom: 0.5em !important;
+        color: #000 !important;
+        display: block !important;
+    }
+    
+    .preview-content h5 {
+        font-size: 1.125rem !important;
+        font-weight: 600 !important;
+        line-height: 1.4 !important;
+        margin-top: 1.5em !important;
+        margin-bottom: 0.5em !important;
+        color: #000 !important;
+        display: block !important;
+    }
+    
+    .preview-content h6 {
+        font-size: 1rem !important;
+        font-weight: 600 !important;
+        line-height: 1.4 !important;
+        margin-top: 1.5em !important;
+        margin-bottom: 0.5em !important;
+        color: #000 !important;
+        display: block !important;
+    }
+    
+    .preview-content p {
+        font-size: 16px !important;
+        line-height: 1.6 !important;
+        margin-bottom: 1em !important;
+        color: #000 !important;
+        display: block !important;
+    }
+    
+    .preview-content ul, .preview-content ol {
+        margin-bottom: 1em !important;
+        padding-left: 2em !important;
+        display: block !important;
+    }
+    
+    .preview-content li {
+        margin-bottom: 0.5em !important;
+        display: list-item !important;
+    }
+    
+    .preview-content ul li {
+        list-style-type: disc !important;
+    }
+    
+    .preview-content ol li {
+        list-style-type: decimal !important;
+    }
+    
+    .preview-content blockquote {
+        border-left: 4px solid #e5e7eb !important;
+        padding-left: 1em !important;
+        margin: 1em 0 !important;
+        font-style: italic !important;
+        display: block !important;
+    }
+    
+    .preview-content code {
+        background-color: #f3f4f6 !important;
+        padding: 0.2em 0.4em !important;
+        border-radius: 0.25rem !important;
+        font-family: 'Courier New', monospace !important;
+        font-size: 14px !important;
+        display: inline !important;
+    }
+    
+    .preview-content img {
+        max-width: 100% !important;
+        height: auto !important;
+        border-radius: 0.5rem !important;
+        margin: 1rem 0 !important;
+        box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1) !important;
+        display: block !important;
+    }
+    
+    .preview-content a {
+        color: #2563eb !important;
+        text-decoration: underline !important;
+        display: inline !important;
+    }
+    
+    .preview-content a:hover {
+        color: #1d4ed8 !important;
+    }
+    
+    .preview-content hr {
+        border: none !important;
+        border-top: 2px solid #e5e7eb !important;
+        margin: 2rem 0 !important;
+        display: block !important;
+    }
+    
+    .preview-content strong {
+        font-weight: 600 !important;
+        display: inline !important;
+    }
+    
+    .preview-content em {
+        font-style: italic !important;
+        display: inline !important;
+    }
+</style>
+{% endblock %}
+
+{% block content %}
+{{ block.super }}
+
+<script>
+// Simple preview update without complex event handling
+function updatePreview() {
+    const contentField = document.querySelector('#id_content');
+    const previewContent = document.querySelector('#static-preview-content');
+    
+    if (!contentField || !previewContent) return;
+    
+    let content = contentField.value;
+    
+    // If no content, show placeholder
+    if (!content || content.trim() === '') {
+        content = '<em style="color: #999; font-style: italic;">Start typing in the content field above to see your preview here...</em>';
+    }
+    
+    // Process image placeholders
+    content = content.replace(/\{\{image_1\}\}/g, '<div style="text-align: center; margin: 20px 0; padding: 20px; background: #f0f0f0; border: 2px dashed #ccc; border-radius: 8px;"><em>Image 1 placeholder</em></div>');
+    content = content.replace(/\{\{image_2\}\}/g, '<div style="text-align: center; margin: 20px 0; padding: 20px; background: #f0f0f0; border: 2px dashed #ccc; border-radius: 8px;"><em>Image 2 placeholder</em></div>');
+    content = content.replace(/\{\{image_3\}\}/g, '<div style="text-align: center; margin: 20px 0; padding: 20px; background: #f0f0f0; border: 2px dashed #ccc; border-radius: 8px;"><em>Image 3 placeholder</em></div>');
+    content = content.replace(/\{\{image_4\}\}/g, '<div style="text-align: center; margin: 20px 0; padding: 20px; background: #f0f0f0; border: 2px dashed #ccc; border-radius: 8px;"><em>Image 4 placeholder</em></div>');
+    content = content.replace(/\{\{image_5\}\}/g, '<div style="text-align: center; margin: 20px 0; padding: 20px; background: #f0f0f0; border: 2px dashed #ccc; border-radius: 8px;"><em>Image 5 placeholder</em></div>');
+    
+    previewContent.innerHTML = content;
+}
+
+// Create and insert preview container
+function createPreviewContainer() {
+    // Check if preview already exists
+    if (document.querySelector('.live-preview-container')) return;
+    
+    // Find the content field
+    const contentField = document.querySelector('#id_content');
+    if (!contentField) return;
+    
+    // Create preview container
+    const previewContainer = document.createElement('div');
+    previewContainer.className = 'live-preview-container';
+    previewContainer.style.cssText = 'margin-top: 20px; padding: 20px; background: #f8f9fa; border: 2px solid #007cba; border-radius: 6px;';
+    previewContainer.innerHTML = `
+        <h4 class="preview-header" style="margin: 0 0 15px 0; color: #007cba; font-size: 16px;">📄 Live Preview:</h4>
+        <div class="preview-container">
+            <div class="preview-content" id="static-preview-content">
+                <p><em style="color: #999; font-style: italic;">Start typing in the content field above to see your preview here...</em></p>
+            </div>
+        </div>
+    `;
+    
+    // Insert after the content field's parent row
+    const contentRow = contentField.closest('.form-row');
+    if (contentRow) {
+        contentRow.insertAdjacentElement('afterend', previewContainer);
+    } else {
+        // Fallback: insert after the content field
+        contentField.insertAdjacentElement('afterend', previewContainer);
+    }
+}
+
+// Simple event listener
+document.addEventListener('DOMContentLoaded', function() {
+    // Create preview container
+    createPreviewContainer();
+    
+    // Update preview immediately with current content
+    setTimeout(updatePreview, 100);
+    
+    // Set up event listeners
+    const contentField = document.querySelector('#id_content');
+    if (contentField) {
+        contentField.addEventListener('input', updatePreview);
+        contentField.addEventListener('keyup', updatePreview);
+        contentField.addEventListener('change', updatePreview);
+    }
+});
+</script>
+{% endblock %}

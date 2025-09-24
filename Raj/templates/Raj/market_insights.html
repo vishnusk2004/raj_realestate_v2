@@ -1,0 +1,481 @@
+{% load static tailwind_tags %}
+{% load humanize %}
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Market Insights - {{ brand_name }}</title>
+    {% tailwind_css %}
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+</head>
+<style>
+    body {
+        font-family: 'Inter', sans-serif;
+    }
+
+    /* Hero section styling */
+    .hero-bg {
+        background: linear-gradient(135deg, rgba(0,0,0,0.8) 0%, rgba(0,0,0,0.6) 100%), 
+                    url('https://images.unsplash.com/photo-1560518883-ce09059eeffa?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=2073&q=80');
+        background-size: cover;
+        background-position: center;
+        background-attachment: fixed;
+        position: relative;
+    }
+
+    .hero-bg::before {
+        content: '';
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        background: linear-gradient(135deg, rgba(102, 126, 234, 0.1) 0%, rgba(118, 75, 162, 0.1) 100%);
+        pointer-events: none;
+    }
+
+    /* Feature cards */
+    .feature-card {
+        background: rgba(255, 255, 255, 0.1);
+        backdrop-filter: blur(20px);
+        border: 1px solid rgba(255, 255, 255, 0.2);
+        border-radius: 20px;
+        padding: 32px 24px;
+        text-align: center;
+        transition: all 0.4s ease;
+        position: relative;
+        overflow: hidden;
+    }
+
+    .feature-card:hover {
+        transform: translateY(-8px);
+        background: rgba(255, 255, 255, 0.15);
+        box-shadow: 0 20px 40px rgba(0, 0, 0, 0.3);
+    }
+
+    .feature-icon {
+        width: 80px;
+        height: 80px;
+        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        margin: 0 auto 24px;
+        font-size: 32px;
+        color: white;
+        position: relative;
+        z-index: 1;
+        box-shadow: 0 10px 25px rgba(102, 126, 234, 0.3);
+    }
+
+    /* Stats cards */
+    .stats-card {
+        background: rgba(255, 255, 255, 0.05);
+        border: 1px solid rgba(255, 255, 255, 0.1);
+        border-radius: 16px;
+        padding: 24px;
+        text-align: center;
+        transition: all 0.3s ease;
+        backdrop-filter: blur(10px);
+    }
+
+    .stats-card:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 10px 25px rgba(102, 126, 234, 0.3);
+        background: rgba(255, 255, 255, 0.1);
+    }
+
+    /* Market data cards */
+    .market-card {
+        background: rgba(255, 255, 255, 0.05);
+        border: 1px solid rgba(255, 255, 255, 0.1);
+        border-radius: 16px;
+        padding: 32px 24px;
+        transition: all 0.3s ease;
+        backdrop-filter: blur(10px);
+    }
+
+    .market-card:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 10px 25px rgba(102, 126, 234, 0.3);
+        background: rgba(255, 255, 255, 0.1);
+    }
+
+    /* Trend indicators */
+    .trend-up {
+        color: #10b981;
+    }
+
+    .trend-down {
+        color: #ef4444;
+    }
+
+    .trend-neutral {
+        color: #6b7280;
+    }
+
+    /* Floating elements */
+    .floating-shape {
+        position: absolute;
+        border-radius: 50%;
+        background: linear-gradient(135deg, rgba(102, 126, 234, 0.1) 0%, rgba(118, 75, 162, 0.1) 100%);
+        animation: float 6s ease-in-out infinite;
+    }
+
+    .floating-shape:nth-child(1) {
+        width: 100px;
+        height: 100px;
+        top: 10%;
+        left: 10%;
+        animation-delay: 0s;
+    }
+
+    .floating-shape:nth-child(2) {
+        width: 60px;
+        height: 60px;
+        top: 60%;
+        right: 15%;
+        animation-delay: 2s;
+    }
+
+    .floating-shape:nth-child(3) {
+        width: 80px;
+        height: 80px;
+        bottom: 20%;
+        left: 20%;
+        animation-delay: 4s;
+    }
+
+    @keyframes float {
+        0%, 100% { transform: translateY(0px); }
+        50% { transform: translateY(-20px); }
+    }
+
+    /* Responsive improvements */
+    @media (max-width: 768px) {
+        .feature-card {
+            padding: 24px 16px;
+        }
+        
+        .hero-bg {
+            background-attachment: scroll;
+        }
+    }
+</style>
+<body class="bg-gray-900">
+
+{% include 'Raj/navbar.html' %}
+
+<!-- Hero Section -->
+<section class="hero-bg py-20 relative overflow-hidden">
+    <div class="floating-shape"></div>
+    <div class="floating-shape"></div>
+    <div class="floating-shape"></div>
+    
+    <div class="container mx-auto px-4 relative z-10">
+        <div class="max-w-7xl mx-auto">
+            <div class="text-center mb-16">
+                <h1 class="text-5xl md:text-6xl font-bold text-white mb-6 leading-tight">
+                    Market Insights & 
+                    <span class="bg-gradient-to-r from-blue-400 to-purple-400 bg-clip-text text-transparent">Analysis</span>
+                </h1>
+                <p class="text-xl md:text-2xl text-gray-200 max-w-4xl mx-auto leading-relaxed">
+                    Stay informed with the latest real estate market trends, data, and expert analysis to make informed decisions about your property investments.
+                </p>
+            </div>
+            
+            <!-- Feature Cards -->
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+                <div class="feature-card">
+                    <div class="feature-icon">
+                        <i class="fas fa-chart-line"></i>
+                    </div>
+                    <h3 class="text-xl font-semibold text-white mb-4 relative z-10">Market Trends</h3>
+                    <p class="text-gray-300 text-base leading-relaxed relative z-10">Get real-time market data and trend analysis to understand current property values and market conditions.</p>
+                </div>
+                <div class="feature-card">
+                    <div class="feature-icon">
+                        <i class="fas fa-analytics"></i>
+                    </div>
+                    <h3 class="text-xl font-semibold text-white mb-4 relative z-10">Expert Analysis</h3>
+                    <p class="text-gray-300 text-base leading-relaxed relative z-10">Professional insights from our market analysts with years of experience in real estate trends.</p>
+                </div>
+                <div class="feature-card">
+                    <div class="feature-icon">
+                        <i class="fas fa-newspaper"></i>
+                    </div>
+                    <h3 class="text-xl font-semibold text-white mb-4 relative z-10">Latest Reports</h3>
+                    <p class="text-gray-300 text-base leading-relaxed relative z-10">Access comprehensive market reports and forecasts to make informed investment decisions.</p>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Market Overview -->
+<section class="py-20 bg-gray-800">
+    <div class="container mx-auto px-4">
+        <div class="max-w-6xl mx-auto">
+            <div class="text-center mb-16">
+                <h2 class="text-4xl md:text-5xl font-bold text-white mb-6">
+                    Current Market 
+                    <span class="bg-gradient-to-r from-blue-400 to-purple-400 bg-clip-text text-transparent">Overview</span>
+                </h2>
+                <p class="text-xl text-gray-300 max-w-3xl mx-auto">
+                    Real-time market statistics and trends to help you understand the current real estate landscape
+                </p>
+            </div>
+            
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
+                <div class="stats-card">
+                    <div class="feature-icon" style="width: 60px; height: 60px; font-size: 24px; margin-bottom: 16px;">
+                        <i class="fas fa-chart-line"></i>
+                    </div>
+                    <h3 class="text-xl font-semibold text-white mb-2">Median Home Price</h3>
+                    <p class="text-3xl font-bold text-blue-400 mb-2">$450,000</p>
+                    <p class="text-sm text-green-400 font-medium">+12.5% from last year</p>
+                </div>
+                
+                <div class="stats-card">
+                    <div class="feature-icon" style="width: 60px; height: 60px; font-size: 24px; margin-bottom: 16px;">
+                        <i class="fas fa-clock"></i>
+                    </div>
+                    <h3 class="text-xl font-semibold text-white mb-2">Days on Market</h3>
+                    <p class="text-3xl font-bold text-blue-400 mb-2">45</p>
+                    <p class="text-sm text-green-400 font-medium">-15% from last year</p>
+                </div>
+                
+                <div class="stats-card">
+                    <div class="feature-icon" style="width: 60px; height: 60px; font-size: 24px; margin-bottom: 16px;">
+                        <i class="fas fa-home"></i>
+                    </div>
+                    <h3 class="text-xl font-semibold text-white mb-2">Inventory</h3>
+                    <p class="text-3xl font-bold text-blue-400 mb-2">2.1 months</p>
+                    <p class="text-sm text-yellow-400 font-medium">Seller's market</p>
+                </div>
+                
+                <div class="stats-card">
+                    <div class="feature-icon" style="width: 60px; height: 60px; font-size: 24px; margin-bottom: 16px;">
+                        <i class="fas fa-percentage"></i>
+                    </div>
+                    <h3 class="text-xl font-semibold text-white mb-2">Interest Rate</h3>
+                    <p class="text-3xl font-bold text-blue-400 mb-2">4.25%</p>
+                    <p class="text-sm text-gray-300 font-medium">30-year fixed</p>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Market Trends -->
+<section class="py-20 bg-gray-900">
+    <div class="container mx-auto px-4">
+        <div class="max-w-6xl mx-auto">
+            <div class="text-center mb-16">
+                <h2 class="text-4xl md:text-5xl font-bold text-white mb-6">
+                    Market 
+                    <span class="bg-gradient-to-r from-blue-400 to-purple-400 bg-clip-text text-transparent">Trends</span>
+                </h2>
+                <p class="text-xl text-gray-300 max-w-3xl mx-auto">
+                    Detailed analysis of price trends and market activity across different property segments
+                </p>
+            </div>
+            
+            <div class="grid grid-cols-1 lg:grid-cols-2 gap-12">
+                <div class="market-card">
+                    <h3 class="text-2xl font-bold mb-6 text-white">Price Trends</h3>
+                    <div class="space-y-6">
+                        <div class="flex justify-between items-center p-4 bg-gray-800 rounded-lg">
+                            <div>
+                                <span class="text-gray-300 font-medium">Luxury Homes ($1M+)</span>
+                                <p class="text-sm text-gray-400">High-end market segment</p>
+                            </div>
+                            <span class="text-2xl font-bold trend-up">+8.2%</span>
+                        </div>
+                        
+                        <div class="flex justify-between items-center p-4 bg-gray-800 rounded-lg">
+                            <div>
+                                <span class="text-gray-300 font-medium">Mid-Range Homes ($300K-$800K)</span>
+                                <p class="text-sm text-gray-400">Most active segment</p>
+                            </div>
+                            <span class="text-2xl font-bold trend-up">+15.3%</span>
+                        </div>
+                        
+                        <div class="flex justify-between items-center p-4 bg-gray-800 rounded-lg">
+                            <div>
+                                <span class="text-gray-300 font-medium">Starter Homes ($150K-$300K)</span>
+                                <p class="text-sm text-gray-400">First-time buyer market</p>
+                            </div>
+                            <span class="text-2xl font-bold trend-up">+18.7%</span>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="market-card">
+                    <h3 class="text-2xl font-bold mb-6 text-white">Market Activity</h3>
+                    <div class="space-y-6">
+                        <div class="flex justify-between items-center p-4 bg-gray-800 rounded-lg">
+                            <div>
+                                <span class="text-gray-300 font-medium">New Listings</span>
+                                <p class="text-sm text-gray-400">Properties coming to market</p>
+                            </div>
+                            <span class="text-2xl font-bold trend-up">+5.4%</span>
+                        </div>
+                        
+                        <div class="flex justify-between items-center p-4 bg-gray-800 rounded-lg">
+                            <div>
+                                <span class="text-gray-300 font-medium">Pending Sales</span>
+                                <p class="text-sm text-gray-400">Under contract properties</p>
+                            </div>
+                            <span class="text-2xl font-bold trend-up">+12.1%</span>
+                        </div>
+                        
+                        <div class="flex justify-between items-center p-4 bg-gray-800 rounded-lg">
+                            <div>
+                                <span class="text-gray-300 font-medium">Closed Sales</span>
+                                <p class="text-sm text-gray-400">Completed transactions</p>
+                            </div>
+                            <span class="text-2xl font-bold trend-up">+9.8%</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Neighborhood Analysis -->
+<section class="py-20 bg-gray-800">
+    <div class="container mx-auto px-4">
+        <div class="max-w-6xl mx-auto">
+            <div class="text-center mb-16">
+                <h2 class="text-4xl md:text-5xl font-bold text-white mb-6">
+                    Neighborhood 
+                    <span class="bg-gradient-to-r from-blue-400 to-purple-400 bg-clip-text text-transparent">Analysis</span>
+                </h2>
+                <p class="text-xl text-gray-300 max-w-3xl mx-auto">
+                    Detailed insights into specific neighborhoods and their market performance
+                </p>
+            </div>
+            
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+                <div class="market-card">
+                    <div class="feature-icon" style="width: 60px; height: 60px; font-size: 24px; margin-bottom: 16px;">
+                        <i class="fas fa-map-marker-alt"></i>
+                    </div>
+                    <h3 class="text-xl font-semibold text-white mb-4">Downtown Area</h3>
+                    <div class="space-y-3">
+                        <div class="flex justify-between">
+                            <span class="text-gray-300">Avg. Price:</span>
+                            <span class="text-white font-semibold">$650,000</span>
+                        </div>
+                        <div class="flex justify-between">
+                            <span class="text-gray-300">Price Growth:</span>
+                            <span class="text-green-400 font-semibold">+14.2%</span>
+                        </div>
+                        <div class="flex justify-between">
+                            <span class="text-gray-300">Days on Market:</span>
+                            <span class="text-white font-semibold">32</span>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="market-card">
+                    <div class="feature-icon" style="width: 60px; height: 60px; font-size: 24px; margin-bottom: 16px;">
+                        <i class="fas fa-tree"></i>
+                    </div>
+                    <h3 class="text-xl font-semibold text-white mb-4">Suburban Areas</h3>
+                    <div class="space-y-3">
+                        <div class="flex justify-between">
+                            <span class="text-gray-300">Avg. Price:</span>
+                            <span class="text-white font-semibold">$420,000</span>
+                        </div>
+                        <div class="flex justify-between">
+                            <span class="text-gray-300">Price Growth:</span>
+                            <span class="text-green-400 font-semibold">+16.8%</span>
+                        </div>
+                        <div class="flex justify-between">
+                            <span class="text-gray-300">Days on Market:</span>
+                            <span class="text-white font-semibold">28</span>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="market-card">
+                    <div class="feature-icon" style="width: 60px; height: 60px; font-size: 24px; margin-bottom: 16px;">
+                        <i class="fas fa-water"></i>
+                    </div>
+                    <h3 class="text-xl font-semibold text-white mb-4">Waterfront</h3>
+                    <div class="space-y-3">
+                        <div class="flex justify-between">
+                            <span class="text-gray-300">Avg. Price:</span>
+                            <span class="text-white font-semibold">$1,200,000</span>
+                        </div>
+                        <div class="flex justify-between">
+                            <span class="text-gray-300">Price Growth:</span>
+                            <span class="text-green-400 font-semibold">+22.5%</span>
+                        </div>
+                        <div class="flex justify-between">
+                            <span class="text-gray-300">Days on Market:</span>
+                            <span class="text-white font-semibold">45</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Market Forecast -->
+<section class="py-20 bg-gray-900">
+    <div class="container mx-auto px-4">
+        <div class="max-w-6xl mx-auto">
+            <div class="text-center mb-16">
+                <h2 class="text-4xl md:text-5xl font-bold text-white mb-6">
+                    Market 
+                    <span class="bg-gradient-to-r from-blue-400 to-purple-400 bg-clip-text text-transparent">Forecast</span>
+                </h2>
+                <p class="text-xl text-gray-300 max-w-3xl mx-auto">
+                    Expert predictions and analysis for the upcoming months
+                </p>
+            </div>
+            
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+                <div class="market-card">
+                    <div class="feature-icon" style="width: 60px; height: 60px; font-size: 24px; margin-bottom: 16px;">
+                        <i class="fas fa-arrow-up"></i>
+                    </div>
+                    <h3 class="text-xl font-semibold text-white mb-4">Price Predictions</h3>
+                    <p class="text-gray-300 mb-4">Based on current trends and market indicators, we expect continued price appreciation in most segments.</p>
+                    <ul class="text-gray-300 space-y-2">
+                        <li>• Luxury homes: +5-8% growth</li>
+                        <li>• Mid-range homes: +8-12% growth</li>
+                        <li>• Starter homes: +10-15% growth</li>
+                    </ul>
+                </div>
+                
+                <div class="market-card">
+                    <div class="feature-icon" style="width: 60px; height: 60px; font-size: 24px; margin-bottom: 16px;">
+                        <i class="fas fa-clock"></i>
+                    </div>
+                    <h3 class="text-xl font-semibold text-white mb-4">Timing Insights</h3>
+                    <p class="text-gray-300 mb-4">Strategic timing recommendations for buyers and sellers based on market cycles.</p>
+                    <ul class="text-gray-300 space-y-2">
+                        <li>• Best time to buy: Q1-Q2 2024</li>
+                        <li>• Best time to sell: Q3-Q4 2024</li>
+                        <li>• Peak activity: Spring months</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+{% include 'Raj/footer.html' %}
+
+</body>
+</html>

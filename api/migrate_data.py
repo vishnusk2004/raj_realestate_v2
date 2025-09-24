@@ -16,7 +16,7 @@ os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'mysite.settings')
 os.environ['VERCEL'] = 'false'
 django.setup()
 
-from Henry.models import Property, SellingContact
+from Raj.models import Property, SellingContact
 from django.core.management import execute_from_command_line
 
 def export_data():

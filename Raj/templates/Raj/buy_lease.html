@@ -1,0 +1,520 @@
+{% load static %}
+{% load price_filters %}
+{% load humanize %}
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Buy & Lease Properties - {{ brand_name }}</title>
+    <meta name="description" content="Find your perfect property with {{ brand_name }}. Browse our extensive collection of properties for sale and lease.">
+    <link rel="icon" type="image/svg+xml" href="{% static 'favicon.svg' %}">
+    
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Playfair+Display:wght@400;500;600;700&display=swap" rel="stylesheet">
+    
+    <!-- Custom CSS -->
+    <link rel="stylesheet" href="{% static 'css/django-main.css' %}">
+    
+</head>
+<body>
+    {% include 'Raj/navbar.html' %}
+
+    <main class="flex-1">
+        <div class="min-h-screen bg-surface-gradient">
+            <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
+                <div class="text-center mb-12">
+                    <h1 class="text-4xl md:text-5xl font-bold text-foreground mb-4">Find Your Perfect Property</h1>
+                    <p class="text-xl text-muted-foreground max-w-2xl mx-auto">Discover amazing properties available for sale and lease. Use our advanced search to find exactly what you're looking for.</p>
+                </div>
+                
+                <!-- Search and Filter Bar -->
+                <div class="rounded-lg border bg-card text-card-foreground shadow-sm p-6 mb-8 shadow-soft">
+                    <form method="GET" class="grid md:grid-cols-4 gap-4">
+                        <div class="relative">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-search absolute left-3 top-3 h-4 w-4 text-muted-foreground">
+                                <circle cx="11" cy="11" r="8"></circle>
+                                <path d="m21 21-4.3-4.3"></path>
+                            </svg>
+                            <input name="search" class="flex h-10 w-full rounded-md border border-input bg-background px-3 py-2 text-base ring-offset-background file:border-0 file:bg-transparent file:text-sm file:font-medium file:text-foreground placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50 md:text-sm pl-10" placeholder="Search properties..." value="{{ request.GET.search }}">
+                        </div>
+                        <select name="property_type" class="flex h-10 w-full items-center justify-between rounded-md border border-input bg-background px-3 py-2 text-sm ring-offset-background placeholder:text-muted-foreground focus:outline-none focus:ring-2 focus:ring-ring focus:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50">
+                            <option value="">Property Type</option>
+                            <option value="sale" {% if request.GET.property_type == 'sale' %}selected{% endif %}>For Sale</option>
+                            <option value="lease" {% if request.GET.property_type == 'lease' %}selected{% endif %}>For Lease</option>
+                            </select>
+                        <select name="price_range" class="flex h-10 w-full items-center justify-between rounded-md border border-input bg-background px-3 py-2 text-sm ring-offset-background placeholder:text-muted-foreground focus:outline-none focus:ring-2 focus:ring-ring focus:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50">
+                            <option value="">Price Range</option>
+                            <option value="0-500000" {% if request.GET.price_range == '0-500000' %}selected{% endif %}>Under $500K</option>
+                            <option value="500000-1000000" {% if request.GET.price_range == '500000-1000000' %}selected{% endif %}>$500K - $1M</option>
+                            <option value="1000000-2000000" {% if request.GET.price_range == '1000000-2000000' %}selected{% endif %}>$1M - $2M</option>
+                            <option value="2000000-5000000" {% if request.GET.price_range == '2000000-5000000' %}selected{% endif %}>$2M - $5M</option>
+                            <option value="5000000-999999999" {% if request.GET.price_range == '5000000-999999999' %}selected{% endif %}>$5M+</option>
+                        </select>
+                        <button type="submit" class="inline-flex items-center justify-center gap-2 whitespace-nowrap rounded-md text-sm font-medium ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 [&_svg]:pointer-events-none [&_svg]:size-4 [&_svg]:shrink-0 h-10 px-4 py-2 bg-primary hover:bg-primary-dark text-primary-foreground">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-filter w-4 h-4 mr-2">
+                                <polygon points="22 3 2 3 10 12.46 10 19 14 21 14 12.46 22 3"></polygon>
+                            </svg>
+                                Search
+                            </button>
+                    </form>
+    </div>
+
+    <!-- Properties Grid -->
+                <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-6 mb-16">
+                    {% for property in properties %}
+                    <div class="rounded-lg border bg-card text-card-foreground shadow-sm group overflow-hidden shadow-soft hover:shadow-medium transition-all duration-300 animate-fade-in" data-property-id="{{ property.id }}">
+                        <div class="relative overflow-hidden">
+                            {% if property.get_main_image_url %}
+                                <img src="{{ property.get_main_image_url }}" alt="{{ property.title }}" class="w-full h-48 object-cover group-hover:scale-105 transition-transform duration-300">
+                    {% else %}
+                                <div class="w-full h-48 bg-muted flex items-center justify-center">
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-home h-12 w-12 text-muted-foreground">
+                                        <path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"></path>
+                                        <polyline points="9,22 9,12 15,12 15,22"></polyline>
+                                    </svg>
+                    </div>
+                    {% endif %}
+                            <div class="absolute top-4 left-4 flex gap-2">
+                                <div class="inline-flex items-center rounded-full border px-2.5 py-0.5 text-xs font-semibold transition-colors focus:outline-none focus:ring-2 focus:ring-ring focus:ring-offset-2 border-transparent {% if property.property_type == 'lease' %}hover:bg-secondary/80 bg-primary text-primary-foreground{% else %}hover:bg-primary/80 bg-primary text-primary-foreground{% endif %}">
+                                    {{ property.get_property_type_display }}
+                        </div>
+                    </div>
+                            <button class="inline-flex items-center justify-center gap-2 whitespace-nowrap text-sm font-medium ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 [&_svg]:pointer-events-none [&_svg]:size-4 [&_svg]:shrink-0 hover:text-accent-foreground h-9 rounded-md px-3 absolute top-4 right-4 bg-background/80 hover:bg-background text-primary">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-heart h-4 w-4">
+                                    <path d="M19 14c1.49-1.46 3-3.21 3-5.5A5.5 5.5 0 0 0 16.5 3c-1.76 0-3 .5-4.5 2-1.5-1.5-2.74-2-4.5-2A5.5 5.5 0 0 0 2 8.5c0 2.3 1.5 4.05 3 5.5l7 7Z"></path>
+                                </svg>
+                            </button>
+                            </div>
+                        <div class="p-6 space-y-4">
+                            <div>
+                                <h3 class="text-lg font-semibold text-foreground mb-2 line-clamp-1">{{ property.title }}</h3>
+                                <div class="flex items-center text-muted-foreground mb-3">
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-map-pin h-4 w-4 mr-1">
+                                        <path d="M20 10c0 4.993-5.539 10.193-7.399 11.799a1 1 0 0 1-1.202 0C9.539 20.193 4 14.993 4 10a8 8 0 0 1 16 0"></path>
+                                        <circle cx="12" cy="10" r="3"></circle>
+                                    </svg>
+                                    <span class="text-sm">{{ property.location }}</span>
+                        </div>
+                            </div>
+                            <div class="flex items-center justify-between text-sm text-muted-foreground">
+                                <div class="flex items-center space-x-4">
+                            {% if property.bedrooms %}
+                                    <div class="flex items-center">
+                                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-bed h-4 w-4 mr-1">
+                                            <path d="M2 4v16"></path>
+                                            <path d="M2 8h18a2 2 0 0 1 2 2v10"></path>
+                                            <path d="M2 17h20"></path>
+                                            <path d="M6 8v9"></path>
+                                        </svg>
+                                        <span>{{ property.bedrooms }}</span>
+                                    </div>
+                            {% endif %}
+                            {% if property.bathrooms %}
+                                    <div class="flex items-center">
+                                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-bath h-4 w-4 mr-1">
+                                            <path d="M10 4 8 6"></path>
+                                            <path d="M17 19v2"></path>
+                                            <path d="M2 12h20"></path>
+                                            <path d="M7 19v2"></path>
+                                            <path d="M9 5 7.621 3.621A2.121 2.121 0 0 0 4 5v12a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2v-5"></path>
+                                        </svg>
+                                        <span>{{ property.bathrooms }}</span>
+                                    </div>
+                            {% endif %}
+                            {% if property.area_sqft %}
+                                    <div class="flex items-center">
+                                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-square h-4 w-4 mr-1">
+                                            <rect width="18" height="18" x="3" y="3" rx="2"></rect>
+                                        </svg>
+                                        <span>{{ property.area_sqft|floatformat:0 }}</span>
+                                    </div>
+                            {% endif %}
+                        </div>
+                        </div>
+                            <div class="flex items-center justify-between pt-4 border-t">
+                                <div class="text-2xl font-bold text-primary">
+                                    {{ property.price|format_price_with_type:property.property_type }}
+                    </div>
+                                <button onclick="openPropertyModal('{{ property.id }}', '{{ property.title }}', '{{ property.location }}', '{{ property.price }}', '{{ property.property_type }}', '{{ property.bedrooms }}', '{{ property.bathrooms }}', '{{ property.area_sqft }}', '{{ property.description|default:"" }}', '{{ property.get_all_image_urls|join:"|||" }}')" class="inline-flex items-center justify-center gap-2 whitespace-nowrap rounded-md text-sm font-medium ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 [&_svg]:pointer-events-none [&_svg]:size-4 [&_svg]:shrink-0 border bg-background h-10 px-4 py-2 border-primary text-primary hover:bg-primary hover:text-primary-foreground">View Details</button>
+                </div>
+            </div>
+                </div>
+                    {% empty %}
+                    <div class="col-span-full text-center py-12">
+                        <div class="w-16 h-16 bg-muted rounded-full flex items-center justify-center mx-auto mb-4">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-home text-muted-foreground">
+                                <path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"></path>
+                                <polyline points="9,22 9,12 15,12 15,22"></polyline>
+                            </svg>
+            </div>
+                        <h3 class="text-lg font-semibold text-foreground mb-2">No Properties Found</h3>
+                        <p class="text-muted-foreground">We're working on adding more properties. Check back soon or contact us for personalized assistance.</p>
+    </div>
+                    {% endfor %}
+            </div>
+            
+                <!-- Contact Form -->
+                <div class="rounded-lg border bg-card text-card-foreground shadow-sm p-8 shadow-medium">
+                <div class="text-center mb-8">
+                        <h2 class="text-3xl font-bold text-foreground mb-4">Can't Find What You're Looking For?</h2>
+                        <p class="text-muted-foreground text-lg">Let our expert team help you find the perfect property. Fill out the form below and we'll contact you with matching options.</p>
+                </div>
+                    <form class="grid md:grid-cols-2 gap-6 max-w-4xl mx-auto">
+                        <div class="space-y-2">
+                            <label class="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70" for="name">Full Name</label>
+                    <div class="relative">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-user absolute left-3 top-3 h-4 w-4 text-muted-foreground">
+                                    <path d="M19 21v-2a4 4 0 0 0-4-4H9a4 4 0 0 0-4 4v2"></path>
+                                    <circle cx="12" cy="7" r="4"></circle>
+                                </svg>
+                                <input class="flex h-10 w-full rounded-md border border-input bg-background px-3 py-2 text-base ring-offset-background file:border-0 file:bg-transparent file:text-sm file:font-medium file:text-foreground placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50 md:text-sm pl-10" id="name" placeholder="Enter your full name">
+                        </div>
+                        </div>
+                        <div class="space-y-2">
+                            <label class="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70" for="email">Email Address</label>
+                            <div class="relative">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-mail absolute left-3 top-3 h-4 w-4 text-muted-foreground">
+                                    <rect width="20" height="16" x="2" y="4" rx="2"></rect>
+                                    <path d="m22 7-8.97 5.7a1.94 1.94 0 0 1-2.06 0L2 7"></path>
+                                </svg>
+                                <input type="email" class="flex h-10 w-full rounded-md border border-input bg-background px-3 py-2 text-base ring-offset-background file:border-0 file:bg-transparent file:text-sm file:font-medium file:text-foreground placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50 md:text-sm pl-10" id="email" placeholder="Enter your email">
+                    </div>
+                        </div>
+                        <div class="space-y-2">
+                            <label class="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70" for="phone">Phone Number</label>
+                            <div class="relative">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-phone absolute left-3 top-3 h-4 w-4 text-muted-foreground">
+                                    <path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"></path>
+                    </svg>
+                                <input class="flex h-10 w-full rounded-md border border-input bg-background px-3 py-2 text-base ring-offset-background file:border-0 file:bg-transparent file:text-sm file:font-medium file:text-foreground placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50 md:text-sm pl-10" id="phone" placeholder="Enter your phone number">
+                        </div>
+                    </div>
+                        <div class="space-y-2">
+                            <label class="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70" for="budget">Budget Range</label>
+                            <button type="button" role="combobox" aria-controls="radix-:r6i:" aria-expanded="false" aria-autocomplete="none" dir="ltr" data-state="closed" data-placeholder="" class="flex h-10 w-full items-center justify-between rounded-md border border-input bg-background px-3 py-2 text-sm ring-offset-background placeholder:text-muted-foreground focus:outline-none focus:ring-2 focus:ring-ring focus:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50 [&>span]:line-clamp-1">
+                                <span style="pointer-events: none;">Select your budget</span>
+                                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-chevron-down h-4 w-4 opacity-50" aria-hidden="true">
+                                    <path d="m6 9 6 6 6-6"></path>
+                    </svg>
+                    </button>
+                        </div>
+                        <div class="space-y-2">
+                            <label class="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70" for="propertyType">Property Type</label>
+                            <button type="button" role="combobox" aria-controls="radix-:r6j:" aria-expanded="false" aria-autocomplete="none" dir="ltr" data-state="closed" data-placeholder="" class="flex h-10 w-full items-center justify-between rounded-md border border-input bg-background px-3 py-2 text-sm ring-offset-background placeholder:text-muted-foreground focus:outline-none focus:ring-2 focus:ring-ring focus:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50 [&>span]:line-clamp-1">
+                                <span style="pointer-events: none;">Select property type</span>
+                                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-chevron-down h-4 w-4 opacity-50" aria-hidden="true">
+                                    <path d="m6 9 6 6 6-6"></path>
+                                </svg>
+                    </button>
+            </div>
+                        <div class="space-y-2">
+                            <label class="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70" for="location">Preferred Location</label>
+                            <div class="relative">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-map-pin absolute left-3 top-3 h-4 w-4 text-muted-foreground">
+                                    <path d="M20 10c0 4.993-5.539 10.193-7.399 11.799a1 1 0 0 1-1.202 0C9.539 20.193 4 14.993 4 10a8 8 0 0 1 16 0"></path>
+                                    <circle cx="12" cy="10" r="3"></circle>
+                    </svg>
+                                <input class="flex h-10 w-full rounded-md border border-input bg-background px-3 py-2 text-base ring-offset-background file:border-0 file:bg-transparent file:text-sm file:font-medium file:text-foreground placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50 md:text-sm pl-10" id="location" placeholder="Enter preferred area">
+                </div>
+            </div>
+                        <div class="md:col-span-2 space-y-2">
+                            <label class="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70" for="requirements">Additional Requirements</label>
+                            <textarea class="flex w-full rounded-md border border-input bg-background px-3 py-2 text-sm ring-offset-background placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50 min-h-[120px]" id="requirements" placeholder="Tell us about your specific requirements, preferences, or any questions you have..."></textarea>
+        </div>
+                        <div class="md:col-span-2 text-center">
+                            <button class="inline-flex items-center justify-center gap-2 whitespace-nowrap text-sm ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 [&_svg]:pointer-events-none [&_svg]:size-4 [&_svg]:shrink-0 hover:bg-primary/90 h-11 rounded-md bg-primary hover:bg-primary-dark text-primary-foreground font-semibold px-8 border border-primary shadow-md hover:shadow-lg">Get Personalized Recommendations</button>
+    </div>
+                    </form>
+                </div>
+        </div>
+    </div>
+    </main>
+
+{% include 'Raj/footer.html' %}
+
+<!-- Property Details Modal -->
+    <div id="propertyModal" class="fixed inset-0 bg-black bg-opacity-50 z-50 hidden flex items-center justify-center p-4">
+        <div role="dialog" aria-describedby="modal-description" aria-labelledby="modal-title" data-state="open" class="fixed left-[50%] top-[50%] z-50 grid w-full translate-x-[-50%] translate-y-[-50%] gap-4 border bg-background p-6 shadow-lg duration-200 data-[state=open]:animate-in data-[state=closed]:animate-out data-[state=closed]:fade-out-0 data-[state=open]:fade-in-0 data-[state=closed]:zoom-out-95 data-[state=open]:zoom-in-95 data-[state=closed]:slide-out-to-left-1/2 data-[state=closed]:slide-out-to-top-[48%] data-[state=open]:slide-in-from-left-1/2 data-[state=open]:slide-in-from-top-[48%] sm:rounded-lg max-w-4xl max-h-[90vh] overflow-y-auto" tabindex="-1" style="pointer-events: auto;">
+            <div class="flex flex-col space-y-1.5 text-center sm:text-left">
+                <h2 id="modal-title" class="tracking-tight text-2xl font-bold">Property Details</h2>
+                </div>
+            <div class="space-y-6">
+                <div id="modalImage" class="relative">
+                    <div id="imageCarousel" class="relative overflow-hidden rounded-lg">
+                        <img id="modalImageSrc" src="" alt="Property Image" class="w-full h-64 md:h-80 object-cover transition-opacity duration-300">
+                        </div>
+                    <div id="imageNavigation" class="hidden">
+                        <button id="prevImage" class="absolute left-2 top-1/2 transform -translate-y-1/2 bg-black bg-opacity-50 text-white p-2 rounded-full hover:bg-opacity-70 transition-all">
+                            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7"></path>
+                            </svg>
+                        </button>
+                        <button id="nextImage" class="absolute right-2 top-1/2 transform -translate-y-1/2 bg-black bg-opacity-50 text-white p-2 rounded-full hover:bg-opacity-70 transition-all">
+                            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"></path>
+                            </svg>
+                        </button>
+                        <div id="imageDots" class="absolute bottom-2 left-1/2 transform -translate-x-1/2 flex space-x-2">
+                            <!-- Dots will be generated by JavaScript -->
+                        </div>
+                            </div>
+                        </div>
+                <div class="grid md:grid-cols-2 gap-6">
+                    <div>
+                        <h3 class="text-xl font-semibold mb-4">Property Details</h3>
+                        <div class="space-y-2 text-sm">
+                            <div class="flex justify-between">
+                                <span class="text-muted-foreground">Price:</span>
+                                <span id="modalPrice" class="font-semibold text-primary">-</span>
+                    </div>
+                            <div class="flex justify-between">
+                                <span class="text-muted-foreground">Location:</span>
+                                <span id="modalLocation">-</span>
+                        </div>
+                            <div class="flex justify-between">
+                                <span class="text-muted-foreground">Bedrooms:</span>
+                                <span id="modalBedrooms">-</span>
+                    </div>
+                            <div class="flex justify-between">
+                                <span class="text-muted-foreground">Bathrooms:</span>
+                                <span id="modalBathrooms">-</span>
+                </div>
+                            <div class="flex justify-between">
+                                <span class="text-muted-foreground">Square Feet:</span>
+                                <span id="modalArea">-</span>
+                    </div>
+                </div>
+                            </div>
+                    <div>
+                        <h3 class="text-xl font-semibold mb-4">Features</h3>
+                        <div id="modalFeatures" class="flex flex-wrap gap-2">
+                            <span class="bg-secondary text-secondary-foreground px-3 py-1 rounded-full text-sm">Modern Kitchen</span>
+                            <span class="bg-secondary text-secondary-foreground px-3 py-1 rounded-full text-sm">Hardwood Floors</span>
+                            <span class="bg-secondary text-secondary-foreground px-3 py-1 rounded-full text-sm">Central AC</span>
+                        </div>
+                        </div>
+                    </div>
+                <div id="modalDescription" class="hidden">
+                    <h3 class="text-xl font-semibold mb-4">Description</h3>
+                    <p id="modalDescriptionText" class="text-muted-foreground leading-relaxed">-</p>
+                </div>
+                <div class="flex gap-4">
+                    <button onclick="scheduleViewing()" class="inline-flex items-center justify-center gap-2 whitespace-nowrap rounded-md text-sm font-medium ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 [&_svg]:pointer-events-none [&_svg]:size-4 [&_svg]:shrink-0 h-10 px-4 py-2 flex-1 bg-primary hover:bg-primary-dark text-primary-foreground">Schedule Viewing</button>
+                    <button onclick="contactAboutProperty()" class="inline-flex items-center justify-center gap-2 whitespace-nowrap rounded-md text-sm font-medium ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 [&_svg]:pointer-events-none [&_svg]:size-4 [&_svg]:shrink-0 border bg-background h-10 px-4 py-2 flex-1 border-accent text-accent hover:bg-accent hover:text-accent-foreground">Contact Agent</button>
+                        </div>
+                    </div>
+            <button type="button" onclick="closePropertyModal()" class="absolute right-4 top-4 rounded-sm opacity-70 ring-offset-background transition-opacity data-[state=open]:bg-accent data-[state=open]:text-muted-foreground hover:opacity-100 focus:outline-none focus:ring-2 focus:ring-ring focus:ring-offset-2 disabled:pointer-events-none">
+                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-x h-4 w-4">
+                    <path d="M18 6 6 18"></path>
+                    <path d="m6 6 12 12"></path>
+                </svg>
+                <span class="sr-only">Close</span>
+            </button>
+                    </div>
+                </div>
+                
+    <script>
+        let currentImageIndex = 0;
+        let propertyImages = [];
+        
+        function openPropertyModal(id, title, location, price, propertyType, bedrooms, bathrooms, area, description, additionalImages) {
+            document.getElementById('modal-title').textContent = title;
+            document.getElementById('modalLocation').textContent = location;
+            
+            // Format price based on property type
+            if (propertyType === 'lease') {
+                document.getElementById('modalPrice').textContent = '$' + parseFloat(price).toLocaleString() + '/month';
+            } else {
+                document.getElementById('modalPrice').textContent = '$' + parseFloat(price).toLocaleString();
+            }
+            
+            document.getElementById('modalBedrooms').textContent = bedrooms || '-';
+            document.getElementById('modalBathrooms').textContent = bathrooms || '-';
+            document.getElementById('modalArea').textContent = area ? parseFloat(area).toLocaleString() : '-';
+            
+            // Handle description
+            if (description && description.trim()) {
+                document.getElementById('modalDescriptionText').textContent = description;
+                document.getElementById('modalDescription').classList.remove('hidden');
+            } else {
+                document.getElementById('modalDescription').classList.add('hidden');
+            }
+            
+            // Set up images
+            setupPropertyImages(id, title, additionalImages);
+            
+            // Set up features based on property data
+            setupPropertyFeatures(bedrooms, bathrooms, area, propertyType);
+            
+            document.getElementById('propertyModal').classList.remove('hidden');
+            document.body.style.overflow = 'hidden';
+        }
+        
+        function setupPropertyImages(propertyId, title, additionalImages) {
+            propertyImages = [];
+            
+            // Add additional images from database (these are now base64 data URLs)
+            if (additionalImages && additionalImages.trim()) {
+                const imageUrls = additionalImages.split('|||').filter(url => url.trim());
+                imageUrls.forEach((url, index) => {
+                    if (url.trim()) {
+                        const trimmedUrl = url.trim();
+                        propertyImages.push({
+                            src: trimmedUrl,
+                            alt: title
+                        });
+                    }
+                });
+            }
+            
+            // If no images found, use a placeholder
+            if (propertyImages.length === 0) {
+                propertyImages.push({
+                    src: '/static/Images/placeholder-property.jpg',
+                    alt: title
+                });
+            }
+            
+            // Set up carousel
+            currentImageIndex = 0;
+            updateImageDisplay();
+            setupImageNavigation();
+        }
+        
+        function updateImageDisplay() {
+            const imageElement = document.getElementById('modalImageSrc');
+            const navigation = document.getElementById('imageNavigation');
+            const dotsContainer = document.getElementById('imageDots');
+            
+            if (propertyImages.length > 0) {
+                const currentImage = propertyImages[currentImageIndex];
+                imageElement.src = currentImage.src;
+                imageElement.alt = currentImage.alt;
+                
+                // Show/hide navigation based on number of images
+                if (propertyImages.length > 1) {
+                    navigation.classList.remove('hidden');
+                    setupImageDots();
+                } else {
+                    navigation.classList.add('hidden');
+                }
+            }
+        }
+        
+        function setupImageNavigation() {
+            const prevButton = document.getElementById('prevImage');
+            const nextButton = document.getElementById('nextImage');
+            
+            prevButton.onclick = () => {
+                currentImageIndex = (currentImageIndex - 1 + propertyImages.length) % propertyImages.length;
+                updateImageDisplay();
+            };
+            
+            nextButton.onclick = () => {
+                currentImageIndex = (currentImageIndex + 1) % propertyImages.length;
+                updateImageDisplay();
+            };
+        }
+        
+        function setupImageDots() {
+            const dotsContainer = document.getElementById('imageDots');
+            dotsContainer.innerHTML = '';
+            
+            propertyImages.forEach((_, index) => {
+                const dot = document.createElement('button');
+                dot.className = `w-2 h-2 rounded-full transition-all ${
+                    index === currentImageIndex 
+                        ? 'bg-white' 
+                        : 'bg-white bg-opacity-50 hover:bg-opacity-75'
+                }`;
+                dot.onclick = () => {
+                    currentImageIndex = index;
+                    updateImageDisplay();
+                };
+                dotsContainer.appendChild(dot);
+            });
+        }
+        
+        function setupPropertyFeatures(bedrooms, bathrooms, area, propertyType) {
+            console.log('Setting up features:', {bedrooms, bathrooms, area, propertyType});
+            const features = [];
+            
+            // Add features based on available data
+            if (bedrooms && bedrooms > 0) {
+                features.push(`${bedrooms} Bedroom${bedrooms > 1 ? 's' : ''}`);
+            }
+            
+            if (bathrooms && bathrooms > 0) {
+                features.push(`${bathrooms} Bathroom${bathrooms > 1 ? 's' : ''}`);
+            }
+            
+            if (area && area > 0) {
+                features.push(`${parseInt(area).toLocaleString()} sq ft`);
+            }
+            
+            // Add property type specific features
+            if (propertyType === 'lease') {
+                features.push('Available for Lease');
+            } else {
+                features.push('Available for Sale');
+            }
+            
+            // Add some common features if we have basic data
+            if (bedrooms && bathrooms) {
+                features.push('Modern Design');
+                features.push('Well Maintained');
+            }
+            
+            console.log('Generated features:', features);
+            
+            const featuresContainer = document.getElementById('modalFeatures');
+            if (features.length > 0) {
+                featuresContainer.innerHTML = features.map(feature => 
+                    `<span class="bg-secondary text-secondary-foreground px-3 py-1 rounded-full text-sm">${feature}</span>`
+                ).join('');
+            } else {
+                featuresContainer.innerHTML = '<span class="text-muted-foreground text-sm">No additional features listed</span>';
+            }
+        }
+        
+        function closePropertyModal() {
+            document.getElementById('propertyModal').classList.add('hidden');
+            document.body.style.overflow = 'auto';
+        }
+        
+        function contactAboutProperty() {
+            // Scroll to contact form
+            const contactForm = document.querySelector('form');
+            if (contactForm) {
+                contactForm.scrollIntoView({ behavior: 'smooth' });
+                closePropertyModal();
+            }
+        }
+        
+        function scheduleViewing() {
+            // You can implement scheduling functionality here
+            alert('Scheduling functionality will be implemented soon!');
+        }
+        
+        // Close modal when clicking outside
+        document.getElementById('propertyModal').addEventListener('click', function(e) {
+            if (e.target === this) {
+                closePropertyModal();
+            }
+        });
+        
+        // Close modal with Escape key
+document.addEventListener('keydown', function(e) {
+    if (e.key === 'Escape') {
+                closePropertyModal();
+    }
+});
+</script>
+
+    <script src="{% static 'js/django-main.js' %}"></script>
+</body>
+</html>

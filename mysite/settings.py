@@ -65,7 +65,7 @@ INSTALLED_APPS = [
     'theme',
     'django_browser_reload',
 
-    'Henry'
+    'Raj'
 ]
 
 TAILWIND_APP_NAME = 'theme'
@@ -85,7 +85,7 @@ MIDDLEWARE = [
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
-    'Henry.middleware.LinkTrackingMiddleware',  # Custom link tracking middleware
+    'Raj.middleware.LinkTrackingMiddleware',  # Custom link tracking middleware
 
     "django_browser_reload.middleware.BrowserReloadMiddleware",
 ]
@@ -228,3 +228,8 @@ LOGGING = {
         },
     },
 }
+
+# Admin site configuration
+ADMIN_SITE_HEADER = "Raj Real Estate Admin"
+ADMIN_SITE_TITLE = "Raj Admin"
+ADMIN_INDEX_TITLE = "Raj Real Estate Administration"

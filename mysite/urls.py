@@ -28,7 +28,7 @@ def health_check(request):
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('health/', health_check, name='health_check'),
-    path('', include('Henry.urls')),
+    path('', include('Raj.urls')),
     path("__reload__/", include("django_browser_reload.urls")),
 ]
 

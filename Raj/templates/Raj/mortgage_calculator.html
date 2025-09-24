@@ -1,0 +1,185 @@
+{% load static %}
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Mortgage Calculator - {{ brand_name }}</title>
+    <meta name="description" content="Calculate your mortgage payments with our comprehensive mortgage calculator. Get accurate estimates for your home loan.">
+    <link rel="icon" type="image/svg+xml" href="{% static 'favicon.svg' %}">
+    
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Playfair+Display:wght@400;500;600;700&display=swap" rel="stylesheet">
+    
+    <!-- Custom CSS -->
+    <link rel="stylesheet" href="{% static 'css/django-main.css' %}">
+    
+</head>
+<body>
+{% include 'Raj/navbar.html' %}
+
+<!-- Hero Section -->
+    <section class="bg-surface-gradient py-16 my-4">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="text-center">
+                <h1 class="text-4xl md:text-5xl font-bold text-foreground mb-4">Get Your Mortgage Quote</h1>
+                <p class="text-xl text-muted-foreground max-w-2xl mx-auto mb-6">Fill out the form below and our mortgage experts will contact you within 24 hours with personalized mortgage options and rates.</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- Contact Form Section -->
+    <section class="py-8 bg-background">
+        <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="rounded-lg border bg-card text-card-foreground shadow-sm p-8 shadow-soft">
+                <div class="text-center mb-8">
+                    <h2 class="text-2xl font-bold text-foreground mb-4">Get Your Personalized Mortgage Quote</h2>
+                    <p class="text-muted-foreground">Our mortgage specialists will analyze your situation and provide you with the best mortgage options available.</p>
+                </div>
+                
+                <form method="post" action="{% url 'mortgage_inquiry' %}" class="space-y-6">
+                    {% csrf_token %}
+                    <div class="grid md:grid-cols-2 gap-6">
+                        <div class="space-y-2">
+                            <label class="text-sm font-medium text-foreground" for="name">Full Name *</label>
+                            <input type="text" id="name" name="name" required class="flex h-10 w-full rounded-md border border-input bg-background px-3 py-2 text-sm ring-offset-background file:border-0 file:bg-transparent file:text-sm file:font-medium file:text-foreground placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50" placeholder="Enter your full name">
+                    </div>
+                        
+                        <div class="space-y-2">
+                            <label class="text-sm font-medium text-foreground" for="email">Email Address *</label>
+                            <input type="email" id="email" name="email" required class="flex h-10 w-full rounded-md border border-input bg-background px-3 py-2 text-sm ring-offset-background file:border-0 file:bg-transparent file:text-sm file:font-medium file:text-foreground placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50" placeholder="Enter your email">
+                </div>
+                    </div>
+                    
+                    <div class="grid md:grid-cols-2 gap-6">
+                        <div class="space-y-2">
+                            <label class="text-sm font-medium text-foreground" for="phone">Phone Number *</label>
+                            <input type="tel" id="phone" name="phone" required class="flex h-10 w-full rounded-md border border-input bg-background px-3 py-2 text-sm ring-offset-background file:border-0 file:bg-transparent file:text-sm file:font-medium file:text-foreground placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50" placeholder="Enter your phone number">
+                        </div>
+                        
+                        <div class="space-y-2">
+                            <label class="text-sm font-medium text-foreground" for="property_type">Property Type</label>
+                            <select id="property_type" name="property_type" class="flex h-10 w-full items-center justify-between rounded-md border border-input bg-background px-3 py-2 text-sm ring-offset-background placeholder:text-muted-foreground focus:outline-none focus:ring-2 focus:ring-ring focus:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50">
+                                <option value="">Select property type</option>
+                                    <option value="house">House</option>
+                                    <option value="apartment">Apartment</option>
+                                    <option value="condo">Condo</option>
+                                    <option value="townhouse">Townhouse</option>
+                                    <option value="commercial">Commercial</option>
+                                </select>
+                            </div>
+                        </div>
+                    
+                    <div class="grid md:grid-cols-2 gap-6">
+                        <div class="space-y-2">
+                            <label class="text-sm font-medium text-foreground" for="home_price">Home Price</label>
+                            <div class="relative">
+                                <span class="absolute left-3 top-1/2 transform -translate-y-1/2 text-muted-foreground">$</span>
+                                <input type="number" id="home_price" name="home_price" class="flex h-10 w-full rounded-md border border-input bg-background px-3 py-2 text-sm ring-offset-background file:border-0 file:bg-transparent file:text-sm file:font-medium file:text-foreground placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50 pl-8" placeholder="Enter home price">
+                            </div>
+                        </div>
+                        
+                        <div class="space-y-2">
+                            <label class="text-sm font-medium text-foreground" for="down_payment">Down Payment</label>
+                            <div class="relative">
+                                <span class="absolute left-3 top-1/2 transform -translate-y-1/2 text-muted-foreground">$</span>
+                                <input type="number" id="down_payment" name="down_payment" class="flex h-10 w-full rounded-md border border-input bg-background px-3 py-2 text-sm ring-offset-background file:border-0 file:bg-transparent file:text-sm file:font-medium file:text-foreground placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50 pl-8" placeholder="Enter down payment">
+                </div>
+                        </div>
+                    </div>
+                    
+                    <div class="grid md:grid-cols-2 gap-6">
+                        <div class="space-y-2">
+                            <label class="text-sm font-medium text-foreground" for="loan_term">Preferred Loan Term</label>
+                            <select id="loan_term" name="loan_term" class="flex h-10 w-full items-center justify-between rounded-md border border-input bg-background px-3 py-2 text-sm ring-offset-background placeholder:text-muted-foreground focus:outline-none focus:ring-2 focus:ring-ring focus:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50">
+                                <option value="">Select loan term</option>
+                                    <option value="15">15 Years</option>
+                                    <option value="20">20 Years</option>
+                                    <option value="25">25 Years</option>
+                                    <option value="30">30 Years</option>
+                                </select>
+                        </div>
+                        
+                        <div class="space-y-2">
+                            <label class="text-sm font-medium text-foreground" for="credit_score">Credit Score Range</label>
+                            <select id="credit_score" name="credit_score" class="flex h-10 w-full items-center justify-between rounded-md border border-input bg-background px-3 py-2 text-sm ring-offset-background placeholder:text-muted-foreground focus:outline-none focus:ring-2 focus:ring-ring focus:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50">
+                                <option value="">Select credit score range</option>
+                                    <option value="excellent">Excellent (750+)</option>
+                                    <option value="good">Good (700-749)</option>
+                                    <option value="fair">Fair (650-699)</option>
+                                    <option value="poor">Poor (Below 650)</option>
+                                </select>
+                        </div>
+                        </div>
+                    
+                    <div class="space-y-2">
+                        <label class="text-sm font-medium text-foreground" for="additional_info">Additional Information</label>
+                        <textarea id="additional_info" name="additional_info" rows="4" class="flex min-h-[80px] w-full rounded-md border border-input bg-background px-3 py-2 text-sm ring-offset-background placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50" placeholder="Tell us about your mortgage needs, timeline, or any specific requirements..."></textarea>
+                        </div>
+                    
+                    <div class="text-center">
+                        <button type="submit" class="inline-flex items-center justify-center gap-2 whitespace-nowrap rounded-md text-sm font-medium ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 [&_svg]:pointer-events-none [&_svg]:size-4 [&_svg]:shrink-0 bg-primary text-primary-foreground hover:bg-primary/90 h-11 px-8 py-2 text-base font-semibold">
+                            Get My Mortgage Quote
+                        </button>
+                    </div>
+                    </form>
+        </div>
+    </div>
+</section>
+
+    <!-- Benefits Section -->
+    <section class="py-16 bg-muted/30">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="text-center mb-12">
+                <h2 class="text-3xl font-bold text-foreground mb-4">Why Choose Our Mortgage Services?</h2>
+                <p class="text-xl text-muted-foreground max-w-2xl mx-auto">Get personalized mortgage solutions from our experienced team of mortgage specialists.</p>
+            </div>
+            
+            <div class="grid md:grid-cols-3 gap-8">
+                <div class="rounded-lg border bg-card text-card-foreground shadow-sm p-6 shadow-soft">
+                    <div class="w-12 h-12 bg-accent/20 rounded-lg flex items-center justify-center mb-4">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-users h-6 w-6 text-accent">
+                            <path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"></path>
+                            <circle cx="9" cy="7" r="4"></circle>
+                            <path d="M22 21v-2a4 4 0 0 0-3-3.87"></path>
+                            <path d="M16 3.13a4 4 0 0 1 0 7.75"></path>
+                        </svg>
+                    </div>
+                    <h3 class="text-lg font-semibold text-foreground mb-2">Expert Guidance</h3>
+                    <p class="text-muted-foreground text-sm">Our mortgage specialists have years of experience and will guide you through the entire process.</p>
+                </div>
+                
+                <div class="rounded-lg border bg-card text-card-foreground shadow-sm p-6 shadow-soft">
+                    <div class="w-12 h-12 bg-accent/20 rounded-lg flex items-center justify-center mb-4">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-clock h-6 w-6 text-accent">
+                            <circle cx="12" cy="12" r="10"></circle>
+                            <polyline points="12,6 12,12 16,14"></polyline>
+                        </svg>
+                    </div>
+                    <h3 class="text-lg font-semibold text-foreground mb-2">Fast Response</h3>
+                    <p class="text-muted-foreground text-sm">Get a personalized response within 24 hours with mortgage options tailored to your needs.</p>
+                </div>
+                
+                <div class="rounded-lg border bg-card text-card-foreground shadow-sm p-6 shadow-soft">
+                    <div class="w-12 h-12 bg-accent/20 rounded-lg flex items-center justify-center mb-4">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-shield-check h-6 w-6 text-accent">
+                            <path d="M12 22s8-9 8-13a8 8 0 0 0-16 0c0 4 8 13 8 13z"></path>
+                            <path d="M9 12l2 2 4-4"></path>
+                        </svg>
+                    </div>
+                    <h3 class="text-lg font-semibold text-foreground mb-2">Best Rates</h3>
+                    <p class="text-muted-foreground text-sm">We work with multiple lenders to find you the best mortgage rates and terms available.</p>
+            </div>
+        </div>
+    </div>
+</section>
+
+{% include 'Raj/footer.html' %}
+
+    <!-- Custom JavaScript -->
+    <script src="{% static 'js/django-main.js' %}"></script>
+</body>
+</html>

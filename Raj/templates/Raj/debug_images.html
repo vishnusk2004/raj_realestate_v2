@@ -1,0 +1,42 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Debug Images</title>
+</head>
+<body>
+    <h1>Property Images Debug</h1>
+    {% for property in properties %}
+        <div style="border: 1px solid #ccc; margin: 20px; padding: 20px;">
+            <h2>{{ property.title }}</h2>
+            <p>All Image URLs: {{ property.get_all_image_urls|join:", " }}</p>
+            
+            <h3>Main Image:</h3>
+            {% if property.image_base64 %}
+                <img src="{{ property.image_base64 }}" alt="{{ property.title }}" style="max-width: 200px;">
+            {% elif property.image_file %}
+                <img src="{{ property.image_file.url }}" alt="{{ property.title }}" style="max-width: 200px;">
+            {% elif property.image_url %}
+                <img src="{{ property.image_url }}" alt="{{ property.title }}" style="max-width: 200px;">
+            {% else %}
+                <p>No main image</p>
+            {% endif %}
+            
+            <h3>Related Images:</h3>
+            {% for img in property.images.all %}
+                <div>
+                    {% if img.image_base64 %}
+                        <img src="{{ img.image_base64 }}" alt="{{ property.title }}" style="max-width: 200px;">
+                    {% elif img.image_file %}
+                        <img src="{{ img.image_file.url }}" alt="{{ property.title }}" style="max-width: 200px;">
+                    {% elif img.image_url %}
+                        <img src="{{ img.image_url }}" alt="{{ property.title }}" style="max-width: 200px;">
+                    {% endif %}
+                </div>
+            {% endfor %}
+        </div>
+    {% endfor %}
+</body>
+</html>

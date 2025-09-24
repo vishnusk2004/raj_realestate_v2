@@ -1,0 +1,50 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Debug Blog Image</title>
+</head>
+<body>
+    <h1>Debug Blog Image - Post ID: {{ post.id }}</h1>
+    
+    <h2>Post Details:</h2>
+    <p><strong>Title:</strong> {{ post.title }}</p>
+    <p><strong>Has base64:</strong> {{ post.image_base64|yesno:"Yes,No" }}</p>
+    <p><strong>Has file:</strong> {{ post.image_file|yesno:"Yes,No" }}</p>
+    <p><strong>Has URL:</strong> {{ post.image_url|yesno:"Yes,No" }}</p>
+    
+    <h2>Image Tests:</h2>
+    
+    <h3>Method 1: Direct base64</h3>
+    {% if post.image_base64 %}
+        <img src="{{ post.image_base64 }}" alt="Direct base64" style="max-width: 300px; border: 1px solid #ccc;">
+        <p><strong>Base64 length:</strong> {{ post.image_base64|length }}</p>
+    {% else %}
+        <p>No base64 data</p>
+    {% endif %}
+    
+    <h3>Method 2: get_image_url()</h3>
+    {% if post.get_image_url %}
+        <img src="{{ post.get_image_url }}" alt="get_image_url" style="max-width: 300px; border: 1px solid #ccc;">
+        <p><strong>URL length:</strong> {{ post.get_image_url|length }}</p>
+    {% else %}
+        <p>No image URL</p>
+    {% endif %}
+    
+    <h3>Method 3: File URL</h3>
+    {% if post.image_file %}
+        <img src="{{ post.image_file.url }}" alt="File URL" style="max-width: 300px; border: 1px solid #ccc;">
+    {% else %}
+        <p>No file</p>
+    {% endif %}
+    
+    <h3>Method 4: Image URL</h3>
+    {% if post.image_url %}
+        <img src="{{ post.image_url }}" alt="Image URL" style="max-width: 300px; border: 1px solid #ccc;">
+    {% else %}
+        <p>No URL</p>
+    {% endif %}
+</body>
+</html>

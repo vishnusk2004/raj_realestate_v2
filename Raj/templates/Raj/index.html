@@ -1,0 +1,695 @@
+{% load static %}
+{% load humanize %}
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{{ brand_name }} - Find Your Dream Home</title>
+    <meta name="description" content="Professional real estate services with AI-powered insights. Find your perfect property with {{ brand_name }}.">
+    <link rel="icon" type="image/svg+xml" href="{% static 'favicon.svg' %}">
+    
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Playfair+Display:wght@400;500;600;700&display=swap" rel="stylesheet">
+    
+    <!-- Custom CSS -->
+    <link rel="stylesheet" href="{% static 'css/django-main.css' %}">
+
+</head>
+<body>
+    <div class="flex flex-col min-h-screen">
+        <nav class="bg-background/95 backdrop-blur-sm border-b shadow-soft sticky top-0 z-50">
+            <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+                <div class="flex justify-between items-center h-16">
+                    <a class="flex items-center space-x-2" href="/">
+                        <div class="w-8 h-8 bg-accent-gradient rounded-lg flex items-center justify-center">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-building h-5 w-5 text-primary">
+                                <rect width="16" height="20" x="4" y="2" rx="2" ry="2"></rect>
+                                <path d="M9 22v-4h6v4"></path>
+                                <path d="M8 6h.01"></path>
+                                <path d="M16 6h.01"></path>
+                                <path d="M12 6h.01"></path>
+                                <path d="M12 10h.01"></path>
+                                <path d="M12 14h.01"></path>
+                                <path d="M16 10h.01"></path>
+                                <path d="M16 14h.01"></path>
+                                <path d="M8 10h.01"></path>
+                                <path d="M8 14h.01"></path>
+                            </svg>
+                        </div>
+                        <span class="text-xl font-bold text-primary">{{ brand_name }}</span>
+                    </a>
+                    <div class="hidden md:flex items-center space-x-1">
+                        <a class="px-4 py-2 rounded-lg text-sm font-medium transition-all duration-200 flex items-center space-x-2 bg-primary text-primary-foreground shadow-medium" href="/">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-house h-4 w-4">
+                                <path d="M15 21v-8a1 1 0 0 0-1-1h-4a1 1 0 0 0-1 1v8"></path>
+                                <path d="M3 10a2 2 0 0 1 .709-1.528l7-5.999a2 2 0 0 1 2.582 0l7 5.999A2 2 0 0 1 21 10v9a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"></path>
+                            </svg>
+                            <span>Home</span>
+                        </a>
+                        <a class="px-4 py-2 rounded-lg text-sm font-medium transition-all duration-200 flex items-center space-x-2 text-muted-foreground hover:text-primary hover:bg-secondary" href="{% url 'buy_lease' %}">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-building h-4 w-4">
+                                <rect width="16" height="20" x="4" y="2" rx="2" ry="2"></rect>
+                                <path d="M9 22v-4h6v4"></path>
+                                <path d="M8 6h.01"></path>
+                                <path d="M16 6h.01"></path>
+                                <path d="M12 6h.01"></path>
+                                <path d="M12 10h.01"></path>
+                                <path d="M12 14h.01"></path>
+                                <path d="M16 10h.01"></path>
+                                <path d="M16 14h.01"></path>
+                                <path d="M8 10h.01"></path>
+                                <path d="M8 14h.01"></path>
+                            </svg>
+                            <span>Buy / Lease</span>
+                        </a>
+                        <a class="px-4 py-2 rounded-lg text-sm font-medium transition-all duration-200 flex items-center space-x-2 text-muted-foreground hover:text-primary hover:bg-secondary" href="{% url 'selling' %}">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-piggy-bank h-4 w-4">
+                                <path d="M19 5c-1.5 0-2.8 1.4-3 2-3.5-1.5-11-.3-11 5 0 1.8 0 3 2 4.5V20h4v-2h3v2h4v-4c1-.5 1.7-1 2-2h2v-4h-2c0-1-.5-1.5-1-2V5z"></path>
+                                <path d="M2 9v1c0 1.1.9 2 2 2h1"></path>
+                                <path d="M16 11h.01"></path>
+                            </svg>
+                            <span>Sell & Evaluate</span>
+                        </a>
+                        <a class="px-4 py-2 rounded-lg text-sm font-medium transition-all duration-200 flex items-center space-x-2 text-muted-foreground hover:text-primary hover:bg-secondary" href="{% url 'blog' %}">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-book-open h-4 w-4">
+                                <path d="M12 7v14"></path>
+                                <path d="M3 18a1 1 0 0 1-1-1V4a1 1 0 0 1 1-1h5a4 4 0 0 1 4 4 4 4 0 0 1 4-4h5a1 1 0 0 1 1 1v13a1 1 0 0 1-1 1h-6a3 3 0 0 0-3 3 3 3 0 0 0-3-3z"></path>
+                            </svg>
+                            <span>Blog</span>
+                        </a>
+                        <a class="px-4 py-2 rounded-lg text-sm font-medium transition-all duration-200 flex items-center space-x-2 text-muted-foreground hover:text-primary hover:bg-secondary" href="{% url 'open_house' %}">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-calendar h-4 w-4">
+                                <path d="M8 2v4"></path>
+                                <path d="M16 2v4"></path>
+                                <rect width="18" height="18" x="3" y="4" rx="2"></rect>
+                                <path d="M3 10h18"></path>
+                            </svg>
+                            <span>Open House</span>
+                        </a>
+                        <a class="px-4 py-2 rounded-lg text-sm font-medium transition-all duration-200 flex items-center space-x-2 text-muted-foreground hover:text-primary hover:bg-secondary" href="{% url 'mortgage_calculator' %}">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-calculator h-4 w-4">
+                                <rect width="16" height="20" x="4" y="2" rx="2"></rect>
+                                <line x1="8" x2="16" y1="6" y2="6"></line>
+                                <line x1="16" x2="16" y1="14" y2="18"></line>
+                                <path d="M16 10h.01"></path>
+                                <path d="M12 10h.01"></path>
+                                <path d="M8 10h.01"></path>
+                                <path d="M12 14h.01"></path>
+                                <path d="M8 14h.01"></path>
+                                <path d="M12 18h.01"></path>
+                                <path d="M8 18h.01"></path>
+                            </svg>
+                            <span>Mortgage Calculator</span>
+                        </a>
+                    </div>
+                    <div class="md:hidden">
+                        <button class="inline-flex items-center justify-center gap-2 whitespace-nowrap text-sm font-medium ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 [&_svg]:pointer-events-none [&_svg]:size-4 [&_svg]:shrink-0 hover:bg-accent hover:text-accent-foreground h-9 rounded-md px-3 text-primary">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-menu h-5 w-5">
+                                <line x1="4" x2="20" y1="12" y2="12"></line>
+                                <line x1="4" x2="20" y1="6" y2="6"></line>
+                                <line x1="4" x2="20" y1="18" y2="18"></line>
+                            </svg>
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </nav>
+        
+        <main class="flex-1">
+            <div class="min-h-screen">
+                <section class="relative h-screen flex items-center justify-center overflow-hidden">
+                    <video class="absolute inset-0 w-full h-full object-cover" autoplay muted loop>
+                        <source src="{% static 'videos/reachrajforreal_hero_video.mp4' %}" type="video/mp4">
+                    </video>
+                    <div class="absolute inset-0 bg-gradient-hero opacity-60"></div>
+                    <div class="relative z-10 text-center max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
+                        <div class="animate-fade-in-up">
+                            <h1 class="font-display text-balance leading-[1.1] text-primary-foreground mb-8">Find Your Dream Home with <span class="text-accent font-bold">{{ brand_name }}</span></h1>
+                            <p class="text-xl md:text-2xl text-primary-foreground/90 mb-10 max-w-3xl mx-auto leading-relaxed text-balance">Discover the best properties and insights with our expert real estate solutions.</p>
+                            <div class="grid grid-cols-2 md:grid-cols-4 gap-4 max-w-3xl mx-auto mb-12">
+                                <a href="{% url 'selling' %}">
+                                    <button class="inline-flex items-center justify-center gap-2 whitespace-nowrap rounded-md text-sm font-medium ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 [&_svg]:pointer-events-none [&_svg]:size-4 [&_svg]:shrink-0 border hover:text-accent-foreground h-10 px-4 py-2 w-full bg-primary-foreground/10 border-primary-foreground/20 text-primary-foreground hover:bg-primary-foreground/20 transition-smooth backdrop-blur-sm">Sell Your Home</button>
+                                </a>
+                                <a href="{% url 'buy_lease' %}">
+                                    <button class="inline-flex items-center justify-center gap-2 whitespace-nowrap rounded-md text-sm font-medium ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 [&_svg]:pointer-events-none [&_svg]:size-4 [&_svg]:shrink-0 border hover:text-accent-foreground h-10 px-4 py-2 w-full bg-primary-foreground/10 border-primary-foreground/20 text-primary-foreground hover:bg-primary-foreground/20 transition-smooth backdrop-blur-sm">Lease Property</button>
+                                </a>
+                                <a href="{% url 'open_house' %}">
+                                    <button class="inline-flex items-center justify-center gap-2 whitespace-nowrap rounded-md text-sm font-medium ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 [&_svg]:pointer-events-none [&_svg]:size-4 [&_svg]:shrink-0 border hover:text-accent-foreground h-10 px-4 py-2 w-full bg-primary-foreground/10 border-primary-foreground/20 text-primary-foreground hover:bg-primary-foreground/20 transition-smooth backdrop-blur-sm">Open Houses</button>
+                                </a>
+                                <a href="{% url 'mortgage_calculator' %}">
+                                    <button class="inline-flex items-center justify-center gap-2 whitespace-nowrap rounded-md text-sm font-medium ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 [&_svg]:pointer-events-none [&_svg]:size-4 [&_svg]:shrink-0 border hover:text-accent-foreground h-10 px-4 py-2 w-full bg-primary-foreground/10 border-primary-foreground/20 text-primary-foreground hover:bg-primary-foreground/20 transition-smooth backdrop-blur-sm">Mortgage Calculator</button>
+                                </a>
+                            </div>
+                            <button class="inline-flex items-center justify-center gap-2 whitespace-nowrap ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 [&_svg]:pointer-events-none [&_svg]:size-4 [&_svg]:shrink-0 hover:bg-primary/90 h-11 rounded-md bg-gradient-accent hover:shadow-accent text-primary font-semibold text-lg px-10 py-4 transition-smooth transform hover:scale-105">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-play w-5 h-5 mr-3">
+                                    <polygon points="6 3 20 12 6 21 6 3"></polygon>
+                                </svg>
+                                Watch Our Story
+                            </button>
+                        </div>
+                    </div>
+                </section>
+
+
+                <section class="py-24 bg-gradient-surface">
+                    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+                        <div class="grid lg:grid-cols-2 gap-16 items-center">
+                            <div class="animate-fade-in-up">
+                                <div class="inline-flex items-center rounded-full border text-xs font-semibold transition-colors focus:outline-none focus:ring-2 focus:ring-ring focus:ring-offset-2 hover:bg-primary/80 mb-6 bg-accent/10 text-accent-foreground border-accent/20 px-4 py-2">About {{ brand_name }}</div>
+                                <h2 class="font-display text-balance mb-8">Your Trusted Real Estate Partner</h2>
+                                <p class="text-muted-foreground text-lg leading-relaxed mb-8 text-balance">With over 15 years of experience in the real estate industry, {{ brand_name }} combines traditional expertise with modern technology to deliver exceptional results for our clients.</p>
+                                <div class="space-y-6 mb-10">
+                                    <div class="flex items-center space-x-4">
+                                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-circle-check-big w-6 h-6 text-accent flex-shrink-0">
+                                            <path d="M21.801 10A10 10 0 1 1 17 3.335"></path>
+                                            <path d="m9 11 3 3L22 4"></path>
+                                        </svg>
+                                        <div>
+                                            <h4 class="font-semibold text-foreground mb-1">Smart property matching</h4>
+                                            <p class="text-muted-foreground text-sm">Expert analysis finds properties that perfectly match your preferences</p>
+                                        </div>
+                                    </div>
+                                    <div class="flex items-center space-x-4">
+                                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-circle-check-big w-6 h-6 text-accent flex-shrink-0">
+                                            <path d="M21.801 10A10 10 0 1 1 17 3.335"></path>
+                                            <path d="m9 11 3 3L22 4"></path>
+                                        </svg>
+                                        <div>
+                                            <h4 class="font-semibold text-foreground mb-1">Expert market analysis</h4>
+                                            <p class="text-muted-foreground text-sm">Deep insights into market trends and property valuations</p>
+                                        </div>
+                                    </div>
+                                    <div class="flex items-center space-x-4">
+                                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-circle-check-big w-6 h-6 text-accent flex-shrink-0">
+                                            <path d="M21.801 10A10 10 0 1 1 17 3.335"></path>
+                                            <path d="m9 11 3 3L22 4"></path>
+                                        </svg>
+                                        <div>
+                                            <h4 class="font-semibold text-foreground mb-1">Personalized client service</h4>
+                                            <p class="text-muted-foreground text-sm">Dedicated support throughout your real estate journey</p>
+                                        </div>
+                                    </div>
+                                </div>
+                                <button class="inline-flex items-center justify-center gap-2 whitespace-nowrap rounded-md text-sm font-medium ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 [&_svg]:pointer-events-none [&_svg]:size-4 [&_svg]:shrink-0 h-10 px-4 py-2 bg-primary hover:bg-primary-dark text-primary-foreground shadow-md hover:shadow-lg transition-smooth">Learn More About Us
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-arrow-right w-5 h-5 ml-2">
+                                        <path d="M5 12h14"></path>
+                                        <path d="m12 5 7 7-7 7"></path>
+                                    </svg>
+                                </button>
+                        </div>
+                            <div class="relative">
+                                <img src="{% static 'Images/house_image.png' %}" alt="Beautiful Modern Home - {{ brand_name }}" class="rounded-2xl shadow-xl w-full h-96 object-cover animate-scale-in">
+                                <div class="absolute -bottom-6 -right-6 bg-accent text-accent-foreground p-6 rounded-xl shadow-accent">
+                                    <div class="text-2xl font-bold">15+</div>
+                                    <div class="text-sm font-medium">Years Experience</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+                <section class="py-16 bg-background">
+                    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
+                        <div class="inline-flex items-center rounded-full border px-2.5 py-0.5 text-xs font-semibold transition-colors focus:outline-none focus:ring-2 focus:ring-ring focus:ring-offset-2 hover:bg-primary/80 mb-4 bg-primary/10 text-primary border-primary/20">Our Strategic Partners</div>
+                        <h2 class="text-3xl md:text-4xl font-bold text-foreground mb-12">Trusted by Leading Real Estate Partners</h2>
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-12 items-center max-w-4xl mx-auto">
+                            <div class="flex flex-col items-center space-y-4">
+                                <div class="w-48 h-24 bg-white rounded-lg shadow-md flex items-center justify-center p-4">
+                                    <img src="{% static 'images/B&P_team.png' %}" alt="The B&P Team" class="max-h-full max-w-full object-contain">
+                                </div>
+                                <h3 class="text-lg font-semibold text-foreground">The B&P Team</h3>
+                                <p class="text-muted-foreground text-sm">Real Estate Excellence</p>
+                            </div>
+                            <div class="flex flex-col items-center space-y-4">
+                                <div class="w-48 h-24 bg-white rounded-lg shadow-md flex items-center justify-center p-4">
+                                    <img src="{% static 'images/keller_williams_southwest_logo.png' %}" alt="Keller Williams Southwest" class="max-h-full max-w-full object-contain">
+                                </div>
+                                <h3 class="text-lg font-semibold text-foreground">Keller Williams Southwest</h3>
+                                <p class="text-muted-foreground text-sm">Premier Real Estate Services</p>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+
+                <section class="py-16 bg-surface-gradient">
+                    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+                        <div class="text-center mb-12">
+                            <div class="inline-flex items-center rounded-full border px-2.5 py-0.5 text-xs font-semibold transition-colors focus:outline-none focus:ring-2 focus:ring-ring focus:ring-offset-2 hover:bg-primary/80 mb-4 bg-accent/10 text-accent-foreground border-accent/20">Client Testimonials</div>
+                            <h2 class="text-3xl md:text-4xl font-bold text-foreground mb-4">What Our Clients Say</h2>
+                            <p class="text-muted-foreground text-lg max-w-2xl mx-auto">Don't just take our word for it. Here's what our satisfied clients have to say about their experience with {{ brand_name }}.</p>
+                    </div>
+                        <div class="grid md:grid-cols-3 gap-8">
+                            <div class="rounded-lg bg-card text-card-foreground shadow-sm p-6 shadow-soft hover:shadow-medium transition-all duration-300 animate-fade-in border-0">
+                    <div class="flex items-center mb-4">
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-star w-4 h-4 text-accent fill-current">
+                                        <path d="M11.525 2.295a.53.53 0 0 1 .95 0l2.31 4.679a2.123 2.123 0 0 0 1.595 1.16l5.166.756a.53.53 0 0 1 .294.904l-3.736 3.638a2.123 2.123 0 0 0-.611 1.878l.882 5.14a.53.53 0 0 1-.771.56l-4.618-2.428a2.122 2.122 0 0 0-1.973 0L6.396 21.01a.53.53 0 0 1-.77-.56l.881-5.139a2.122 2.122 0 0 0-.611-1.879L2.16 9.795a.53.53 0 0 1 .294-.906l5.165-.755a2.122 2.122 0 0 0 1.597-1.16z"></path>
+                                    </svg>
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-star w-4 h-4 text-accent fill-current">
+                                        <path d="M11.525 2.295a.53.53 0 0 1 .95 0l2.31 4.679a2.123 2.123 0 0 0 1.595 1.16l5.166.756a.53.53 0 0 1 .294.904l-3.736 3.638a2.123 2.123 0 0 0-.611 1.878l.882 5.14a.53.53 0 0 1-.771.56l-4.618-2.428a2.122 2.122 0 0 0-1.973 0L6.396 21.01a.53.53 0 0 1-.77-.56l.881-5.139a2.122 2.122 0 0 0-.611-1.879L2.16 9.795a.53.53 0 0 1 .294-.906l5.165-.755a2.122 2.122 0 0 0 1.597-1.16z"></path>
+                                    </svg>
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-star w-4 h-4 text-accent fill-current">
+                                        <path d="M11.525 2.295a.53.53 0 0 1 .95 0l2.31 4.679a2.123 2.123 0 0 0 1.595 1.16l5.166.756a.53.53 0 0 1 .294.904l-3.736 3.638a2.123 2.123 0 0 0-.611 1.878l.882 5.14a.53.53 0 0 1-.771.56l-4.618-2.428a2.122 2.122 0 0 0-1.973 0L6.396 21.01a.53.53 0 0 1-.77-.56l.881-5.139a2.122 2.122 0 0 0-.611-1.879L2.16 9.795a.53.53 0 0 1 .294-.906l5.165-.755a2.122 2.122 0 0 0 1.597-1.16z"></path>
+                                    </svg>
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-star w-4 h-4 text-accent fill-current">
+                                        <path d="M11.525 2.295a.53.53 0 0 1 .95 0l2.31 4.679a2.123 2.123 0 0 0 1.595 1.16l5.166.756a.53.53 0 0 1 .294.904l-3.736 3.638a2.123 2.123 0 0 0-.611 1.878l.882 5.14a.53.53 0 0 1-.771.56l-4.618-2.428a2.122 2.122 0 0 0-1.973 0L6.396 21.01a.53.53 0 0 1-.77-.56l.881-5.139a2.122 2.122 0 0 0-.611-1.879L2.16 9.795a.53.53 0 0 1 .294-.906l5.165-.755a2.122 2.122 0 0 0 1.597-1.16z"></path>
+                                    </svg>
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-star w-4 h-4 text-accent fill-current">
+                                        <path d="M11.525 2.295a.53.53 0 0 1 .95 0l2.31 4.679a2.123 2.123 0 0 0 1.595 1.16l5.166.756a.53.53 0 0 1 .294.904l-3.736 3.638a2.123 2.123 0 0 0-.611 1.878l.882 5.14a.53.53 0 0 1-.771.56l-4.618-2.428a2.122 2.122 0 0 0-1.973 0L6.396 21.01a.53.53 0 0 1-.77-.56l.881-5.139a2.122 2.122 0 0 0-.611-1.879L2.16 9.795a.53.53 0 0 1 .294-.906l5.165-.755a2.122 2.122 0 0 0 1.597-1.16z"></path>
+                            </svg>
+                        </div>
+                                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-quote w-8 h-8 text-accent/20 mb-4">
+                                    <path d="M16 3a2 2 0 0 0-2 2v6a2 2 0 0 0 2 2 1 1 0 0 1 1 1v1a2 2 0 0 1-2 2 1 1 0 0 0-1 1v2a1 1 0 0 0 1 1 6 6 0 0 0 6-6V5a2 2 0 0 0-2-2z"></path>
+                                    <path d="M5 3a2 2 0 0 0-2 2v6a2 2 0 0 0 2 2 1 1 0 0 1 1 1v1a2 2 0 0 1-2 2 1 1 0 0 0-1 1v2a1 1 0 0 0 1 1 6 6 0 0 0 6-6V5a2 2 0 0 0-2-2z"></path>
+                                </svg>
+                                <p class="text-muted-foreground mb-4 leading-relaxed">"{{ brand_name }} made finding my dream home effortless. Their expert recommendations were spot on!"</p>
+                        <div>
+                                    <p class="font-semibold text-foreground">Sarah Johnson</p>
+                                    <p class="text-sm text-muted-foreground">Home Buyer</p>
+                        </div>
+                    </div>
+                            <div class="rounded-lg bg-card text-card-foreground shadow-sm p-6 shadow-soft hover:shadow-medium transition-all duration-300 animate-fade-in border-0">
+                                <div class="flex items-center mb-4">
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-star w-4 h-4 text-accent fill-current">
+                                        <path d="M11.525 2.295a.53.53 0 0 1 .95 0l2.31 4.679a2.123 2.123 0 0 0 1.595 1.16l5.166.756a.53.53 0 0 1 .294.904l-3.736 3.638a2.123 2.123 0 0 0-.611 1.878l.882 5.14a.53.53 0 0 1-.771.56l-4.618-2.428a2.122 2.122 0 0 0-1.973 0L6.396 21.01a.53.53 0 0 1-.77-.56l.881-5.139a2.122 2.122 0 0 0-.611-1.879L2.16 9.795a.53.53 0 0 1 .294-.906l5.165-.755a2.122 2.122 0 0 0 1.597-1.16z"></path>
+                                    </svg>
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-star w-4 h-4 text-accent fill-current">
+                                        <path d="M11.525 2.295a.53.53 0 0 1 .95 0l2.31 4.679a2.123 2.123 0 0 0 1.595 1.16l5.166.756a.53.53 0 0 1 .294.904l-3.736 3.638a2.123 2.123 0 0 0-.611 1.878l.882 5.14a.53.53 0 0 1-.771.56l-4.618-2.428a2.122 2.122 0 0 0-1.973 0L6.396 21.01a.53.53 0 0 1-.77-.56l.881-5.139a2.122 2.122 0 0 0-.611-1.879L2.16 9.795a.53.53 0 0 1 .294-.906l5.165-.755a2.122 2.122 0 0 0 1.597-1.16z"></path>
+                                    </svg>
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-star w-4 h-4 text-accent fill-current">
+                                        <path d="M11.525 2.295a.53.53 0 0 1 .95 0l2.31 4.679a2.123 2.123 0 0 0 1.595 1.16l5.166.756a.53.53 0 0 1 .294.904l-3.736 3.638a2.123 2.123 0 0 0-.611 1.878l.882 5.14a.53.53 0 0 1-.771.56l-4.618-2.428a2.122 2.122 0 0 0-1.973 0L6.396 21.01a.53.53 0 0 1-.77-.56l.881-5.139a2.122 2.122 0 0 0-.611-1.879L2.16 9.795a.53.53 0 0 1 .294-.906l5.165-.755a2.122 2.122 0 0 0 1.597-1.16z"></path>
+                                    </svg>
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-star w-4 h-4 text-accent fill-current">
+                                        <path d="M11.525 2.295a.53.53 0 0 1 .95 0l2.31 4.679a2.123 2.123 0 0 0 1.595 1.16l5.166.756a.53.53 0 0 1 .294.904l-3.736 3.638a2.123 2.123 0 0 0-.611 1.878l.882 5.14a.53.53 0 0 1-.771.56l-4.618-2.428a2.122 2.122 0 0 0-1.973 0L6.396 21.01a.53.53 0 0 1-.77-.56l.881-5.139a2.122 2.122 0 0 0-.611-1.879L2.16 9.795a.53.53 0 0 1 .294-.906l5.165-.755a2.122 2.122 0 0 0 1.597-1.16z"></path>
+                                    </svg>
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-star w-4 h-4 text-accent fill-current">
+                                        <path d="M11.525 2.295a.53.53 0 0 1 .95 0l2.31 4.679a2.123 2.123 0 0 0 1.595 1.16l5.166.756a.53.53 0 0 1 .294.904l-3.736 3.638a2.123 2.123 0 0 0-.611 1.878l.882 5.14a.53.53 0 0 1-.771.56l-4.618-2.428a2.122 2.122 0 0 0-1.973 0L6.396 21.01a.53.53 0 0 1-.77-.56l.881-5.139a2.122 2.122 0 0 0-.611-1.879L2.16 9.795a.53.53 0 0 1 .294-.906l5.165-.755a2.122 2.122 0 0 0 1.597-1.16z"></path>
+                                    </svg>
+                                </div>
+                                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-quote w-8 h-8 text-accent/20 mb-4">
+                                    <path d="M16 3a2 2 0 0 0-2 2v6a2 2 0 0 0 2 2 1 1 0 0 1 1 1v1a2 2 0 0 1-2 2 1 1 0 0 0-1 1v2a1 1 0 0 0 1 1 6 6 0 0 0 6-6V5a2 2 0 0 0-2-2z"></path>
+                                    <path d="M5 3a2 2 0 0 0-2 2v6a2 2 0 0 0 2 2 1 1 0 0 1 1 1v1a2 2 0 0 1-2 2 1 1 0 0 0-1 1v2a1 1 0 0 0 1 1 6 6 0 0 0 6-6V5a2 2 0 0 0-2-2z"></path>
+                                </svg>
+                                <p class="text-muted-foreground mb-4 leading-relaxed">"Outstanding service and market insights. They helped me make informed investment decisions."</p>
+                                <div>
+                                    <p class="font-semibold text-foreground">Michael Chen</p>
+                                    <p class="text-sm text-muted-foreground">Property Investor</p>
+                    </div>
+                </div>
+                            <div class="rounded-lg bg-card text-card-foreground shadow-sm p-6 shadow-soft hover:shadow-medium transition-all duration-300 animate-fade-in border-0">
+                    <div class="flex items-center mb-4">
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-star w-4 h-4 text-accent fill-current">
+                                        <path d="M11.525 2.295a.53.53 0 0 1 .95 0l2.31 4.679a2.123 2.123 0 0 0 1.595 1.16l5.166.756a.53.53 0 0 1 .294.904l-3.736 3.638a2.123 2.123 0 0 0-.611 1.878l.882 5.14a.53.53 0 0 1-.771.56l-4.618-2.428a2.122 2.122 0 0 0-1.973 0L6.396 21.01a.53.53 0 0 1-.77-.56l.881-5.139a2.122 2.122 0 0 0-.611-1.879L2.16 9.795a.53.53 0 0 1 .294-.906l5.165-.755a2.122 2.122 0 0 0 1.597-1.16z"></path>
+                                    </svg>
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-star w-4 h-4 text-accent fill-current">
+                                        <path d="M11.525 2.295a.53.53 0 0 1 .95 0l2.31 4.679a2.123 2.123 0 0 0 1.595 1.16l5.166.756a.53.53 0 0 1 .294.904l-3.736 3.638a2.123 2.123 0 0 0-.611 1.878l.882 5.14a.53.53 0 0 1-.771.56l-4.618-2.428a2.122 2.122 0 0 0-1.973 0L6.396 21.01a.53.53 0 0 1-.77-.56l.881-5.139a2.122 2.122 0 0 0-.611-1.879L2.16 9.795a.53.53 0 0 1 .294-.906l5.165-.755a2.122 2.122 0 0 0 1.597-1.16z"></path>
+                                    </svg>
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-star w-4 h-4 text-accent fill-current">
+                                        <path d="M11.525 2.295a.53.53 0 0 1 .95 0l2.31 4.679a2.123 2.123 0 0 0 1.595 1.16l5.166.756a.53.53 0 0 1 .294.904l-3.736 3.638a2.123 2.123 0 0 0-.611 1.878l.882 5.14a.53.53 0 0 1-.771.56l-4.618-2.428a2.122 2.122 0 0 0-1.973 0L6.396 21.01a.53.53 0 0 1-.77-.56l.881-5.139a2.122 2.122 0 0 0-.611-1.879L2.16 9.795a.53.53 0 0 1 .294-.906l5.165-.755a2.122 2.122 0 0 0 1.597-1.16z"></path>
+                                    </svg>
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-star w-4 h-4 text-accent fill-current">
+                                        <path d="M11.525 2.295a.53.53 0 0 1 .95 0l2.31 4.679a2.123 2.123 0 0 0 1.595 1.16l5.166.756a.53.53 0 0 1 .294.904l-3.736 3.638a2.123 2.123 0 0 0-.611 1.878l.882 5.14a.53.53 0 0 1-.771.56l-4.618-2.428a2.122 2.122 0 0 0-1.973 0L6.396 21.01a.53.53 0 0 1-.77-.56l.881-5.139a2.122 2.122 0 0 0-.611-1.879L2.16 9.795a.53.53 0 0 1 .294-.906l5.165-.755a2.122 2.122 0 0 0 1.597-1.16z"></path>
+                                    </svg>
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-star w-4 h-4 text-accent fill-current">
+                                        <path d="M11.525 2.295a.53.53 0 0 1 .95 0l2.31 4.679a2.123 2.123 0 0 0 1.595 1.16l5.166.756a.53.53 0 0 1 .294.904l-3.736 3.638a2.123 2.123 0 0 0-.611 1.878l.882 5.14a.53.53 0 0 1-.771.56l-4.618-2.428a2.122 2.122 0 0 0-1.973 0L6.396 21.01a.53.53 0 0 1-.77-.56l.881-5.139a2.122 2.122 0 0 0-.611-1.879L2.16 9.795a.53.53 0 0 1 .294-.906l5.165-.755a2.122 2.122 0 0 0 1.597-1.16z"></path>
+                            </svg>
+                        </div>
+                                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-quote w-8 h-8 text-accent/20 mb-4">
+                                    <path d="M16 3a2 2 0 0 0-2 2v6a2 2 0 0 0 2 2 1 1 0 0 1 1 1v1a2 2 0 0 1-2 2 1 1 0 0 0-1 1v2a1 1 0 0 0 1 1 6 6 0 0 0 6-6V5a2 2 0 0 0-2-2z"></path>
+                                    <path d="M5 3a2 2 0 0 0-2 2v6a2 2 0 0 0 2 2 1 1 0 0 1 1 1v1a2 2 0 0 1-2 2 1 1 0 0 0-1 1v2a1 1 0 0 0 1 1 6 6 0 0 0 6-6V5a2 2 0 0 0-2-2z"></path>
+                                </svg>
+                                <p class="text-muted-foreground mb-4 leading-relaxed">"The team guided me through every step of selling my home. Couldn't be happier with the results!"</p>
+                        <div>
+                                    <p class="font-semibold text-foreground">Emily Davis</p>
+                                    <p class="text-sm text-muted-foreground">First-time Seller</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+                <section class="py-16 bg-background">
+                    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+                        <div class="text-center mb-12">
+                            <div class="inline-flex items-center rounded-full border px-2.5 py-0.5 text-xs font-semibold transition-colors focus:outline-none focus:ring-2 focus:ring-ring focus:ring-offset-2 hover:bg-primary/80 mb-4 bg-primary/10 text-primary border-primary/20">Recent Success Stories</div>
+                            <h2 class="text-3xl md:text-4xl font-bold text-foreground mb-4">Recently Sold and Leased</h2>
+                            <p class="text-muted-foreground text-lg max-w-2xl mx-auto">Take a look at some of our recent successful transactions. Your dream property could be next!</p>
+                        </div>
+                        <div class="grid md:grid-cols-2 lg:grid-cols-4 gap-6">
+                            {% for property in recent_properties %}
+                            <div class="rounded-lg border bg-card text-card-foreground shadow-sm group overflow-hidden shadow-soft hover:shadow-medium transition-all duration-300 animate-fade-in">
+                                <div class="relative overflow-hidden">
+                                    {% if property.get_main_image_url %}
+                                        <img src="{{ property.get_main_image_url }}" alt="{{ property.title }}" class="w-full h-48 object-cover group-hover:scale-105 transition-transform duration-300">
+                                    {% else %}
+                                        <div class="w-full h-48 bg-muted flex items-center justify-center">
+                                            <svg xmlns="http://www.w3.org/2000/svg" width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-home h-12 w-12 text-muted-foreground">
+                                                <path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"></path>
+                                                <polyline points="9,22 9,12 15,12 15,22"></polyline>
+                                            </svg>
+                                        </div>
+                                    {% endif %}
+                                    <div class="absolute top-4 left-4 flex gap-2">
+                                        <div class="inline-flex items-center rounded-full border px-2.5 py-0.5 text-xs font-semibold transition-colors focus:outline-none focus:ring-2 focus:ring-ring focus:ring-offset-2 border-transparent hover:bg-primary/80 bg-primary text-primary-foreground">{{ property.get_property_type_display }}</div>
+                                        <div class="inline-flex items-center rounded-full border px-2.5 py-0.5 text-xs font-semibold transition-colors focus:outline-none focus:ring-2 focus:ring-ring focus:ring-offset-2 border-transparent hover:bg-destructive/80 bg-accent text-accent-foreground">Available</div>
+                                    </div>
+                                    <button onclick="toggleFavorite('{{ property.id }}')" class="inline-flex items-center justify-center gap-2 whitespace-nowrap text-sm font-medium ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 [&_svg]:pointer-events-none [&_svg]:size-4 [&_svg]:shrink-0 hover:text-accent-foreground h-9 rounded-md px-3 absolute top-4 right-4 bg-background/80 hover:bg-background text-primary favorite-btn" data-property-id="{{ property.id }}">
+                                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-heart h-4 w-4">
+                                            <path d="M19 14c1.49-1.46 3-3.21 3-5.5A5.5 5.5 0 0 0 16.5 3c-1.76 0-3 .5-4.5 2-1.5-1.5-2.74-2-4.5-2A5.5 5.5 0 0 0 2 8.5c0 2.3 1.5 4.05 3 5.5l7 7Z"></path>
+                                        </svg>
+                                    </button>
+                                </div>
+                                <div class="p-6 space-y-4">
+                                    <div>
+                                        <h3 class="text-lg font-semibold text-foreground mb-2 line-clamp-1">{{ property.title }}</h3>
+                                        <div class="flex items-center text-muted-foreground mb-3">
+                                            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-map-pin h-4 w-4 mr-1">
+                                                <path d="M20 10c0 4.993-5.539 10.193-7.399 11.799a1 1 0 0 1-1.202 0C9.539 20.193 4 14.993 4 10a8 8 0 0 1 16 0"></path>
+                                                <circle cx="12" cy="10" r="3"></circle>
+                                            </svg>
+                                            <span class="text-sm">{{ property.location }}</span>
+                                        </div>
+                                    </div>
+                                    <div class="flex items-center justify-between text-sm text-muted-foreground">
+                                        <div class="flex items-center space-x-4">
+                                            {% if property.bedrooms %}
+                                            <div class="flex items-center">
+                                                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-bed h-4 w-4 mr-1">
+                                                    <path d="M2 4v16"></path>
+                                                    <path d="M2 8h18a2 2 0 0 1 2 2v10"></path>
+                                                    <path d="M2 17h20"></path>
+                                                    <path d="M6 8v9"></path>
+                                                </svg>
+                                                <span>{{ property.bedrooms }}</span>
+                                            </div>
+                                            {% endif %}
+                                            {% if property.bathrooms %}
+                                            <div class="flex items-center">
+                                                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-bath h-4 w-4 mr-1">
+                                                    <path d="M10 4 8 6"></path>
+                                                    <path d="M17 19v2"></path>
+                                                    <path d="M2 12h20"></path>
+                                                    <path d="M7 19v2"></path>
+                                                    <path d="M9 5 7.621 3.621A2.121 2.121 0 0 0 4 5v12a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2v-5"></path>
+                                                </svg>
+                                                <span>{{ property.bathrooms }}</span>
+                                            </div>
+                                            {% endif %}
+                                            {% if property.area_sqft %}
+                                            <div class="flex items-center">
+                                                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-square h-4 w-4 mr-1">
+                                                    <rect width="18" height="18" x="3" y="3" rx="2"></rect>
+                                                </svg>
+                                                <span>{{ property.area_sqft|floatformat:0 }}</span>
+                                            </div>
+                                            {% endif %}
+                                        </div>
+                                    </div>
+                                    <div class="flex items-center justify-between pt-4 border-t">
+                                        <div class="text-lg font-bold text-primary flex-shrink-0 min-w-0">
+                                            {% if property.property_type == 'lease' %}
+                                                ${{ property.price|floatformat:0 }}/month
+                                            {% else %}
+                                                ${{ property.price|floatformat:0 }}
+                                            {% endif %}
+                                        </div>
+                                        <a href="{% url 'buy_lease' %}?property_id={{ property.id }}" class="flex-shrink-0 ml-2">
+                                            <button class="inline-flex items-center justify-center gap-2 whitespace-nowrap rounded-md text-sm font-medium ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 [&_svg]:pointer-events-none [&_svg]:size-4 [&_svg]:shrink-0 border bg-background h-10 px-3 py-2 border-primary text-primary hover:bg-primary hover:text-primary-foreground text-xs">View Details</button>
+                                        </a>
+                                    </div>
+                                </div>
+                            </div>
+                            {% empty %}
+                            <div class="col-span-full text-center py-12">
+                                <div class="text-muted-foreground">
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-home h-12 w-12 mx-auto mb-4">
+                                        <path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"></path>
+                                        <polyline points="9,22 9,12 15,12 15,22"></polyline>
+                                    </svg>
+                                    <p class="text-lg font-medium">No recent properties available</p>
+                                    <p class="text-sm">Check back soon for new listings!</p>
+                                </div>
+                            </div>
+                            {% endfor %}
+                        </div>
+                        <div class="text-center mt-12">
+                            <a href="{% url 'buy_lease' %}">
+                                <button class="inline-flex items-center justify-center gap-2 whitespace-nowrap text-sm font-medium ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 [&_svg]:pointer-events-none [&_svg]:size-4 [&_svg]:shrink-0 h-11 rounded-md px-8 bg-primary hover:bg-primary-dark text-primary-foreground">View All Properties
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-arrow-right w-4 h-4 ml-2">
+                                        <path d="M5 12h14"></path>
+                                        <path d="m12 5 7 7-7 7"></path>
+                                    </svg>
+                                </button>
+                            </a>
+                        </div>
+                    </div>
+                </section>
+
+                <section class="py-16 bg-primary text-primary-foreground">
+                    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+                        <div class="text-center mb-12">
+                            <div class="inline-flex items-center rounded-full border px-2.5 py-0.5 text-xs font-semibold transition-colors focus:outline-none focus:ring-2 focus:ring-ring focus:ring-offset-2 border-transparent hover:bg-primary/80 mb-4 bg-accent text-accent-foreground">Our Achievements</div>
+                            <h2 class="text-3xl md:text-4xl font-bold mb-4">Numbers That Speak for Themselves</h2>
+                            <p class="text-primary-foreground/80 text-lg max-w-2xl mx-auto">Our track record of success demonstrates our commitment to excellence and client satisfaction.</p>
+                </div>
+                        <div class="grid grid-cols-2 lg:grid-cols-4 gap-8">
+                            <div class="text-center animate-fade-in">
+                                <div class="bg-primary/10 p-6 rounded-xl mb-4 shadow-lg border border-accent/30">
+                                    <div class="text-3xl font-bold text-accent">500+</div>
+                                    <div class="text-sm font-medium text-primary-foreground">Properties Sold</div>
+                    </div>
+                </div>
+                            <div class="text-center animate-fade-in">
+                                <div class="bg-primary/10 p-6 rounded-xl mb-4 shadow-lg border border-accent/30">
+                                    <div class="text-3xl font-bold text-accent">$2.5B+</div>
+                                    <div class="text-sm font-medium text-primary-foreground">Total Sales Volume</div>
+                    </div>
+                </div>
+                            <div class="text-center animate-fade-in">
+                                <div class="bg-primary/10 p-6 rounded-xl mb-4 shadow-lg border border-accent/30">
+                                    <div class="text-3xl font-bold text-accent">15+</div>
+                                    <div class="text-sm font-medium text-primary-foreground">Years Experience</div>
+                    </div>
+                </div>
+                            <div class="text-center animate-fade-in">
+                                <div class="bg-primary/10 p-6 rounded-xl mb-4 shadow-lg border border-accent/30">
+                                    <div class="text-3xl font-bold text-accent">98%</div>
+                                    <div class="text-sm font-medium text-primary-foreground">Client Satisfaction</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+                <footer class="bg-background border-t">
+                    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
+                        <div class="grid md:grid-cols-4 gap-8">
+                            <div class="space-y-4">
+                                <div class="flex items-center space-x-2">
+                                    <div class="w-8 h-8 bg-accent-gradient rounded-lg flex items-center justify-center">
+                                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-building h-5 w-5 text-primary">
+                                            <rect width="16" height="20" x="4" y="2" rx="2" ry="2"></rect>
+                                            <path d="M9 22v-4h6v4"></path>
+                                            <path d="M8 6h.01"></path>
+                                            <path d="M16 6h.01"></path>
+                                            <path d="M12 6h.01"></path>
+                                            <path d="M12 10h.01"></path>
+                                            <path d="M12 14h.01"></path>
+                                            <path d="M16 10h.01"></path>
+                                            <path d="M16 14h.01"></path>
+                                            <path d="M8 10h.01"></path>
+                                            <path d="M8 14h.01"></path>
+                                        </svg>
+                </div>
+                                    <span class="text-xl font-bold text-primary">{{ brand_name }}</span>
+                </div>
+                                <p class="text-muted-foreground text-sm leading-relaxed">Your trusted partner in real estate. We combine traditional expertise with modern technology to deliver exceptional results.</p>
+                                <div class="flex space-x-4">
+                                    <a href="#" class="text-muted-foreground hover:text-primary transition-colors">
+                                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-facebook h-5 w-5">
+                                            <path d="M18 2h-3a5 5 0 0 0-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 0 1 1-1h3z"></path>
+                                        </svg>
+                                    </a>
+                                    <a href="#" class="text-muted-foreground hover:text-primary transition-colors">
+                                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-twitter h-5 w-5">
+                                            <path d="M22 4s-.7 2.1-2 3.4c1.6 10-9.4 17.3-18 11.6 2.2.1 4.4-.6 6-2C3 15.5.5 9.6 3 5c2.2 2.6 5.6 4.1 9 4-.9-4.2 4-6.6 7-3.8 1.1 0 3-1.2 3-1.2z"></path>
+                                        </svg>
+                                    </a>
+                                    <a href="#" class="text-muted-foreground hover:text-primary transition-colors">
+                                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-linkedin h-5 w-5">
+                                            <path d="M16 8a6 6 0 0 1 6 6v7h-4v-7a2 2 0 0 0-2-2 2 2 0 0 0-2 2v7h-4v-7a6 6 0 0 1 6-6z"></path>
+                                            <rect width="4" height="12" x="2" y="9"></rect>
+                                            <circle cx="4" cy="4" r="2"></circle>
+                                        </svg>
+                                    </a>
+                                    <a href="#" class="text-muted-foreground hover:text-primary transition-colors">
+                                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-instagram h-5 w-5">
+                                            <rect width="20" height="20" x="2" y="2" rx="5" ry="5"></rect>
+                                            <path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"></path>
+                                            <line x1="17.5" x2="17.51" y1="6.5" y2="6.5"></line>
+                                        </svg>
+                </a>
+            </div>
+        </div>
+                            <div class="space-y-4">
+                                <h3 class="font-semibold text-foreground">Services</h3>
+                                <ul class="space-y-2 text-sm">
+                                    <li><a href="{% url 'buy_lease' %}" class="text-muted-foreground hover:text-primary transition-colors">Buy Properties</a></li>
+                                    <li><a href="{% url 'buy_lease' %}" class="text-muted-foreground hover:text-primary transition-colors">Lease Properties</a></li>
+                                    <li><a href="{% url 'selling' %}" class="text-muted-foreground hover:text-primary transition-colors">Sell Properties</a></li>
+                                    <li><a href="{% url 'selling' %}" class="text-muted-foreground hover:text-primary transition-colors">Property Evaluation</a></li>
+                                    <li><a href="{% url 'mortgage_calculator' %}" class="text-muted-foreground hover:text-primary transition-colors">Mortgage Calculator</a></li>
+                                </ul>
+                            </div>
+                            <div class="space-y-4">
+                                <h3 class="font-semibold text-foreground">Company</h3>
+                                <ul class="space-y-2 text-sm">
+                                    <li><a href="#" class="text-muted-foreground hover:text-primary transition-colors">About Us</a></li>
+                                    <li><a href="#" class="text-muted-foreground hover:text-primary transition-colors">Our Team</a></li>
+                                    <li><a href="#" class="text-muted-foreground hover:text-primary transition-colors">Careers</a></li>
+                                    <li><a href="#" class="text-muted-foreground hover:text-primary transition-colors">Contact</a></li>
+                                    <li><a href="#" class="text-muted-foreground hover:text-primary transition-colors">Privacy Policy</a></li>
+                                </ul>
+                            </div>
+                            <div class="space-y-4">
+                                <h3 class="font-semibold text-foreground">Contact Info</h3>
+                                <div class="space-y-2 text-sm text-muted-foreground">
+                                    <div class="flex items-center space-x-2">
+                                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-phone h-4 w-4">
+                                            <path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"></path>
+                                        </svg>
+                                        <span>+1 (555) 123-4567</span>
+                                    </div>
+                                    <div class="flex items-center space-x-2">
+                                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-mail h-4 w-4">
+                                            <rect width="20" height="16" x="2" y="4" rx="2"></rect>
+                                            <path d="m22 7-10 5L2 7"></path>
+                                        </svg>
+                                        <span>info@{{ brand_name|lower }}.com</span>
+                                    </div>
+                                    <div class="flex items-center space-x-2">
+                                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-map-pin h-4 w-4">
+                                            <path d="M20 10c0 4.993-5.539 10.193-7.399 11.799a1 1 0 0 1-1.202 0C9.539 20.193 4 14.993 4 10a8 8 0 0 1 16 0"></path>
+                                            <circle cx="12" cy="10" r="3"></circle>
+                                        </svg>
+                                        <span>123 Real Estate Ave, City, State 12345</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="border-t mt-8 pt-8 flex flex-col md:flex-row justify-between items-center">
+                            <p class="text-sm text-muted-foreground">© 2024 {{ brand_name }}. All rights reserved.</p>
+                            <div class="flex space-x-6 mt-4 md:mt-0">
+                                <a href="#" class="text-sm text-muted-foreground hover:text-primary transition-colors">Terms of Service</a>
+                                <a href="#" class="text-sm text-muted-foreground hover:text-primary transition-colors">Privacy Policy</a>
+                                <a href="#" class="text-sm text-muted-foreground hover:text-primary transition-colors">Cookie Policy</a>
+                            </div>
+                        </div>
+                    </div>
+                </footer>
+
+                <!-- Custom JavaScript -->
+                <script src="{% static 'js/django-main.js' %}"></script>
+                
+                <script>
+                function toggleFavorite(propertyId) {
+                    // Get the favorite button for this property
+                    const favoriteBtn = document.querySelector(`[data-property-id="${propertyId}"]`);
+                    const heartIcon = favoriteBtn.querySelector('svg path');
+                    
+                    // Toggle the favorite state
+                    const isFavorited = favoriteBtn.classList.contains('favorited');
+                    
+                    if (isFavorited) {
+                        // Remove from favorites
+                        favoriteBtn.classList.remove('favorited');
+                        heartIcon.style.fill = 'none';
+                        heartIcon.style.stroke = 'currentColor';
+                        favoriteBtn.style.color = 'hsl(var(--primary))';
+                    } else {
+                        // Add to favorites
+                        favoriteBtn.classList.add('favorited');
+                        heartIcon.style.fill = 'currentColor';
+                        heartIcon.style.stroke = 'currentColor';
+                        favoriteBtn.style.color = 'hsl(var(--destructive))';
+                    }
+                    
+                    // Store in localStorage for persistence
+                    const favorites = JSON.parse(localStorage.getItem('favoriteProperties') || '[]');
+                    if (isFavorited) {
+                        const index = favorites.indexOf(propertyId);
+                        if (index > -1) {
+                            favorites.splice(index, 1);
+                        }
+                    } else {
+                        if (!favorites.includes(propertyId)) {
+                            favorites.push(propertyId);
+                        }
+                    }
+                    localStorage.setItem('favoriteProperties', JSON.stringify(favorites));
+                    
+                    // Show feedback
+                    const message = isFavorited ? 'Removed from favorites' : 'Added to favorites';
+                    showNotification(message);
+                }
+                
+                function showNotification(message) {
+                    // Create a simple notification
+                    const notification = document.createElement('div');
+                    notification.textContent = message;
+                    notification.style.cssText = `
+                        position: fixed;
+                        top: 20px;
+                        right: 20px;
+                        background: hsl(var(--primary));
+                        color: hsl(var(--primary-foreground));
+                        padding: 12px 20px;
+                        border-radius: 8px;
+                        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+                        z-index: 1000;
+                        font-size: 14px;
+                        font-weight: 500;
+                        opacity: 0;
+                        transform: translateX(100%);
+                        transition: all 0.3s ease;
+                    `;
+                    
+                    document.body.appendChild(notification);
+                    
+                    // Animate in
+                    setTimeout(() => {
+                        notification.style.opacity = '1';
+                        notification.style.transform = 'translateX(0)';
+                    }, 10);
+                    
+                    // Remove after 3 seconds
+                    setTimeout(() => {
+                        notification.style.opacity = '0';
+                        notification.style.transform = 'translateX(100%)';
+                        setTimeout(() => {
+                            document.body.removeChild(notification);
+                        }, 300);
+                    }, 3000);
+                }
+                
+                // Load favorite states on page load
+                document.addEventListener('DOMContentLoaded', function() {
+                    const favorites = JSON.parse(localStorage.getItem('favoriteProperties') || '[]');
+                    favorites.forEach(propertyId => {
+                        const favoriteBtn = document.querySelector(`[data-property-id="${propertyId}"]`);
+                        if (favoriteBtn) {
+                            favoriteBtn.classList.add('favorited');
+                            const heartIcon = favoriteBtn.querySelector('svg path');
+                            heartIcon.style.fill = 'currentColor';
+                            heartIcon.style.stroke = 'currentColor';
+                            favoriteBtn.style.color = 'hsl(var(--destructive))';
+                        }
+                    });
+                });
+                </script>
+
+</body>
+</html>
