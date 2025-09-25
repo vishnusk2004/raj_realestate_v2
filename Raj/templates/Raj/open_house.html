@@ -279,7 +279,7 @@
                                 <p class="text-sm text-blue-700" style="font-size: 0.875rem; color: #1d4ed8; margin: 0;">
                                     <strong>Note:</strong> If you're interested in this specific property, just fill in your contact details. The property type and budget fields below are only if you're looking for something different.
                                 </p>
-                            </div>
+                        </div>
 
                             <form id="bookingForm" method="POST" action="{% url 'open_house' %}">
                                 {% csrf_token %}
@@ -410,9 +410,9 @@
                     form.submit();
                 }, 2000);
             });
-        }
-    });
-    </script>
+            }
+        });
+</script>
 
 </body>
 </html>
