@@ -178,8 +178,34 @@
 </section>
 
 {% include 'Raj/footer.html' %}
+{% include 'Raj/success_popup.html' %}
 
     <!-- Custom JavaScript -->
-    <script src="{% static 'js/django-main.js' %}"></script>
+    <script src="{% static 'js/django-main-fixed.js' %}"></script>
+    
+    <script>
+    // Handle form submission with success popup
+    document.addEventListener('DOMContentLoaded', function() {
+        const form = document.querySelector('form[action="{% url 'mortgage_inquiry' %}"]');
+        if (form) {
+            form.addEventListener('submit', function(e) {
+                e.preventDefault();
+                
+                // Get form data
+                const formData = new FormData(form);
+                const name = formData.get('name');
+                
+                // Show success popup
+                const message = `Thank you for your mortgage inquiry, ${name}! Our team will analyze your situation and provide you with personalized mortgage information within 24 hours.`;
+                showSuccessPopup(message);
+                
+                // Submit form after showing popup
+                setTimeout(() => {
+                    form.submit();
+                }, 2000);
+            });
+        }
+    });
+    </script>
 </body>
 </html>

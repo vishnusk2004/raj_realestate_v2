@@ -105,14 +105,14 @@ class PropertyListingAdmin(admin.ModelAdmin):
 @admin.register(BlogPost)
 class BlogPostAdmin(admin.ModelAdmin):
     form = BlogPostForm
-    list_display = ('title', 'author', 'featured', 'published', 'created_at')
-    list_filter = ('featured', 'published', 'created_at', 'author')
-    search_fields = ('title', 'content', 'author')
+    list_display = ('title', 'author', 'category', 'featured', 'published', 'created_at')
+    list_filter = ('category', 'featured', 'published', 'created_at', 'author')
+    search_fields = ('title', 'content', 'author', 'category')
     prepopulated_fields = {'slug': ('title',)}
     readonly_fields = ('created_at', 'updated_at', 'content_preview')
     fieldsets = (
         ('Basic Information', {
-            'fields': ('title', 'slug', 'author', 'excerpt')
+            'fields': ('title', 'slug', 'author', 'category', 'excerpt')
         }),
         ('Content', {
             'fields': ('content', 'image_url', 'image_file', 'image_base64'),

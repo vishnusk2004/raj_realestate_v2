@@ -1,5 +1,6 @@
 import requests
 import json
+import time
 from datetime import datetime
 from django.conf import settings
 import logging
@@ -55,27 +56,44 @@ def send_to_crm(form_type, lead_data, request=None):
             "system_info": get_system_info(request) if request else {}
         }
         
-        # Send to CRM
-        response = requests.post(
-            FORM_WEBHOOK_URL,
-            json=payload,
-            headers={
-                'Content-Type': 'application/json',
-                'User-Agent': 'Henry-Oak-Realty-Webhook/1.0'
-            },
-            timeout=10  # 10 second timeout
-        )
+        # Send to CRM with retry logic
+        max_retries = 3
+        for attempt in range(max_retries):
+            try:
+                response = requests.post(
+                    FORM_WEBHOOK_URL,
+                    json=payload,
+                    headers={
+                        'Content-Type': 'application/json',
+                        'User-Agent': 'Henry-Oak-Realty-Webhook/1.0'
+                    },
+                    timeout=10  # 10 second timeout
+                )
+                
+                if response.status_code == 200:
+                    logger.info(f"Successfully sent {form_type} data to CRM")
+                    return True
+                else:
+                    logger.warning(f"CRM webhook attempt {attempt + 1} failed with status {response.status_code}: {response.text}")
+                    if attempt < max_retries - 1:
+                        time.sleep(2 ** attempt)  # Exponential backoff
+                        continue
+                    else:
+                        logger.error(f"All {max_retries} attempts failed for {form_type}")
+                        return False
+                        
+            except requests.exceptions.RequestException as e:
+                logger.warning(f"CRM webhook attempt {attempt + 1} failed with exception: {str(e)}")
+                if attempt < max_retries - 1:
+                    time.sleep(2 ** attempt)  # Exponential backoff
+                    continue
+                else:
+                    logger.error(f"All {max_retries} attempts failed for {form_type}: {str(e)}")
+                    return False
         
-        if response.status_code == 200:
-            logger.info(f"Successfully sent {form_type} data to CRM")
-            return True
-        else:
-            logger.error(f"CRM webhook failed with status {response.status_code}: {response.text}")
-            return False
-            
-    except requests.exceptions.RequestException as e:
-        logger.error(f"Error sending data to CRM: {str(e)}")
+        # If we get here, all retries failed
         return False
+        
     except Exception as e:
         logger.error(f"Unexpected error in webhook: {str(e)}")
         return False
@@ -257,21 +275,41 @@ def send_link_tracking_to_crm(tracking_record, request=None):
             "system_info": get_system_info(request) if request else {}
         }
         
-        # Send to CRM
-        response = requests.post(
-            LINK_TRACKING_WEBHOOK_URL,
-            json=payload,
-            headers={'Content-Type': 'application/json'},
-            timeout=10
-        )
+        # Send to CRM with retry logic
+        max_retries = 3
+        for attempt in range(max_retries):
+            try:
+                response = requests.post(
+                    LINK_TRACKING_WEBHOOK_URL,
+                    json=payload,
+                    headers={'Content-Type': 'application/json'},
+                    timeout=10
+                )
+                
+                if response.status_code == 200:
+                    logger.info(f"Link tracking data sent to CRM successfully for customer {tracking_record.customer_code}")
+                    return True
+                else:
+                    logger.warning(f"Link tracking webhook attempt {attempt + 1} failed with status {response.status_code}: {response.text}")
+                    if attempt < max_retries - 1:
+                        time.sleep(2 ** attempt)  # Exponential backoff
+                        continue
+                    else:
+                        logger.error(f"All {max_retries} attempts failed for link tracking")
+                        return False
+                        
+            except requests.exceptions.RequestException as e:
+                logger.warning(f"Link tracking webhook attempt {attempt + 1} failed with exception: {str(e)}")
+                if attempt < max_retries - 1:
+                    time.sleep(2 ** attempt)  # Exponential backoff
+                    continue
+                else:
+                    logger.error(f"All {max_retries} attempts failed for link tracking: {str(e)}")
+                    return False
         
-        if response.status_code == 200:
-            logger.info(f"Link tracking data sent to CRM successfully for customer {tracking_record.customer_code}")
-            return True
-        else:
-            logger.error(f"CRM webhook returned status {response.status_code}: {response.text}")
-            return False
+        # If we get here, all retries failed
+        return False
             
     except Exception as e:
-        logger.error(f"Failed to send link tracking data to CRM: {str(e)}")
+        logger.error(f"Unexpected error in link tracking webhook: {str(e)}")
         return False

@@ -1,0 +1,70 @@
+<!-- Success Popup Modal -->
+<style>
+#successPopup {
+    background-color: rgba(0, 0, 0, 0.5) !important;
+    z-index: 9999 !important;
+}
+#successPopup .bg-white {
+    background-color: white !important;
+    border: 2px solid #e5e7eb !important;
+    box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.25) !important;
+}
+#successPopup h3 {
+    color: #111827 !important;
+    font-weight: 600 !important;
+}
+#successPopup p {
+    color: #4b5563 !important;
+    line-height: 1.5 !important;
+}
+#successPopup button {
+    background-color: #059669 !important;
+    color: white !important;
+    border: none !important;
+}
+</style>
+<div id="successPopup" class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 hidden" style="z-index: 9999 !important;">
+    <div class="bg-white rounded-lg p-8 max-w-md mx-4 shadow-xl border border-gray-200" style="background-color: white !important;">
+        <div class="text-center">
+            <div class="mx-auto flex items-center justify-center h-12 w-12 rounded-full bg-green-100 mb-4">
+                <svg class="h-6 w-6 text-green-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path>
+                </svg>
+            </div>
+            <h3 class="text-lg font-medium text-gray-900 mb-2" style="color: #111827 !important;">Success!</h3>
+            <p class="text-sm text-gray-600 mb-6" id="successMessage" style="color: #4b5563 !important;">
+                Thank you for your inquiry! Our team will contact you within 24 hours.
+            </p>
+            <button onclick="closeSuccessPopup()" class="w-full bg-green-600 text-white px-4 py-2 rounded-md hover:bg-green-700 transition-colors" style="background-color: #059669 !important; color: white !important;">
+                Close
+            </button>
+        </div>
+    </div>
+</div>
+
+<script>
+function showSuccessPopup(message) {
+    const popup = document.getElementById('successPopup');
+    const messageElement = document.getElementById('successMessage');
+    
+    if (message) {
+        messageElement.textContent = message;
+    }
+    
+    popup.classList.remove('hidden');
+    document.body.style.overflow = 'hidden';
+}
+
+function closeSuccessPopup() {
+    const popup = document.getElementById('successPopup');
+    popup.classList.add('hidden');
+    document.body.style.overflow = 'auto';
+}
+
+// Close popup when clicking outside
+document.getElementById('successPopup').addEventListener('click', function(e) {
+    if (e.target === this) {
+        closeSuccessPopup();
+    }
+});
+</script>
