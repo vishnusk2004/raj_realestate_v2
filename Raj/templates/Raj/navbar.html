@@ -1,5 +1,68 @@
 {% load static %}
 
+<style>
+/* Mobile menu animations */
+#mobile-menu {
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    transform-origin: top;
+}
+
+#mobile-menu.hidden {
+    opacity: 0;
+    transform: translateY(-10px) scale(0.95);
+    pointer-events: none;
+}
+
+#mobile-menu:not(.hidden) {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+    pointer-events: auto;
+}
+
+/* Mobile menu links animation */
+#mobile-menu a {
+    transform: translateX(-10px);
+    opacity: 0;
+    transition: all 0.2s ease-out;
+}
+
+#mobile-menu:not(.hidden) a {
+    transform: translateX(0);
+    opacity: 1;
+}
+
+#mobile-menu:not(.hidden) a:nth-child(1) { transition-delay: 0.1s; }
+#mobile-menu:not(.hidden) a:nth-child(2) { transition-delay: 0.15s; }
+#mobile-menu:not(.hidden) a:nth-child(3) { transition-delay: 0.2s; }
+#mobile-menu:not(.hidden) a:nth-child(4) { transition-delay: 0.25s; }
+#mobile-menu:not(.hidden) a:nth-child(5) { transition-delay: 0.3s; }
+#mobile-menu:not(.hidden) a:nth-child(6) { transition-delay: 0.35s; }
+
+/* Hamburger icon animation */
+#mobile-menu-toggle svg {
+    transition: transform 0.3s ease-in-out;
+}
+
+/* Mobile menu backdrop */
+#mobile-menu::before {
+    content: '';
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: rgba(0, 0, 0, 0.1);
+    opacity: 0;
+    transition: opacity 0.3s ease;
+    pointer-events: none;
+    z-index: -1;
+}
+
+#mobile-menu:not(.hidden)::before {
+    opacity: 1;
+}
+</style>
+
 <!-- Navbar -->
 <nav class="bg-background/95 backdrop-blur-sm border-b shadow-soft sticky top-0 z-50">
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
@@ -93,35 +156,106 @@
             </div>
         </div>
     </div>
-    <div id="mobile-menu" class="md:hidden hidden">
+    <div id="mobile-menu" class="md:hidden hidden transform transition-all duration-300 ease-in-out">
         <div class="px-2 pt-2 pb-3 space-y-1 sm:px-3 bg-background border-t border-border">
-            <a href="{% url 'home' %}" class="text-foreground hover:text-primary hover:bg-accent block px-3 py-2 rounded-md text-base font-medium">Home</a>
-            <a href="{% url 'buy_lease' %}" class="text-foreground hover:text-primary hover:bg-accent block px-3 py-2 rounded-md text-base font-medium">Buy / Lease</a>
-            <a href="{% url 'selling' %}" class="text-foreground hover:text-primary hover:bg-accent block px-3 py-2 rounded-md text-base font-medium">Sell & Evaluate</a>
-            <a href="{% url 'blog' %}" class="text-foreground hover:text-primary hover:bg-accent block px-3 py-2 rounded-md text-base font-medium">Blog</a>
-            <a href="{% url 'open_house' %}" class="text-foreground hover:text-primary hover:bg-accent block px-3 py-2 rounded-md text-base font-medium">Open House</a>
-            <a href="{% url 'mortgage_calculator' %}" class="text-foreground hover:text-primary hover:bg-accent block px-3 py-2 rounded-md text-base font-medium">Mortgage Calculator</a>
+            <a href="{% url 'home' %}" class="text-foreground hover:text-primary hover:bg-accent block px-3 py-2 rounded-md text-base font-medium transition-colors duration-200 {% if request.resolver_match.url_name == 'home' %}bg-primary/10 text-primary{% endif %}">Home</a>
+            <a href="{% url 'buy_lease' %}" class="text-foreground hover:text-primary hover:bg-accent block px-3 py-2 rounded-md text-base font-medium transition-colors duration-200 {% if request.resolver_match.url_name == 'buy_lease' %}bg-primary/10 text-primary{% endif %}">Buy / Lease</a>
+            <a href="{% url 'selling' %}" class="text-foreground hover:text-primary hover:bg-accent block px-3 py-2 rounded-md text-base font-medium transition-colors duration-200 {% if request.resolver_match.url_name == 'selling' %}bg-primary/10 text-primary{% endif %}">Sell & Evaluate</a>
+            <a href="{% url 'blog' %}" class="text-foreground hover:text-primary hover:bg-accent block px-3 py-2 rounded-md text-base font-medium transition-colors duration-200 {% if request.resolver_match.url_name == 'blog' %}bg-primary/10 text-primary{% endif %}">Blog</a>
+            <a href="{% url 'open_house' %}" class="text-foreground hover:text-primary hover:bg-accent block px-3 py-2 rounded-md text-base font-medium transition-colors duration-200 {% if request.resolver_match.url_name == 'open_house' %}bg-primary/10 text-primary{% endif %}">Open House</a>
+            <a href="{% url 'mortgage_calculator' %}" class="text-foreground hover:text-primary hover:bg-accent block px-3 py-2 rounded-md text-base font-medium transition-colors duration-200 {% if request.resolver_match.url_name == 'mortgage_calculator' %}bg-primary/10 text-primary{% endif %}">Mortgage Calculator</a>
         </div>
     </div>
 </nav>
 
 <script>
-// Mobile menu toggle functionality
+// Mobile menu toggle functionality with smooth animations
 document.addEventListener('DOMContentLoaded', function() {
     const mobileMenuToggle = document.getElementById('mobile-menu-toggle');
     const mobileMenu = document.getElementById('mobile-menu');
+    const hamburgerIcon = mobileMenuToggle?.querySelector('svg');
     
     if (mobileMenuToggle && mobileMenu) {
-        mobileMenuToggle.addEventListener('click', function() {
-            mobileMenu.classList.toggle('hidden');
+        // Toggle mobile menu with smooth animation
+        mobileMenuToggle.addEventListener('click', function(e) {
+            e.stopPropagation();
+            
+            if (mobileMenu.classList.contains('hidden')) {
+                // Show menu with animation
+                mobileMenu.classList.remove('hidden');
+                mobileMenu.style.transform = 'translateY(-10px)';
+                mobileMenu.style.opacity = '0';
+                
+                // Force reflow to ensure initial state is applied
+                mobileMenu.offsetHeight;
+                
+                // Animate in
+                requestAnimationFrame(() => {
+                    mobileMenu.style.transform = 'translateY(0)';
+                    mobileMenu.style.opacity = '1';
+                });
+                
+                // Rotate hamburger icon
+                if (hamburgerIcon) {
+                    hamburgerIcon.style.transform = 'rotate(90deg)';
+                }
+            } else {
+                // Hide menu with animation
+                mobileMenu.style.transform = 'translateY(-10px)';
+                mobileMenu.style.opacity = '0';
+                
+                setTimeout(() => {
+                    mobileMenu.classList.add('hidden');
+                }, 300);
+                
+                // Reset hamburger icon
+                if (hamburgerIcon) {
+                    hamburgerIcon.style.transform = 'rotate(0deg)';
+                }
+            }
         });
         
         // Close mobile menu when clicking outside
         document.addEventListener('click', function(event) {
             if (!mobileMenuToggle.contains(event.target) && !mobileMenu.contains(event.target)) {
-                mobileMenu.classList.add('hidden');
+                if (!mobileMenu.classList.contains('hidden')) {
+                    mobileMenu.style.transform = 'translateY(-10px)';
+                    mobileMenu.style.opacity = '0';
+                    
+                    setTimeout(() => {
+                        mobileMenu.classList.add('hidden');
+                    }, 300);
+                    
+                    // Reset hamburger icon
+                    if (hamburgerIcon) {
+                        hamburgerIcon.style.transform = 'rotate(0deg)';
+                    }
+                }
             }
         });
+        
+        // Close mobile menu when clicking on a link
+        const mobileMenuLinks = mobileMenu.querySelectorAll('a');
+        mobileMenuLinks.forEach(link => {
+            link.addEventListener('click', function() {
+                mobileMenu.style.transform = 'translateY(-10px)';
+                mobileMenu.style.opacity = '0';
+                
+                setTimeout(() => {
+                    mobileMenu.classList.add('hidden');
+                }, 300);
+                
+                // Reset hamburger icon
+                if (hamburgerIcon) {
+                    hamburgerIcon.style.transform = 'rotate(0deg)';
+                }
+            });
+        });
+        
+        // Add transition styles to hamburger icon
+        if (hamburgerIcon) {
+            hamburgerIcon.style.transition = 'transform 0.3s ease-in-out';
+        }
     }
 });
 </script>

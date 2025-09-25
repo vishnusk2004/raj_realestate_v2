@@ -26,7 +26,7 @@
         <div class="min-h-screen bg-surface-gradient">
             <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
                 <a href="{% url 'blog' %}">
-                    <button class="inline-flex items-center justify-center gap-2 whitespace-nowrap rounded-md text-sm font-medium ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 [&_svg]:pointer-events-none [&_svg]:size-4 [&_svg]:shrink-0 hover:bg-accent h-10 px-4 py-2 mb-6 text-primary hover:text-primary-dark">
+                    <button class="inline-flex items-center justify-center gap-2 whitespace-nowrap rounded-md text-sm font-medium ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 [&_svg]:pointer-events-none [&_svg]:size-4 [&_svg]:shrink-0 hover:bg-accent h-10 px-4 py-2 mb-4 text-primary hover:text-primary-dark">
                         <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-arrow-left w-4 h-4 mr-2">
                             <path d="m12 19-7-7 7-7"></path>
                             <path d="M19 12H5"></path>
@@ -36,12 +36,9 @@
                 </a>
 
     <!-- Article Header -->
-    <section class="py-12 bg-white">
+    <section class="pt-4 pb-8 bg-white">
         <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
             <div class="mb-6">
-                <div class="inline-flex items-center rounded-full bg-blue-100 text-blue-800 px-3 py-1 text-sm font-medium mb-4">
-                    {{ post.category|default:"Real Estate" }}
-        </div>
                 <h1 class="text-3xl md:text-4xl lg:text-5xl font-bold text-gray-900 mb-4 leading-tight">
                     {{ post.title }}
                 </h1>
@@ -79,11 +76,11 @@
                         </svg>
                         Share
                     </button>
-                    <button onclick="saveArticle()" class="inline-flex items-center px-3 py-2 border border-gray-300 rounded-md text-sm font-medium text-gray-700 bg-white hover:bg-gray-50">
+                    <button onclick="saveArticle()" id="saveButton" class="inline-flex items-center px-3 py-2 border border-gray-300 rounded-md text-sm font-medium text-gray-700 bg-white hover:bg-gray-50 transition-all duration-200">
                         <svg class="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 5a2 2 0 012-2h10a2 2 0 012 2v16l-7-3.5L5 21V5z"></path>
                         </svg>
-                        Save
+                        <span id="saveButtonText">Save</span>
                     </button>
                 </div>
             </div>
@@ -219,11 +216,11 @@
             if (isAlreadySaved) {
                 // Remove from saved articles
                 savedArticles = savedArticles.filter(article => article.id !== articleId);
-                alert('Article removed from saved articles');
+                showNotification('Article removed from saved articles', 'info');
             } else {
                 // Add to saved articles
                 savedArticles.push(articleData);
-                alert('Article saved!');
+                showNotification('Article saved to your bookmarks!', 'success');
             }
             
             // Update localStorage
@@ -234,24 +231,73 @@
         }
         
         function updateSaveButton(isSaved) {
-            const saveButton = document.querySelector('button[onclick="saveArticle()"]');
-            if (saveButton) {
+            const saveButton = document.getElementById('saveButton');
+            const saveButtonText = document.getElementById('saveButtonText');
+            const saveIcon = saveButton.querySelector('svg');
+            
+            if (saveButton && saveButtonText && saveIcon) {
                 if (isSaved) {
-                    saveButton.innerHTML = `
-                        <svg class="w-4 h-4 mr-2" fill="currentColor" stroke="currentColor" viewBox="0 0 24 24">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 5a2 2 0 012-2h10a2 2 0 012 2v16l-7-3.5L5 21V5z"></path>
-                        </svg>
-                        Saved
-                    `;
+                    // Update button styling for saved state
+                    saveButton.classList.remove('border-gray-300', 'text-gray-700', 'bg-white', 'hover:bg-gray-50');
+                    saveButton.classList.add('border-green-300', 'text-green-700', 'bg-green-50', 'hover:bg-green-100');
+                    
+                    // Update icon to filled
+                    saveIcon.setAttribute('fill', 'currentColor');
+                    saveButtonText.textContent = 'Saved';
                 } else {
-                    saveButton.innerHTML = `
-                        <svg class="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 5a2 2 0 012-2h10a2 2 0 012 2v16l-7-3.5L5 21V5z"></path>
-                        </svg>
-                        Save
-                    `;
+                    // Update button styling for unsaved state
+                    saveButton.classList.remove('border-green-300', 'text-green-700', 'bg-green-50', 'hover:bg-green-100');
+                    saveButton.classList.add('border-gray-300', 'text-gray-700', 'bg-white', 'hover:bg-gray-50');
+                    
+                    // Update icon to outline
+                    saveIcon.setAttribute('fill', 'none');
+                    saveButtonText.textContent = 'Save';
                 }
             }
+        }
+        
+        function showNotification(message, type = 'info') {
+            // Create notification element
+            const notification = document.createElement('div');
+            notification.className = `fixed top-4 right-4 z-50 px-6 py-3 rounded-lg shadow-lg transition-all duration-300 transform translate-x-full`;
+            
+            // Set colors based on type with solid backgrounds
+            if (type === 'success') {
+                notification.style.backgroundColor = '#10b981';
+                notification.style.color = '#ffffff';
+            } else if (type === 'info') {
+                notification.style.backgroundColor = '#3b82f6';
+                notification.style.color = '#ffffff';
+            } else {
+                notification.style.backgroundColor = '#6b7280';
+                notification.style.color = '#ffffff';
+            }
+            
+            notification.innerHTML = `
+                <div class="flex items-center">
+                    <svg class="w-5 h-5 mr-2" fill="currentColor" viewBox="0 0 20 20">
+                        <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd"></path>
+                    </svg>
+                    <span>${message}</span>
+                </div>
+            `;
+            
+            document.body.appendChild(notification);
+            
+            // Animate in
+            setTimeout(() => {
+                notification.classList.remove('translate-x-full');
+            }, 100);
+            
+            // Remove after 3 seconds
+            setTimeout(() => {
+                notification.classList.add('translate-x-full');
+                setTimeout(() => {
+                    if (document.body.contains(notification)) {
+                        document.body.removeChild(notification);
+                    }
+                }, 300);
+            }, 3000);
         }
         
         // Check if article is already saved on page load
