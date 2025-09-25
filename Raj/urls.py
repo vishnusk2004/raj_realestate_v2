@@ -32,4 +32,9 @@ urlpatterns = [
     path('blog-admin/add/', views.blog_add, name='blog_add'),
     path('blog-admin/edit/<int:post_id>/', views.blog_edit, name='blog_edit'),
     path('blog-admin/delete/<int:post_id>/', views.blog_delete, name='blog_delete'),
+    
+    # Legal pages
+    path('terms-of-service/', views.terms_of_service, name='terms_of_service'),
+    path('privacy-policy/', views.privacy_policy, name='privacy_policy'),
+    path('cookie-policy/', views.cookie_policy, name='cookie_policy'),
 ]

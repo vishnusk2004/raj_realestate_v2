@@ -906,3 +906,27 @@ def mortgage_inquiry(request):
     return redirect('mortgage_calculator')
 
 
+def terms_of_service(request):
+    """Terms of Service page"""
+    context = {
+        'brand_name': settings.BRAND_NAME
+    }
+    return render(request, 'Raj/terms_of_service.html', context)
+
+
+def privacy_policy(request):
+    """Privacy Policy page"""
+    context = {
+        'brand_name': settings.BRAND_NAME
+    }
+    return render(request, 'Raj/privacy_policy.html', context)
+
+
+def cookie_policy(request):
+    """Cookie Policy page"""
+    context = {
+        'brand_name': settings.BRAND_NAME
+    }
+    return render(request, 'Raj/cookie_policy.html', context)
+
+
