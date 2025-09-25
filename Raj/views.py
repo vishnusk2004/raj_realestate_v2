@@ -542,8 +542,10 @@ def create_tracking_link(request):
                 crm_reference=crm_reference
             )
             
-            # Generate the tracking URL
-            tracking_url = request.build_absolute_uri(f'/tracked-blog/{tracking.tracking_code}/')
+            # Generate the new tracking URL format
+            # Use customer_code (crm_reference) if available, otherwise use tracking_code
+            customer_code = crm_reference or str(tracking.tracking_code)
+            tracking_url = request.build_absolute_uri(f'/blog/{blog_post_id}/{customer_code}/')
             
             return JsonResponse({
                 'success': True,
@@ -928,5 +930,177 @@ def cookie_policy(request):
         'brand_name': settings.BRAND_NAME
     }
     return render(request, 'Raj/cookie_policy.html', context)
+
+
+def tracked_blog_detail_new(request, post_id, customer_code):
+    """New blog tracking with clean URL format: /blog/<post_id>/<customer_code>/"""
+    try:
+        # Get the blog post
+        post = get_object_or_404(BlogPost, id=post_id, published=True)
+        
+        # Create or get tracking record
+        tracking, created = BlogTracking.objects.get_or_create(
+            blog_post_id=post_id,
+            member_name=customer_code,  # Using customer_code as member_name for now
+            defaults={
+                'member_email': f'{customer_code}@tracking.local',
+                'member_phone': '',
+                'crm_reference': customer_code,
+            }
+        )
+        
+        # Mark as opened if not already opened
+        if not tracking.is_opened:
+            # Get client IP and user agent
+            ip_address = request.META.get('REMOTE_ADDR')
+            user_agent = request.META.get('HTTP_USER_AGENT', '')
+            tracking.mark_as_opened(ip_address=ip_address, user_agent=user_agent)
+            
+            # Send real-time notification to Podium webhook
+            webhook_data = {
+                'tracking_code': str(tracking.tracking_code),
+                'member_name': tracking.member_name,
+                'member_phone': tracking.member_phone,
+                'member_email': tracking.member_email,
+                'blog_post_id': tracking.blog_post_id,
+                'crm_reference': tracking.crm_reference,
+                'opened_at': tracking.opened_at.isoformat() if tracking.opened_at else None,
+                'ip_address': ip_address,
+                'user_agent': user_agent,
+                'referrer': request.META.get('HTTP_REFERER', ''),
+                'language': request.META.get('HTTP_ACCEPT_LANGUAGE', ''),
+            }
+            
+            # Send to CRM
+            from .webhook_utils import send_link_tracking_to_crm
+            send_link_tracking_to_crm(tracking, request)
+        
+        # Render the blog post normally
+        context = {
+            'post': post,
+            'brand_name': settings.BRAND_NAME,
+            'tracking_code': str(tracking.tracking_code),
+            'customer_code': customer_code,
+        }
+        return render(request, 'Raj/blog_detail.html', context)
+        
+    except Exception as e:
+        # If there's an error, redirect to the blog post without tracking
+        return redirect('blog_detail', post_id=post_id)
+
+
+def tracked_open_house(request, customer_code):
+    """Tracked open house page with customer code"""
+    return _tracked_page_view(request, 'open-house', 'open-house', customer_code, 'open_house')
+
+def tracked_selling(request, customer_code):
+    """Tracked selling page with customer code"""
+    return _tracked_page_view(request, 'selling', 'selling', customer_code, 'selling')
+
+def tracked_buy_lease(request, customer_code):
+    """Tracked buy-lease page with customer code"""
+    return _tracked_page_view(request, 'buy-lease', 'buy-lease', customer_code, 'buy_lease')
+
+def tracked_mortgage_calculator(request, customer_code):
+    """Tracked mortgage calculator page with customer code"""
+    return _tracked_page_view(request, 'mortgage-calculator', 'mortgage-calculator', customer_code, 'mortgage_calculator')
+
+def _tracked_page_view(request, page_type, page_id, customer_code, template_name):
+    """Generic tracked page view that handles tracking and renders the page"""
+    try:
+        from .models import LinkTracking
+        from .webhook_utils import get_client_ip, send_link_tracking_to_crm
+        
+        # Create or get tracking record
+        tracking, created = LinkTracking.objects.get_or_create(
+            customer_code=customer_code,
+            defaults={
+                'customer_name': customer_code,
+                'customer_email': f'{customer_code}@tracking.local',
+                'page_type': page_type,
+                'page_id': page_id,
+                'original_url': request.build_absolute_uri(),
+                'tracked_url': request.build_absolute_uri(),
+            }
+        )
+        
+        # Record the click
+        tracking.record_click(
+            ip_address=get_client_ip(request),
+            user_agent=request.META.get('HTTP_USER_AGENT', ''),
+            referrer=request.META.get('HTTP_REFERER', ''),
+            language=request.META.get('HTTP_ACCEPT_LANGUAGE', '')
+        )
+        
+        # Send to CRM
+        send_link_tracking_to_crm(tracking, request)
+        
+    except Exception as e:
+        # If tracking fails, still render the page
+        pass
+    
+    # Render the appropriate page with tracking context
+    if template_name == 'open_house':
+        return open_house(request)
+    elif template_name == 'selling':
+        return selling(request)
+    elif template_name == 'buy_lease':
+        return buy_lease(request)
+    elif template_name == 'mortgage_calculator':
+        return mortgage_calculator(request)
+    else:
+        # Fallback to home
+        return redirect('home')
+
+def general_tracking_redirect(request, customer_code):
+    """General tracking redirect for customer codes like /ju131"""
+    # List of protected URL patterns that should NOT be treated as tracking
+    protected_patterns = [
+        'admin', 'buy-lease', 'selling', 'blog', 'open-house', 
+        'mortgage-calculator', 'terms-of-service', 'privacy-policy', 
+        'cookie-policy', 'static', 'media', 'favicon.ico',
+        'api', 'tracking-dashboard', 'blog-admin'
+    ]
+    
+    # Check if customer_code matches a protected pattern
+    if customer_code in protected_patterns:
+        from django.http import Http404
+        raise Http404("Page not found")
+    
+    # Create a general tracking record
+    try:
+        from .models import LinkTracking
+        from .webhook_utils import get_client_ip, send_link_tracking_to_crm
+        
+        # Create or get tracking record
+        tracking, created = LinkTracking.objects.get_or_create(
+            customer_code=customer_code,
+            defaults={
+                'customer_name': customer_code,
+                'customer_email': f'{customer_code}@tracking.local',
+                'page_type': 'home',
+                'page_id': 'home',
+                'original_url': request.build_absolute_uri(),
+                'tracked_url': request.build_absolute_uri(),
+            }
+        )
+        
+        # Record the click
+        tracking.record_click(
+            ip_address=get_client_ip(request),
+            user_agent=request.META.get('HTTP_USER_AGENT', ''),
+            referrer=request.META.get('HTTP_REFERER', ''),
+            language=request.META.get('HTTP_ACCEPT_LANGUAGE', '')
+        )
+        
+        # Send to CRM
+        send_link_tracking_to_crm(tracking, request)
+        
+    except Exception as e:
+        # If tracking fails, still redirect to home
+        pass
+    
+    # Redirect to home page with tracking
+    return redirect('home')
 
 

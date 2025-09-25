@@ -37,4 +37,17 @@ urlpatterns = [
     path('terms-of-service/', views.terms_of_service, name='terms_of_service'),
     path('privacy-policy/', views.privacy_policy, name='privacy_policy'),
     path('cookie-policy/', views.cookie_policy, name='cookie_policy'),
+    
+    # New tracking URL patterns (must be after all other patterns)
+    # Blog tracking: /blog/<post_id>/<customer_code>/
+    path('blog/<int:post_id>/<str:customer_code>/', views.tracked_blog_detail_new, name='tracked_blog_detail_new'),
+    
+    # Page tracking with customer codes: /<page>/<customer_code>/
+    path('open-house/<str:customer_code>/', views.tracked_open_house, name='tracked_open_house'),
+    path('selling/<str:customer_code>/', views.tracked_selling, name='tracked_selling'),
+    path('buy-lease/<str:customer_code>/', views.tracked_buy_lease, name='tracked_buy_lease'),
+    path('mortgage-calculator/<str:customer_code>/', views.tracked_mortgage_calculator, name='tracked_mortgage_calculator'),
+    
+    # General tracking: /<customer_code>/
+    path('<str:customer_code>/', views.general_tracking_redirect, name='general_tracking_redirect'),
 ]
