@@ -392,9 +392,10 @@
     <script>
     // Handle form submission with success popup
     document.addEventListener('DOMContentLoaded', function() {
-        const form = document.querySelector('form[action="{% url 'open_house' %}"]');
-        if (form) {
-            form.addEventListener('submit', function(e) {
+        // Use event delegation to handle dynamically created forms
+        document.addEventListener('submit', function(e) {
+            const form = e.target;
+            if (form && form.action && form.action.includes('open_house')) {
                 e.preventDefault();
                 
                 // Get form data
@@ -409,9 +410,9 @@
                 setTimeout(() => {
                     form.submit();
                 }, 2000);
-            });
             }
         });
+    });
 </script>
 
 </body>
