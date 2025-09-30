@@ -212,7 +212,7 @@ class OpenHouseRegistrationAdmin(admin.ModelAdmin):
 
 @admin.register(PropertyInquiry)
 class PropertyInquiryAdmin(admin.ModelAdmin):
-    list_display = ('name', 'email', 'phone', 'property_type', 'budget_range', 'location', 'ip_address', 'created_at')
+    list_display = ('name', 'email', 'phone', 'property_type', 'budget_range', 'location', 'requirements', 'ip_address', 'created_at')
     list_filter = ('property_type', 'budget_range', 'created_at', 'language')
     search_fields = ('name', 'email', 'phone', 'location', 'requirements', 'ip_address')
     readonly_fields = ('created_at', 'ip_address', 'user_agent', 'referrer', 'language')
