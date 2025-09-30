@@ -395,12 +395,18 @@
         // Use event delegation to handle dynamically created forms
         document.addEventListener('submit', function(e) {
             const form = e.target;
-            if (form && form.action && form.action.includes('open_house')) {
+            console.log('Form submitted:', form);
+            console.log('Form action:', form.action);
+            console.log('Form action includes open-house:', form.action && form.action.includes('open-house'));
+            
+            if (form && form.action && form.action.includes('open-house')) {
                 e.preventDefault();
                 
                 // Get form data
                 const formData = new FormData(form);
                 const name = formData.get('name');
+                
+                console.log('Showing success popup for:', name);
                 
                 // Show success popup
                 const message = `Thank you for your open house registration, ${name}! Our team will contact you within 24 hours to confirm your visit and provide additional details.`;
