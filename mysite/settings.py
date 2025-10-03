@@ -85,7 +85,7 @@ MIDDLEWARE = [
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
-    'Raj.middleware.LinkTrackingMiddleware',  # Custom link tracking middleware
+    # 'Raj.middleware.LinkTrackingMiddleware',  # Custom link tracking middleware - temporarily disabled
 
     "django_browser_reload.middleware.BrowserReloadMiddleware",
 ]
