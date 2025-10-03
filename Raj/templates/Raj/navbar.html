@@ -107,7 +107,7 @@
                         <path d="M8 10h.01"></path>
                         <path d="M8 14h.01"></path>
                     </svg>
-                    <span>Buy / Lease</span>
+                    <span>Buy & Lease</span>
                 </a>
                 <a class="px-4 py-2 rounded-lg text-sm font-medium transition-all duration-200 flex items-center space-x-2 {% if request.resolver_match.url_name == 'selling' %}bg-primary text-primary-foreground shadow-medium{% else %}text-muted-foreground hover:text-primary hover:bg-secondary{% endif %}" href="{% url 'selling' %}">
                     <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-piggy-bank h-4 w-4">
@@ -159,7 +159,7 @@
     <div id="mobile-menu" class="md:hidden hidden transform transition-all duration-300 ease-in-out">
         <div class="px-2 pt-2 pb-3 space-y-1 sm:px-3 bg-background border-t border-border">
             <a href="{% url 'home' %}" class="text-foreground hover:text-primary hover:bg-accent block px-3 py-2 rounded-md text-base font-medium transition-colors duration-200 {% if request.resolver_match.url_name == 'home' %}bg-primary/10 text-primary{% endif %}">Home</a>
-            <a href="{% url 'buy_lease' %}" class="text-foreground hover:text-primary hover:bg-accent block px-3 py-2 rounded-md text-base font-medium transition-colors duration-200 {% if request.resolver_match.url_name == 'buy_lease' %}bg-primary/10 text-primary{% endif %}">Buy / Lease</a>
+            <a href="{% url 'buy_lease' %}" class="text-foreground hover:text-primary hover:bg-accent block px-3 py-2 rounded-md text-base font-medium transition-colors duration-200 {% if request.resolver_match.url_name == 'buy_lease' %}bg-primary/10 text-primary{% endif %}">Buy & Lease</a>
             <a href="{% url 'selling' %}" class="text-foreground hover:text-primary hover:bg-accent block px-3 py-2 rounded-md text-base font-medium transition-colors duration-200 {% if request.resolver_match.url_name == 'selling' %}bg-primary/10 text-primary{% endif %}">Sell & Evaluate</a>
             <a href="{% url 'blog' %}" class="text-foreground hover:text-primary hover:bg-accent block px-3 py-2 rounded-md text-base font-medium transition-colors duration-200 {% if request.resolver_match.url_name == 'blog' %}bg-primary/10 text-primary{% endif %}">Blog</a>
             <a href="{% url 'open_house' %}" class="text-foreground hover:text-primary hover:bg-accent block px-3 py-2 rounded-md text-base font-medium transition-colors duration-200 {% if request.resolver_match.url_name == 'open_house' %}bg-primary/10 text-primary{% endif %}">Open House</a>
