@@ -15,11 +15,10 @@ import os
 from dotenv import load_dotenv
 
 # Load environment variables from .env file
-load_dotenv()
+BASE_DIR = Path(__file__).resolve().parent.parent
+load_dotenv(os.path.join(BASE_DIR, '.env'))
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
-BASE_DIR = Path(__file__).resolve().parent.parent
-
 
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/5.1/howto/deployment/checklist/
@@ -29,24 +28,26 @@ SECRET_KEY = os.getenv('SECRET_KEY', 'django-insecure-tzk4^_u^x05juz(7r*c16hptg0
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = os.getenv('DEBUG', 'True').lower() == 'true'
+DEBUG = False
 
 # Check if running on Vercel
-IS_VERCEL = os.getenv('VERCEL', 'false').lower() == 'true'
+#IS_VERCEL = os.getenv('VERCEL', 'false').lower() == 'true'
 
 # Get allowed hosts from environment or use a default list
-ALLOWED_HOSTS = os.getenv('ALLOWED_HOSTS', 'localhost,127.0.0.1,.vercel.app,.onrender.com').split(',')
+#ALLOWED_HOSTS = os.getenv('ALLOWED_HOSTS', 'localhost,127.0.0.1,.vercel.app,.onrender.com').split(',')
+ALLOWED_HOSTS = ['rajtexas.com', 'www.rajtexas.com']
 
 # For development, you can add more hosts
-if DEBUG:
-    ALLOWED_HOSTS.extend(['*'])
+#if DEBUG:
+#    ALLOWED_HOSTS.extend(['*'])
 
 # Add common deployment domains
-ALLOWED_HOSTS.extend([
-    'raj-realestate.vercel.app',
-    'raj-realestate-git-main-kumarsravan2004gmailcoms-projects.vercel.app',
-    'raj-realestate-m8ms2xjy1-kumarsravan2004gmailcoms-projects.vercel.app',
-    'henry-realestate.onrender.com'
-])
+#ALLOWED_HOSTS.extend([
+#    'raj-realestate.vercel.app',
+#    'raj-realestate-git-main-kumarsravan2004gmailcoms-projects.vercel.app',
+#    'raj-realestate-m8ms2xjy1-kumarsravan2004gmailcoms-projects.vercel.app',
+#    'henry-realestate.onrender.com'
+#])
 
 
 # Application definition
@@ -63,7 +64,7 @@ INSTALLED_APPS = [
 
     'tailwind',
     'theme',
-    'django_browser_reload',
+ #   'django_browser_reload',
 
     'Raj'
 ]
@@ -87,8 +88,14 @@ MIDDLEWARE = [
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
     # 'Raj.middleware.LinkTrackingMiddleware',  # Custom link tracking middleware - temporarily disabled
 
-    "django_browser_reload.middleware.BrowserReloadMiddleware",
+#    "django_browser_reload.middleware.BrowserReloadMiddleware",
 ]
+
+if DEBUG:
+        INSTALLED_APPS += ['django_browser_reload']
+        MIDDLEWARE += ['django_browser_reload.middleware.BrowserReloadMiddleware']
+
+
 
 ROOT_URLCONF = 'mysite.urls'
 
@@ -120,13 +127,17 @@ import dj_database_url
 # Check if DATABASE_URL is available
 database_url = os.getenv('DATABASE_URL')
 
-if database_url:
-    # Use PostgreSQL for production (Render/Vercel)
+if os.getenv('DB_NAME'):
+    # Use PostgreSQL for production
     DATABASES = {
-        'default': dj_database_url.config(
-            default=database_url,
-            conn_max_age=600
-        )
+        'default': {
+		'ENGINE': 'django.db.backends.postgresql',
+		'NAME': os.getenv('DB_NAME'),
+		'USER': os.getenv('DB_USER'),
+		'PASSWORD': os.getenv('DB_PASSWORD'),
+		'HOST': os.getenv('DB_HOST'),
+		'PORT': os.getenv('DB_PORT', '5432'),
+	}
     }
 else:
     # Use SQLite for local development when no DATABASE_URL is set

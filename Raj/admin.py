@@ -295,6 +295,7 @@ class OpenHouseImageAdmin(admin.ModelAdmin):
     list_filter = ('is_primary', 'created_at', 'open_house')
     search_fields = ('open_house__title', 'caption')
     ordering = ('open_house', 'order')
+    readonly_fields=('created_at',)
     fieldsets = (
         ('Image Information', {
             'fields': ('open_house', 'image_file', 'image_url', 'caption')
