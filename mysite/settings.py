@@ -11,6 +11,7 @@ https://docs.djangoproject.com/en/5.1/ref/settings/
 """
 
 from pathlib import Path
+from decouple import config
 import os
 from dotenv import load_dotenv
 
@@ -66,7 +67,8 @@ INSTALLED_APPS = [
     'theme',
  #   'django_browser_reload',
 
-    'Raj'
+    'Raj',
+    'storages',
 ]
 
 TAILWIND_APP_NAME = 'theme'
@@ -79,7 +81,7 @@ NPM_BIN_PATH = "C:/Program Files/nodejs/npm.cmd"
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
-    'whitenoise.middleware.WhiteNoiseMiddleware',
+#    'whitenoise.middleware.WhiteNoiseMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
@@ -183,32 +185,44 @@ USE_TZ = True
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/5.1/howto/static-files/
 
-STATIC_URL = '/static/'
-STATICFILES_DIRS = [
-    BASE_DIR / "static",
-]
-STATIC_ROOT = BASE_DIR / "staticfiles"
+#STATIC_URL = '/static/'
+#STATICFILES_DIRS = [
+#    BASE_DIR / "static",
+#]
+#STATIC_ROOT = BASE_DIR / "staticfiles"
 
 # Static files configuration for production
-if not DEBUG:
-    STATICFILES_STORAGE = 'whitenoise.storage.CompressedStaticFilesStorage'
+#if not DEBUG:
+#    STATICFILES_STORAGE = 'whitenoise.storage.CompressedStaticFilesStorage'
     
 # WhiteNoise configuration
-STATICFILES_FINDERS = [
-    'django.contrib.staticfiles.finders.FileSystemFinder',
-    'django.contrib.staticfiles.finders.AppDirectoriesFinder',
-]
+#STATICFILES_FINDERS = [
+#    'django.contrib.staticfiles.finders.FileSystemFinder',
+#    'django.contrib.staticfiles.finders.AppDirectoriesFinder',
+#]
 
 # Media files configuration
-MEDIA_URL = '/media/'
-MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
+#MEDIA_URL = '/media/'
+#MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 
 # Production media serving configuration
-if not DEBUG:
+#if not DEBUG:
     # In production, we need to serve media files through Django
     # This is not ideal for production but works for Render
-    MEDIA_URL = '/media/'
+#    MEDIA_URL = '/media/'
     # Add media serving to URL patterns in production
+
+#STATIC_ROOT = BASE_DIR / "staticfiles"
+#STATICFILES_DIRS = [BASE_DIR / "static"]
+#STATIC_ROOT = BASE_DIR / "staticfiles_dummy"
+#STATIC_ROOT = BASE_DIR / "staticfiles"
+
+
+
+#AWS_ACCESS_KEY_ID = config("AWS_ACCESS_KEY_ID", default=None)
+#AWS_SECRET_ACCESS_KEY = config("AWS_SECRET_ACCESS_KEY", default=None)
+#AWS_STORAGE_BUCKET_NAME = config("AWS_STORAGE_BUCKET_NAME", default=None)
+#AWS_S3_REGION_NAME = config("AWS_S3_REGION_NAME", default=None)
 
 # Default primary key field type
 # https://docs.djangoproject.com/en/5.1/ref/settings/#default-auto-field
@@ -244,3 +258,49 @@ LOGGING = {
 ADMIN_SITE_HEADER = "Raj Real Estate Admin"
 ADMIN_SITE_TITLE = "Raj Admin"
 ADMIN_INDEX_TITLE = "Raj Real Estate Administration"
+
+
+
+# ========================================
+# STATIC & MEDIA CONFIGURATION 
+# ========================================
+
+from decouple import config
+import os
+BASE_DIR = Path(__file__).resolve().parent.parent
+
+# --- AWS S3 Settings ---
+AWS_ACCESS_KEY_ID = config("AWS_ACCESS_KEY_ID")
+AWS_SECRET_ACCESS_KEY = config("AWS_SECRET_ACCESS_KEY")
+AWS_STORAGE_BUCKET_NAME = config("AWS_STORAGE_BUCKET_NAME")
+AWS_S3_REGION_NAME = config("AWS_S3_REGION_NAME", default="eu-north-1")
+AWS_S3_CUSTOM_DOMAIN = f"{AWS_STORAGE_BUCKET_NAME}.s3.amazonaws.com"
+
+AWS_S3_FILE_OVERWRITE = False
+AWS_DEFAULT_ACL = None
+AWS_QUERYSTRING_AUTH = False
+AWS_S3_OBJECT_PARAMETERS = {
+    "ACL": "private",  # explicitly safe for ACL-disabled buckets
+}
+
+# --- STATIC FILES ---
+STATIC_URL = f"https://{AWS_S3_CUSTOM_DOMAIN}/static/"
+#STATICFILES_STORAGE = "mysite.storage_backends.StaticStorage"
+STATICFILES_DIRS = [
+    BASE_DIR / "static",
+]
+STATIC_ROOT = BASE_DIR / "staticfiles"  # DO NOT COMMENT THIS
+
+# --- MEDIA FILES ---
+MEDIA_URL = f"https://{AWS_S3_CUSTOM_DOMAIN}/media/"
+#DEFAULT_FILE_STORAGE = "mysite.storage_backends.MediaStorage"
+
+
+STORAGES = {
+    "default": {
+        "BACKEND": "mysite.storage_backends.MediaStorage",
+    },
+    "staticfiles": {
+        "BACKEND": "mysite.storage_backends.StaticStorage",
+    },
+}
