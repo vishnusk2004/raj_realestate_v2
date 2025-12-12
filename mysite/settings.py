@@ -246,10 +246,10 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 # Brand Configuration
 # BRAND_NAME = os.getenv('BRAND_NAME', 'raj texas')
-BRAND_NAME = 'Raj Texas'
+BRAND_NAME = 'Raj Realty Texas'
 # Debug: Print what we're getting
-print(f"SETTINGS DEBUG: BRAND_NAME from env = {repr(os.getenv('BRAND_NAME'))}")
-print(f"SETTINGS DEBUG: BRAND_NAME final value = {repr(BRAND_NAME)}")
+# print(f"SETTINGS DEBUG: BRAND_NAME from env = {repr(os.getenv('BRAND_NAME'))}")
+# print(f"SETTINGS DEBUG: BRAND_NAME final value = {repr(BRAND_NAME)}")
 
 # Logging configuration for debugging
 LOGGING = {
