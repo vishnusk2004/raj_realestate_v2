@@ -29,12 +29,62 @@
     position: relative;
     background-color: white;
     border-radius: 0.5rem;
-    max-width: 56rem; /* max-w-4xl */
+    max-width: 90vw;
     width: 100%;
     max-height: 90vh;
     overflow: hidden;
     display: flex;
     flex-direction: column;
+    padding: 0 !important;
+    margin: 0 !important;
+}
+
+/* Description Section in Modal */
+.image-modal-description-section {
+    padding: 0.75rem 1rem; /* Reduced vertical padding */
+    border-top: 1px solid #e5e7eb;
+    background-color: #f9fafb;
+    max-height: 260px; /* Increased height since we removed image padding */
+    min-height: 150px; /* Minimum height to show multiple lines */
+    overflow-y: auto;
+    flex-shrink: 0;
+    line-height: 1.6;
+    scrollbar-width: thin;
+    scrollbar-color: #cbd5e0 #f7fafc;
+}
+
+.image-modal-description-section::-webkit-scrollbar {
+    width: 8px;
+}
+
+.image-modal-description-section::-webkit-scrollbar-track {
+    background: #f7fafc;
+    border-radius: 4px;
+}
+
+.image-modal-description-section::-webkit-scrollbar-thumb {
+    background: #cbd5e0;
+    border-radius: 4px;
+}
+
+.image-modal-description-section::-webkit-scrollbar-thumb:hover {
+    background: #a0aec0;
+}
+
+.image-modal-description-section h4 {
+    font-size: 1rem;
+    font-weight: 600;
+    color: #1f2937;
+    margin-bottom: 0.5rem;
+    margin-top: 0;
+}
+
+.image-modal-description-section p {
+    color: #4b5563;
+    line-height: 1.6;
+    margin: 0;
+    white-space: pre-wrap;
+    word-wrap: break-word;
 }
 
 /* Modal Header */
@@ -42,9 +92,10 @@
     display: flex;
     justify-content: space-between;
     align-items: center;
-    padding: 1rem;
+    padding: 0.75rem 1rem; /* Reduced vertical padding */
     border-bottom: 1px solid #e5e7eb;
     background-color: #f9fafb;
+    margin: 0;
 }
 
 .image-modal-title {
@@ -85,9 +136,14 @@
     position: relative;
     flex: 1;
     display: flex;
-    align-items: center;
+    align-items: center; /* Center vertically */
     justify-content: center;
-    min-height: 0;
+    min-height: 0; /* No minimum height to prevent gaps */
+    max-height: calc(90vh - 360px); /* Reserve space for header, thumbnails, and description */
+    overflow: hidden;
+    padding: 1rem 0; /* Small vertical padding for visual spacing */
+    margin: 0 !important; /* No margin */
+    gap: 0 !important; /* No gap between flex items */
 }
 
 /* Navigation Arrows */
@@ -140,12 +196,18 @@
 
 /* Image Container */
 .image-modal-image-container {
-    padding: 1rem;
+    padding: 0.5rem 1rem; /* Small vertical padding for visual spacing, horizontal for side spacing */
     width: 100%;
-    height: 100%;
+    height: fit-content; /* Fit to content height */
+    max-width: 100%;
+    max-height: 100%;
     display: flex;
-    align-items: center;
+    align-items: center; /* Center vertically */
     justify-content: center;
+    overflow: visible; /* Allow image to be fully visible */
+    margin: 0 !important; /* No margin */
+    flex-shrink: 0; /* Don't shrink */
+    line-height: 0; /* Remove line-height spacing */
 }
 
 .image-modal-image {
@@ -153,15 +215,20 @@
     max-height: 100%;
     width: auto;
     height: auto;
-    object-fit: contain;
+    object-fit: contain; /* Ensure full image is visible, no cropping */
+    object-position: center;
     border-radius: 0.5rem;
     box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
+    display: block;
+    margin: 0 !important; /* No margin on image */
+    padding: 0 !important; /* No padding on image */
+    vertical-align: top; /* Align to top */
 }
 
 /* Thumbnail Strip */
 .image-modal-thumbnails {
-    padding: 1rem;
-    padding-bottom: 1rem;
+    padding: 0.75rem 1rem; /* Reduced vertical padding */
+    padding-bottom: 0.75rem;
     background-color: #f9fafb;
     border-top: 1px solid #e5e7eb;
 }
@@ -335,10 +402,15 @@
     
     .image-modal-container {
         max-height: 85vh;
+        max-width: 95vw;
+    }
+    
+    .image-modal-content {
+        max-height: calc(85vh - 180px);
     }
     
     .image-modal-image {
-        max-height: 60vh;
+        max-height: calc(85vh - 180px);
     }
     
     .image-modal-thumbnail {

@@ -158,9 +158,18 @@ class PropertyListing(models.Model):
         ('buy', 'For Sale'),
         ('lease', 'For Lease'),
     ]
+    PROPERTY_STATUS_CHOICES = [
+        ('coming_soon', 'Coming Soon'),
+        ('just_listed', 'Just Listed'),
+        ('for_sale', 'For Sale'),
+        ('for_lease', 'For Lease'),
+        ('under_contract', 'Under-Contract'),
+        ('just_sold', 'Just Sold'),
+    ]
     
     title = models.CharField(max_length=200)
     property_type = models.CharField(max_length=10, choices=PROPERTY_TYPE_CHOICES, default='buy')
+    property_status = models.CharField(max_length=20, choices=PROPERTY_STATUS_CHOICES, default='for_sale', help_text="Marketing status of the listing")
     price = models.DecimalField(max_digits=12, decimal_places=2, help_text="Price in dollars")
     location = models.CharField(max_length=200)
     address = models.TextField(help_text="Full property address")
@@ -175,6 +184,8 @@ class PropertyListing(models.Model):
     additional_images = models.TextField(blank=True, help_text="Additional image URLs (one per line)")
     featured = models.BooleanField(default=False, help_text="Featured properties appear first")
     published = models.BooleanField(default=True, help_text="Only published properties are visible")
+    listing_agent_name = models.CharField(max_length=200, blank=True, null=True, help_text="Name of the listing agent for courtesy credit")
+    listing_agent_image = models.ImageField(upload_to='listing_agents/', blank=True, null=True, help_text="Optional image of the listing agent")
     contact_email = models.EmailField(help_text="Contact email for inquiries", default="raj.gupta@kw.com")
     contact_phone = models.CharField(max_length=20, help_text="Contact phone number", default="(832) 785-0140")
     created_at = models.DateTimeField(auto_now_add=True)
@@ -275,6 +286,15 @@ class PropertyListing(models.Model):
             else:
                 return self.image_url
         
+        return None
+
+    def get_listing_agent_image_url(self):
+        """Return listing agent image URL if uploaded"""
+        if self.listing_agent_image and hasattr(self.listing_agent_image, 'url'):
+            try:
+                return self.listing_agent_image.url
+            except:
+                return None
         return None
 
 
@@ -791,7 +811,8 @@ class OpenHouse(models.Model):
     image_file = models.ImageField(upload_to='openhouse_images/', blank=True, null=True, help_text="Upload a main image file (alternative to image URL)")
     image_base64 = models.TextField(blank=True, null=True, help_text="Base64 encoded image data")
     open_house_date = models.DateField(null=False, blank=False, help_text="Date of the open house")
-    open_house_time = models.TimeField(help_text="Time of the open house")
+    open_house_time = models.TimeField(help_text="Start time of the open house")
+    open_house_end_time = models.TimeField(null=True, blank=True, help_text="End time of the open house")
     contact_email = models.EmailField(help_text="Contact email for inquiries", default="raj.gupta@kw.com")
     contact_phone = models.CharField(max_length=20, help_text="Contact phone number", default="(832) 785-0140")
     features = models.TextField(blank=True, help_text="Property features (one per line, e.g., Updated Kitchen, Hardwood Floors, Large Backyard)")

@@ -50,6 +50,11 @@ def send_podium_webhook(tracking_data):
 
 def home(request):
     try:
+        # Debug: Print BRAND_NAME to console
+        print(f"DEBUG: BRAND_NAME from settings = '{settings.BRAND_NAME}'")
+        print(f"DEBUG: BRAND_NAME type = {type(settings.BRAND_NAME)}")
+        print(f"DEBUG: BRAND_NAME repr = {repr(settings.BRAND_NAME)}")
+        
         # Check for tracking code
         customer_code = request.GET.get('code')
         if customer_code:
@@ -104,11 +109,18 @@ def home(request):
         ).order_by('-created_at')[:4]
 
         # Pass the updated queryset as context
+        # Debug: Print BRAND_NAME to console
+        print(f"DEBUG: BRAND_NAME from settings = '{settings.BRAND_NAME}'")
+        print(f"DEBUG: BRAND_NAME type = {type(settings.BRAND_NAME)}")
+        print(f"DEBUG: BRAND_NAME repr = {repr(settings.BRAND_NAME)}")
+        
         context = {
             'featured_properties': featured_properties,
             'recent_properties': recent_properties,
             'brand_name': settings.BRAND_NAME
         }
+        # Debug: Print what we're passing to template
+        print(f"DEBUG: Passing brand_name to template = '{context['brand_name']}'")
         return render(request, 'Raj/index.html', context)
     except Exception as e:
         # Return a simple error response for debugging
@@ -160,8 +172,8 @@ def blog(request):
                 models.Q(excerpt__icontains=search_query)
             )
         
-        # Order by featured first, then by creation date
-        posts = posts.order_by('-featured', '-created_at')
+        # Order by creation date (newest first)
+        posts = posts.order_by('-created_at')
         
         context = {
             'posts': posts,
@@ -680,12 +692,13 @@ def buy_lease(request):
     property_type = request.GET.get('property_type', '')
     search_query = request.GET.get('search', '')
     price_range = request.GET.get('price_range', '')
+    property_id = request.GET.get('property_id', '')
     
     # Start with published properties and include related images
     properties = PropertyListing.objects.filter(published=True).prefetch_related('images')
     
     # Filter by property type
-    if property_type in ['sale', 'lease']:
+    if property_type in ['buy', 'lease']:
         properties = properties.filter(property_type=property_type)
     
     # Filter by search query
@@ -715,6 +728,7 @@ def buy_lease(request):
         'current_type': property_type,
         'search_query': search_query,
         'price_range': price_range,
+        'property_id': property_id,
         'brand_name': settings.BRAND_NAME
     }
     return render(request, 'Raj/buy_lease.html', context)

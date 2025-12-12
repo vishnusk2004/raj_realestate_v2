@@ -4,9 +4,9 @@ from .models import Property, SellingContact, BlogTracking, BlogPost, PropertyLi
 from .forms import PropertyListingForm, BlogPostForm
 
 # Configure admin site
-admin.site.site_header = getattr(settings, 'ADMIN_SITE_HEADER', 'Raj Real Estate Admin')
-admin.site.site_title = getattr(settings, 'ADMIN_SITE_TITLE', 'Raj Admin')
-admin.site.index_title = getattr(settings, 'ADMIN_INDEX_TITLE', 'Raj Real Estate Administration')
+admin.site.site_header = getattr(settings, 'ADMIN_SITE_HEADER', 'raj texas Admin')
+admin.site.site_title = getattr(settings, 'ADMIN_SITE_TITLE', 'raj texas Admin')
+admin.site.index_title = getattr(settings, 'ADMIN_INDEX_TITLE', 'raj texas Administration')
 
 # Inline admin classes
 class PropertyListingImageInline(admin.TabularInline):
@@ -74,13 +74,13 @@ class BlogTrackingAdmin(admin.ModelAdmin):
 class PropertyListingAdmin(admin.ModelAdmin):
     form = PropertyListingForm
     inlines = [PropertyListingImageInline]
-    list_display = ('title', 'property_type', 'price', 'location', 'bedrooms', 'bathrooms', 'featured', 'published', 'created_at')
-    list_filter = ('property_type', 'featured', 'published', 'bedrooms', 'bathrooms', 'created_at')
+    list_display = ('title', 'property_type', 'property_status', 'price', 'location', 'bedrooms', 'bathrooms', 'featured', 'published', 'created_at')
+    list_filter = ('property_type', 'property_status', 'featured', 'published', 'bedrooms', 'bathrooms', 'created_at')
     search_fields = ('title', 'location', 'address', 'description')
     readonly_fields = ('created_at', 'updated_at')
     fieldsets = (
         ('Basic Information', {
-            'fields': ('title', 'property_type', 'price', 'location', 'address')
+            'fields': ('title', 'property_type', 'property_status', 'price', 'location', 'address')
         }),
         ('Property Details', {
             'fields': ('bedrooms', 'bathrooms', 'parking_spaces', 'area_sqft', 'description')
@@ -91,6 +91,10 @@ class PropertyListingAdmin(admin.ModelAdmin):
         }),
         ('Contact Information', {
             'fields': ('contact_email', 'contact_phone')
+        }),
+        ('Listing Agent (optional)', {
+            'fields': ('listing_agent_name', 'listing_agent_image'),
+            'description': 'Add courtesy listing agent details if applicable.'
         }),
         ('Settings', {
             'fields': ('featured', 'published')
@@ -155,7 +159,7 @@ class OpenHouseImageInline(admin.TabularInline):
 
 @admin.register(OpenHouse)
 class OpenHouseAdmin(admin.ModelAdmin):
-    list_display = ('title', 'property_address', 'price', 'open_house_date', 'open_house_time', 'published', 'is_past')
+    list_display = ('title', 'property_address', 'price', 'open_house_date', 'open_house_time', 'open_house_end_time', 'published', 'is_past')
     list_filter = ('published', 'open_house_date', 'created_at')
     search_fields = ('title', 'property_address', 'description')
     readonly_fields = ('created_at', 'updated_at', 'is_past')
@@ -172,7 +176,7 @@ class OpenHouseAdmin(admin.ModelAdmin):
             'description': 'Upload a main image file or provide an image URL'
         }),
         ('Open House Details', {
-            'fields': ('open_house_date', 'open_house_time')
+            'fields': ('open_house_date', 'open_house_time', 'open_house_end_time')
         }),
         ('Contact Information', {
             'fields': ('contact_email', 'contact_phone')

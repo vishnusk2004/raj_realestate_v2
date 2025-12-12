@@ -29,7 +29,9 @@ SECRET_KEY = os.getenv('SECRET_KEY', 'django-insecure-tzk4^_u^x05juz(7r*c16hptg0
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = os.getenv('DEBUG', 'True').lower() == 'true'
-DEBUG = False
+# For local development, enable DEBUG
+if os.getenv('ENVIRONMENT') != 'production':
+    DEBUG = True
 
 # Check if running on Vercel
 #IS_VERCEL = os.getenv('VERCEL', 'false').lower() == 'true'
@@ -37,6 +39,9 @@ DEBUG = False
 # Get allowed hosts from environment or use a default list
 #ALLOWED_HOSTS = os.getenv('ALLOWED_HOSTS', 'localhost,127.0.0.1,.vercel.app,.onrender.com').split(',')
 ALLOWED_HOSTS = ['rajtexas.com', 'www.rajtexas.com']
+# Add localhost for local development
+if DEBUG:
+    ALLOWED_HOSTS.extend(['localhost', '127.0.0.1', '*'])
 
 # For development, you can add more hosts
 #if DEBUG:
@@ -129,7 +134,17 @@ import dj_database_url
 # Check if DATABASE_URL is available
 database_url = os.getenv('DATABASE_URL')
 
-if os.getenv('DB_NAME'):
+# For local development (DEBUG=True), always use SQLite
+# For production, use PostgreSQL if DB_NAME is set
+if DEBUG:
+    # Use SQLite for local development
+    DATABASES = {
+        'default': {
+            'ENGINE': 'django.db.backends.sqlite3',
+            'NAME': BASE_DIR / 'db.sqlite3',
+        }
+    }
+elif os.getenv('DB_NAME'):
     # Use PostgreSQL for production
     DATABASES = {
         'default': {
@@ -142,7 +157,7 @@ if os.getenv('DB_NAME'):
 	}
     }
 else:
-    # Use SQLite for local development when no DATABASE_URL is set
+    # Fallback to SQLite if no DB_NAME is set
     DATABASES = {
         'default': {
             'ENGINE': 'django.db.backends.sqlite3',
@@ -230,7 +245,11 @@ USE_TZ = True
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 # Brand Configuration
-BRAND_NAME = os.getenv('BRAND_NAME', 'RealtyPro')
+# BRAND_NAME = os.getenv('BRAND_NAME', 'raj texas')
+BRAND_NAME = 'Raj Texas'
+# Debug: Print what we're getting
+print(f"SETTINGS DEBUG: BRAND_NAME from env = {repr(os.getenv('BRAND_NAME'))}")
+print(f"SETTINGS DEBUG: BRAND_NAME final value = {repr(BRAND_NAME)}")
 
 # Logging configuration for debugging
 LOGGING = {
@@ -255,9 +274,9 @@ LOGGING = {
 }
 
 # Admin site configuration
-ADMIN_SITE_HEADER = "Raj Real Estate Admin"
-ADMIN_SITE_TITLE = "Raj Admin"
-ADMIN_INDEX_TITLE = "Raj Real Estate Administration"
+ADMIN_SITE_HEADER = "raj texas Admin"
+ADMIN_SITE_TITLE = "raj texas Admin"
+ADMIN_INDEX_TITLE = "raj texas Administration"
 
 
 
@@ -270,37 +289,57 @@ import os
 BASE_DIR = Path(__file__).resolve().parent.parent
 
 # --- AWS S3 Settings ---
-AWS_ACCESS_KEY_ID = config("AWS_ACCESS_KEY_ID")
-AWS_SECRET_ACCESS_KEY = config("AWS_SECRET_ACCESS_KEY")
-AWS_STORAGE_BUCKET_NAME = config("AWS_STORAGE_BUCKET_NAME")
+AWS_ACCESS_KEY_ID = config("AWS_ACCESS_KEY_ID", default=None)
+AWS_SECRET_ACCESS_KEY = config("AWS_SECRET_ACCESS_KEY", default=None)
+AWS_STORAGE_BUCKET_NAME = config("AWS_STORAGE_BUCKET_NAME", default=None)
 AWS_S3_REGION_NAME = config("AWS_S3_REGION_NAME", default="eu-north-1")
-AWS_S3_CUSTOM_DOMAIN = f"{AWS_STORAGE_BUCKET_NAME}.s3.amazonaws.com"
 
-AWS_S3_FILE_OVERWRITE = False
-AWS_DEFAULT_ACL = None
-AWS_QUERYSTRING_AUTH = False
-AWS_S3_OBJECT_PARAMETERS = {
-    "ACL": "private",  # explicitly safe for ACL-disabled buckets
-}
+# Use AWS S3 only if credentials are provided and not in DEBUG mode
+USE_S3 = AWS_ACCESS_KEY_ID and AWS_SECRET_ACCESS_KEY and AWS_STORAGE_BUCKET_NAME and not DEBUG
 
-# --- STATIC FILES ---
-STATIC_URL = f"https://{AWS_S3_CUSTOM_DOMAIN}/static/"
-#STATICFILES_STORAGE = "mysite.storage_backends.StaticStorage"
-STATICFILES_DIRS = [
-    BASE_DIR / "static",
-]
-STATIC_ROOT = BASE_DIR / "staticfiles"  # DO NOT COMMENT THIS
-
-# --- MEDIA FILES ---
-MEDIA_URL = f"https://{AWS_S3_CUSTOM_DOMAIN}/media/"
-#DEFAULT_FILE_STORAGE = "mysite.storage_backends.MediaStorage"
-
-
-STORAGES = {
-    "default": {
-        "BACKEND": "mysite.storage_backends.MediaStorage",
-    },
-    "staticfiles": {
-        "BACKEND": "mysite.storage_backends.StaticStorage",
-    },
-}
+if USE_S3:
+    AWS_S3_CUSTOM_DOMAIN = f"{AWS_STORAGE_BUCKET_NAME}.s3.amazonaws.com"
+    AWS_S3_FILE_OVERWRITE = False
+    AWS_DEFAULT_ACL = None
+    AWS_QUERYSTRING_AUTH = False
+    AWS_S3_OBJECT_PARAMETERS = {
+        "ACL": "private",  # explicitly safe for ACL-disabled buckets
+    }
+    
+    # --- STATIC FILES ---
+    STATIC_URL = f"https://{AWS_S3_CUSTOM_DOMAIN}/static/"
+    STATICFILES_DIRS = [
+        BASE_DIR / "static",
+    ]
+    STATIC_ROOT = BASE_DIR / "staticfiles"  # DO NOT COMMENT THIS
+    
+    # --- MEDIA FILES ---
+    MEDIA_URL = f"https://{AWS_S3_CUSTOM_DOMAIN}/media/"
+    
+    STORAGES = {
+        "default": {
+            "BACKEND": "mysite.storage_backends.MediaStorage",
+        },
+        "staticfiles": {
+            "BACKEND": "mysite.storage_backends.StaticStorage",
+        },
+    }
+else:
+    # Local development - use local file storage
+    STATIC_URL = '/static/'
+    STATICFILES_DIRS = [
+        BASE_DIR / "static",
+    ]
+    STATIC_ROOT = BASE_DIR / "staticfiles"
+    
+    MEDIA_URL = '/media/'
+    MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
+    
+    STORAGES = {
+        "default": {
+            "BACKEND": "django.core.files.storage.FileSystemStorage",
+        },
+        "staticfiles": {
+            "BACKEND": "django.contrib.staticfiles.storage.StaticFilesStorage",
+        },
+    }

@@ -41,6 +41,25 @@
         display: none;
     }
     
+    /* Fix image display in modal - prevent cropping */
+    #imageCarousel {
+        display: flex !important;
+        align-items: center !important;
+        justify-content: center !important;
+        background-color: #f3f4f6 !important;
+        min-height: 16rem !important;
+        max-height: 24rem !important;
+    }
+    
+    #modalImageSrc {
+        object-fit: contain !important;
+        object-position: center !important;
+        max-width: 100% !important;
+        max-height: 24rem !important;
+        width: auto !important;
+        height: auto !important;
+    }
+    
     /* Fix navigation arrows CSS conflict */
     #prevImage, #nextImage {
         z-index: 1000 !important;
@@ -116,7 +135,7 @@
                 
                 <!-- Search and Filter Bar -->
                 <!-- DON'T REMOVE THIS COMMENT - CLIENT REQUESTED TO HIDE SEARCH/FILTER -->
-                <!-- <div class="rounded-lg border bg-card text-card-foreground shadow-sm p-6 mb-8 shadow-soft">
+                <div class="rounded-lg border bg-card text-card-foreground shadow-sm p-6 mb-8 shadow-soft">
                     <form method="GET" class="grid md:grid-cols-4 gap-4">
                         <div class="relative">
                             <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-search absolute left-3 top-3 h-4 w-4 text-muted-foreground">
@@ -127,7 +146,7 @@
                         </div>
                         <select name="property_type" class="h-10 w-full rounded-md border border-input bg-background px-3 py-2 text-sm ring-offset-background focus:outline-none focus:ring-2 focus:ring-ring focus:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50 appearance-none cursor-pointer">
                             <option value="">Property Type</option>
-                            <option value="sale" {% if request.GET.property_type == 'sale' %}selected{% endif %}>For Sale</option>
+                            <option value="buy" {% if request.GET.property_type == 'buy' %}selected{% endif %}>For Sale</option>
                             <option value="lease" {% if request.GET.property_type == 'lease' %}selected{% endif %}>For Lease</option>
                             </select>
                         <select name="price_range" class="h-10 w-full rounded-md border border-input bg-background px-3 py-2 text-sm ring-offset-background focus:outline-none focus:ring-2 focus:ring-ring focus:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50 appearance-none cursor-pointer">
@@ -145,11 +164,11 @@
                                 Search
                             </button>
                     </form>
-    </div> -->
+    </div>
 
     <!-- Properties Grid -->
     <!-- DON'T REMOVE THIS COMMENT - CLIENT REQUESTED TO HIDE LISTINGS -->
-    <!-- {% if properties %}
+     {% if properties %}
                 <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-6 mb-16">
                     {% for property in properties %}
                     <div class="rounded-lg border bg-card text-card-foreground shadow-sm group overflow-hidden shadow-soft hover:shadow-medium transition-all duration-300 animate-fade-in" data-property-id="{{ property.id }}">
@@ -164,11 +183,11 @@
                                     </svg>
                     </div>
                     {% endif %}
-                            <div class="absolute top-4 left-4 flex gap-2">
-                                <div class="inline-flex items-center rounded-full border px-2.5 py-0.5 text-xs font-semibold transition-colors focus:outline-none focus:ring-2 focus:ring-ring focus:ring-offset-2 border-transparent {% if property.property_type == 'lease' %}hover:bg-secondary/80 bg-primary text-primary-foreground{% else %}hover:bg-primary/80 bg-primary text-primary-foreground{% endif %}">
-                                    {{ property.get_property_type_display }}
-                        </div>
-                    </div>
+                            <div class="absolute top-4 left-4 flex gap-2 flex-wrap">
+                                <div class="inline-flex items-center rounded-full border px-2.5 py-0.5 text-xs font-semibold transition-colors focus:outline-none focus:ring-2 focus:ring-ring focus:ring-offset-2 border-transparent bg-primary text-primary-foreground">
+                                    {{ property.get_property_status_display }}
+                                </div>
+                            </div>
                             <button onclick="toggleFavorite('{{ property.id }}')" class="inline-flex items-center justify-center gap-2 whitespace-nowrap text-sm font-medium ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 [&_svg]:pointer-events-none [&_svg]:size-4 [&_svg]:shrink-0 hover:text-accent-foreground h-9 rounded-md px-3 absolute top-4 right-4 bg-background/80 hover:bg-background text-primary favorite-btn" data-property-id="{{ property.id }}">
                                 <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-heart h-4 w-4">
                                     <path d="M19 14c1.49-1.46 3-3.21 3-5.5A5.5 5.5 0 0 0 16.5 3c-1.76 0-3 .5-4.5 2-1.5-1.5-2.74-2-4.5-2A5.5 5.5 0 0 0 2 8.5c0 2.3 1.5 4.05 3 5.5l7 7Z"></path>
@@ -178,13 +197,16 @@
                         <div class="p-6 space-y-4">
                             <div>
                                 <h3 class="text-lg font-semibold text-foreground mb-2 line-clamp-1">{{ property.title }}</h3>
-                                <div class="flex items-center text-muted-foreground mb-3">
+                                <div class="flex items-center text-muted-foreground mb-1">
                                     <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-map-pin h-4 w-4 mr-1">
                                         <path d="M20 10c0 4.993-5.539 10.193-7.399 11.799a1 1 0 0 1-1.202 0C9.539 20.193 4 14.993 4 10a8 8 0 0 1 16 0"></path>
                                         <circle cx="12" cy="10" r="3"></circle>
                                     </svg>
                                     <span class="text-sm">{{ property.location }}</span>
-                        </div>
+                                </div>
+                                {% if property.listing_agent_name %}
+                                <p class="text-xs text-muted-foreground">Courtesy to listing agent {{ property.listing_agent_name }}</p>
+                                {% endif %}
                             </div>
                             <div class="flex items-center justify-between text-sm text-muted-foreground">
                                 <div class="flex items-center space-x-4">
@@ -225,7 +247,24 @@
                                 <div class="text-2xl font-bold text-primary">
                                     {{ property.price|format_price_with_type:property.property_type }}
                     </div>
-                                <button onclick="openPropertyModal('{{ property.id }}', '{{ property.title }}', '{{ property.location }}', '{{ property.price }}', '{{ property.property_type }}', '{{ property.bedrooms }}', '{{ property.bathrooms }}', '{{ property.area_sqft }}', '{{ property.description|default:"" }}', '{{ property.get_all_image_urls|join:"|||" }}')" class="inline-flex items-center justify-center gap-2 whitespace-nowrap rounded-md text-sm font-medium ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 [&_svg]:pointer-events-none [&_svg]:size-4 [&_svg]:shrink-0 border bg-background h-10 px-4 py-2 border-primary text-primary hover:bg-primary hover:text-primary-foreground">View Details</button>
+                                <button type="button"
+                                    class="view-details inline-flex items-center justify-center gap-2 whitespace-nowrap rounded-md text-sm font-medium ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 [&_svg]:pointer-events-none [&_svg]:size-4 [&_svg]:shrink-0 border bg-background h-10 px-4 py-2 border-primary text-primary hover:bg-primary hover:text-primary-foreground"
+                                    data-id="{{ property.id }}"
+                                    data-title="{{ property.title|escapejs }}"
+                                    data-location="{{ property.location|escapejs }}"
+                                    data-price="{{ property.price }}"
+                                    data-type="{{ property.property_type }}"
+                                    data-bedrooms="{{ property.bedrooms|default_if_none:'' }}"
+                                    data-bathrooms="{{ property.bathrooms|default_if_none:'' }}"
+                                    data-area="{{ property.area_sqft|default_if_none:'' }}"
+                                    data-description="{{ property.description|default:''|escapejs }}"
+                                    data-images="{{ property.get_all_image_urls|join:'|||' }}"
+                                    data-main-image="{{ property.get_main_image_url|default:'' }}"
+                                    data-status="{{ property.property_status }}"
+                                    data-agent-name="{{ property.listing_agent_name|default:''|escapejs }}"
+                                    data-agent-image="{{ property.get_listing_agent_image_url|default:'' }}">
+                                    View Details
+                                </button>
                 </div>
             </div>
                 </div>
@@ -243,7 +282,7 @@
                     <h3 class="text-2xl font-semibold text-foreground mb-4 text-center">No Properties Found</h3>
                     <p class="text-muted-foreground text-center max-w-lg text-lg">We're working on adding more properties. Check back soon or contact us for personalized assistance.</p>
     </div>
-    {% endif %} -->
+    {% endif %}
             
         </div>
     </div>
@@ -259,8 +298,8 @@
                 </div>
             <div class="space-y-6">
                 <div id="modalImage" class="relative">
-                    <div id="imageCarousel" class="relative overflow-hidden rounded-lg">
-                        <img id="modalImageSrc" src="" alt="Property Image" class="w-full h-64 md:h-80 object-cover transition-opacity duration-300">
+                    <div id="imageCarousel" class="relative overflow-hidden rounded-lg flex items-center justify-center bg-gray-100" style="min-height: 16rem; max-height: 24rem;">
+                        <img id="modalImageSrc" src="" alt="Property Image" class="w-full max-h-[24rem] object-contain transition-opacity duration-300">
                         </div>
                     <div id="imageNavigation" class="hidden">
                         <button id="prevImage" class="absolute left-2 top-1/2 transform -translate-y-1/2 bg-black text-white p-4 rounded-full hover:bg-gray-800 transition-all shadow-2xl border-2 border-white">
@@ -291,6 +330,10 @@
                                 <span id="modalLocation">-</span>
                         </div>
                             <div class="flex justify-between">
+                                <span class="text-muted-foreground">Status:</span>
+                                <span id="modalStatus">-</span>
+                            </div>
+                            <div class="flex justify-between">
                                 <span class="text-muted-foreground">Bedrooms:</span>
                                 <span id="modalBedrooms">-</span>
                     </div>
@@ -313,12 +356,23 @@
                         </div>
                         </div>
                     </div>
+                <div id="modalListingAgent" class="hidden border-t pt-4">
+                    <h3 class="text-xl font-semibold mb-3">Listing Agent</h3>
+                    <div class="flex items-center gap-4">
+                        <img id="modalListingAgentImage" src="" alt="Listing Agent" class="w-20 h-20 rounded-lg object-cover hidden border border-gray-200 shadow-sm">
+                        <div>
+                            <p id="modalListingAgentName" class="text-base font-medium text-foreground mb-1"></p>
+                            <p class="text-sm text-muted-foreground">Courtesy to listing agent</p>
+                        </div>
+                    </div>
+                </div>
                 <div id="modalDescription" class="hidden">
                     <h3 class="text-xl font-semibold mb-4">Description</h3>
                     <p id="modalDescriptionText" class="text-muted-foreground leading-relaxed">-</p>
                 </div>
                 <div class="flex gap-4">
-                    <button onclick="scheduleViewing()" class="inline-flex items-center justify-center gap-2 whitespace-nowrap rounded-md text-sm font-medium ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 [&_svg]:pointer-events-none [&_svg]:size-4 [&_svg]:shrink-0 h-10 px-4 py-2 flex-1 bg-primary hover:bg-primary-dark text-primary-foreground">Schedule Viewing</button>
+                    <!-- Schedule Viewing button commented out - keeping only Contact Agent -->
+                    <!-- <button onclick="scheduleViewing()" class="inline-flex items-center justify-center gap-2 whitespace-nowrap rounded-md text-sm font-medium ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 [&_svg]:pointer-events-none [&_svg]:size-4 [&_svg]:shrink-0 h-10 px-4 py-2 flex-1 bg-primary hover:bg-primary-dark text-primary-foreground">Schedule Viewing</button> -->
                     <button onclick="contactAboutProperty()" class="inline-flex items-center justify-center gap-2 whitespace-nowrap rounded-md text-sm font-medium ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 [&_svg]:pointer-events-none [&_svg]:size-4 [&_svg]:shrink-0 border bg-background h-10 px-4 py-2 flex-1 border-accent text-accent hover:bg-accent hover:text-accent-foreground">Contact Agent</button>
                         </div>
                     </div>
@@ -336,7 +390,30 @@
         let currentImageIndex = 0;
         let propertyImages = [];
         
-        function openPropertyModal(id, title, location, price, propertyType, bedrooms, bathrooms, area, description, additionalImages) {
+        // Handle "View Details" buttons safely via data attributes
+        document.addEventListener('click', function(e) {
+            const btn = e.target.closest('.view-details');
+            if (!btn) return;
+            const imagesRaw = btn.dataset.images || '';
+            openPropertyModal(
+                btn.dataset.id,
+                btn.dataset.title || '',
+                btn.dataset.location || '',
+                btn.dataset.price || '',
+                btn.dataset.type || '',
+                btn.dataset.bedrooms || '',
+                btn.dataset.bathrooms || '',
+                btn.dataset.area || '',
+                btn.dataset.description || '',
+                imagesRaw,
+                btn.dataset.status || '',
+                btn.dataset.agentName || '',
+                btn.dataset.agentImage || '',
+                btn.dataset.mainImage || ''
+            );
+        });
+        
+        function openPropertyModal(id, title, location, price, propertyType, bedrooms, bathrooms, area, description, additionalImages, propertyStatus, listingAgentName, listingAgentImageUrl, mainImage) {
             document.getElementById('modal-title').textContent = title;
             document.getElementById('modalLocation').textContent = location;
             
@@ -347,9 +424,34 @@
                 document.getElementById('modalPrice').textContent = '$' + parseFloat(price).toLocaleString();
             }
             
+            // Status
+            const statusElement = document.getElementById('modalStatus');
+            if (statusElement) {
+                statusElement.textContent = propertyStatus ? propertyStatus.replace(/_/g, ' ').replace(/\b\w/g, l => l.toUpperCase()) : '-';
+            }
+            
             document.getElementById('modalBedrooms').textContent = bedrooms || '-';
             document.getElementById('modalBathrooms').textContent = bathrooms || '-';
             document.getElementById('modalArea').textContent = area ? parseFloat(area).toLocaleString() : '-';
+            
+            // Listing agent
+            const agentSection = document.getElementById('modalListingAgent');
+            const agentNameEl = document.getElementById('modalListingAgentName');
+            const agentImgEl = document.getElementById('modalListingAgentImage');
+            if (listingAgentName || listingAgentImageUrl) {
+                if (agentSection) agentSection.classList.remove('hidden');
+                if (agentNameEl) agentNameEl.textContent = listingAgentName || 'Listing Agent';
+                if (agentImgEl) {
+                    if (listingAgentImageUrl) {
+                        agentImgEl.src = listingAgentImageUrl;
+                        agentImgEl.classList.remove('hidden');
+                    } else {
+                        agentImgEl.classList.add('hidden');
+                    }
+                }
+            } else {
+                if (agentSection) agentSection.classList.add('hidden');
+            }
             
             // Handle description
             if (description && description.trim()) {
@@ -360,7 +462,7 @@
             }
             
             // Set up images
-            setupPropertyImages(id, title, additionalImages);
+            setupPropertyImages(id, title, additionalImages, mainImage);
             
             // Set up features based on property data
             setupPropertyFeatures(bedrooms, bathrooms, area, propertyType);
@@ -369,20 +471,72 @@
             document.body.style.overflow = 'hidden';
         }
         
-        function setupPropertyImages(propertyId, title, additionalImages) {
-            propertyImages = [];
+        function parseImageList(imagesString) {
+            if (!imagesString || !imagesString.trim()) return [];
+            let raw = imagesString.trim();
             
-            // Add additional images from database (these are now base64 data URLs)
-            if (additionalImages && additionalImages.trim()) {
-                const imageUrls = additionalImages.split('|||').filter(url => url.trim());
-                imageUrls.forEach((url, index) => {
-                    if (url.trim()) {
-                        const trimmedUrl = url.trim();
-                        propertyImages.push({
-                            src: trimmedUrl,
-                            alt: title
-                        });
-                    }
+            // Decode HTML entities (fix escaped semicolons in base64 data URLs)
+            const textarea = document.createElement('textarea');
+            textarea.innerHTML = raw;
+            raw = textarea.value;
+            
+            // Try JSON array
+            if (raw.startsWith('[') && raw.endsWith(']')) {
+                try {
+                    const arr = JSON.parse(raw);
+                    if (Array.isArray(arr)) return arr.filter(Boolean).map(url => {
+                        // Decode HTML entities in each URL
+                        const ta = document.createElement('textarea');
+                        ta.innerHTML = url;
+                        return ta.value;
+                    });
+                } catch (_) {}
+            }
+            
+            // Try common separators
+            const separators = ['|||', '\n', ',', '|'];
+            for (const sep of separators) {
+                if (raw.includes(sep)) {
+                    return raw.split(sep).map(s => {
+                        const trimmed = s.trim();
+                        if (!trimmed) return null;
+                        // Decode HTML entities in each URL
+                        const ta = document.createElement('textarea');
+                        ta.innerHTML = trimmed;
+                        return ta.value;
+                    }).filter(Boolean);
+                }
+            }
+            
+            // Decode single URL
+            const ta = document.createElement('textarea');
+            ta.innerHTML = raw;
+            return [ta.value];
+        }
+        
+        function setupPropertyImages(propertyId, title, additionalImages, mainImage) {
+            propertyImages = [];
+            const seenUrls = new Set(); // Track seen URLs to avoid duplicates
+            
+            // Parse all images from additionalImages (which includes main + all others)
+            const imageUrls = parseImageList(additionalImages);
+            
+            // Add all images, avoiding duplicates
+            imageUrls.forEach((url) => {
+                if (url && url.trim() && !seenUrls.has(url.trim())) {
+                    seenUrls.add(url.trim());
+                    propertyImages.push({
+                        src: url.trim(),
+                        alt: title
+                    });
+                }
+            });
+            
+            // Also add main image if it's not already in the list
+            if (mainImage && mainImage.trim() && !seenUrls.has(mainImage.trim())) {
+                propertyImages.unshift({ // Add at the beginning
+                    src: mainImage.trim(),
+                    alt: title
                 });
             }
             
@@ -393,6 +547,8 @@
                     alt: title
                 });
             }
+            
+            console.log('Property images loaded:', propertyImages.length, propertyImages); // Debug
             
             // Set up carousel
             currentImageIndex = 0;
@@ -405,18 +561,50 @@
             const navigation = document.getElementById('imageNavigation');
             const dotsContainer = document.getElementById('imageDots');
             
-            if (propertyImages.length > 0) {
+            if (propertyImages.length > 0 && currentImageIndex >= 0 && currentImageIndex < propertyImages.length) {
                 const currentImage = propertyImages[currentImageIndex];
+                
+                // Clear previous image to force reload
+                imageElement.src = '';
+                imageElement.style.opacity = '0';
+                
+                // Ensure image loads properly
+                imageElement.onerror = function() {
+                    console.error('Failed to load image:', currentImageIndex, currentImage.src.substring(0, 100));
+                    imageElement.style.opacity = '1';
+                    // Try next image if available
+                    if (propertyImages.length > currentImageIndex + 1) {
+                        currentImageIndex++;
+                        updateImageDisplay();
+                    }
+                };
+                
+                imageElement.onload = function() {
+                    console.log('Image loaded successfully:', currentImageIndex, propertyImages.length);
+                    imageElement.style.opacity = '1';
+                };
+                
+                // Set new image source
                 imageElement.src = currentImage.src;
                 imageElement.alt = currentImage.alt;
+                
+                // Force opacity back in case onload doesn't fire (for cached images)
+                setTimeout(() => {
+                    if (imageElement.complete) {
+                        imageElement.style.opacity = '1';
+                    }
+                }, 100);
                 
                 // Show/hide navigation based on number of images
                 if (propertyImages.length > 1) {
                     navigation.classList.remove('hidden');
-                    setupImageDots();
                 } else {
                     navigation.classList.add('hidden');
                 }
+                
+                setupImageDots();
+            } else {
+                console.error('No images or invalid index:', propertyImages.length, currentImageIndex);
             }
         }
         
@@ -424,15 +612,25 @@
             const prevButton = document.getElementById('prevImage');
             const nextButton = document.getElementById('nextImage');
             
-            prevButton.onclick = () => {
-                currentImageIndex = (currentImageIndex - 1 + propertyImages.length) % propertyImages.length;
-                updateImageDisplay();
-            };
+            if (prevButton) {
+                prevButton.onclick = () => {
+                    if (propertyImages.length > 0) {
+                        currentImageIndex = (currentImageIndex - 1 + propertyImages.length) % propertyImages.length;
+                        console.log('Previous image:', currentImageIndex, propertyImages.length);
+                        updateImageDisplay();
+                    }
+                };
+            }
             
-            nextButton.onclick = () => {
-                currentImageIndex = (currentImageIndex + 1) % propertyImages.length;
-                updateImageDisplay();
-            };
+            if (nextButton) {
+                nextButton.onclick = () => {
+                    if (propertyImages.length > 0) {
+                        currentImageIndex = (currentImageIndex + 1) % propertyImages.length;
+                        console.log('Next image:', currentImageIndex, propertyImages.length);
+                        updateImageDisplay();
+                    }
+                };
+            }
         }
         
         function setupImageDots() {
@@ -537,7 +735,7 @@ document.addEventListener('keydown', function(e) {
     <script>
     // Handle form submission with success popup
     document.addEventListener('DOMContentLoaded', function() {
-        const form = document.querySelector('form[action="{% url 'property_inquiry' %}"]');
+        const form = document.querySelector('form[action="{% url "property_inquiry" %}"]');
         if (form) {
             form.addEventListener('submit', function(e) {
                 e.preventDefault();
@@ -634,6 +832,38 @@ document.addEventListener('keydown', function(e) {
                 favoriteBtn.style.color = 'hsl(var(--destructive))';
             }
         });
+        
+        // Check if property_id is in URL and open modal
+        const urlParams = new URLSearchParams(window.location.search);
+        const propertyId = urlParams.get('property_id');
+        if (propertyId) {
+            // Find the View Details button for this property
+            const viewDetailsBtn = document.querySelector(`button.view-details[data-id="${propertyId}"]`);
+            if (viewDetailsBtn) {
+                // Find the property card and highlight it
+                const propertyCard = viewDetailsBtn.closest('[data-property-id]');
+                if (propertyCard) {
+                    // Add highlight class
+                    propertyCard.classList.add('ring-4', 'ring-primary', 'ring-offset-2');
+                    propertyCard.style.transition = 'all 0.3s ease';
+                    
+                    // Scroll to the card with smooth behavior
+                    setTimeout(() => {
+                        propertyCard.scrollIntoView({ behavior: 'smooth', block: 'center' });
+                    }, 100);
+                    
+                    // Remove highlight after 5 seconds
+                    setTimeout(() => {
+                        propertyCard.classList.remove('ring-4', 'ring-primary', 'ring-offset-2');
+                    }, 5000);
+                }
+                
+                // Click the button to open the modal
+                setTimeout(() => {
+                    viewDetailsBtn.click();
+                }, 300);
+            }
+        }
     });
     </script>
 </body>
