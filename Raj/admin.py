@@ -1,6 +1,6 @@
 from django.contrib import admin
 from django.conf import settings
-from .models import Property, SellingContact, BlogTracking, BlogPost, PropertyListing, PropertyListingImage, OpenHouse, OpenHouseImage, OpenHouseRegistration, PropertyInquiry, MortgageInquiry, LinkTracking
+from .models import Property, SellingContact, BlogTracking, BlogPost, PropertyListing, PropertyListingImage, PropertyListingVideo, OpenHouse, OpenHouseImage, OpenHouseRegistration, PropertyInquiry, MortgageInquiry, LinkTracking, Community
 from .forms import PropertyListingForm, BlogPostForm
 
 # Configure admin site
@@ -13,6 +13,12 @@ class PropertyListingImageInline(admin.TabularInline):
     model = PropertyListingImage
     extra = 1
     fields = ('image_file', 'image_url', 'caption', 'is_primary', 'order')
+    ordering = ('order',)
+
+class PropertyListingVideoInline(admin.TabularInline):
+    model = PropertyListingVideo
+    extra = 1
+    fields = ('video_file', 'video_url', 'caption', 'is_primary', 'order')
     ordering = ('order',)
 
 # Register your models here.
@@ -70,17 +76,42 @@ class BlogTrackingAdmin(admin.ModelAdmin):
         return self.readonly_fields
 
 
+@admin.register(Community)
+class CommunityAdmin(admin.ModelAdmin):
+    list_display = ('name', 'slug', 'featured', 'published', 'created_at')
+    list_filter = ('featured', 'published', 'created_at')
+    search_fields = ('name', 'description')
+    prepopulated_fields = {'slug': ('name',)}
+    readonly_fields = ('created_at', 'updated_at')
+    fieldsets = (
+        ('Basic Information', {
+            'fields': ('name', 'slug', 'description')
+        }),
+        ('Image', {
+            'fields': ('image_file', 'image_url'),
+            'description': 'Upload a community image file or provide an image URL/data URL.'
+        }),
+        ('Settings', {
+            'fields': ('featured', 'published')
+        }),
+        ('Timestamps', {
+            'fields': ('created_at', 'updated_at'),
+            'classes': ('collapse',)
+        }),
+    )
+
+
 @admin.register(PropertyListing)
 class PropertyListingAdmin(admin.ModelAdmin):
     form = PropertyListingForm
-    inlines = [PropertyListingImageInline]
-    list_display = ('title', 'property_type', 'property_status', 'price', 'location', 'bedrooms', 'bathrooms', 'featured', 'published', 'created_at')
-    list_filter = ('property_type', 'property_status', 'featured', 'published', 'bedrooms', 'bathrooms', 'created_at')
+    inlines = [PropertyListingImageInline, PropertyListingVideoInline]
+    list_display = ('title', 'property_type', 'property_status', 'price', 'location', 'community', 'bedrooms', 'bathrooms', 'featured', 'published', 'created_at')
+    list_filter = ('property_type', 'property_status', 'community', 'featured', 'published', 'bedrooms', 'bathrooms', 'created_at')
     search_fields = ('title', 'location', 'address', 'description')
     readonly_fields = ('created_at', 'updated_at')
     fieldsets = (
         ('Basic Information', {
-            'fields': ('title', 'property_type', 'property_status', 'price', 'location', 'address')
+            'fields': ('title', 'property_type', 'property_status', 'price', 'location', 'address', 'community')
         }),
         ('Property Details', {
             'fields': ('bedrooms', 'bathrooms', 'parking_spaces', 'area_sqft', 'description')
@@ -88,6 +119,10 @@ class PropertyListingAdmin(admin.ModelAdmin):
         ('Main Image', {
             'fields': ('image_file', 'image_url'),
             'description': 'Main property image. You can either upload an image file or provide an image URL/data URL. If both are provided, the uploaded file will be used. Data URLs (base64) are supported for direct image embedding.'
+        }),
+        ('Main Video', {
+            'fields': ('video_file', 'video_url'),
+            'description': 'Main property video. You can either upload a video file (MP4, WebM) or provide a video URL (YouTube, Vimeo, or direct video URL).'
         }),
         ('Contact Information', {
             'fields': ('contact_email', 'contact_phone')

@@ -74,6 +74,30 @@
         transform: translateY(-50%) scale(1.1) !important;
         transition: all 0.3s ease !important;
     }
+    
+    /* Prevent video download */
+    video::-webkit-media-controls-enclosure {
+        overflow: hidden;
+    }
+    video::-webkit-media-controls-panel {
+        width: calc(100% + 32px);
+    }
+    /* Hide download button in video controls */
+    video::-internal-media-controls-download-button {
+        display: none !important;
+    }
+    video::-webkit-media-controls-download-button {
+        display: none !important;
+    }
+    /* Prevent text selection on video */
+    #modalVideoSrc {
+        -webkit-touch-callout: none;
+        -webkit-user-select: none;
+        -khtml-user-select: none;
+        -moz-user-select: none;
+        -ms-user-select: none;
+        user-select: none;
+    }
     </style>
     
 </head>
@@ -88,47 +112,47 @@
                 </div>
                 
                 <!-- Contact Form -->
-                <div class="rounded-lg border bg-card text-card-foreground shadow-sm p-8 shadow-medium mb-8">
-                <div class="text-center mb-8">
-                        <p class="text-muted-foreground text-lg">Tell us more by filling the form below and let our expert team help you</p>
+                <div class="rounded-lg border bg-card text-card-foreground shadow-sm p-6 shadow-medium mb-8">
+                <div class="text-center mb-6">
+                        <p class="text-muted-foreground text-base">Tell us more by filling the form below and let our expert team help you</p>
                 </div>
-                    <form method="POST" action="{% url 'property_inquiry' %}" class="grid md:grid-cols-2 gap-6 max-w-4xl mx-auto">
+                    <form method="POST" action="{% url 'property_inquiry' %}" class="grid md:grid-cols-2 gap-4 max-w-4xl mx-auto">
                         {% csrf_token %}
-                        <div class="space-y-2">
+                        <div class="space-y-1.5">
                             <label class="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70" for="name">Name</label>
                     <div class="relative">
                                 <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-user absolute left-3 top-3 h-4 w-4 text-muted-foreground">
                                     <path d="M19 21v-2a4 4 0 0 0-4-4H9a4 4 0 0 0-4 4v2"></path>
                                     <circle cx="12" cy="7" r="4"></circle>
                                 </svg>
-                                <input name="name" class="flex h-10 w-full rounded-md border border-input bg-background px-3 py-2 text-base ring-offset-background file:border-0 file:bg-transparent file:text-sm file:font-medium file:text-foreground placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50 md:text-sm pl-10" id="name" placeholder="Enter your name">
+                                <input name="name" required class="flex h-10 w-full rounded-md border border-input bg-background px-3 py-2 text-sm ring-offset-background file:border-0 file:bg-transparent file:text-sm file:font-medium file:text-foreground placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50 pl-10" id="name" placeholder="Enter your name">
                         </div>
                         </div>
-                        <div class="space-y-2">
+                        <div class="space-y-1.5">
                             <label class="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70" for="email">Email</label>
                             <div class="relative">
                                 <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-mail absolute left-3 top-3 h-4 w-4 text-muted-foreground">
                                     <rect width="20" height="16" x="2" y="4" rx="2"></rect>
                                     <path d="m22 7-8.97 5.7a1.94 1.94 0 0 1-2.06 0L2 7"></path>
                                 </svg>
-                                <input type="email" name="email" class="flex h-10 w-full rounded-md border border-input bg-background px-3 py-2 text-base ring-offset-background file:border-0 file:bg-transparent file:text-sm file:font-medium file:text-foreground placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50 md:text-sm pl-10" id="email" placeholder="Enter your email">
+                                <input type="email" name="email" required class="flex h-10 w-full rounded-md border border-input bg-background px-3 py-2 text-sm ring-offset-background file:border-0 file:bg-transparent file:text-sm file:font-medium file:text-foreground placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50 pl-10" id="email" placeholder="Enter your email">
                     </div>
                         </div>
-                        <div class="space-y-2">
+                        <div class="space-y-1.5">
                             <label class="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70" for="phone">Phone Number</label>
                             <div class="relative">
                                 <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-phone absolute left-3 top-3 h-4 w-4 text-muted-foreground">
                                     <path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"></path>
                     </svg>
-                                <input name="phone" class="flex h-10 w-full rounded-md border border-input bg-background px-3 py-2 text-base ring-offset-background file:border-0 file:bg-transparent file:text-sm file:font-medium file:text-foreground placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50 md:text-sm pl-10" id="phone" placeholder="Enter your phone number">
+                                <input name="phone" required class="flex h-10 w-full rounded-md border border-input bg-background px-3 py-2 text-sm ring-offset-background file:border-0 file:bg-transparent file:text-sm file:font-medium file:text-foreground placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50 pl-10" id="phone" placeholder="Enter your phone number">
                         </div>
                     </div>
-                        <div class="md:col-span-2 space-y-2">
+                        <div class="md:col-span-2 space-y-1.5">
                             <label class="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70" for="requirements">Additional Details</label>
-                            <textarea name="requirements" class="flex w-full rounded-md border border-input bg-background px-3 py-2 text-sm ring-offset-background placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50 min-h-[120px]" id="requirements" placeholder="Tell us about your specific requirements, preferences, or any questions you have..."></textarea>
+                            <textarea name="requirements" class="flex w-full rounded-md border border-input bg-background px-3 py-2 text-sm ring-offset-background placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50 min-h-[90px]" id="requirements" placeholder="Tell us about your specific requirements, preferences, or any questions you have..."></textarea>
         </div>
-                        <div class="md:col-span-2 text-center">
-                            <button type="submit" class="inline-flex items-center justify-center gap-2 whitespace-nowrap text-sm ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 [&_svg]:pointer-events-none [&_svg]:size-4 [&_svg]:shrink-0 hover:bg-primary/90 h-11 rounded-md bg-primary hover:bg-primary-dark text-primary-foreground font-semibold px-8 border border-primary shadow-md hover:shadow-lg">Get Personalized Recommendations</button>
+                        <div class="md:col-span-2 text-center mt-3">
+                            <button type="submit" class="inline-flex items-center justify-center gap-2 whitespace-nowrap text-sm ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 [&_svg]:pointer-events-none [&_svg]:size-4 [&_svg]:shrink-0 hover:bg-primary/90 h-10 rounded-md bg-primary hover:bg-primary-dark text-primary-foreground font-semibold px-10 py-2 border border-primary shadow-md hover:shadow-lg">Get Personalized Recommendations</button>
     </div>
                     </form>
                 </div>
@@ -260,9 +284,12 @@
                                     data-description="{{ property.description|default:''|escapejs }}"
                                     data-images="{{ property.get_all_image_urls|join:'|||' }}"
                                     data-main-image="{{ property.get_main_image_url|default:'' }}"
+                                    data-media='{{ property.get_all_media_urls|to_json }}'
                                     data-status="{{ property.property_status }}"
                                     data-agent-name="{{ property.listing_agent_name|default:''|escapejs }}"
-                                    data-agent-image="{{ property.get_listing_agent_image_url|default:'' }}">
+                                    data-agent-image="{{ property.get_listing_agent_image_url|default:'' }}"
+                                    data-contact-email="{{ property.contact_email }}"
+                                    data-contact-phone="{{ property.contact_phone }}">
                                     View Details
                                 </button>
                 </div>
@@ -297,9 +324,12 @@
                 <h2 id="modal-title" class="tracking-tight text-2xl font-bold">Property Details</h2>
                 </div>
             <div class="space-y-6">
-                <div id="modalImage" class="relative">
-                    <div id="imageCarousel" class="relative overflow-hidden rounded-lg flex items-center justify-center bg-gray-100" style="min-height: 16rem; max-height: 24rem;">
-                        <img id="modalImageSrc" src="" alt="Property Image" class="w-full max-h-[24rem] object-contain transition-opacity duration-300">
+                <div id="modalMedia" class="relative">
+                    <div id="mediaCarousel" class="relative overflow-hidden rounded-lg flex items-center justify-center bg-gray-100" style="min-height: 16rem; max-height: 24rem; width: 100%; display: flex; align-items: center; justify-content: center;">
+                        <img id="modalImageSrc" src="" alt="Property Image" class="w-full max-h-[24rem] object-contain transition-opacity duration-300 hidden">
+                        <video id="modalVideoSrc" controls controlsList="nodownload noplaybackrate" disablePictureInPicture oncontextmenu="return false;" onselectstart="return false;" ondragstart="return false;" class="w-full h-full max-h-[24rem] object-contain transition-opacity duration-300 hidden" style="aspect-ratio: auto; user-select: none; -webkit-user-select: none; -moz-user-select: none; -ms-user-select: none;">
+                            Your browser does not support the video tag.
+                        </video>
                         </div>
                     <div id="imageNavigation" class="hidden">
                         <button id="prevImage" class="absolute left-2 top-1/2 transform -translate-y-1/2 bg-black text-white p-4 rounded-full hover:bg-gray-800 transition-all shadow-2xl border-2 border-white">
@@ -370,11 +400,25 @@
                     <h3 class="text-xl font-semibold mb-4">Description</h3>
                     <p id="modalDescriptionText" class="text-muted-foreground leading-relaxed">-</p>
                 </div>
-                <div class="flex gap-4">
-                    <!-- Schedule Viewing button commented out - keeping only Contact Agent -->
-                    <!-- <button onclick="scheduleViewing()" class="inline-flex items-center justify-center gap-2 whitespace-nowrap rounded-md text-sm font-medium ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 [&_svg]:pointer-events-none [&_svg]:size-4 [&_svg]:shrink-0 h-10 px-4 py-2 flex-1 bg-primary hover:bg-primary-dark text-primary-foreground">Schedule Viewing</button> -->
-                    <button onclick="contactAboutProperty()" class="inline-flex items-center justify-center gap-2 whitespace-nowrap rounded-md text-sm font-medium ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 [&_svg]:pointer-events-none [&_svg]:size-4 [&_svg]:shrink-0 border bg-background h-10 px-4 py-2 flex-1 border-accent text-accent hover:bg-accent hover:text-accent-foreground">Contact Agent</button>
-                        </div>
+                <div class="border-t pt-4">
+                    <h3 class="text-xl font-semibold mb-4">Contact Raj</h3>
+                    <div class="grid grid-cols-2 gap-4">
+                        <a id="modalContactPhone" href="tel:832-785-0140" class="inline-flex items-center justify-center gap-2 whitespace-nowrap rounded-md text-sm font-medium ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 bg-primary text-primary-foreground hover:bg-primary/90 h-12 px-4 py-2">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-phone">
+                                <path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"></path>
+                            </svg>
+                            Call Raj
+                        </a>
+                        <a id="modalContactEmail" href="mailto:raj.gupta@kw.com" class="inline-flex items-center justify-center gap-2 whitespace-nowrap rounded-md text-sm font-medium ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 border bg-background h-12 px-4 py-2 border-primary text-primary hover:bg-primary hover:text-primary-foreground">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-mail">
+                                <rect width="20" height="16" x="2" y="4" rx="2"></rect>
+                                <path d="m22 7-10 5L2 7"></path>
+                            </svg>
+                            Email Raj
+                        </a>
+                    </div>
+                    <p class="text-sm text-muted-foreground mt-3 text-center">Get expert advice on this property</p>
+                </div>
                     </div>
             <button type="button" onclick="closePropertyModal()" class="absolute right-4 top-4 rounded-sm opacity-70 ring-offset-background transition-opacity data-[state=open]:bg-accent data-[state=open]:text-muted-foreground hover:opacity-100 focus:outline-none focus:ring-2 focus:ring-ring focus:ring-offset-2 disabled:pointer-events-none">
                 <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-x h-4 w-4">
@@ -387,8 +431,8 @@
                 </div>
                 
     <script>
-        let currentImageIndex = 0;
-        let propertyImages = [];
+        let currentMediaIndex = 0;
+        let propertyMedia = []; // Array of {type: 'image'|'video', url: string, alt?: string}
         
         // Handle "View Details" buttons safely via data attributes
         document.addEventListener('click', function(e) {
@@ -409,13 +453,26 @@
                 btn.dataset.status || '',
                 btn.dataset.agentName || '',
                 btn.dataset.agentImage || '',
-                btn.dataset.mainImage || ''
+                btn.dataset.mainImage || '',
+                btn.dataset.contactEmail || 'raj.gupta@kw.com',
+                btn.dataset.contactPhone || '(832) 785-0140',
+                btn.dataset.media || '[]'
             );
         });
         
-        function openPropertyModal(id, title, location, price, propertyType, bedrooms, bathrooms, area, description, additionalImages, propertyStatus, listingAgentName, listingAgentImageUrl, mainImage) {
+        function openPropertyModal(id, title, location, price, propertyType, bedrooms, bathrooms, area, description, additionalImages, propertyStatus, listingAgentName, listingAgentImageUrl, mainImage, contactEmail, contactPhone, mediaData) {
             document.getElementById('modal-title').textContent = title;
             document.getElementById('modalLocation').textContent = location;
+            
+            // Update contact links
+            const contactPhoneLink = document.getElementById('modalContactPhone');
+            const contactEmailLink = document.getElementById('modalContactEmail');
+            if (contactPhoneLink && contactPhone) {
+                contactPhoneLink.href = 'tel:' + contactPhone.replace(/[^\d+]/g, '');
+            }
+            if (contactEmailLink && contactEmail) {
+                contactEmailLink.href = 'mailto:' + contactEmail;
+            }
             
             // Format price based on property type
             if (propertyType === 'lease') {
@@ -461,8 +518,8 @@
                 document.getElementById('modalDescription').classList.add('hidden');
             }
             
-            // Set up images
-            setupPropertyImages(id, title, additionalImages, mainImage);
+            // Set up media (images + videos)
+            setupPropertyMedia(id, title, additionalImages, mainImage, mediaData);
             
             // Set up features based on property data
             setupPropertyFeatures(bedrooms, bathrooms, area, propertyType);
@@ -514,46 +571,246 @@
             return [ta.value];
         }
         
-        function setupPropertyImages(propertyId, title, additionalImages, mainImage) {
-            propertyImages = [];
+        function setupPropertyMedia(propertyId, title, additionalImages, mainImage, mediaData) {
+            propertyMedia = [];
             const seenUrls = new Set(); // Track seen URLs to avoid duplicates
             
-            // Parse all images from additionalImages (which includes main + all others)
-            const imageUrls = parseImageList(additionalImages);
+            // Try to parse mediaData (JSON array with type and url)
+            try {
+                // Remove any HTML entities and clean the string
+                let cleanMediaData = mediaData || '[]';
+                if (typeof cleanMediaData === 'string') {
+                    // Decode HTML entities
+                    const textarea = document.createElement('textarea');
+                    textarea.innerHTML = cleanMediaData;
+                    cleanMediaData = textarea.value;
+                }
+                
+                const mediaArray = JSON.parse(cleanMediaData);
+                console.log('Parsed media array:', mediaArray);
+                
+                if (Array.isArray(mediaArray) && mediaArray.length > 0) {
+                    mediaArray.forEach((item) => {
+                        if (item && item.url && item.url.trim() && !seenUrls.has(item.url.trim())) {
+                            seenUrls.add(item.url.trim());
+                            propertyMedia.push({
+                                type: item.type || 'image',
+                                url: item.url.trim(),
+                                alt: title
+                            });
+                        }
+                    });
+                }
+            } catch (e) {
+                console.error('Could not parse mediaData:', e, 'Raw data:', mediaData);
+                console.log('Falling back to images only');
+            }
             
-            // Add all images, avoiding duplicates
-            imageUrls.forEach((url) => {
-                if (url && url.trim() && !seenUrls.has(url.trim())) {
-                    seenUrls.add(url.trim());
-                    propertyImages.push({
-                        src: url.trim(),
+            // Fallback: Parse all images from additionalImages (which includes main + all others)
+            if (propertyMedia.length === 0) {
+                const imageUrls = parseImageList(additionalImages);
+                
+                // Add all images, avoiding duplicates
+                imageUrls.forEach((url) => {
+                    if (url && url.trim() && !seenUrls.has(url.trim())) {
+                        seenUrls.add(url.trim());
+                        propertyMedia.push({
+                            type: 'image',
+                            url: url.trim(),
+                            alt: title
+                        });
+                    }
+                });
+                
+                // Also add main image if it's not already in the list
+                if (mainImage && mainImage.trim() && !seenUrls.has(mainImage.trim())) {
+                    propertyMedia.unshift({ // Add at the beginning
+                        type: 'image',
+                        url: mainImage.trim(),
                         alt: title
                     });
                 }
-            });
+            }
             
-            // Also add main image if it's not already in the list
-            if (mainImage && mainImage.trim() && !seenUrls.has(mainImage.trim())) {
-                propertyImages.unshift({ // Add at the beginning
-                    src: mainImage.trim(),
+            // If no media found, use a placeholder image
+            if (propertyMedia.length === 0) {
+                propertyMedia.push({
+                    type: 'image',
+                    url: '/static/Images/placeholder-property.jpg',
                     alt: title
                 });
             }
             
-            // If no images found, use a placeholder
-            if (propertyImages.length === 0) {
-                propertyImages.push({
-                    src: '/static/Images/placeholder-property.jpg',
-                    alt: title
-                });
-            }
-            
-            console.log('Property images loaded:', propertyImages.length, propertyImages); // Debug
+            console.log('Property media loaded:', propertyMedia.length, propertyMedia); // Debug
             
             // Set up carousel
-            currentImageIndex = 0;
-            updateImageDisplay();
-            setupImageNavigation();
+            currentMediaIndex = 0;
+            updateMediaDisplay();
+            setupMediaNavigation();
+        }
+        
+        function updateMediaDisplay() {
+            const imageElement = document.getElementById('modalImageSrc');
+            const videoElement = document.getElementById('modalVideoSrc');
+            const navigation = document.getElementById('imageNavigation');
+            const dotsContainer = document.getElementById('imageDots');
+            
+            if (propertyMedia.length > 0 && currentMediaIndex >= 0 && currentMediaIndex < propertyMedia.length) {
+                const currentMedia = propertyMedia[currentMediaIndex];
+                
+                // Hide both elements first
+                imageElement.classList.add('hidden');
+                videoElement.classList.add('hidden');
+                
+                if (currentMedia.type === 'video') {
+                    // Show video
+                    let videoUrl = currentMedia.url;
+                    
+                    // Handle YouTube/Vimeo embed URLs - use iframe instead of video element
+                    if (videoUrl.includes('youtube.com/embed/') || videoUrl.includes('player.vimeo.com/video/')) {
+                        // Create or update iframe for YouTube/Vimeo
+                        let iframe = document.getElementById('modalVideoIframe');
+                        if (!iframe) {
+                            iframe = document.createElement('iframe');
+                            iframe.id = 'modalVideoIframe';
+                            iframe.className = 'w-full h-full max-h-[24rem] transition-opacity duration-300';
+                            iframe.style.aspectRatio = '16/9'; // Standard video aspect ratio
+                            iframe.style.minHeight = '16rem';
+                            iframe.setAttribute('frameborder', '0');
+                            iframe.setAttribute('allow', 'accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture');
+                            iframe.setAttribute('allowfullscreen', '');
+                            iframe.setAttribute('oncontextmenu', 'return false;');
+                            iframe.style.pointerEvents = 'auto';
+                            videoElement.parentElement.appendChild(iframe);
+                        }
+                        iframe.src = videoUrl;
+                        iframe.classList.remove('hidden');
+                        videoElement.classList.add('hidden');
+                    } else {
+                        // Use video element for direct video files
+                        let iframe = document.getElementById('modalVideoIframe');
+                        if (iframe) iframe.classList.add('hidden');
+                        
+                        // Load video to get its dimensions
+                        videoElement.src = videoUrl;
+                        videoElement.classList.remove('hidden');
+                        
+                        // Additional protection: prevent video download
+                        videoElement.addEventListener('contextmenu', function(e) {
+                            e.preventDefault();
+                            return false;
+                        });
+                        videoElement.addEventListener('dragstart', function(e) {
+                            e.preventDefault();
+                            return false;
+                        });
+                        
+                        // Wait for video metadata to load, then adjust display based on aspect ratio
+                        videoElement.onloadedmetadata = function() {
+                            const video = this;
+                            const container = video.parentElement;
+                            const videoAspectRatio = video.videoWidth / video.videoHeight;
+                            const containerWidth = container.offsetWidth || 600; // Fallback width
+                            const containerHeight = Math.min(container.offsetHeight || 384, 384); // Max 24rem
+                            const containerAspectRatio = containerWidth / containerHeight;
+                            
+                            // Reset styles first
+                            video.style.width = '';
+                            video.style.height = '';
+                            video.style.maxWidth = '';
+                            video.style.maxHeight = '';
+                            
+                            // Adjust video display based on aspect ratio
+                            if (videoAspectRatio > containerAspectRatio) {
+                                // Video is wider (landscape like 16:9) - fit to width
+                                video.style.width = '100%';
+                                video.style.height = 'auto';
+                                video.style.maxHeight = '24rem';
+                                video.style.objectFit = 'contain';
+                            } else {
+                                // Video is taller (portrait like 9:16) - fit to height, center horizontally
+                                video.style.width = 'auto';
+                                video.style.height = '100%';
+                                video.style.maxHeight = '24rem';
+                                video.style.maxWidth = '100%';
+                                video.style.objectFit = 'contain';
+                            }
+                        };
+                        
+                        // Wait for video metadata to load, then adjust display
+                        videoElement.onloadedmetadata = function() {
+                            const video = this;
+                            const container = video.parentElement;
+                            const videoAspectRatio = video.videoWidth / video.videoHeight;
+                            const containerAspectRatio = container.offsetWidth / container.offsetHeight;
+                            
+                            // Adjust video display based on aspect ratio
+                            if (videoAspectRatio > containerAspectRatio) {
+                                // Video is wider (landscape) - fit to width
+                                video.style.width = '100%';
+                                video.style.height = 'auto';
+                                video.style.maxHeight = '24rem';
+                            } else {
+                                // Video is taller (portrait) - fit to height
+                                video.style.width = 'auto';
+                                video.style.height = '100%';
+                                video.style.maxHeight = '24rem';
+                                video.style.maxWidth = '100%';
+                            }
+                        };
+                        
+                        // Pause any previous video
+                        videoElement.pause();
+                    }
+                } else {
+                    // Hide iframe when showing image
+                    let iframe = document.getElementById('modalVideoIframe');
+                    if (iframe) iframe.classList.add('hidden');
+                    
+                    // Show image
+                    imageElement.src = '';
+                    imageElement.style.opacity = '0';
+                    
+                    // Ensure image loads properly
+                    imageElement.onerror = function() {
+                        console.error('Failed to load image:', currentMediaIndex, currentMedia.url.substring(0, 100));
+                        imageElement.style.opacity = '1';
+                        // Try next media if available
+                        if (propertyMedia.length > currentMediaIndex + 1) {
+                            currentMediaIndex++;
+                            updateMediaDisplay();
+                        }
+                    };
+                    
+                    imageElement.onload = function() {
+                        console.log('Image loaded successfully:', currentMediaIndex, propertyMedia.length);
+                        imageElement.style.opacity = '1';
+                    };
+                    
+                    // Set new image source
+                    imageElement.src = currentMedia.url;
+                    imageElement.alt = currentMedia.alt || 'Property Image';
+                    imageElement.classList.remove('hidden');
+                    
+                    // Force opacity back in case onload doesn't fire (for cached images)
+                    setTimeout(() => {
+                        if (imageElement.complete) {
+                            imageElement.style.opacity = '1';
+                        }
+                    }, 100);
+                }
+                
+                // Show/hide navigation based on number of media items
+                if (propertyMedia.length > 1) {
+                    navigation.classList.remove('hidden');
+                } else {
+                    navigation.classList.add('hidden');
+                }
+                
+                setupImageDots();
+            } else {
+                console.error('No media or invalid index:', propertyMedia.length, currentMediaIndex);
+            }
         }
         
         function updateImageDisplay() {
@@ -608,26 +865,46 @@
             }
         }
         
-        function setupImageNavigation() {
+        function setupMediaNavigation() {
             const prevButton = document.getElementById('prevImage');
             const nextButton = document.getElementById('nextImage');
             
             if (prevButton) {
                 prevButton.onclick = () => {
-                    if (propertyImages.length > 0) {
-                        currentImageIndex = (currentImageIndex - 1 + propertyImages.length) % propertyImages.length;
-                        console.log('Previous image:', currentImageIndex, propertyImages.length);
-                        updateImageDisplay();
+                    if (propertyMedia.length > 0) {
+                        // Pause current video if playing
+                        const videoElement = document.getElementById('modalVideoSrc');
+                        if (videoElement && !videoElement.classList.contains('hidden')) {
+                            videoElement.pause();
+                        }
+                        // Clear iframe src to stop YouTube/Vimeo videos
+                        const iframe = document.getElementById('modalVideoIframe');
+                        if (iframe && !iframe.classList.contains('hidden')) {
+                            iframe.src = '';
+                        }
+                        currentMediaIndex = (currentMediaIndex - 1 + propertyMedia.length) % propertyMedia.length;
+                        console.log('Previous media:', currentMediaIndex, propertyMedia.length);
+                        updateMediaDisplay();
                     }
                 };
             }
             
             if (nextButton) {
                 nextButton.onclick = () => {
-                    if (propertyImages.length > 0) {
-                        currentImageIndex = (currentImageIndex + 1) % propertyImages.length;
-                        console.log('Next image:', currentImageIndex, propertyImages.length);
-                        updateImageDisplay();
+                    if (propertyMedia.length > 0) {
+                        // Pause current video if playing
+                        const videoElement = document.getElementById('modalVideoSrc');
+                        if (videoElement && !videoElement.classList.contains('hidden')) {
+                            videoElement.pause();
+                        }
+                        // Clear iframe src to stop YouTube/Vimeo videos
+                        const iframe = document.getElementById('modalVideoIframe');
+                        if (iframe && !iframe.classList.contains('hidden')) {
+                            iframe.src = '';
+                        }
+                        currentMediaIndex = (currentMediaIndex + 1) % propertyMedia.length;
+                        console.log('Next media:', currentMediaIndex, propertyMedia.length);
+                        updateMediaDisplay();
                     }
                 };
             }
@@ -637,16 +914,25 @@
             const dotsContainer = document.getElementById('imageDots');
             dotsContainer.innerHTML = '';
             
-            propertyImages.forEach((_, index) => {
+            propertyMedia.forEach((media, index) => {
                 const dot = document.createElement('button');
                 dot.className = `w-3 h-3 rounded-full transition-all border-2 ${
-                    index === currentImageIndex 
+                    index === currentMediaIndex 
                         ? 'bg-white border-white shadow-lg' 
                         : 'bg-white bg-opacity-30 border-white border-opacity-50 hover:bg-opacity-60'
                 }`;
+                // Add video indicator
+                if (media.type === 'video') {
+                    dot.innerHTML = '<svg class="w-2 h-2" fill="currentColor" viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg>';
+                }
                 dot.onclick = () => {
-                    currentImageIndex = index;
-                    updateImageDisplay();
+                    // Pause current video if playing
+                    const videoElement = document.getElementById('modalVideoSrc');
+                    if (videoElement && !videoElement.classList.contains('hidden')) {
+                        videoElement.pause();
+                    }
+                    currentMediaIndex = index;
+                    updateMediaDisplay();
                 };
                 dotsContainer.appendChild(dot);
             });
@@ -699,19 +985,7 @@
             document.body.style.overflow = 'auto';
         }
         
-        function contactAboutProperty() {
-            // Scroll to contact form
-            const contactForm = document.querySelector('form');
-            if (contactForm) {
-                contactForm.scrollIntoView({ behavior: 'smooth' });
-                closePropertyModal();
-            }
-        }
-        
-        function scheduleViewing() {
-            // You can implement scheduling functionality here
-            alert('Scheduling functionality will be implemented soon!');
-        }
+        // Function removed - contact buttons now use direct links
         
         // Close modal when clicking outside
         document.getElementById('propertyModal').addEventListener('click', function(e) {

@@ -10,7 +10,7 @@ from django.contrib import messages
 from django.utils import timezone
 from django.views.decorators.csrf import csrf_exempt
 from django.db import models
-from .models import BlogTracking, BlogPost, PropertyListing, OpenHouse, OpenHouseRegistration, PropertyInquiry, MortgageInquiry, LinkTracking
+from .models import BlogTracking, BlogPost, PropertyListing, OpenHouse, OpenHouseRegistration, PropertyInquiry, MortgageInquiry, LinkTracking, Community
 from .forms import BlogPostForm
 import uuid
 import json
@@ -108,6 +108,12 @@ def home(request):
             published=True
         ).order_by('-created_at')[:4]
 
+        # Get featured communities
+        featured_communities = Community.objects.filter(
+            featured=True,
+            published=True
+        ).order_by('name')[:6]
+
         # Pass the updated queryset as context
         # Debug: Print BRAND_NAME to console
         print(f"DEBUG: BRAND_NAME from settings = '{settings.BRAND_NAME}'")
@@ -117,6 +123,7 @@ def home(request):
         context = {
             'featured_properties': featured_properties,
             'recent_properties': recent_properties,
+            'featured_communities': featured_communities,
             'brand_name': settings.BRAND_NAME
         }
         # Debug: Print what we're passing to template
@@ -269,6 +276,11 @@ def selling(request):
             estimated_value = request.POST.get('estimated_value', '')
             timeline = request.POST.get('timeline', '')
             message = request.POST.get('message', '')
+            
+            # Validate required fields
+            if not all([name, email, phone]):
+                messages.error(request, 'Please fill in all required fields (Name, Email, and Phone Number).')
+                return redirect('selling')
             
             # Get system info
             from .webhook_utils import get_system_info
@@ -694,8 +706,8 @@ def buy_lease(request):
     price_range = request.GET.get('price_range', '')
     property_id = request.GET.get('property_id', '')
     
-    # Start with published properties and include related images
-    properties = PropertyListing.objects.filter(published=True).prefetch_related('images')
+    # Start with published properties and include related images and videos
+    properties = PropertyListing.objects.filter(published=True).prefetch_related('images', 'videos')
     
     # Filter by property type
     if property_type in ['buy', 'lease']:
@@ -761,6 +773,53 @@ def debug_open_house_images(request, open_house_id):
         'brand_name': settings.BRAND_NAME
     }
     return render(request, 'Raj/debug_open_house_images.html', context)
+
+
+def community_detail(request, slug):
+    """Community detail page showing all properties in that community"""
+    community = get_object_or_404(Community, slug=slug, published=True)
+    
+    # Get filter parameters
+    property_type = request.GET.get('property_type', '')
+    property_status = request.GET.get('property_status', '')
+    search_query = request.GET.get('search', '')
+    
+    # Start with properties in this community
+    properties = PropertyListing.objects.filter(
+        community=community,
+        published=True
+    ).prefetch_related('images', 'videos')
+    
+    # Filter by property type
+    if property_type in ['buy', 'lease']:
+        properties = properties.filter(property_type=property_type)
+    
+    # Filter by property status
+    if property_status:
+        properties = properties.filter(property_status=property_status)
+    
+    # Filter by search query
+    if search_query:
+        properties = properties.filter(
+            models.Q(title__icontains=search_query) |
+            models.Q(location__icontains=search_query) |
+            models.Q(address__icontains=search_query) |
+            models.Q(description__icontains=search_query)
+        )
+    
+    # Order by featured first, then by creation date
+    properties = properties.order_by('-featured', '-created_at')
+    
+    context = {
+        'community': community,
+        'properties': properties,
+        'brand_name': settings.BRAND_NAME,
+        'property_type_filter': property_type,
+        'property_status_filter': property_status,
+        'search_query': search_query,
+    }
+    
+    return render(request, 'Raj/community_detail.html', context)
 
 
 def property_inquiry(request):

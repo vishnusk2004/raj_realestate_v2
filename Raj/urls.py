@@ -9,6 +9,7 @@ urlpatterns = [
     path('blog/<int:post_id>/', views.blog_detail, name='blog_detail'),
     path('blog_page/', views.blog_page, name='blog_page'),
     path('buy-lease/', views.buy_lease, name='buy_lease'),
+    path('community/<slug:slug>/', views.community_detail, name='community_detail'),
     path('buying/', views.buying, name='buying'),
     path('selling/', views.selling, name='selling'),
     path('leasing/', views.leasing, name='leasing'),

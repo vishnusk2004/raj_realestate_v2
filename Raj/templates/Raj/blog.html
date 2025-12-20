@@ -27,7 +27,12 @@
             <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
                 <div class="text-center mb-12">
                     <h1 class="text-4xl md:text-5xl font-bold text-foreground mb-4">Real Estate Insights & Tips</h1>
+                    {% comment %}
+                    DO NOT UNCOMMENT - Description text disabled for now
                     <p class="text-xl text-muted-foreground max-w-2xl mx-auto mb-8">Stay informed with the latest market trends, expert advice, and insider tips from our real estate professionals.</p>
+                    {% endcomment %}
+                    {% comment %}
+                    DO NOT UNCOMMENT - Search functionality disabled for now
                     <form method="GET" class="max-w-md mx-auto relative">
                         <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-search absolute left-3 top-3 h-4 w-4 text-muted-foreground">
                             <circle cx="11" cy="11" r="8"></circle>
@@ -38,8 +43,11 @@
                             <input type="hidden" name="category" value="{{ current_category }}">
                         {% endif %}
                     </form>
+                    {% endcomment %}
                 </div>
                 
+                {% comment %}
+                DO NOT UNCOMMENT - Filter options disabled for now
                 <div class="flex flex-wrap justify-center gap-2 mb-12">
                     <a href="?category=all{% if search_query %}&search={{ search_query }}{% endif %}" class="inline-flex items-center rounded-full border px-2.5 py-0.5 text-xs font-semibold focus:outline-none focus:ring-2 focus:ring-ring focus:ring-offset-2 transition-colors {% if current_category == 'all' or not current_category %}bg-primary text-primary-foreground{% else %}text-foreground hover:bg-primary hover:text-primary-foreground{% endif %}">All</a>
                     <a href="?category=buying_guide{% if search_query %}&search={{ search_query }}{% endif %}" class="inline-flex items-center rounded-full border px-2.5 py-0.5 text-xs font-semibold focus:outline-none focus:ring-2 focus:ring-ring focus:ring-offset-2 transition-colors {% if current_category == 'buying_guide' %}bg-primary text-primary-foreground{% else %}text-foreground hover:bg-primary hover:text-primary-foreground{% endif %}">Buying Guide</a>
@@ -48,8 +56,11 @@
                     <a href="?category=investment{% if search_query %}&search={{ search_query }}{% endif %}" class="inline-flex items-center rounded-full border px-2.5 py-0.5 text-xs font-semibold focus:outline-none focus:ring-2 focus:ring-ring focus:ring-offset-2 transition-colors {% if current_category == 'investment' %}bg-primary text-primary-foreground{% else %}text-foreground hover:bg-primary hover:text-primary-foreground{% endif %}">Investment</a>
                     <a href="?category=finance{% if search_query %}&search={{ search_query }}{% endif %}" class="inline-flex items-center rounded-full border px-2.5 py-0.5 text-xs font-semibold focus:outline-none focus:ring-2 focus:ring-ring focus:ring-offset-2 transition-colors {% if current_category == 'finance' %}bg-primary text-primary-foreground{% else %}text-foreground hover:bg-primary hover:text-primary-foreground{% endif %}">Finance</a>
                 </div>
+                {% endcomment %}
 
                 {% if posts %}
+                {% comment %}
+                DO NOT UNCOMMENT - Featured Articles section disabled for now
                 <div class="mb-16">
                     <h2 class="text-2xl font-bold text-foreground mb-8">Featured Articles</h2>
                     <div class="grid lg:grid-cols-2 gap-8">
@@ -106,6 +117,7 @@
                         {% endfor %}
                     </div>
                 </div>
+                {% endcomment %}
 
                 <div>
                     <h2 class="text-2xl font-bold text-foreground mb-8">Latest Articles</h2>
@@ -141,6 +153,8 @@
                                 <h3 class="text-lg font-semibold text-foreground mb-3 line-clamp-2">{{ post.title }}</h3>
                                 <p class="text-muted-foreground text-sm leading-relaxed mb-4 line-clamp-3">{{ post.excerpt|default:post.content|truncatewords:15 }}</p>
                                 <div class="flex items-center justify-between">
+                                    {% comment %}
+                                    DO NOT UNCOMMENT - Author section disabled for now
                                     <div class="flex items-center text-sm text-muted-foreground">
                                         <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-user w-4 h-4 mr-1">
                                             <path d="M19 21v-2a4 4 0 0 0-4-4H9a4 4 0 0 0-4 4v2"></path>
@@ -148,7 +162,8 @@
                                         </svg>
                                         <span>{{ post.author }}</span>
                                     </div>
-                                    <a href="{% url 'blog_detail' post_id=post.id %}">
+                                    {% endcomment %}
+                                    <a href="{% url 'blog_detail' post_id=post.id %}" class="ml-auto">
                                         <button class="inline-flex items-center justify-center gap-2 whitespace-nowrap text-sm font-medium ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 [&_svg]:pointer-events-none [&_svg]:size-4 [&_svg]:shrink-0 hover:bg-accent h-9 rounded-md text-primary hover:text-primary-dark px-3 py-2">Read More
                                             <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-arrow-right w-4 h-4 ml-1">
                                                 <path d="M5 12h14"></path>

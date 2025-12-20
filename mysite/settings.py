@@ -28,7 +28,7 @@ load_dotenv(os.path.join(BASE_DIR, '.env'))
 SECRET_KEY = os.getenv('SECRET_KEY', 'django-insecure-tzk4^_u^x05juz(7r*c16hptg0pt6kcwiide^wsg+s+-kfb%&6')
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = os.getenv('DEBUG', 'false').lower() == 'false'
+DEBUG = os.getenv('DEBUG', 'False').lower() == 'False
 # For local development, enable DEBUG
 if os.getenv('ENVIRONMENT') != 'production':
     DEBUG = False
@@ -73,7 +73,7 @@ INSTALLED_APPS = [
  #   'django_browser_reload',
 
     'Raj',
-    'storages',
+    # 'storages',  # Only needed for AWS S3 storage
 ]
 
 TAILWIND_APP_NAME = 'theme'
@@ -190,7 +190,7 @@ AUTH_PASSWORD_VALIDATORS = [
 
 LANGUAGE_CODE = 'en-us'
 
-TIME_ZONE = 'UTC'
+TIME_ZONE = 'America/Chicago'  # US Central Time (CDT/CST)
 
 USE_I18N = True
 

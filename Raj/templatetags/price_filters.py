@@ -1,4 +1,5 @@
 from django import template
+import json
 
 register = template.Library()
 
@@ -20,3 +21,11 @@ def format_price_with_type(value, property_type):
         return formatted_price
     except (ValueError, TypeError):
         return value
+
+@register.filter
+def to_json(value):
+    """Convert Python object to JSON string"""
+    try:
+        return json.dumps(value)
+    except (TypeError, ValueError):
+        return '[]'

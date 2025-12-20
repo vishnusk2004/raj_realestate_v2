@@ -152,6 +152,75 @@ class LinkTracking(models.Model):
             self.save()
 
 
+class Community(models.Model):
+    """Model to store featured communities/neighborhoods"""
+    name = models.CharField(max_length=200, help_text="Community name (e.g., Katy, Sugar Land)")
+    slug = models.SlugField(max_length=200, unique=True, help_text="URL-friendly name (auto-generated if blank)")
+    description = models.TextField(help_text="Community description and highlights")
+    image_file = models.ImageField(upload_to='communities/', blank=True, null=True, help_text="Upload community image")
+    image_url = models.URLField(max_length=500, blank=True, help_text="Alternative: Community image URL")
+    image_base64 = models.TextField(blank=True, null=True, help_text="Base64 encoded image data")
+    featured = models.BooleanField(default=False, help_text="Featured communities appear on home page")
+    published = models.BooleanField(default=True, help_text="Only published communities are visible")
+    created_at = models.DateTimeField(auto_now_add=True)
+    updated_at = models.DateTimeField(auto_now=True)
+    
+    class Meta:
+        ordering = ['-featured', 'name']
+        verbose_name = "Community"
+        verbose_name_plural = "Communities"
+    
+    def __str__(self):
+        return self.name
+    
+    def save(self, *args, **kwargs):
+        """Override save to auto-generate slug and convert image to base64"""
+        if not self.slug:
+            from django.utils.text import slugify
+            self.slug = slugify(self.name)
+            # Ensure slug is unique
+            original_slug = self.slug
+            counter = 1
+            while Community.objects.filter(slug=self.slug).exclude(pk=self.pk).exists():
+                self.slug = f"{original_slug}-{counter}"
+                counter += 1
+        
+        # Convert uploaded file to base64 if present and no base64 exists
+        if self.image_file and self.image_file.name and not self.image_base64:
+            from .image_utils import image_to_base64
+            self.image_base64 = image_to_base64(self.image_file)
+        
+        super().save(*args, **kwargs)
+    
+    def get_image_url(self):
+        """Return the image URL - prefer base64, then file, then URL"""
+        # First priority: base64 data
+        if self.image_base64:
+            from .image_utils import get_image_data_url
+            return get_image_data_url(self.image_base64)
+        
+        # Second priority: uploaded file
+        if self.image_file and self.image_file.name:
+            try:
+                from django.conf import settings
+                if not settings.DEBUG and self.image_url:
+                    return self.image_url
+                return self.image_file.url
+            except:
+                if self.image_url:
+                    return self.image_url
+                return self.image_file.url
+        
+        # Third priority: URL field
+        elif self.image_url:
+            if self.image_url.startswith('data:'):
+                return self.image_url
+            else:
+                return self.image_url
+        
+        return None
+
+
 class PropertyListing(models.Model):
     """Model to store property listings for Buy/Lease section"""
     PROPERTY_TYPE_CHOICES = [
@@ -173,6 +242,7 @@ class PropertyListing(models.Model):
     price = models.DecimalField(max_digits=12, decimal_places=2, help_text="Price in dollars")
     location = models.CharField(max_length=200)
     address = models.TextField(help_text="Full property address")
+    community = models.ForeignKey('Community', on_delete=models.SET_NULL, null=True, blank=True, related_name='properties', help_text="Community/neighborhood this property belongs to")
     bedrooms = models.IntegerField(null=True, blank=True)
     bathrooms = models.IntegerField(null=True, blank=True)
     parking_spaces = models.IntegerField(null=True, blank=True)
@@ -182,6 +252,9 @@ class PropertyListing(models.Model):
     image_file = models.ImageField(upload_to='properties/', blank=True, null=True, help_text="Upload property image (optional if providing URL)")
     image_base64 = models.TextField(blank=True, null=True, help_text="Base64 encoded image data")
     additional_images = models.TextField(blank=True, help_text="Additional image URLs (one per line)")
+    # Video fields
+    video_file = models.FileField(upload_to='properties/videos/', blank=True, null=True, help_text="Upload property video file (MP4, WebM, etc.)")
+    video_url = models.URLField(max_length=500, blank=True, help_text="Property video URL (YouTube, Vimeo, or direct video URL)")
     featured = models.BooleanField(default=False, help_text="Featured properties appear first")
     published = models.BooleanField(default=True, help_text="Only published properties are visible")
     listing_agent_name = models.CharField(max_length=200, blank=True, null=True, help_text="Name of the listing agent for courtesy credit")
@@ -254,6 +327,83 @@ class PropertyListing(models.Model):
         image_urls.extend(additional_urls)
         
         return image_urls
+    
+    def get_video_url(self):
+        """Return the video URL - prefer uploaded file, then URL. Converts YouTube/Vimeo URLs to embed format."""
+        if self.video_file and self.video_file.name:
+            try:
+                from django.conf import settings
+                if not settings.DEBUG and self.video_url:
+                    return self._convert_to_embed_url(self.video_url)
+                return self.video_file.url
+            except:
+                if self.video_url:
+                    return self._convert_to_embed_url(self.video_url)
+                return self.video_file.url
+        elif self.video_url:
+            return self._convert_to_embed_url(self.video_url)
+        return None
+    
+    def _convert_to_embed_url(self, url):
+        """Convert YouTube/Vimeo URLs to embed format if needed"""
+        if not url:
+            return url
+        
+        url = url.strip()
+        
+        # YouTube URL conversion
+        if 'youtube.com/watch?v=' in url:
+            video_id = url.split('watch?v=')[1].split('&')[0]
+            return f'https://www.youtube.com/embed/{video_id}'
+        elif 'youtu.be/' in url:
+            video_id = url.split('youtu.be/')[1].split('?')[0]
+            return f'https://www.youtube.com/embed/{video_id}'
+        elif 'youtube.com/embed/' in url:
+            return url  # Already in embed format
+        
+        # Vimeo URL conversion
+        if 'vimeo.com/' in url and '/embed/' not in url and 'player.vimeo.com' not in url:
+            video_id = url.split('vimeo.com/')[1].split('?')[0]
+            return f'https://player.vimeo.com/video/{video_id}'
+        elif 'player.vimeo.com/video/' in url:
+            return url  # Already in embed format
+        
+        # Return as-is if not YouTube/Vimeo
+        return url
+    
+    def get_all_media_urls(self):
+        """Return list of all media URLs (images + videos) with type indicators"""
+        media_items = []
+        
+        # Add main image
+        main_image = self.get_main_image_url()
+        if main_image:
+            media_items.append({'type': 'image', 'url': main_image})
+        
+        # Add related images
+        for img in self.images.all():
+            img_url = img.get_image_url()
+            if img_url:
+                media_items.append({'type': 'image', 'url': img_url})
+        
+        # Add additional images
+        additional_urls = self.get_additional_images_list()
+        for url in additional_urls:
+            if url:
+                media_items.append({'type': 'image', 'url': url})
+        
+        # Add main video
+        video_url = self.get_video_url()
+        if video_url:
+            media_items.append({'type': 'video', 'url': video_url})
+        
+        # Add related videos
+        for video in self.videos.all():
+            video_url = video.get_video_url()
+            if video_url:
+                media_items.append({'type': 'video', 'url': video_url})
+        
+        return media_items
     
     def get_main_image_url(self):
         """Return the main image URL - prefer base64, then file, then URL"""
@@ -796,6 +946,68 @@ class PropertyListingImage(models.Model):
             self.image_base64 = image_to_base64(self.image_file)
         
         super().save(*args, **kwargs)
+
+
+class PropertyListingVideo(models.Model):
+    """Model to store multiple videos for property listings"""
+    property_listing = models.ForeignKey(PropertyListing, on_delete=models.CASCADE, related_name='videos')
+    video_file = models.FileField(upload_to='properties/videos/', blank=True, null=True, help_text="Upload property video file (MP4, WebM, etc.)")
+    video_url = models.URLField(max_length=500, blank=True, help_text="Property video URL (YouTube, Vimeo, or direct video URL)")
+    caption = models.CharField(max_length=200, blank=True, help_text="Optional video caption")
+    is_primary = models.BooleanField(default=False, help_text="Mark as primary video for the property")
+    order = models.PositiveIntegerField(default=0, help_text="Order of display (0 = first)")
+    created_at = models.DateTimeField(auto_now_add=True)
+    
+    class Meta:
+        ordering = ['order', 'created_at']
+        verbose_name = "Property Listing Video"
+        verbose_name_plural = "Property Listing Videos"
+    
+    def get_video_url(self):
+        """Return the video URL - prefer uploaded file, then URL. Converts YouTube/Vimeo URLs to embed format."""
+        if self.video_file and self.video_file.name:
+            try:
+                from django.conf import settings
+                if not settings.DEBUG and self.video_url:
+                    return self._convert_to_embed_url(self.video_url)
+                return self.video_file.url
+            except:
+                if self.video_url:
+                    return self._convert_to_embed_url(self.video_url)
+                return self.video_file.url
+        elif self.video_url:
+            return self._convert_to_embed_url(self.video_url)
+        return None
+    
+    def _convert_to_embed_url(self, url):
+        """Convert YouTube/Vimeo URLs to embed format if needed"""
+        if not url:
+            return url
+        
+        url = url.strip()
+        
+        # YouTube URL conversion
+        if 'youtube.com/watch?v=' in url:
+            video_id = url.split('watch?v=')[1].split('&')[0]
+            return f'https://www.youtube.com/embed/{video_id}'
+        elif 'youtu.be/' in url:
+            video_id = url.split('youtu.be/')[1].split('?')[0]
+            return f'https://www.youtube.com/embed/{video_id}'
+        elif 'youtube.com/embed/' in url:
+            return url  # Already in embed format
+        
+        # Vimeo URL conversion
+        if 'vimeo.com/' in url and '/embed/' not in url and 'player.vimeo.com' not in url:
+            video_id = url.split('vimeo.com/')[1].split('?')[0]
+            return f'https://player.vimeo.com/video/{video_id}'
+        elif 'player.vimeo.com/video/' in url:
+            return url  # Already in embed format
+        
+        # Return as-is if not YouTube/Vimeo
+        return url
+    
+    def __str__(self):
+        return f"{self.property_listing.title} - Video {self.order + 1}"
 
 
 class OpenHouse(models.Model):
