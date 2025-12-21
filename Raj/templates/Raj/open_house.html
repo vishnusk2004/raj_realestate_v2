@@ -234,7 +234,7 @@
                     <div class="rounded-lg border bg-card text-card-foreground shadow-sm overflow-hidden shadow-medium hover:shadow-strong transition-all duration-300">
                         <div class="grid grid-cols-1 md:grid-cols-1 lg:grid-cols-2 gap-6 lg:items-stretch">
                             <div class="relative flex-shrink-0">
-                                <div class="grid grid-cols-3 gap-2 open-house-image-container cursor-pointer" onclick="openImageGallery({{ open_house.id }})">
+                                <div class="grid grid-cols-3 gap-2 open-house-image-container cursor-pointer" onclick="window.openImageGallery({{ open_house.id }})">
                                     {% if open_house.get_main_image_url %}
                                         <img src="{{ open_house.get_main_image_url }}" alt="{{ open_house.title }}" class="col-span-2 w-full h-full object-cover rounded-l-lg hover:opacity-90 transition-opacity">
                                     {% else %}
@@ -259,14 +259,14 @@
                                         {% if open_house.get_main_image_url %}
                                             {% with total_images=total_images|add:1 %}
                                                 {% if total_images > 3 %}
-                                                    <div class="absolute bottom-4 right-4 bg-black bg-opacity-70 text-white px-3 py-1 rounded-full text-sm font-medium cursor-pointer" onclick="event.stopPropagation(); openImageGallery({{ open_house.id }})">
+                                                    <div class="absolute bottom-4 right-4 bg-black bg-opacity-70 text-white px-3 py-1 rounded-full text-sm font-medium cursor-pointer" onclick="event.stopPropagation(); window.openImageGallery({{ open_house.id }})">
                                                         +{{ total_images|add:"-3" }} more
                                                     </div>
                                                 {% endif %}
                                             {% endwith %}
                                         {% else %}
                                             {% if total_images > 2 %}
-                                                <div class="absolute bottom-4 right-4 bg-black bg-opacity-70 text-white px-3 py-1 rounded-full text-sm font-medium cursor-pointer" onclick="event.stopPropagation(); openImageGallery({{ open_house.id }})">
+                                                <div class="absolute bottom-4 right-4 bg-black bg-opacity-70 text-white px-3 py-1 rounded-full text-sm font-medium cursor-pointer" onclick="event.stopPropagation(); window.openImageGallery({{ open_house.id }})">
                                                     +{{ total_images|add:"-2" }} more
                                                 </div>
                                             {% endif %}
@@ -334,7 +334,7 @@
                                         <p class="text-muted-foreground leading-relaxed open-house-description">{{ open_house.description }}</p>
                                     </div>
                                     {% if open_house.description|length > 200 %}
-                                    <button onclick="openImageGallery({{ open_house.id }})" class="text-primary hover:text-primary-dark text-sm font-medium mt-2">
+                                    <button onclick="window.openImageGallery({{ open_house.id }})" class="text-primary hover:text-primary-dark text-sm font-medium mt-2">
                                         View full description
                                     </button>
                                     {% endif %}
@@ -432,8 +432,8 @@
     
     <script>
         // Define gallery functions immediately so they're available for onclick handlers
-        // Define as regular functions so they're globally accessible
-        function openImageGallery(openHouseId) {
+        // Explicitly attach to window to ensure global accessibility
+        window.openImageGallery = function(openHouseId) {
             if (!window.openHouseImages || !window.openHouseImages[openHouseId]) {
                 console.error('Image data not found for open house:', openHouseId);
                 return;
@@ -450,7 +450,7 @@
             
             // Create modal HTML
             const modalHTML = `
-                <div id="imageGalleryModal" class="image-modal-backdrop" onclick="if(event.target.id === 'imageGalleryModal') closeImageGallery()">
+                <div id="imageGalleryModal" class="image-modal-backdrop" onclick="if(event.target.id === 'imageGalleryModal') window.closeImageGallery()">
                     <div class="image-modal-container" onclick="event.stopPropagation()">
                         <div class="image-modal-header">
                             <h3 class="image-modal-title">${imageData.title}</h3>
@@ -458,11 +458,11 @@
                                 <span class="image-modal-counter">
                                     <span id="currentImageIndex">1</span> / ${images.length}
                                 </span>
-                                <button class="image-modal-close" onclick="closeImageGallery()" aria-label="Close">&times;</button>
+                                <button class="image-modal-close" onclick="window.closeImageGallery()" aria-label="Close">&times;</button>
                             </div>
                         </div>
                         <div class="image-modal-content">
-                            <button class="image-modal-nav prev" onclick="navigateGallery(-1)" id="prevBtn" ${images.length <= 1 ? 'style="display:none"' : ''}>
+                            <button class="image-modal-nav prev" onclick="window.navigateGallery(-1)" id="prevBtn" ${images.length <= 1 ? 'style="display:none"' : ''}>
                                 <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
                                     <path d="m15 18-6-6 6-6"></path>
                                 </svg>
@@ -470,7 +470,7 @@
                             <div class="image-modal-image-container">
                                 <img id="galleryMainImage" src="${images[0]}" alt="${imageData.title}" class="image-modal-image" style="max-width: calc(90vw - 4rem); max-height: ${imageData.description ? 'calc(90vh - 420px)' : 'calc(90vh - 200px)'}; object-fit: contain; object-position: center; width: auto; height: auto; margin: 0; padding: 0; display: block;">
                             </div>
-                            <button class="image-modal-nav next" onclick="navigateGallery(1)" id="nextBtn" ${images.length <= 1 ? 'style="display:none"' : ''}>
+                            <button class="image-modal-nav next" onclick="window.navigateGallery(1)" id="nextBtn" ${images.length <= 1 ? 'style="display:none"' : ''}>
                                 <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
                                     <path d="m9 18 6-6-6-6"></path>
                                 </svg>
@@ -482,7 +482,7 @@
                                 ${images.map((img, idx) => `
                                     <img src="${img}" alt="Thumbnail ${idx + 1}" 
                                          class="image-modal-thumbnail ${idx === 0 ? 'active' : ''}" 
-                                         onclick="goToImage(${idx})">
+                                         onclick="window.goToImage(${idx})">
                                 `).join('')}
                             </div>
                         </div>
@@ -512,10 +512,10 @@
             window.currentGalleryImages = images;
             
             // Keyboard navigation
-            document.addEventListener('keydown', handleGalleryKeyPress);
+            document.addEventListener('keydown', window.handleGalleryKeyPress);
         };
         
-        function navigateGallery(direction) {
+        window.navigateGallery = function(direction) {
             if (!window.currentGalleryImages) return;
             
             const images = window.currentGalleryImages;
@@ -527,10 +527,10 @@
                 newIndex = 0;
             }
             
-            goToImage(newIndex);
+            window.goToImage(newIndex);
         };
         
-        function goToImage(index) {
+        window.goToImage = function(index) {
             if (!window.currentGalleryImages) return;
             
             const images = window.currentGalleryImages;
@@ -560,24 +560,24 @@
             });
         };
         
-        function handleGalleryKeyPress(e) {
+        window.handleGalleryKeyPress = function(e) {
             if (document.getElementById('imageGalleryModal')) {
                 if (e.key === 'ArrowLeft') {
-                    navigateGallery(-1);
+                    window.navigateGallery(-1);
                 } else if (e.key === 'ArrowRight') {
-                    navigateGallery(1);
+                    window.navigateGallery(1);
                 } else if (e.key === 'Escape') {
-                    closeImageGallery();
+                    window.closeImageGallery();
                 }
             }
-        }
+        };
         
-        function closeImageGallery() {
+        window.closeImageGallery = function() {
             const modal = document.getElementById('imageGalleryModal');
             if (modal) {
                 modal.remove();
                 document.body.style.overflow = 'auto';
-                document.removeEventListener('keydown', handleGalleryKeyPress);
+                document.removeEventListener('keydown', window.handleGalleryKeyPress);
             }
         };
         
