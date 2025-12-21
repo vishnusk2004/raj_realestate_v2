@@ -586,7 +586,7 @@
         });
         
         // Image Gallery Modal Functions
-        function openImageGallery(openHouseId) {
+        window.openImageGallery = function(openHouseId) {
             if (!window.openHouseImages || !window.openHouseImages[openHouseId]) {
                 console.error('Image data not found for open house:', openHouseId);
                 return;
@@ -665,10 +665,10 @@
             window.currentGalleryImages = images;
             
             // Keyboard navigation
-            document.addEventListener('keydown', handleGalleryKeyPress);
-        }
+            document.addEventListener('keydown', window.handleGalleryKeyPress);
+        };
         
-        function navigateGallery(direction) {
+        window.navigateGallery = function(direction) {
             if (!window.currentGalleryImages) return;
             
             const images = window.currentGalleryImages;
@@ -680,10 +680,10 @@
                 newIndex = 0;
             }
             
-            goToImage(newIndex);
-        }
+            window.goToImage(newIndex);
+        };
         
-        function goToImage(index) {
+        window.goToImage = function(index) {
             if (!window.currentGalleryImages || index < 0 || index >= window.currentGalleryImages.length) return;
             
             window.currentGalleryIndex = index;
@@ -724,9 +724,9 @@
                     thumb.classList.remove('active');
                 }
             });
-        }
+        };
         
-        function handleGalleryKeyPress(e) {
+        window.handleGalleryKeyPress = function(e) {
             const modal = document.getElementById('imageGalleryModal');
             if (!modal || modal.classList.contains('hidden')) return;
             
@@ -737,18 +737,18 @@
             } else if (e.key === 'Escape') {
                 closeImageGallery();
             }
-        }
+        };
         
-        function closeImageGallery() {
+        window.closeImageGallery = function() {
             const modal = document.getElementById('imageGalleryModal');
             if (modal) {
                 modal.remove();
                 document.body.style.overflow = 'auto';
-                document.removeEventListener('keydown', handleGalleryKeyPress);
+                document.removeEventListener('keydown', window.handleGalleryKeyPress);
                 window.currentGalleryIndex = null;
                 window.currentGalleryImages = null;
             }
-        }
+        };
 </script>
 
     {% include 'Raj/success_popup.html' %}

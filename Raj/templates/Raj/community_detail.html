@@ -19,6 +19,36 @@
     <!-- Custom CSS -->
     <link rel="stylesheet" href="{% static 'css/django-main.css' %}">
     <style>
+        /* Prevent layout shift - reserve space for images */
+        img[loading="lazy"] {
+            background-color: #f3f4f6;
+            min-height: 200px;
+        }
+        
+        /* Ensure page structure loads first */
+        img {
+            content-visibility: auto;
+        }
+        
+        /* Image loading placeholder */
+        img[loading="lazy"]::before {
+            content: '';
+            display: block;
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, #f0f0f0 25%, #e0e0e0 50%, #f0f0f0 75%);
+            background-size: 200% 100%;
+            animation: loading 1.5s infinite;
+        }
+        
+        @keyframes loading {
+            0% { background-position: 200% 0; }
+            100% { background-position: -200% 0; }
+        }
+        
         /* Prevent video download */
         video::-webkit-media-controls-enclosure {
             overflow: hidden;
@@ -62,7 +92,7 @@
                         </div>
                         <div class="relative">
                             {% if community.get_image_url %}
-                                <img src="{{ community.get_image_url }}" alt="{{ community.name }}" class="rounded-2xl shadow-xl w-full h-auto object-cover">
+                                <img src="{{ community.get_image_url }}" alt="{{ community.name }}" class="rounded-2xl shadow-xl w-full h-auto object-cover" loading="lazy" decoding="async">
                             {% else %}
                                 <div class="w-full h-64 bg-gradient-to-br from-accent/20 to-accent/10 rounded-2xl flex items-center justify-center">
                                     <svg xmlns="http://www.w3.org/2000/svg" width="96" height="96" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-map-pin w-24 h-24 text-accent/50">
@@ -121,7 +151,7 @@
                         <div class="rounded-lg border bg-card text-card-foreground shadow-sm group overflow-hidden shadow-soft hover:shadow-medium transition-all duration-300 animate-fade-in" data-property-id="{{ property.id }}">
                             <div class="relative overflow-hidden">
                                 {% if property.get_main_image_url %}
-                                    <img src="{{ property.get_main_image_url }}" alt="{{ property.title }}" class="w-full h-48 object-cover group-hover:scale-105 transition-transform duration-300">
+                                    <img src="{{ property.get_main_image_url }}" alt="{{ property.title }}" class="w-full h-48 object-cover group-hover:scale-105 transition-transform duration-300" loading="lazy" decoding="async">
                                 {% else %}
                                     <div class="w-full h-48 bg-muted flex items-center justify-center">
                                         <svg xmlns="http://www.w3.org/2000/svg" width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-home h-12 w-12 text-muted-foreground">
@@ -238,8 +268,8 @@
             <div class="space-y-6">
                 <div id="modalMedia" class="relative">
                     <div id="mediaCarousel" class="relative overflow-hidden rounded-lg flex items-center justify-center bg-gray-100" style="min-height: 16rem; max-height: 24rem; width: 100%; display: flex; align-items: center; justify-content: center;">
-                        <img id="modalImageSrc" src="" alt="Property Image" class="w-full max-h-[24rem] object-contain transition-opacity duration-300 hidden">
-                        <video id="modalVideoSrc" controls controlsList="nodownload noplaybackrate" disablePictureInPicture oncontextmenu="return false;" onselectstart="return false;" ondragstart="return false;" class="w-full h-full max-h-[24rem] object-contain transition-opacity duration-300 hidden" style="aspect-ratio: auto; user-select: none; -webkit-user-select: none; -moz-user-select: none; -ms-user-select: none;">
+                        <img id="modalImageSrc" src="" alt="Property Image" class="w-full max-h-[24rem] object-contain transition-opacity duration-300 hidden" loading="lazy" decoding="async">
+                        <video id="modalVideoSrc" controls controlsList="nodownload noplaybackrate" disablePictureInPicture oncontextmenu="return false;" onselectstart="return false;" ondragstart="return false;" preload="none" class="w-full h-full max-h-[24rem] object-contain transition-opacity duration-300 hidden" style="aspect-ratio: auto; user-select: none; -webkit-user-select: none; -moz-user-select: none; -ms-user-select: none;">
                             Your browser does not support the video tag.
                         </video>
                         </div>

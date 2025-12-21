@@ -28,7 +28,7 @@ load_dotenv(os.path.join(BASE_DIR, '.env'))
 SECRET_KEY = os.getenv('SECRET_KEY', 'django-insecure-tzk4^_u^x05juz(7r*c16hptg0pt6kcwiide^wsg+s+-kfb%&6')
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = os.getenv('DEBUG', 'False').lower() == 'False
+DEBUG = os.getenv('DEBUG', 'False').lower() == 'False'
 # For local development, enable DEBUG
 if os.getenv('ENVIRONMENT') != 'production':
     DEBUG = False
@@ -195,6 +195,11 @@ TIME_ZONE = 'America/Chicago'  # US Central Time (CDT/CST)
 USE_I18N = True
 
 USE_TZ = True
+
+# File Upload Settings - Increase limits for property images and videos
+DATA_UPLOAD_MAX_MEMORY_SIZE = 100 * 1024 * 1024  # 100 MB - for in-memory uploads
+FILE_UPLOAD_MAX_MEMORY_SIZE = 100 * 1024 * 1024  # 100 MB - for file uploads
+DATA_UPLOAD_MAX_NUMBER_FIELDS = 10000  # Increase field limit for forms with many images/videos
 
 
 # Static files (CSS, JavaScript, Images)

@@ -31,15 +31,22 @@ def image_to_base64(image_field):
             image = image.convert('RGB')
         
         # Resize image to reasonable size (max 1200px width, maintain aspect ratio)
+        # For web display, we can be more aggressive with compression
         max_width = 1200
-        if image.width > max_width:
-            ratio = max_width / image.width
+        max_height = 1200
+        if image.width > max_width or image.height > max_height:
+            # Calculate ratio to fit within max dimensions
+            width_ratio = max_width / image.width if image.width > max_width else 1
+            height_ratio = max_height / image.height if image.height > max_height else 1
+            ratio = min(width_ratio, height_ratio)
+            new_width = int(image.width * ratio)
             new_height = int(image.height * ratio)
-            image = image.resize((max_width, new_height), Image.Resampling.LANCZOS)
+            image = image.resize((new_width, new_height), Image.Resampling.LANCZOS)
         
-        # Convert to base64
+        # Convert to base64 with optimized compression
+        # Quality 80 provides good balance between file size and visual quality
         buffer = io.BytesIO()
-        image.save(buffer, format='JPEG', quality=85, optimize=True)
+        image.save(buffer, format='JPEG', quality=80, optimize=True, progressive=True)
         buffer.seek(0)
         
         # Encode to base64

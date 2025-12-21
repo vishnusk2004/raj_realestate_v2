@@ -273,11 +273,27 @@ class PropertyListing(models.Model):
         return f"{self.title} - {self.get_property_type_display()}"
     
     def save(self, *args, **kwargs):
-        """Override save to automatically convert uploaded images to base64"""
+        """Override save to automatically convert uploaded images to base64 and compress videos"""
         # Convert uploaded file to base64 if present and no base64 exists
         if self.image_file and self.image_file.name and not self.image_base64:
             from .image_utils import image_to_base64
             self.image_base64 = image_to_base64(self.image_file)
+        
+        # Compress video if file is uploaded
+        if self.video_file and self.video_file.name:
+            try:
+                from .video_utils import compress_video
+                compressed_file = compress_video(self.video_file, max_size_mb=50, quality='medium')
+                if compressed_file:
+                    # Replace the original file with compressed version
+                    self.video_file.save(
+                        self.video_file.name,
+                        compressed_file,
+                        save=False
+                    )
+            except Exception as e:
+                # If compression fails, continue with original file
+                print(f"Video compression skipped: {e}")
         
         super().save(*args, **kwargs)
     
@@ -1005,6 +1021,26 @@ class PropertyListingVideo(models.Model):
         
         # Return as-is if not YouTube/Vimeo
         return url
+    
+    def save(self, *args, **kwargs):
+        """Override save to compress video files if available"""
+        # Compress video if file is uploaded and compression is available
+        if self.video_file and self.video_file.name:
+            try:
+                from .video_utils import compress_video
+                compressed_file = compress_video(self.video_file, max_size_mb=50, quality='medium')
+                if compressed_file:
+                    # Replace the original file with compressed version
+                    self.video_file.save(
+                        self.video_file.name,
+                        compressed_file,
+                        save=False
+                    )
+            except Exception as e:
+                # If compression fails, continue with original file
+                print(f"Video compression skipped: {e}")
+        
+        super().save(*args, **kwargs)
     
     def __str__(self):
         return f"{self.property_listing.title} - Video {self.order + 1}"
