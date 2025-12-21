@@ -8,12 +8,14 @@
     right: 0;
     bottom: 0;
     background-color: rgba(0, 0, 0, 0.9);
-    z-index: 50;
+    z-index: 9999;
     display: flex;
     align-items: center;
     justify-content: center;
     padding: 1rem;
     backdrop-filter: blur(4px);
+    overflow-y: auto;
+    overflow-x: hidden;
 }
 
 .image-modal-backdrop.hidden {
@@ -32,11 +34,32 @@
     max-width: 90vw;
     width: 100%;
     max-height: 90vh;
-    overflow: hidden;
+    overflow-y: auto;
+    overflow-x: hidden;
     display: flex;
     flex-direction: column;
     padding: 0 !important;
     margin: 0 !important;
+    scrollbar-width: thin;
+    scrollbar-color: #cbd5e0 #f7fafc;
+}
+
+.image-modal-container::-webkit-scrollbar {
+    width: 8px;
+}
+
+.image-modal-container::-webkit-scrollbar-track {
+    background: #f7fafc;
+    border-radius: 4px;
+}
+
+.image-modal-container::-webkit-scrollbar-thumb {
+    background: #cbd5e0;
+    border-radius: 4px;
+}
+
+.image-modal-container::-webkit-scrollbar-thumb:hover {
+    background: #a0aec0;
 }
 
 /* Description Section in Modal */
@@ -140,10 +163,31 @@
     justify-content: center;
     min-height: 0; /* No minimum height to prevent gaps */
     max-height: calc(90vh - 360px); /* Reserve space for header, thumbnails, and description */
-    overflow: hidden;
+    overflow-y: auto;
+    overflow-x: hidden;
     padding: 1rem 0; /* Small vertical padding for visual spacing */
     margin: 0 !important; /* No margin */
     gap: 0 !important; /* No gap between flex items */
+    scrollbar-width: thin;
+    scrollbar-color: #cbd5e0 #f7fafc;
+}
+
+.image-modal-content::-webkit-scrollbar {
+    width: 8px;
+}
+
+.image-modal-content::-webkit-scrollbar-track {
+    background: #f7fafc;
+    border-radius: 4px;
+}
+
+.image-modal-content::-webkit-scrollbar-thumb {
+    background: #cbd5e0;
+    border-radius: 4px;
+}
+
+.image-modal-content::-webkit-scrollbar-thumb:hover {
+    background: #a0aec0;
 }
 
 /* Navigation Arrows */
