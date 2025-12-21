@@ -207,6 +207,167 @@
         }
     </style>
     
+    <!-- Define gallery functions in head to ensure they're available before HTML renders -->
+    <script>
+        // Define gallery functions immediately in head to ensure global accessibility
+        // These functions must be defined before any HTML that uses them
+        (function() {
+            'use strict';
+            
+            // Initialize openHouseImages object
+            window.openHouseImages = window.openHouseImages || {};
+            
+            // Define gallery functions
+            window.openImageGallery = function(openHouseId) {
+                if (!window.openHouseImages || !window.openHouseImages[openHouseId]) {
+                    console.error('Image data not found for open house:', openHouseId);
+                    return;
+                }
+                
+                const imageData = window.openHouseImages[openHouseId];
+                const images = imageData.images.filter(img => img); // Remove empty images
+                
+                if (images.length === 0) {
+                    return;
+                }
+                
+                let currentIndex = 0;
+                
+                // Create modal HTML
+                const modalHTML = `
+                    <div id="imageGalleryModal" class="image-modal-backdrop" onclick="if(event.target.id === 'imageGalleryModal') window.closeImageGallery()">
+                        <div class="image-modal-container" onclick="event.stopPropagation()">
+                            <div class="image-modal-header">
+                                <h3 class="image-modal-title">${imageData.title}</h3>
+                                <div class="image-modal-header-right">
+                                    <span class="image-modal-counter">
+                                        <span id="currentImageIndex">1</span> / ${images.length}
+                                    </span>
+                                    <button class="image-modal-close" onclick="window.closeImageGallery()" aria-label="Close">&times;</button>
+                                </div>
+                            </div>
+                            <div class="image-modal-content">
+                                <button class="image-modal-nav prev" onclick="window.navigateGallery(-1)" id="prevBtn" ${images.length <= 1 ? 'style="display:none"' : ''}>
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                        <path d="m15 18-6-6 6-6"></path>
+                                    </svg>
+                                </button>
+                                <div class="image-modal-image-container">
+                                    <img id="galleryMainImage" src="${images[0]}" alt="${imageData.title}" class="image-modal-image" style="max-width: calc(90vw - 4rem); max-height: ${imageData.description ? 'calc(90vh - 420px)' : 'calc(90vh - 200px)'}; object-fit: contain; object-position: center; width: auto; height: auto; margin: 0; padding: 0; display: block;">
+                                </div>
+                                <button class="image-modal-nav next" onclick="window.navigateGallery(1)" id="nextBtn" ${images.length <= 1 ? 'style="display:none"' : ''}>
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                        <path d="m9 18 6-6-6-6"></path>
+                                    </svg>
+                                </button>
+                            </div>
+                            ${images.length > 1 ? `
+                            <div class="image-modal-thumbnails">
+                                <div class="image-modal-thumbnail-strip" id="thumbnailStrip">
+                                    ${images.map((img, idx) => `
+                                        <img src="${img}" alt="Thumbnail ${idx + 1}" 
+                                             class="image-modal-thumbnail ${idx === 0 ? 'active' : ''}" 
+                                             onclick="window.goToImage(${idx})">
+                                    `).join('')}
+                                </div>
+                            </div>
+                            ` : ''}
+                            ${imageData.description ? `
+                            <div class="image-modal-description-section">
+                                <h4 style="font-size: 1rem; font-weight: 600; color: #1f2937; margin-bottom: 0.5rem; margin-top: 0;">Property Description</h4>
+                                <p style="color: #4b5563; line-height: 1.6; margin: 0; white-space: pre-wrap;">${imageData.description}</p>
+                            </div>
+                            ` : ''}
+                        </div>
+                    </div>
+                `;
+                
+                // Remove existing modal if any
+                const existingModal = document.getElementById('imageGalleryModal');
+                if (existingModal) {
+                    existingModal.remove();
+                }
+                
+                // Add modal to page
+                document.body.insertAdjacentHTML('beforeend', modalHTML);
+                document.body.style.overflow = 'hidden';
+                
+                // Store current index globally for navigation
+                window.currentGalleryIndex = 0;
+                window.currentGalleryImages = images;
+                
+                // Keyboard navigation
+                document.addEventListener('keydown', window.handleGalleryKeyPress);
+            };
+            
+            window.navigateGallery = function(direction) {
+                if (!window.currentGalleryImages) return;
+                
+                const images = window.currentGalleryImages;
+                let newIndex = window.currentGalleryIndex + direction;
+                
+                if (newIndex < 0) {
+                    newIndex = images.length - 1;
+                } else if (newIndex >= images.length) {
+                    newIndex = 0;
+                }
+                
+                window.goToImage(newIndex);
+            };
+            
+            window.goToImage = function(index) {
+                if (!window.currentGalleryImages) return;
+                
+                const images = window.currentGalleryImages;
+                if (index < 0 || index >= images.length) return;
+                
+                window.currentGalleryIndex = index;
+                
+                const mainImage = document.getElementById('galleryMainImage');
+                if (mainImage) {
+                    mainImage.src = images[index];
+                }
+                
+                // Update counter
+                const counter = document.getElementById('currentImageIndex');
+                if (counter) {
+                    counter.textContent = index + 1;
+                }
+                
+                // Update thumbnails
+                const thumbnails = document.querySelectorAll('.image-modal-thumbnail');
+                thumbnails.forEach((thumb, idx) => {
+                    if (idx === index) {
+                        thumb.classList.add('active');
+                    } else {
+                        thumb.classList.remove('active');
+                    }
+                });
+            };
+            
+            window.handleGalleryKeyPress = function(e) {
+                if (document.getElementById('imageGalleryModal')) {
+                    if (e.key === 'ArrowLeft') {
+                        window.navigateGallery(-1);
+                    } else if (e.key === 'ArrowRight') {
+                        window.navigateGallery(1);
+                    } else if (e.key === 'Escape') {
+                        window.closeImageGallery();
+                    }
+                }
+            };
+            
+            window.closeImageGallery = function() {
+                const modal = document.getElementById('imageGalleryModal');
+                if (modal) {
+                    modal.remove();
+                    document.body.style.overflow = 'auto';
+                    document.removeEventListener('keydown', window.handleGalleryKeyPress);
+                }
+            };
+        })();
+    </script>
+    
 </head>
 <body>
 {% include 'Raj/navbar.html' %}
@@ -234,7 +395,7 @@
                     <div class="rounded-lg border bg-card text-card-foreground shadow-sm overflow-hidden shadow-medium hover:shadow-strong transition-all duration-300">
                         <div class="grid grid-cols-1 md:grid-cols-1 lg:grid-cols-2 gap-6 lg:items-stretch">
                             <div class="relative flex-shrink-0">
-                                <div class="grid grid-cols-3 gap-2 open-house-image-container cursor-pointer" onclick="window.openImageGallery({{ open_house.id }})">
+                                <div class="grid grid-cols-3 gap-2 open-house-image-container cursor-pointer" data-open-house-id="{{ open_house.id }}" onclick="if(window.openImageGallery && typeof window.openImageGallery === 'function') { window.openImageGallery({{ open_house.id }}); }">
                                     {% if open_house.get_main_image_url %}
                                         <img src="{{ open_house.get_main_image_url }}" alt="{{ open_house.title }}" class="col-span-2 w-full h-full object-cover rounded-l-lg hover:opacity-90 transition-opacity">
                                     {% else %}
@@ -259,14 +420,14 @@
                                         {% if open_house.get_main_image_url %}
                                             {% with total_images=total_images|add:1 %}
                                                 {% if total_images > 3 %}
-                                                    <div class="absolute bottom-4 right-4 bg-black bg-opacity-70 text-white px-3 py-1 rounded-full text-sm font-medium cursor-pointer" onclick="event.stopPropagation(); window.openImageGallery({{ open_house.id }})">
+                                                    <div class="absolute bottom-4 right-4 bg-black bg-opacity-70 text-white px-3 py-1 rounded-full text-sm font-medium cursor-pointer" data-gallery-id="{{ open_house.id }}" onclick="event.stopPropagation(); if(window.openImageGallery && typeof window.openImageGallery === 'function') { window.openImageGallery({{ open_house.id }}); }">
                                                         +{{ total_images|add:"-3" }} more
                                                     </div>
                                                 {% endif %}
                                             {% endwith %}
                                         {% else %}
                                             {% if total_images > 2 %}
-                                                <div class="absolute bottom-4 right-4 bg-black bg-opacity-70 text-white px-3 py-1 rounded-full text-sm font-medium cursor-pointer" onclick="event.stopPropagation(); window.openImageGallery({{ open_house.id }})">
+                                                <div class="absolute bottom-4 right-4 bg-black bg-opacity-70 text-white px-3 py-1 rounded-full text-sm font-medium cursor-pointer" data-gallery-id="{{ open_house.id }}" onclick="event.stopPropagation(); if(window.openImageGallery && typeof window.openImageGallery === 'function') { window.openImageGallery({{ open_house.id }}); }">
                                                     +{{ total_images|add:"-2" }} more
                                                 </div>
                                             {% endif %}
@@ -334,7 +495,7 @@
                                         <p class="text-muted-foreground leading-relaxed open-house-description">{{ open_house.description }}</p>
                                     </div>
                                     {% if open_house.description|length > 200 %}
-                                    <button onclick="window.openImageGallery({{ open_house.id }})" class="text-primary hover:text-primary-dark text-sm font-medium mt-2">
+                                    <button data-gallery-id="{{ open_house.id }}" onclick="if(window.openImageGallery && typeof window.openImageGallery === 'function') { window.openImageGallery({{ open_house.id }}); }" class="text-primary hover:text-primary-dark text-sm font-medium mt-2">
                                         View full description
                                     </button>
                                     {% endif %}
@@ -431,155 +592,8 @@
     <script src="{% static 'js/django-main-fixed.js' %}"></script>
     
     <script>
-        // Define gallery functions immediately so they're available for onclick handlers
-        // Explicitly attach to window to ensure global accessibility
-        window.openImageGallery = function(openHouseId) {
-            if (!window.openHouseImages || !window.openHouseImages[openHouseId]) {
-                console.error('Image data not found for open house:', openHouseId);
-                return;
-            }
-            
-            const imageData = window.openHouseImages[openHouseId];
-            const images = imageData.images.filter(img => img); // Remove empty images
-            
-            if (images.length === 0) {
-                return;
-            }
-            
-            let currentIndex = 0;
-            
-            // Create modal HTML
-            const modalHTML = `
-                <div id="imageGalleryModal" class="image-modal-backdrop" onclick="if(event.target.id === 'imageGalleryModal') window.closeImageGallery()">
-                    <div class="image-modal-container" onclick="event.stopPropagation()">
-                        <div class="image-modal-header">
-                            <h3 class="image-modal-title">${imageData.title}</h3>
-                            <div class="image-modal-header-right">
-                                <span class="image-modal-counter">
-                                    <span id="currentImageIndex">1</span> / ${images.length}
-                                </span>
-                                <button class="image-modal-close" onclick="window.closeImageGallery()" aria-label="Close">&times;</button>
-                            </div>
-                        </div>
-                        <div class="image-modal-content">
-                            <button class="image-modal-nav prev" onclick="window.navigateGallery(-1)" id="prevBtn" ${images.length <= 1 ? 'style="display:none"' : ''}>
-                                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                                    <path d="m15 18-6-6 6-6"></path>
-                                </svg>
-                            </button>
-                            <div class="image-modal-image-container">
-                                <img id="galleryMainImage" src="${images[0]}" alt="${imageData.title}" class="image-modal-image" style="max-width: calc(90vw - 4rem); max-height: ${imageData.description ? 'calc(90vh - 420px)' : 'calc(90vh - 200px)'}; object-fit: contain; object-position: center; width: auto; height: auto; margin: 0; padding: 0; display: block;">
-                            </div>
-                            <button class="image-modal-nav next" onclick="window.navigateGallery(1)" id="nextBtn" ${images.length <= 1 ? 'style="display:none"' : ''}>
-                                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                                    <path d="m9 18 6-6-6-6"></path>
-                                </svg>
-                            </button>
-                        </div>
-                        ${images.length > 1 ? `
-                        <div class="image-modal-thumbnails">
-                            <div class="image-modal-thumbnail-strip" id="thumbnailStrip">
-                                ${images.map((img, idx) => `
-                                    <img src="${img}" alt="Thumbnail ${idx + 1}" 
-                                         class="image-modal-thumbnail ${idx === 0 ? 'active' : ''}" 
-                                         onclick="window.goToImage(${idx})">
-                                `).join('')}
-                            </div>
-                        </div>
-                        ` : ''}
-                        ${imageData.description ? `
-                        <div class="image-modal-description-section">
-                            <h4 style="font-size: 1rem; font-weight: 600; color: #1f2937; margin-bottom: 0.5rem; margin-top: 0;">Property Description</h4>
-                            <p style="color: #4b5563; line-height: 1.6; margin: 0; white-space: pre-wrap;">${imageData.description}</p>
-                        </div>
-                        ` : ''}
-                    </div>
-                </div>
-            `;
-            
-            // Remove existing modal if any
-            const existingModal = document.getElementById('imageGalleryModal');
-            if (existingModal) {
-                existingModal.remove();
-            }
-            
-            // Add modal to page
-            document.body.insertAdjacentHTML('beforeend', modalHTML);
-            document.body.style.overflow = 'hidden';
-            
-            // Store current index globally for navigation
-            window.currentGalleryIndex = 0;
-            window.currentGalleryImages = images;
-            
-            // Keyboard navigation
-            document.addEventListener('keydown', window.handleGalleryKeyPress);
-        };
-        
-        window.navigateGallery = function(direction) {
-            if (!window.currentGalleryImages) return;
-            
-            const images = window.currentGalleryImages;
-            let newIndex = window.currentGalleryIndex + direction;
-            
-            if (newIndex < 0) {
-                newIndex = images.length - 1;
-            } else if (newIndex >= images.length) {
-                newIndex = 0;
-            }
-            
-            window.goToImage(newIndex);
-        };
-        
-        window.goToImage = function(index) {
-            if (!window.currentGalleryImages) return;
-            
-            const images = window.currentGalleryImages;
-            if (index < 0 || index >= images.length) return;
-            
-            window.currentGalleryIndex = index;
-            
-            const mainImage = document.getElementById('galleryMainImage');
-            if (mainImage) {
-                mainImage.src = images[index];
-            }
-            
-            // Update counter
-            const counter = document.getElementById('currentImageIndex');
-            if (counter) {
-                counter.textContent = index + 1;
-            }
-            
-            // Update thumbnails
-            const thumbnails = document.querySelectorAll('.image-modal-thumbnail');
-            thumbnails.forEach((thumb, idx) => {
-                if (idx === index) {
-                    thumb.classList.add('active');
-                } else {
-                    thumb.classList.remove('active');
-                }
-            });
-        };
-        
-        window.handleGalleryKeyPress = function(e) {
-            if (document.getElementById('imageGalleryModal')) {
-                if (e.key === 'ArrowLeft') {
-                    window.navigateGallery(-1);
-                } else if (e.key === 'ArrowRight') {
-                    window.navigateGallery(1);
-                } else if (e.key === 'Escape') {
-                    window.closeImageGallery();
-                }
-            }
-        };
-        
-        window.closeImageGallery = function() {
-            const modal = document.getElementById('imageGalleryModal');
-            if (modal) {
-                modal.remove();
-                document.body.style.overflow = 'auto';
-                document.removeEventListener('keydown', window.handleGalleryKeyPress);
-            }
-        };
+        // Gallery functions are now defined in <head> section to ensure they're available before HTML renders
+        // Only booking modal functions remain here
         
         function openBookingModal(openHouseId, title, address, date, time, endTime, price) {
             // Escape HTML and handle price
@@ -743,7 +757,34 @@
     
     <script>
     // Handle Book/Get More Info button clicks using data attributes
+    // Also add event delegation for image gallery as backup
     document.addEventListener('DOMContentLoaded', function() {
+        // Event delegation for image gallery clicks (backup to onclick handlers)
+        document.addEventListener('click', function(e) {
+            // Check if clicked element or parent has open-house-image-container class
+            const imageContainer = e.target.closest('.open-house-image-container');
+            if (imageContainer && window.openImageGallery && typeof window.openImageGallery === 'function') {
+                const openHouseId = imageContainer.getAttribute('data-open-house-id');
+                if (openHouseId) {
+                    e.preventDefault();
+                    window.openImageGallery(parseInt(openHouseId));
+                    return;
+                }
+            }
+            
+            // Check for "+X more" button
+            const moreButton = e.target.closest('[data-gallery-id]');
+            if (moreButton && window.openImageGallery && typeof window.openImageGallery === 'function') {
+                const openHouseId = moreButton.getAttribute('data-gallery-id');
+                if (openHouseId) {
+                    e.preventDefault();
+                    e.stopPropagation();
+                    window.openImageGallery(parseInt(openHouseId));
+                    return;
+                }
+            }
+        });
+        
         // Use event delegation for book buttons
         document.addEventListener('click', function(e) {
             const btn = e.target.closest('.book-open-house-btn');
