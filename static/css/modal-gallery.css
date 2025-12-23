@@ -64,19 +64,20 @@
 
 /* Description Section in Modal */
 .image-modal-description-section {
-    padding: 1rem; /* Padding for content */
-    border-top: 1px solid #e5e7eb;
-    background-color: #f9fafb;
-    max-height: 200px; /* Fixed max height for scrolling */
-    min-height: 100px; /* Minimum height to show content */
-    overflow-y: auto; /* Enable scrolling */
-    overflow-x: hidden;
-    flex-shrink: 0; /* Don't shrink this section */
+    padding: 1rem !important; /* Padding for content */
+    border-top: 1px solid #e5e7eb !important;
+    background-color: #f9fafb !important;
+    max-height: 200px !important; /* Fixed max height for scrolling */
+    min-height: 100px !important; /* Minimum height to show content */
+    overflow-y: auto !important; /* Enable scrolling */
+    overflow-x: hidden !important;
+    flex-shrink: 0 !important; /* Don't shrink this section */
     line-height: 1.6;
-    scrollbar-width: thin;
-    scrollbar-color: #cbd5e0 #f7fafb;
-    position: relative; /* Ensure proper positioning */
-    z-index: 1; /* Ensure it's above image */
+    scrollbar-width: thin !important;
+    scrollbar-color: #cbd5e0 #f7fafb !important;
+    position: relative !important; /* Ensure proper positioning */
+    z-index: 1 !important; /* Ensure it's above image */
+    box-sizing: border-box !important; /* Include padding in height calculation */
 }
 
 .image-modal-description-section::-webkit-scrollbar {

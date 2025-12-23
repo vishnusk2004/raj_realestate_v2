@@ -362,11 +362,27 @@
                     console.log('Modal container computed styles:');
                     console.log('  - position:', containerStyles.position);
                     console.log('  - display:', containerStyles.display);
+                    console.log('  - flex-direction:', containerStyles.flexDirection);
                     console.log('  - width:', containerStyles.width);
                     console.log('  - max-width:', containerStyles.maxWidth);
+                    console.log('  - max-height:', containerStyles.maxHeight);
+                    console.log('  - height:', containerStyles.height);
+                    console.log('  - overflow:', containerStyles.overflow);
                     console.log('  - background-color:', containerStyles.backgroundColor);
                 } else {
                     console.error('❌ Modal container not found!');
+                }
+                
+                // Check image content area
+                const imageContent = insertedModal.querySelector('.image-modal-content');
+                if (imageContent) {
+                    const contentStyles = window.getComputedStyle(imageContent);
+                    console.log('Image content area computed styles:');
+                    console.log('  - flex:', contentStyles.flex);
+                    console.log('  - flex-shrink:', contentStyles.flexShrink);
+                    console.log('  - max-height:', contentStyles.maxHeight);
+                    console.log('  - height:', contentStyles.height);
+                    console.log('  - overflow:', contentStyles.overflow);
                 }
                 
                 // Check main image
@@ -411,6 +427,19 @@
                 // Check description section
                 const descriptionSection = insertedModal.querySelector('.image-modal-description-section');
                 console.log('Description section found:', !!descriptionSection);
+                if (descriptionSection) {
+                    const descStyles = window.getComputedStyle(descriptionSection);
+                    console.log('Description section computed styles:');
+                    console.log('  - max-height:', descStyles.maxHeight);
+                    console.log('  - height:', descStyles.height);
+                    console.log('  - overflow-y:', descStyles.overflowY);
+                    console.log('  - overflow:', descStyles.overflow);
+                    console.log('  - scrollHeight:', descriptionSection.scrollHeight);
+                    console.log('  - clientHeight:', descriptionSection.clientHeight);
+                    console.log('  - Needs scrollbar:', descriptionSection.scrollHeight > descriptionSection.clientHeight);
+                    console.log('  - padding:', descStyles.padding);
+                    console.log('  - margin:', descStyles.margin);
+                }
                 
                 document.body.style.overflow = 'hidden';
                 console.log('Body overflow set to hidden');
