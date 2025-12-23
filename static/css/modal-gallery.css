@@ -2,16 +2,16 @@
 
 /* Modal Backdrop */
 .image-modal-backdrop {
-    position: fixed;
-    top: 0;
-    left: 0;
-    right: 0;
-    bottom: 0;
-    background-color: rgba(0, 0, 0, 0.9);
-    z-index: 9999;
-    display: flex;
-    align-items: center;
-    justify-content: center;
+    position: fixed !important;
+    top: 0 !important;
+    left: 0 !important;
+    right: 0 !important;
+    bottom: 0 !important;
+    background-color: rgba(0, 0, 0, 0.9) !important;
+    z-index: 99999 !important; /* Very high z-index to ensure it's on top */
+    display: flex !important;
+    align-items: center !important;
+    justify-content: center !important;
     padding: 1rem;
     backdrop-filter: blur(4px);
     overflow-y: auto;
@@ -34,14 +34,14 @@
     max-width: 90vw;
     width: 100%;
     max-height: 90vh;
-    overflow-y: auto;
+    overflow: hidden; /* Changed from overflow-y: auto to prevent double scrollbars */
     overflow-x: hidden;
     display: flex;
     flex-direction: column;
     padding: 0 !important;
     margin: 0 !important;
     scrollbar-width: thin;
-    scrollbar-color: #cbd5e0 #f7fafc;
+    scrollbar-color: #cbd5e0 #f7fafb;
 }
 
 .image-modal-container::-webkit-scrollbar {
@@ -64,16 +64,19 @@
 
 /* Description Section in Modal */
 .image-modal-description-section {
-    padding: 0.75rem 1rem; /* Reduced vertical padding */
+    padding: 1rem; /* Padding for content */
     border-top: 1px solid #e5e7eb;
     background-color: #f9fafb;
-    max-height: 260px; /* Increased height since we removed image padding */
-    min-height: 150px; /* Minimum height to show multiple lines */
-    overflow-y: auto;
-    flex-shrink: 0;
+    max-height: 200px; /* Fixed max height for scrolling */
+    min-height: 100px; /* Minimum height to show content */
+    overflow-y: auto; /* Enable scrolling */
+    overflow-x: hidden;
+    flex-shrink: 0; /* Don't shrink this section */
     line-height: 1.6;
     scrollbar-width: thin;
-    scrollbar-color: #cbd5e0 #f7fafc;
+    scrollbar-color: #cbd5e0 #f7fafb;
+    position: relative; /* Ensure proper positioning */
+    z-index: 1; /* Ensure it's above image */
 }
 
 .image-modal-description-section::-webkit-scrollbar {
@@ -108,6 +111,8 @@
     margin: 0;
     white-space: pre-wrap;
     word-wrap: break-word;
+    overflow-wrap: break-word;
+    max-width: 100%;
 }
 
 /* Modal Header */
@@ -119,6 +124,7 @@
     border-bottom: 1px solid #e5e7eb;
     background-color: #f9fafb;
     margin: 0;
+    flex-shrink: 0; /* Don't shrink header */
 }
 
 .image-modal-title {
@@ -157,19 +163,18 @@
 /* Modal Content */
 .image-modal-content {
     position: relative;
-    flex: 1;
+    flex: 1 1 auto; /* Allow flex to shrink and grow */
     display: flex;
     align-items: center; /* Center vertically */
     justify-content: center;
-    min-height: 0; /* No minimum height to prevent gaps */
-    max-height: calc(90vh - 360px); /* Reserve space for header, thumbnails, and description */
-    overflow-y: auto;
+    min-height: 200px; /* Minimum height for image area */
+    max-height: none; /* Remove max-height constraint, let flex handle it */
+    overflow: visible; /* Allow image to be fully visible */
     overflow-x: hidden;
-    padding: 1rem 0; /* Small vertical padding for visual spacing */
+    padding: 1rem; /* Padding for visual spacing */
     margin: 0 !important; /* No margin */
     gap: 0 !important; /* No gap between flex items */
-    scrollbar-width: thin;
-    scrollbar-color: #cbd5e0 #f7fafc;
+    flex-shrink: 1; /* Allow this section to shrink if needed */
 }
 
 .image-modal-content::-webkit-scrollbar {
@@ -240,9 +245,9 @@
 
 /* Image Container */
 .image-modal-image-container {
-    padding: 0.5rem 1rem; /* Small vertical padding for visual spacing, horizontal for side spacing */
+    padding: 0; /* Remove padding to prevent overlap */
     width: 100%;
-    height: fit-content; /* Fit to content height */
+    height: auto; /* Fit to content height */
     max-width: 100%;
     max-height: 100%;
     display: flex;
@@ -250,13 +255,14 @@
     justify-content: center;
     overflow: visible; /* Allow image to be fully visible */
     margin: 0 !important; /* No margin */
-    flex-shrink: 0; /* Don't shrink */
+    flex-shrink: 1; /* Allow to shrink if needed */
     line-height: 0; /* Remove line-height spacing */
+    position: relative; /* Ensure proper positioning */
 }
 
 .image-modal-image {
     max-width: 100%;
-    max-height: 100%;
+    max-height: calc(90vh - 400px); /* Account for header (~60px), thumbnails (~80px), description (~200px), padding (~60px) */
     width: auto;
     height: auto;
     object-fit: contain; /* Ensure full image is visible, no cropping */
@@ -264,7 +270,7 @@
     border-radius: 0.5rem;
     box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
     display: block;
-    margin: 0 !important; /* No margin on image */
+    margin: 0 auto !important; /* Center horizontally */
     padding: 0 !important; /* No padding on image */
     vertical-align: top; /* Align to top */
 }
@@ -275,6 +281,7 @@
     padding-bottom: 0.75rem;
     background-color: #f9fafb;
     border-top: 1px solid #e5e7eb;
+    flex-shrink: 0; /* Don't shrink thumbnails */
 }
 
 .image-modal-thumbnail-strip {
@@ -445,16 +452,22 @@
     }
     
     .image-modal-container {
-        max-height: 85vh;
+        max-height: 95vh;
         max-width: 95vw;
     }
     
     .image-modal-content {
-        max-height: calc(85vh - 180px);
+        min-height: 150px;
+        padding: 0.5rem;
     }
     
     .image-modal-image {
-        max-height: calc(85vh - 180px);
+        max-height: calc(95vh - 350px) !important; /* Account for all sections on mobile */
+    }
+    
+    .image-modal-description-section {
+        max-height: 150px; /* Smaller on mobile */
+        min-height: 80px;
     }
     
     .image-modal-thumbnail {
@@ -468,5 +481,13 @@
     
     .image-modal-nav i {
         font-size: 1rem;
+    }
+    
+    .image-modal-header {
+        padding: 0.5rem;
+    }
+    
+    .image-modal-thumbnails {
+        padding: 0.5rem;
     }
 }
