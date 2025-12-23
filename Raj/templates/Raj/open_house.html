@@ -219,48 +219,18 @@
             
             // Define gallery functions
             window.openImageGallery = function(openHouseId) {
-                console.log('=== openImageGallery CALLED ===');
-                console.log('Open House ID:', openHouseId);
-                console.log('Type of ID:', typeof openHouseId);
-                console.log('window.openHouseImages exists:', !!window.openHouseImages);
-                console.log('window.openHouseImages:', window.openHouseImages);
-                
-                // Check if CSS is loaded
-                const testStyle = window.getComputedStyle(document.body);
-                console.log('CSS loaded check - body computed style:', testStyle);
-                
-                // Check if modal-gallery.css is loaded by checking for a specific class
-                const testElement = document.createElement('div');
-                testElement.className = 'image-modal-backdrop';
-                document.body.appendChild(testElement);
-                const backdropStyle = window.getComputedStyle(testElement);
-                console.log('Modal CSS check - backdrop position:', backdropStyle.position);
-                console.log('Modal CSS check - backdrop z-index:', backdropStyle.zIndex);
-                document.body.removeChild(testElement);
-                
                 if (!window.openHouseImages || !window.openHouseImages[openHouseId]) {
-                    console.error('❌ Image data not found for open house:', openHouseId);
-                    console.error('Available IDs:', Object.keys(window.openHouseImages || {}));
                     return;
                 }
                 
                 const imageData = window.openHouseImages[openHouseId];
-                console.log('✅ Image data found:', imageData);
-                console.log('Image data title:', imageData.title);
-                console.log('Image data images array:', imageData.images);
-                console.log('Image data images length:', imageData.images.length);
-                
                 const images = imageData.images.filter(img => img); // Remove empty images
-                console.log('Filtered images:', images);
-                console.log('Filtered images length:', images.length);
                 
                 if (images.length === 0) {
-                    console.error('❌ No images after filtering');
                     return;
                 }
                 
                 let currentIndex = 0;
-                console.log('Starting with index:', currentIndex);
                 
                 // Create modal HTML
                 const modalHTML = `
@@ -314,218 +284,60 @@
                 // Remove existing modal if any
                 const existingModal = document.getElementById('imageGalleryModal');
                 if (existingModal) {
-                    console.log('Removing existing modal');
                     existingModal.remove();
                 }
                 
-                console.log('Modal HTML length:', modalHTML.length);
-                console.log('Modal HTML preview (first 500 chars):', modalHTML.substring(0, 500));
-                
                 // Add modal to page
                 document.body.insertAdjacentHTML('beforeend', modalHTML);
-                console.log('✅ Modal HTML inserted into DOM');
-                
-                // Verify modal was inserted
-                const insertedModal = document.getElementById('imageGalleryModal');
-                if (!insertedModal) {
-                    console.error('❌ Modal was not inserted!');
-                    return;
-                }
-                console.log('✅ Modal found in DOM:', insertedModal);
-                
-                // Check modal styles
-                const modalStyles = window.getComputedStyle(insertedModal);
-                console.log('Modal computed styles:');
-                console.log('  - position:', modalStyles.position);
-                console.log('  - z-index:', modalStyles.zIndex);
-                console.log('  - display:', modalStyles.display);
-                console.log('  - visibility:', modalStyles.visibility);
-                console.log('  - opacity:', modalStyles.opacity);
-                
-                // Force layout recalculation
-                insertedModal.offsetHeight; // Trigger reflow
-                
-                // Verify CSS file is loaded
-                const cssLink = Array.from(document.styleSheets).find(sheet => {
-                    try {
-                        return sheet.href && sheet.href.includes('modal-gallery.css');
-                    } catch(e) {
-                        return false;
-                    }
-                });
-                console.log('Modal gallery CSS loaded:', !!cssLink);
-                
-                // Check modal container
-                const modalContainer = insertedModal.querySelector('.image-modal-container');
-                if (modalContainer) {
-                    const containerStyles = window.getComputedStyle(modalContainer);
-                    console.log('Modal container computed styles:');
-                    console.log('  - position:', containerStyles.position);
-                    console.log('  - display:', containerStyles.display);
-                    console.log('  - flex-direction:', containerStyles.flexDirection);
-                    console.log('  - width:', containerStyles.width);
-                    console.log('  - max-width:', containerStyles.maxWidth);
-                    console.log('  - max-height:', containerStyles.maxHeight);
-                    console.log('  - height:', containerStyles.height);
-                    console.log('  - overflow:', containerStyles.overflow);
-                    console.log('  - background-color:', containerStyles.backgroundColor);
-                } else {
-                    console.error('❌ Modal container not found!');
-                }
-                
-                // Check image content area
-                const imageContent = insertedModal.querySelector('.image-modal-content');
-                if (imageContent) {
-                    const contentStyles = window.getComputedStyle(imageContent);
-                    console.log('Image content area computed styles:');
-                    console.log('  - flex:', contentStyles.flex);
-                    console.log('  - flex-shrink:', contentStyles.flexShrink);
-                    console.log('  - max-height:', contentStyles.maxHeight);
-                    console.log('  - height:', contentStyles.height);
-                    console.log('  - overflow:', contentStyles.overflow);
-                }
-                
-                // Check main image
-                const mainImage = document.getElementById('galleryMainImage');
-                if (mainImage) {
-                    console.log('✅ Main image found:', mainImage);
-                    console.log('Main image src:', mainImage.src);
-                    const imageStyles = window.getComputedStyle(mainImage);
-                    console.log('Main image computed styles:');
-                    console.log('  - display:', imageStyles.display);
-                    console.log('  - width:', imageStyles.width);
-                    console.log('  - height:', imageStyles.height);
-                    console.log('  - max-width:', imageStyles.maxWidth);
-                    console.log('  - max-height:', imageStyles.maxHeight);
-                    console.log('  - object-fit:', imageStyles.objectFit);
-                    
-                    // Check if image loads
-                    mainImage.onload = function() {
-                        console.log('✅ Main image loaded successfully');
-                    };
-                    mainImage.onerror = function() {
-                        console.error('❌ Main image failed to load:', mainImage.src);
-                    };
-                } else {
-                    console.error('❌ Main image not found!');
-                }
-                
-                // Check navigation buttons
-                const prevBtn = document.getElementById('prevBtn');
-                const nextBtn = document.getElementById('nextBtn');
-                console.log('Prev button found:', !!prevBtn);
-                console.log('Next button found:', !!nextBtn);
-                
-                // Check thumbnails
-                const thumbnails = document.querySelectorAll('.image-modal-thumbnail');
-                console.log('Thumbnails found:', thumbnails.length);
-                
-                // Check header
-                const header = insertedModal.querySelector('.image-modal-header');
-                console.log('Header found:', !!header);
-                
-                // Check description section
-                const descriptionSection = insertedModal.querySelector('.image-modal-description-section');
-                console.log('Description section found:', !!descriptionSection);
-                if (descriptionSection) {
-                    const descStyles = window.getComputedStyle(descriptionSection);
-                    console.log('Description section computed styles:');
-                    console.log('  - max-height:', descStyles.maxHeight);
-                    console.log('  - height:', descStyles.height);
-                    console.log('  - overflow-y:', descStyles.overflowY);
-                    console.log('  - overflow:', descStyles.overflow);
-                    console.log('  - scrollHeight:', descriptionSection.scrollHeight);
-                    console.log('  - clientHeight:', descriptionSection.clientHeight);
-                    console.log('  - Needs scrollbar:', descriptionSection.scrollHeight > descriptionSection.clientHeight);
-                    console.log('  - padding:', descStyles.padding);
-                    console.log('  - margin:', descStyles.margin);
-                }
-                
                 document.body.style.overflow = 'hidden';
-                console.log('Body overflow set to hidden');
                 
                 // Store current index globally for navigation
                 window.currentGalleryIndex = 0;
                 window.currentGalleryImages = images;
-                console.log('Global variables set - currentGalleryIndex:', window.currentGalleryIndex, 'currentGalleryImages length:', window.currentGalleryImages.length);
                 
                 // Keyboard navigation
                 document.addEventListener('keydown', window.handleGalleryKeyPress);
-                console.log('Keyboard event listener added');
-                
-                console.log('=== openImageGallery COMPLETE ===');
             };
             
             window.navigateGallery = function(direction) {
-                console.log('navigateGallery called with direction:', direction);
-                console.log('currentGalleryImages exists:', !!window.currentGalleryImages);
-                console.log('currentGalleryIndex:', window.currentGalleryIndex);
-                
-                if (!window.currentGalleryImages) {
-                    console.error('❌ currentGalleryImages not set');
-                    return;
-                }
+                if (!window.currentGalleryImages) return;
                 
                 const images = window.currentGalleryImages;
                 let newIndex = window.currentGalleryIndex + direction;
-                console.log('Calculated newIndex:', newIndex);
                 
                 if (newIndex < 0) {
                     newIndex = images.length - 1;
-                    console.log('Wrapped to end, newIndex:', newIndex);
                 } else if (newIndex >= images.length) {
                     newIndex = 0;
-                    console.log('Wrapped to start, newIndex:', newIndex);
                 }
                 
-                console.log('Calling goToImage with index:', newIndex);
                 window.goToImage(newIndex);
             };
             
             window.goToImage = function(index) {
-                console.log('goToImage called with index:', index);
-                console.log('currentGalleryImages exists:', !!window.currentGalleryImages);
-                
-                if (!window.currentGalleryImages) {
-                    console.error('❌ currentGalleryImages not set');
-                    return;
-                }
+                if (!window.currentGalleryImages) return;
                 
                 const images = window.currentGalleryImages;
-                console.log('Images array length:', images.length);
-                
-                if (index < 0 || index >= images.length) {
-                    console.error('❌ Invalid index:', index, 'valid range: 0 to', images.length - 1);
-                    return;
-                }
+                if (index < 0 || index >= images.length) return;
                 
                 window.currentGalleryIndex = index;
-                console.log('Updated currentGalleryIndex to:', index);
                 
                 const mainImage = document.getElementById('galleryMainImage');
                 if (mainImage) {
-                    console.log('Updating main image src to:', images[index]);
                     mainImage.src = images[index];
-                } else {
-                    console.error('❌ Main image element not found!');
                 }
                 
                 // Update counter
                 const counter = document.getElementById('currentImageIndex');
                 if (counter) {
                     counter.textContent = index + 1;
-                    console.log('Updated counter to:', index + 1);
-                } else {
-                    console.warn('⚠️ Counter element not found');
                 }
                 
                 // Update thumbnails
                 const thumbnails = document.querySelectorAll('.image-modal-thumbnail');
-                console.log('Found thumbnails:', thumbnails.length);
                 thumbnails.forEach((thumb, idx) => {
                     if (idx === index) {
                         thumb.classList.add('active');
-                        console.log('Activated thumbnail:', idx);
                     } else {
                         thumb.classList.remove('active');
                     }
@@ -545,16 +357,11 @@
             };
             
             window.closeImageGallery = function() {
-                console.log('=== closeImageGallery CALLED ===');
                 const modal = document.getElementById('imageGalleryModal');
                 if (modal) {
-                    console.log('✅ Modal found, removing it');
                     modal.remove();
                     document.body.style.overflow = 'auto';
                     document.removeEventListener('keydown', window.handleGalleryKeyPress);
-                    console.log('✅ Modal closed and cleaned up');
-                } else {
-                    console.warn('⚠️ Modal not found when trying to close');
                 }
             };
         })();
@@ -578,150 +385,92 @@
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             {% if open_houses %}
                 <div class="mb-12">
-                    <h2 class="text-3xl font-bold text-foreground mb-4">Upcoming Open Houses</h2>
-                    <p class="text-lg text-muted-foreground">Visit our beautiful properties at your convenience</p>
-            </div>
-            
-                <div class="grid gap-8">
+                    <h2 class="text-2xl font-bold text-foreground mb-8">Upcoming Open Houses</h2>
+                </div>
+                
+                <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
                     {% for open_house in open_houses %}
-                    <div class="rounded-lg border bg-card text-card-foreground shadow-sm overflow-hidden shadow-medium hover:shadow-strong transition-all duration-300">
-                        <div class="grid grid-cols-1 md:grid-cols-1 lg:grid-cols-2 gap-6 lg:items-stretch">
-                            <div class="relative flex-shrink-0">
-                                <div class="grid grid-cols-3 gap-2 open-house-image-container cursor-pointer" data-open-house-id="{{ open_house.id }}" onclick="if(window.openImageGallery && typeof window.openImageGallery === 'function') { window.openImageGallery({{ open_house.id }}); }">
+                    <div class="rounded-lg border bg-card text-card-foreground shadow-sm overflow-hidden shadow-soft hover:shadow-medium transition-all duration-300 group">
+                        <div class="relative overflow-hidden">
+                            {% if open_house.get_main_image_url %}
+                                <img src="{{ open_house.get_main_image_url }}" alt="{{ open_house.title }}" class="w-full h-48 object-cover group-hover:scale-105 transition-transform duration-300 cursor-pointer" data-open-house-id="{{ open_house.id }}" onclick="if(window.openImageGallery && typeof window.openImageGallery === 'function') { window.openImageGallery({{ open_house.id }}); }">
+                            {% else %}
+                                <img src="{% static 'images/property-1.jpg' %}" alt="{{ open_house.title }}" class="w-full h-48 object-cover group-hover:scale-105 transition-transform duration-300 cursor-pointer" data-open-house-id="{{ open_house.id }}" onclick="if(window.openImageGallery && typeof window.openImageGallery === 'function') { window.openImageGallery({{ open_house.id }}); }">
+                            {% endif %}
+                            <div class="inline-flex items-center rounded-full border px-2.5 py-0.5 text-xs font-semibold transition-colors focus:outline-none focus:ring-2 focus:ring-ring focus:ring-offset-2 border-transparent hover:bg-primary/80 absolute top-4 left-4 bg-accent text-accent-foreground">Open House</div>
+                            {% if open_house.get_main_image_url or open_house.images.all %}
+                                {% with total_images=open_house.images.all|length %}
                                     {% if open_house.get_main_image_url %}
-                                        <img src="{{ open_house.get_main_image_url }}" alt="{{ open_house.title }}" class="col-span-2 w-full h-full object-cover rounded-l-lg hover:opacity-90 transition-opacity">
-                                    {% else %}
-                                        <img src="{% static 'images/property-1.jpg' %}" alt="{{ open_house.title }}" class="col-span-2 w-full h-full object-cover rounded-l-lg hover:opacity-90 transition-opacity">
-                                    {% endif %}
-                                    <div class="space-y-2">
-                                        {% for image in open_house.images.all|slice:":2" %}
-                                            {% if forloop.first %}
-                                                <img src="{{ image.get_image_url }}" alt="{{ open_house.title }}" class="w-full h-1/2 object-cover rounded-tr-lg hover:opacity-90 transition-opacity">
-                                            {% else %}
-                                                <img src="{{ image.get_image_url }}" alt="{{ open_house.title }}" class="w-full h-1/2 object-cover hover:opacity-90 transition-opacity">
-                                            {% endif %}
-                                        {% empty %}
-                                            <img src="{% static 'images/property-2.jpg' %}" alt="{{ open_house.title }}" class="w-full h-1/2 object-cover rounded-tr-lg hover:opacity-90 transition-opacity">
-                                            <img src="{% static 'images/property-3.jpg' %}" alt="{{ open_house.title }}" class="w-full h-1/2 object-cover hover:opacity-90 transition-opacity">
-                                        {% endfor %}
-                                    </div>
-                                </div>
-                                <div class="inline-flex items-center rounded-full border px-2.5 py-0.5 text-xs font-semibold transition-colors focus:outline-none focus:ring-2 focus:ring-ring focus:ring-offset-2 border-transparent hover:bg-primary/80 absolute top-4 left-4 bg-accent text-accent-foreground">Open House</div>
-                                {% if open_house.get_main_image_url or open_house.images.all %}
-                                    {% with total_images=open_house.images.all|length %}
-                                        {% if open_house.get_main_image_url %}
-                                            {% with total_images=total_images|add:1 %}
-                                                {% if total_images > 3 %}
-                                                    <div class="absolute bottom-4 right-4 bg-black bg-opacity-70 text-white px-3 py-1 rounded-full text-sm font-medium cursor-pointer" data-gallery-id="{{ open_house.id }}" onclick="event.stopPropagation(); if(window.openImageGallery && typeof window.openImageGallery === 'function') { window.openImageGallery({{ open_house.id }}); }">
-                                                        +{{ total_images|add:"-3" }} more
-                                                    </div>
-                                                {% endif %}
-                                            {% endwith %}
-                                        {% else %}
-                                            {% if total_images > 2 %}
+                                        {% with total_images=total_images|add:1 %}
+                                            {% if total_images > 1 %}
                                                 <div class="absolute bottom-4 right-4 bg-black bg-opacity-70 text-white px-3 py-1 rounded-full text-sm font-medium cursor-pointer" data-gallery-id="{{ open_house.id }}" onclick="event.stopPropagation(); if(window.openImageGallery && typeof window.openImageGallery === 'function') { window.openImageGallery({{ open_house.id }}); }">
-                                                    +{{ total_images|add:"-2" }} more
+                                                    View {{ total_images }} photos
                                                 </div>
                                             {% endif %}
+                                        {% endwith %}
+                                    {% else %}
+                                        {% if total_images > 1 %}
+                                            <div class="absolute bottom-4 right-4 bg-black bg-opacity-70 text-white px-3 py-1 rounded-full text-sm font-medium cursor-pointer" data-gallery-id="{{ open_house.id }}" onclick="event.stopPropagation(); if(window.openImageGallery && typeof window.openImageGallery === 'function') { window.openImageGallery({{ open_house.id }}); }">
+                                                View {{ total_images }} photos
+                                            </div>
                                         {% endif %}
-                                    {% endwith %}
-                                {% endif %}
-                                <!-- Image data will be stored after loop -->
+                                    {% endif %}
+                                {% endwith %}
+                            {% endif %}
+                        </div>
+                        <div class="p-6">
+                            <div class="flex items-center text-sm text-muted-foreground mb-3">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-calendar w-4 h-4 mr-1">
+                                    <path d="M8 2v4"></path>
+                                    <path d="M16 2v4"></path>
+                                    <rect width="18" height="18" x="3" y="4" rx="2"></rect>
+                                    <path d="M3 10h18"></path>
+                                </svg>
+                                <span>{{ open_house.open_house_date|date:"M j, Y" }}</span>
+                                <span class="mx-2">•</span>
+                                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-clock w-4 h-4 mr-1">
+                                    <circle cx="12" cy="12" r="10"></circle>
+                                    <polyline points="12 6 12 12 16 14"></polyline>
+                                </svg>
+                                <span>{{ open_house.open_house_time|time:"g:i A" }}{% if open_house.open_house_end_time %} - {{ open_house.open_house_end_time|time:"g:i A" }}{% endif %}</span>
                             </div>
-                            <div class="p-6 md:p-6 lg:p-8 flex flex-col">
-                                <div class="flex items-center justify-between mb-4 flex-shrink-0">
-                                    <h3 class="text-2xl font-bold text-foreground">{{ open_house.title }}</h3>
-                                    <div class="text-2xl font-bold text-primary whitespace-nowrap ml-4">${{ open_house.price|floatformat:0|intcomma }}</div>
-                                </div>
-                                <div class="flex items-center text-muted-foreground mb-4">
-                                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-map-pin w-4 h-4 mr-2">
-                                        <path d="M20 10c0 4.993-5.539 10.193-7.399 11.799a1 1 0 0 1-1.202 0C9.539 20.193 4 14.993 4 10a8 8 0 0 1 16 0"></path>
-                                        <circle cx="12" cy="10" r="3"></circle>
-                                    </svg>
-                                    <span class="text-sm">{{ open_house.property_address }}</span>
-                                </div>
-                                <div class="flex items-center space-x-6 text-sm text-muted-foreground mb-4">
-                                    {% if open_house.bedrooms %}
-                                    <div class="flex items-center">
-                                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-house w-4 h-4 mr-1">
-                                            <path d="M15 21v-8a1 1 0 0 0-1-1h-4a1 1 0 0 0-1 1v8"></path>
-                                            <path d="M3 10a2 2 0 0 1 .709-1.528l7-5.999a2 2 0 0 1 2.582 0l7 5.999A2 2 0 0 1 21 10v9a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"></path>
-                                        </svg>
-                                        <span>{{ open_house.bedrooms }} beds</span>
-                                    </div>
-                                    {% endif %}
-                                    {% if open_house.bathrooms %}
-                                    <div class="flex items-center">
-                                        <span>{{ open_house.bathrooms }} baths</span>
-                                    </div>
-                                    {% endif %}
-                                    {% if open_house.area_sqft %}
-                                    <div class="flex items-center">
-                                        <span>{{ open_house.area_sqft|intcomma }} sqft</span>
-                                    </div>
-                                    {% endif %}
-                                </div>
-                                <div class="flex items-center space-x-4 mb-4">
-                                    <div class="flex items-center text-accent">
-                                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-calendar w-4 h-4 mr-2">
-                                            <path d="M8 2v4"></path>
-                                            <path d="M16 2v4"></path>
-                                            <rect width="18" height="18" x="3" y="4" rx="2"></rect>
-                                            <path d="M3 10h18"></path>
-                                        </svg>
-                                        <span class="font-medium">{{ open_house.open_house_date|date:"M j, Y" }}</span>
-                                    </div>
-                                    <div class="flex items-center text-accent">
-                                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-clock w-4 h-4 mr-2">
-                                            <circle cx="12" cy="12" r="10"></circle>
-                                            <polyline points="12 6 12 12 16 14"></polyline>
-                                        </svg>
-                                        <span class="font-medium">
-                                            {{ open_house.open_house_time|time:"g:i A" }}
-                                            {% if open_house.open_house_end_time %} - {{ open_house.open_house_end_time|time:"g:i A" }}{% endif %}
-                                        </span>
-                                    </div>
-                                </div>
-                                <div class="mb-4">
-                                    <div class="open-house-description-container">
-                                        <p class="text-muted-foreground leading-relaxed open-house-description">{{ open_house.description }}</p>
-                                    </div>
-                                    {% if open_house.description|length > 200 %}
-                                    <button data-gallery-id="{{ open_house.id }}" onclick="if(window.openImageGallery && typeof window.openImageGallery === 'function') { window.openImageGallery({{ open_house.id }}); }" class="text-primary hover:text-primary-dark text-sm font-medium mt-2">
-                                        View full description
-                                    </button>
-                                    {% endif %}
-                                </div>
-                                {% if open_house.get_features_list %}
-                                <div class="flex flex-wrap gap-2 mb-6">
-                                    {% for feature in open_house.get_features_list %}
-                                    <div class="inline-flex items-center rounded-full border px-2.5 py-0.5 text-xs font-semibold transition-colors focus:outline-none focus:ring-2 focus:ring-ring focus:ring-offset-2 border-primary/20 text-primary">
-                                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-circle-check-big w-3 h-3 mr-1">
-                                            <path d="M21.801 10A10 10 0 1 1 17 3.335"></path>
-                                            <path d="m9 11 3 3L22 4"></path>
-                                        </svg>
-                                        {{ feature }}
-                                    </div>
-                                    {% endfor %}
-                                </div>
+                            <h3 class="text-lg font-semibold text-foreground mb-2 line-clamp-2">{{ open_house.title }}</h3>
+                            <div class="flex items-center text-muted-foreground mb-3 text-sm">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-map-pin w-4 h-4 mr-1">
+                                    <path d="M20 10c0 4.993-5.539 10.193-7.399 11.799a1 1 0 0 1-1.202 0C9.539 20.193 4 14.993 4 10a8 8 0 0 1 16 0"></path>
+                                    <circle cx="12" cy="10" r="3"></circle>
+                                </svg>
+                                <span class="line-clamp-1">{{ open_house.property_address }}</span>
+                            </div>
+                            <div class="flex items-center space-x-4 text-sm text-muted-foreground mb-3">
+                                {% if open_house.bedrooms %}
+                                <span>{{ open_house.bedrooms }} beds</span>
                                 {% endif %}
-                                <div class="flex items-center justify-between mt-auto flex-shrink-0">
-                                    <div class="text-sm text-muted-foreground">
-                                        <span>Hosted by: </span>
-                                        <span class="font-medium text-foreground">{{ brand_name }} Team</span>
-                                    </div>
-                                    <button 
-                                        class="book-open-house-btn inline-flex items-center justify-center gap-2 whitespace-nowrap rounded-md text-sm font-medium ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 [&_svg]:pointer-events-none [&_svg]:size-4 [&_svg]:shrink-0 h-10 px-4 py-2 bg-primary hover:bg-primary-dark text-primary-foreground flex-shrink-0"
-                                        data-open-house-id="{{ open_house.id }}"
-                                        data-title="{{ open_house.title }}"
-                                        data-address="{{ open_house.property_address }}"
-                                        data-date="{{ open_house.open_house_date|date:"M j, Y" }}"
-                                        data-time="{{ open_house.open_house_time|time:"g:i A" }}"
-                                        data-end-time="{% if open_house.open_house_end_time %}{{ open_house.open_house_end_time|time:"g:i A" }}{% endif %}"
-                                        data-price="{{ open_house.price }}">
-                                        Get More Info
-                                    </button>
-                                </div>
+                                {% if open_house.bathrooms %}
+                                <span>{{ open_house.bathrooms }} baths</span>
+                                {% endif %}
+                                {% if open_house.area_sqft %}
+                                <span>{{ open_house.area_sqft|intcomma }} sqft</span>
+                                {% endif %}
+                            </div>
+                            <div class="text-xl font-bold text-primary mb-3">${{ open_house.price|floatformat:0|intcomma }}</div>
+                            <p class="text-muted-foreground text-sm leading-relaxed mb-4 line-clamp-3">{{ open_house.description|truncatewords:20 }}</p>
+                            <div class="flex items-center justify-between">
+                                <button 
+                                    class="book-open-house-btn inline-flex items-center justify-center gap-2 whitespace-nowrap text-sm font-medium ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 [&_svg]:pointer-events-none [&_svg]:size-4 [&_svg]:shrink-0 hover:bg-accent h-9 rounded-md text-primary hover:text-primary-dark px-3 py-2"
+                                    data-open-house-id="{{ open_house.id }}"
+                                    data-title="{{ open_house.title }}"
+                                    data-address="{{ open_house.property_address }}"
+                                    data-date="{{ open_house.open_house_date|date:"M j, Y" }}"
+                                    data-time="{{ open_house.open_house_time|time:"g:i A" }}"
+                                    data-end-time="{% if open_house.open_house_end_time %}{{ open_house.open_house_end_time|time:"g:i A" }}{% endif %}"
+                                    data-price="{{ open_house.price }}">
+                                    Get More Info
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-arrow-right w-4 h-4 ml-1">
+                                        <path d="M5 12h14"></path>
+                                        <path d="m12 5 7 7-7 7"></path>
+                                    </svg>
+                                </button>
                             </div>
                         </div>
                     </div>
@@ -731,26 +480,18 @@
                 <!-- Store all image data for gallery -->
                 <script>
                     (function() {
-                        console.log('=== INITIALIZING openHouseImages ===');
                         window.openHouseImages = {};
-                        console.log('openHouseImages object created');
-                        
                         {% for open_house in open_houses %}
                         (function() {
-                            console.log('Processing open house ID: {{ open_house.id }}');
                             var images = [];
                             {% if open_house.get_main_image_url %}
                             images.push('{{ open_house.get_main_image_url|escapejs }}');
-                            console.log('Added main image URL for {{ open_house.id }}');
                             {% endif %}
                             {% for image in open_house.images.all %}
                             {% if image.get_image_url %}
                             images.push('{{ image.get_image_url|escapejs }}');
-                            console.log('Added image URL for {{ open_house.id }}');
                             {% endif %}
                             {% endfor %}
-                            console.log('Total images for {{ open_house.id }}:', images.length);
-                            console.log('Images array:', images);
                             
                             if (images.length > 0) {
                                 window.openHouseImages[{{ open_house.id }}] = {
@@ -760,19 +501,9 @@
                                     price: '{{ open_house.price|floatformat:0|intcomma }}',
                                     images: images
                                 };
-                                console.log('✅ Stored image data for open house {{ open_house.id }}');
-                                console.log('  Title:', '{{ open_house.title|escapejs }}');
-                                console.log('  Images count:', images.length);
-                            } else {
-                                console.warn('⚠️ No images for open house {{ open_house.id }}');
                             }
                         })();
                         {% endfor %}
-                        
-                        console.log('=== openHouseImages INITIALIZATION COMPLETE ===');
-                        console.log('Total open houses with images:', Object.keys(window.openHouseImages).length);
-                        console.log('All open house IDs:', Object.keys(window.openHouseImages));
-                        console.log('Full openHouseImages object:', window.openHouseImages);
                     })();
                 </script>
             {% else %}
@@ -970,61 +701,28 @@
     // Handle Book/Get More Info button clicks using data attributes
     // Also add event delegation for image gallery as backup
     document.addEventListener('DOMContentLoaded', function() {
-        console.log('=== DOMContentLoaded - Setting up event listeners ===');
-        console.log('window.openImageGallery exists:', typeof window.openImageGallery);
-        console.log('window.openHouseImages exists:', typeof window.openHouseImages);
-        console.log('window.openHouseImages:', window.openHouseImages);
-        
         // Event delegation for image gallery clicks (backup to onclick handlers)
         document.addEventListener('click', function(e) {
-            console.log('Click event detected on:', e.target);
-            console.log('Clicked element classes:', e.target.className);
-            console.log('Clicked element tag:', e.target.tagName);
-            
-            // Check if clicked element or parent has open-house-image-container class
-            const imageContainer = e.target.closest('.open-house-image-container');
-            if (imageContainer) {
-                console.log('✅ Found open-house-image-container');
-                console.log('Container data-open-house-id:', imageContainer.getAttribute('data-open-house-id'));
-                console.log('window.openImageGallery type:', typeof window.openImageGallery);
-                
-                if (window.openImageGallery && typeof window.openImageGallery === 'function') {
-                    const openHouseId = imageContainer.getAttribute('data-open-house-id');
-                    console.log('Open house ID from attribute:', openHouseId);
-                    console.log('Parsed ID:', parseInt(openHouseId));
-                    
-                    if (openHouseId) {
-                        e.preventDefault();
-                        console.log('Calling openImageGallery with ID:', parseInt(openHouseId));
-                        window.openImageGallery(parseInt(openHouseId));
-                        return;
-                    } else {
-                        console.warn('⚠️ No openHouseId found in data attribute');
-                    }
-                } else {
-                    console.error('❌ window.openImageGallery is not a function!');
+            // Check if clicked element is an image with data-open-house-id
+            const image = e.target.closest('img[data-open-house-id]');
+            if (image && window.openImageGallery && typeof window.openImageGallery === 'function') {
+                const openHouseId = image.getAttribute('data-open-house-id');
+                if (openHouseId) {
+                    e.preventDefault();
+                    window.openImageGallery(parseInt(openHouseId));
+                    return;
                 }
             }
             
-            // Check for "+X more" button
-            const moreButton = e.target.closest('[data-gallery-id]');
-            if (moreButton) {
-                console.log('✅ Found data-gallery-id element');
-                console.log('More button data-gallery-id:', moreButton.getAttribute('data-gallery-id'));
-                
-                if (window.openImageGallery && typeof window.openImageGallery === 'function') {
-                    const openHouseId = moreButton.getAttribute('data-gallery-id');
-                    console.log('Open house ID from gallery-id:', openHouseId);
-                    
-                    if (openHouseId) {
-                        e.preventDefault();
-                        e.stopPropagation();
-                        console.log('Calling openImageGallery with ID:', parseInt(openHouseId));
-                        window.openImageGallery(parseInt(openHouseId));
-                        return;
-                    }
-                } else {
-                    console.error('❌ window.openImageGallery is not a function for more button!');
+            // Check for gallery button
+            const galleryButton = e.target.closest('[data-gallery-id]');
+            if (galleryButton && window.openImageGallery && typeof window.openImageGallery === 'function') {
+                const openHouseId = galleryButton.getAttribute('data-gallery-id');
+                if (openHouseId) {
+                    e.preventDefault();
+                    e.stopPropagation();
+                    window.openImageGallery(parseInt(openHouseId));
+                    return;
                 }
             }
         });
@@ -1049,9 +747,6 @@
         // Use event delegation to handle dynamically created forms
         document.addEventListener('submit', function(e) {
             const form = e.target;
-            console.log('Form submitted:', form);
-            console.log('Form action:', form.action);
-            console.log('Form action includes open-house:', form.action && form.action.includes('open-house'));
             
             if (form && form.action && form.action.includes('open-house')) {
                 e.preventDefault();
@@ -1059,8 +754,6 @@
                 // Get form data
                 const formData = new FormData(form);
                 const name = formData.get('name');
-                
-                console.log('Showing success popup for:', name);
                 
                 // Show success popup
                 const message = `Thank you for your open house registration, ${name}! Our team will contact you within 24 hours to confirm your visit and provide additional details.`;
