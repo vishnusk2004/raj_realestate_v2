@@ -219,19 +219,48 @@
             
             // Define gallery functions
             window.openImageGallery = function(openHouseId) {
+                console.log('=== openImageGallery CALLED ===');
+                console.log('Open House ID:', openHouseId);
+                console.log('Type of ID:', typeof openHouseId);
+                console.log('window.openHouseImages exists:', !!window.openHouseImages);
+                console.log('window.openHouseImages:', window.openHouseImages);
+                
+                // Check if CSS is loaded
+                const testStyle = window.getComputedStyle(document.body);
+                console.log('CSS loaded check - body computed style:', testStyle);
+                
+                // Check if modal-gallery.css is loaded by checking for a specific class
+                const testElement = document.createElement('div');
+                testElement.className = 'image-modal-backdrop';
+                document.body.appendChild(testElement);
+                const backdropStyle = window.getComputedStyle(testElement);
+                console.log('Modal CSS check - backdrop position:', backdropStyle.position);
+                console.log('Modal CSS check - backdrop z-index:', backdropStyle.zIndex);
+                document.body.removeChild(testElement);
+                
                 if (!window.openHouseImages || !window.openHouseImages[openHouseId]) {
-                    console.error('Image data not found for open house:', openHouseId);
+                    console.error('❌ Image data not found for open house:', openHouseId);
+                    console.error('Available IDs:', Object.keys(window.openHouseImages || {}));
                     return;
                 }
                 
                 const imageData = window.openHouseImages[openHouseId];
+                console.log('✅ Image data found:', imageData);
+                console.log('Image data title:', imageData.title);
+                console.log('Image data images array:', imageData.images);
+                console.log('Image data images length:', imageData.images.length);
+                
                 const images = imageData.images.filter(img => img); // Remove empty images
+                console.log('Filtered images:', images);
+                console.log('Filtered images length:', images.length);
                 
                 if (images.length === 0) {
+                    console.error('❌ No images after filtering');
                     return;
                 }
                 
                 let currentIndex = 0;
+                console.log('Starting with index:', currentIndex);
                 
                 // Create modal HTML
                 const modalHTML = `
@@ -285,60 +314,176 @@
                 // Remove existing modal if any
                 const existingModal = document.getElementById('imageGalleryModal');
                 if (existingModal) {
+                    console.log('Removing existing modal');
                     existingModal.remove();
                 }
                 
+                console.log('Modal HTML length:', modalHTML.length);
+                console.log('Modal HTML preview (first 500 chars):', modalHTML.substring(0, 500));
+                
                 // Add modal to page
                 document.body.insertAdjacentHTML('beforeend', modalHTML);
+                console.log('✅ Modal HTML inserted into DOM');
+                
+                // Verify modal was inserted
+                const insertedModal = document.getElementById('imageGalleryModal');
+                if (!insertedModal) {
+                    console.error('❌ Modal was not inserted!');
+                    return;
+                }
+                console.log('✅ Modal found in DOM:', insertedModal);
+                
+                // Check modal styles
+                const modalStyles = window.getComputedStyle(insertedModal);
+                console.log('Modal computed styles:');
+                console.log('  - position:', modalStyles.position);
+                console.log('  - z-index:', modalStyles.zIndex);
+                console.log('  - display:', modalStyles.display);
+                console.log('  - visibility:', modalStyles.visibility);
+                console.log('  - opacity:', modalStyles.opacity);
+                
+                // Check modal container
+                const modalContainer = insertedModal.querySelector('.image-modal-container');
+                if (modalContainer) {
+                    const containerStyles = window.getComputedStyle(modalContainer);
+                    console.log('Modal container computed styles:');
+                    console.log('  - position:', containerStyles.position);
+                    console.log('  - display:', containerStyles.display);
+                    console.log('  - width:', containerStyles.width);
+                    console.log('  - max-width:', containerStyles.maxWidth);
+                    console.log('  - background-color:', containerStyles.backgroundColor);
+                } else {
+                    console.error('❌ Modal container not found!');
+                }
+                
+                // Check main image
+                const mainImage = document.getElementById('galleryMainImage');
+                if (mainImage) {
+                    console.log('✅ Main image found:', mainImage);
+                    console.log('Main image src:', mainImage.src);
+                    const imageStyles = window.getComputedStyle(mainImage);
+                    console.log('Main image computed styles:');
+                    console.log('  - display:', imageStyles.display);
+                    console.log('  - width:', imageStyles.width);
+                    console.log('  - height:', imageStyles.height);
+                    console.log('  - max-width:', imageStyles.maxWidth);
+                    console.log('  - max-height:', imageStyles.maxHeight);
+                    console.log('  - object-fit:', imageStyles.objectFit);
+                    
+                    // Check if image loads
+                    mainImage.onload = function() {
+                        console.log('✅ Main image loaded successfully');
+                    };
+                    mainImage.onerror = function() {
+                        console.error('❌ Main image failed to load:', mainImage.src);
+                    };
+                } else {
+                    console.error('❌ Main image not found!');
+                }
+                
+                // Check navigation buttons
+                const prevBtn = document.getElementById('prevBtn');
+                const nextBtn = document.getElementById('nextBtn');
+                console.log('Prev button found:', !!prevBtn);
+                console.log('Next button found:', !!nextBtn);
+                
+                // Check thumbnails
+                const thumbnails = document.querySelectorAll('.image-modal-thumbnail');
+                console.log('Thumbnails found:', thumbnails.length);
+                
+                // Check header
+                const header = insertedModal.querySelector('.image-modal-header');
+                console.log('Header found:', !!header);
+                
+                // Check description section
+                const descriptionSection = insertedModal.querySelector('.image-modal-description-section');
+                console.log('Description section found:', !!descriptionSection);
+                
                 document.body.style.overflow = 'hidden';
+                console.log('Body overflow set to hidden');
                 
                 // Store current index globally for navigation
                 window.currentGalleryIndex = 0;
                 window.currentGalleryImages = images;
+                console.log('Global variables set - currentGalleryIndex:', window.currentGalleryIndex, 'currentGalleryImages length:', window.currentGalleryImages.length);
                 
                 // Keyboard navigation
                 document.addEventListener('keydown', window.handleGalleryKeyPress);
+                console.log('Keyboard event listener added');
+                
+                console.log('=== openImageGallery COMPLETE ===');
             };
             
             window.navigateGallery = function(direction) {
-                if (!window.currentGalleryImages) return;
+                console.log('navigateGallery called with direction:', direction);
+                console.log('currentGalleryImages exists:', !!window.currentGalleryImages);
+                console.log('currentGalleryIndex:', window.currentGalleryIndex);
+                
+                if (!window.currentGalleryImages) {
+                    console.error('❌ currentGalleryImages not set');
+                    return;
+                }
                 
                 const images = window.currentGalleryImages;
                 let newIndex = window.currentGalleryIndex + direction;
+                console.log('Calculated newIndex:', newIndex);
                 
                 if (newIndex < 0) {
                     newIndex = images.length - 1;
+                    console.log('Wrapped to end, newIndex:', newIndex);
                 } else if (newIndex >= images.length) {
                     newIndex = 0;
+                    console.log('Wrapped to start, newIndex:', newIndex);
                 }
                 
+                console.log('Calling goToImage with index:', newIndex);
                 window.goToImage(newIndex);
             };
             
             window.goToImage = function(index) {
-                if (!window.currentGalleryImages) return;
+                console.log('goToImage called with index:', index);
+                console.log('currentGalleryImages exists:', !!window.currentGalleryImages);
+                
+                if (!window.currentGalleryImages) {
+                    console.error('❌ currentGalleryImages not set');
+                    return;
+                }
                 
                 const images = window.currentGalleryImages;
-                if (index < 0 || index >= images.length) return;
+                console.log('Images array length:', images.length);
+                
+                if (index < 0 || index >= images.length) {
+                    console.error('❌ Invalid index:', index, 'valid range: 0 to', images.length - 1);
+                    return;
+                }
                 
                 window.currentGalleryIndex = index;
+                console.log('Updated currentGalleryIndex to:', index);
                 
                 const mainImage = document.getElementById('galleryMainImage');
                 if (mainImage) {
+                    console.log('Updating main image src to:', images[index]);
                     mainImage.src = images[index];
+                } else {
+                    console.error('❌ Main image element not found!');
                 }
                 
                 // Update counter
                 const counter = document.getElementById('currentImageIndex');
                 if (counter) {
                     counter.textContent = index + 1;
+                    console.log('Updated counter to:', index + 1);
+                } else {
+                    console.warn('⚠️ Counter element not found');
                 }
                 
                 // Update thumbnails
                 const thumbnails = document.querySelectorAll('.image-modal-thumbnail');
+                console.log('Found thumbnails:', thumbnails.length);
                 thumbnails.forEach((thumb, idx) => {
                     if (idx === index) {
                         thumb.classList.add('active');
+                        console.log('Activated thumbnail:', idx);
                     } else {
                         thumb.classList.remove('active');
                     }
@@ -358,11 +503,16 @@
             };
             
             window.closeImageGallery = function() {
+                console.log('=== closeImageGallery CALLED ===');
                 const modal = document.getElementById('imageGalleryModal');
                 if (modal) {
+                    console.log('✅ Modal found, removing it');
                     modal.remove();
                     document.body.style.overflow = 'auto';
                     document.removeEventListener('keydown', window.handleGalleryKeyPress);
+                    console.log('✅ Modal closed and cleaned up');
+                } else {
+                    console.warn('⚠️ Modal not found when trying to close');
                 }
             };
         })();
@@ -539,18 +689,27 @@
                 <!-- Store all image data for gallery -->
                 <script>
                     (function() {
+                        console.log('=== INITIALIZING openHouseImages ===');
                         window.openHouseImages = {};
+                        console.log('openHouseImages object created');
+                        
                         {% for open_house in open_houses %}
                         (function() {
+                            console.log('Processing open house ID: {{ open_house.id }}');
                             var images = [];
                             {% if open_house.get_main_image_url %}
                             images.push('{{ open_house.get_main_image_url|escapejs }}');
+                            console.log('Added main image URL for {{ open_house.id }}');
                             {% endif %}
                             {% for image in open_house.images.all %}
                             {% if image.get_image_url %}
                             images.push('{{ image.get_image_url|escapejs }}');
+                            console.log('Added image URL for {{ open_house.id }}');
                             {% endif %}
                             {% endfor %}
+                            console.log('Total images for {{ open_house.id }}:', images.length);
+                            console.log('Images array:', images);
+                            
                             if (images.length > 0) {
                                 window.openHouseImages[{{ open_house.id }}] = {
                                     title: '{{ open_house.title|escapejs }}',
@@ -559,9 +718,19 @@
                                     price: '{{ open_house.price|floatformat:0|intcomma }}',
                                     images: images
                                 };
+                                console.log('✅ Stored image data for open house {{ open_house.id }}');
+                                console.log('  Title:', '{{ open_house.title|escapejs }}');
+                                console.log('  Images count:', images.length);
+                            } else {
+                                console.warn('⚠️ No images for open house {{ open_house.id }}');
                             }
                         })();
                         {% endfor %}
+                        
+                        console.log('=== openHouseImages INITIALIZATION COMPLETE ===');
+                        console.log('Total open houses with images:', Object.keys(window.openHouseImages).length);
+                        console.log('All open house IDs:', Object.keys(window.openHouseImages));
+                        console.log('Full openHouseImages object:', window.openHouseImages);
                     })();
                 </script>
             {% else %}
@@ -759,28 +928,61 @@
     // Handle Book/Get More Info button clicks using data attributes
     // Also add event delegation for image gallery as backup
     document.addEventListener('DOMContentLoaded', function() {
+        console.log('=== DOMContentLoaded - Setting up event listeners ===');
+        console.log('window.openImageGallery exists:', typeof window.openImageGallery);
+        console.log('window.openHouseImages exists:', typeof window.openHouseImages);
+        console.log('window.openHouseImages:', window.openHouseImages);
+        
         // Event delegation for image gallery clicks (backup to onclick handlers)
         document.addEventListener('click', function(e) {
+            console.log('Click event detected on:', e.target);
+            console.log('Clicked element classes:', e.target.className);
+            console.log('Clicked element tag:', e.target.tagName);
+            
             // Check if clicked element or parent has open-house-image-container class
             const imageContainer = e.target.closest('.open-house-image-container');
-            if (imageContainer && window.openImageGallery && typeof window.openImageGallery === 'function') {
-                const openHouseId = imageContainer.getAttribute('data-open-house-id');
-                if (openHouseId) {
-                    e.preventDefault();
-                    window.openImageGallery(parseInt(openHouseId));
-                    return;
+            if (imageContainer) {
+                console.log('✅ Found open-house-image-container');
+                console.log('Container data-open-house-id:', imageContainer.getAttribute('data-open-house-id'));
+                console.log('window.openImageGallery type:', typeof window.openImageGallery);
+                
+                if (window.openImageGallery && typeof window.openImageGallery === 'function') {
+                    const openHouseId = imageContainer.getAttribute('data-open-house-id');
+                    console.log('Open house ID from attribute:', openHouseId);
+                    console.log('Parsed ID:', parseInt(openHouseId));
+                    
+                    if (openHouseId) {
+                        e.preventDefault();
+                        console.log('Calling openImageGallery with ID:', parseInt(openHouseId));
+                        window.openImageGallery(parseInt(openHouseId));
+                        return;
+                    } else {
+                        console.warn('⚠️ No openHouseId found in data attribute');
+                    }
+                } else {
+                    console.error('❌ window.openImageGallery is not a function!');
                 }
             }
             
             // Check for "+X more" button
             const moreButton = e.target.closest('[data-gallery-id]');
-            if (moreButton && window.openImageGallery && typeof window.openImageGallery === 'function') {
-                const openHouseId = moreButton.getAttribute('data-gallery-id');
-                if (openHouseId) {
-                    e.preventDefault();
-                    e.stopPropagation();
-                    window.openImageGallery(parseInt(openHouseId));
-                    return;
+            if (moreButton) {
+                console.log('✅ Found data-gallery-id element');
+                console.log('More button data-gallery-id:', moreButton.getAttribute('data-gallery-id'));
+                
+                if (window.openImageGallery && typeof window.openImageGallery === 'function') {
+                    const openHouseId = moreButton.getAttribute('data-gallery-id');
+                    console.log('Open house ID from gallery-id:', openHouseId);
+                    
+                    if (openHouseId) {
+                        e.preventDefault();
+                        e.stopPropagation();
+                        console.log('Calling openImageGallery with ID:', parseInt(openHouseId));
+                        window.openImageGallery(parseInt(openHouseId));
+                        return;
+                    }
+                } else {
+                    console.error('❌ window.openImageGallery is not a function for more button!');
                 }
             }
         });
