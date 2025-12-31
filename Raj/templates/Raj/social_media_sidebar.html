@@ -1,0 +1,27 @@
+{% load static %}
+
+<!-- Font Awesome for better icons -->
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" integrity="sha512-iecdLmaskl7CVkqkXNQ/ZH/XLlvWZOJyj7Yy7tcenmpD1ypASozpmT/E0iPtmFIB46ZmdtAc9eNBvH0H/ZpiBw==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+
+<!-- Sticky Social Media Sidebar -->
+<div class="fixed right-0 top-1/2 -translate-y-1/2 z-40 flex flex-col gap-3 p-3 bg-background/95 backdrop-blur-md border-l border-t border-b border-primary/20 rounded-l-lg shadow-xl">
+    <a href="https://www.facebook.com/people/Raj-Gupta-Realtor/100089314899268/" target="_blank" rel="noopener noreferrer" class="group relative flex items-center justify-center w-12 h-12 bg-blue-600 hover:bg-blue-700 text-white rounded-lg transition-all duration-300 hover:scale-110 hover:shadow-lg" title="Facebook">
+        <i class="fab fa-facebook-f text-lg"></i>
+    </a>
+    <a href="https://www.instagram.com/rajtxrealtor/" target="_blank" rel="noopener noreferrer" class="group relative flex items-center justify-center w-12 h-12 bg-gradient-to-br from-purple-600 via-pink-600 to-orange-500 hover:from-purple-700 hover:via-pink-700 hover:to-orange-600 text-white rounded-lg transition-all duration-300 hover:scale-110 hover:shadow-lg" title="Instagram">
+        <i class="fab fa-instagram text-lg"></i>
+    </a>
+    <a href="https://www.har.com/raj-gupta/agent_rkgupta" target="_blank" rel="noopener noreferrer" class="group relative flex items-center justify-center w-12 h-12 bg-red-600 hover:bg-red-700 text-white rounded-lg transition-all duration-300 hover:scale-110 hover:shadow-lg" title="HAR">
+        <i class="fas fa-home text-lg"></i>
+    </a>
+</div>
+
+<style>
+/* Hide on mobile devices */
+@media (max-width: 768px) {
+    .fixed.right-0 {
+        display: none;
+    }
+}
+</style>
+

@@ -8,7 +8,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Sell & Evaluate - {{ brand_name }}</title>
     <meta name="description" content="Get top dollar for your property with {{ brand_name }}. Professional real estate services with AI-powered insights.">
-    <link rel="icon" type="image/svg+xml" href="{% static 'favicon.svg' %}">
+    <link rel="icon" type="image/png" href="{% static 'favicon.png' %}">
     
     <!-- Google Fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -43,6 +43,7 @@
     
 </head>
 <body>
+    {% include 'Raj/social_media_sidebar.html' %}
     {% include 'Raj/navbar.html' %}
 
     <main class="flex-1">
@@ -66,9 +67,9 @@
                                 <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-user absolute left-3 top-3 h-4 w-4 text-muted-foreground">
                                     <path d="M19 21v-2a4 4 0 0 0-4-4H9a4 4 0 0 0-4 4v2"></path>
                                     <circle cx="12" cy="7" r="4"></circle>
-                            </svg>
+                                </svg>
                                 <input name="name" required class="flex h-10 w-full rounded-md border border-input bg-background px-3 py-2 text-sm ring-offset-background file:border-0 file:bg-transparent file:text-sm file:font-medium file:text-foreground placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50 pl-10" id="name" placeholder="Enter your name">
-                    </div>
+                            </div>
                         </div>
                         <div class="space-y-1.5">
                             <label class="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70" for="email">Email</label>
@@ -76,7 +77,7 @@
                                 <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-mail absolute left-3 top-3 h-4 w-4 text-muted-foreground">
                                     <rect width="20" height="16" x="2" y="4" rx="2"></rect>
                                     <path d="m22 7-8.97 5.7a1.94 1.94 0 0 1-2.06 0L2 7"></path>
-                                    </svg>
+                                </svg>
                                 <input type="email" name="email" required class="flex h-10 w-full rounded-md border border-input bg-background px-3 py-2 text-sm ring-offset-background file:border-0 file:bg-transparent file:text-sm file:font-medium file:text-foreground placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50 pl-10" id="email" placeholder="Enter your email">
                             </div>
                         </div>
@@ -94,10 +95,10 @@
                             <textarea name="message" class="flex w-full rounded-md border border-input bg-background px-3 py-2 text-sm ring-offset-background placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50 min-h-[90px]" id="requirements" placeholder="Tell us about your specific requirements, preferences, or any questions you have..."></textarea>
                         </div>
                         <div class="md:col-span-2 text-center mt-3">
-                            <button type="submit" class="inline-flex items-center justify-center gap-2 whitespace-nowrap text-sm ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 [&_svg]:pointer-events-none [&_svg]:size-4 [&_svg]:shrink-0 hover:bg-primary/90 h-10 rounded-md bg-primary hover:bg-primary-dark text-primary-foreground font-semibold px-10 py-2 border border-primary shadow-md hover:shadow-lg">Get Personalized Recommendations</button>
+                            <button type="submit" class="inline-flex items-center justify-center gap-2 whitespace-nowrap text-sm ring-offset-background transition-all focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 [&_svg]:pointer-events-none [&_svg]:size-4 [&_svg]:shrink-0 h-10 rounded-md bg-white text-foreground font-semibold px-10 py-2 border border-gray-300 shadow-md hover:shadow-lg hover:bg-gray-100 transition-all duration-300">Get Personalized Recommendations</button>
                         </div>
                     </form>
-                    </div>
+                </div>
 
                 <!-- Our Proven Selling Process Section -->
                 <div class="mb-16">

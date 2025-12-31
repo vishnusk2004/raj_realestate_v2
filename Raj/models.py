@@ -231,7 +231,8 @@ class PropertyListing(models.Model):
         ('coming_soon', 'Coming Soon'),
         ('just_listed', 'Just Listed'),
         ('for_sale', 'For Sale'),
-        ('for_lease', 'For Lease'),
+        ('for_lease', 'Just Leased'),  # Renamed from 'For Lease' to 'Just Leased'
+        ('available_for_lease', 'For Lease'),  # New status 'For Lease'
         ('under_contract', 'Under-Contract'),
         ('just_sold', 'Just Sold'),
     ]
@@ -239,12 +240,12 @@ class PropertyListing(models.Model):
     title = models.CharField(max_length=200)
     property_type = models.CharField(max_length=10, choices=PROPERTY_TYPE_CHOICES, default='buy')
     property_status = models.CharField(max_length=20, choices=PROPERTY_STATUS_CHOICES, default='for_sale', help_text="Marketing status of the listing")
-    price = models.DecimalField(max_digits=12, decimal_places=2, help_text="Price in dollars")
+    price = models.CharField(max_length=100, help_text="Price (can be text like 'upper 800s' or numeric)")
     location = models.CharField(max_length=200)
-    address = models.TextField(help_text="Full property address")
+    address = models.TextField(help_text="Full property address", blank=True, null=True, default="")
     community = models.ForeignKey('Community', on_delete=models.SET_NULL, null=True, blank=True, related_name='properties', help_text="Community/neighborhood this property belongs to")
     bedrooms = models.IntegerField(null=True, blank=True)
-    bathrooms = models.IntegerField(null=True, blank=True)
+    bathrooms = models.DecimalField(max_digits=4, decimal_places=1, null=True, blank=True, help_text="Number of bathrooms (can be decimal like 2.5)")
     parking_spaces = models.IntegerField(null=True, blank=True)
     area_sqft = models.IntegerField(null=True, blank=True, help_text="Area in square feet")
     description = models.TextField(help_text="Detailed property description")
@@ -258,6 +259,7 @@ class PropertyListing(models.Model):
     featured = models.BooleanField(default=False, help_text="Featured properties appear first")
     published = models.BooleanField(default=True, help_text="Only published properties are visible")
     listing_agent_name = models.CharField(max_length=200, blank=True, null=True, help_text="Name of the listing agent for courtesy credit")
+    listing_agent_link = models.URLField(max_length=500, blank=True, null=True, help_text="Optional URL link for the listing agent (e.g., their profile page)")
     listing_agent_image = models.ImageField(upload_to='listing_agents/', blank=True, null=True, help_text="Optional image of the listing agent")
     contact_email = models.EmailField(help_text="Contact email for inquiries", default="raj.gupta@kw.com")
     contact_phone = models.CharField(max_length=20, help_text="Contact phone number", default="(832) 785-0140")
@@ -1063,6 +1065,9 @@ class OpenHouse(models.Model):
     open_house_end_time = models.TimeField(null=True, blank=True, help_text="End time of the open house")
     contact_email = models.EmailField(help_text="Contact email for inquiries", default="raj.gupta@kw.com")
     contact_phone = models.CharField(max_length=20, help_text="Contact phone number", default="(832) 785-0140")
+    listing_agent_name = models.CharField(max_length=200, blank=True, null=True, help_text="Name of the listing agent for courtesy credit")
+    listing_agent_link = models.URLField(max_length=500, blank=True, null=True, help_text="Optional URL link for the listing agent (e.g., their profile page)")
+    listing_agent_image = models.ImageField(upload_to='listing_agents/', blank=True, null=True, help_text="Optional image of the listing agent")
     features = models.TextField(blank=True, help_text="Property features (one per line, e.g., Updated Kitchen, Hardwood Floors, Large Backyard)")
     published = models.BooleanField(default=True, help_text="Only published open houses are visible")
     created_at = models.DateTimeField(auto_now_add=True)

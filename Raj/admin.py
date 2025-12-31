@@ -105,13 +105,30 @@ class CommunityAdmin(admin.ModelAdmin):
 class PropertyListingAdmin(admin.ModelAdmin):
     form = PropertyListingForm
     inlines = [PropertyListingImageInline, PropertyListingVideoInline]
-    list_display = ('title', 'property_type', 'property_status', 'price', 'location', 'community', 'bedrooms', 'bathrooms', 'featured', 'published', 'created_at')
+    
+    def get_list_display(self, request):
+        """Don't show price for sold/leased properties in list view"""
+        base_display = ('title', 'property_type', 'property_status', 'location', 'community', 'bedrooms', 'bathrooms', 'featured', 'published', 'created_at')
+        return base_display
+    
+    def get_queryset(self, request):
+        qs = super().get_queryset(request)
+        return qs
+    
+    def price_display(self, obj):
+        """Custom method to show price only if not sold/leased"""
+        if obj.property_status in ['just_sold', 'for_lease']:
+            return '-'
+        return obj.price
+    price_display.short_description = 'Price'
+    
     list_filter = ('property_type', 'property_status', 'community', 'featured', 'published', 'bedrooms', 'bathrooms', 'created_at')
     search_fields = ('title', 'location', 'address', 'description')
     readonly_fields = ('created_at', 'updated_at')
     fieldsets = (
         ('Basic Information', {
-            'fields': ('title', 'property_type', 'property_status', 'price', 'location', 'address', 'community')
+            'fields': ('title', 'property_type', 'property_status', 'price', 'location', 'community'),
+            # 'address' field commented out as requested - address can be put in title
         }),
         ('Property Details', {
             'fields': ('bedrooms', 'bathrooms', 'parking_spaces', 'area_sqft', 'description')
@@ -128,7 +145,7 @@ class PropertyListingAdmin(admin.ModelAdmin):
             'fields': ('contact_email', 'contact_phone')
         }),
         ('Listing Agent (optional)', {
-            'fields': ('listing_agent_name', 'listing_agent_image'),
+            'fields': ('listing_agent_name', 'listing_agent_link', 'listing_agent_image'),
             'description': 'Add courtesy listing agent details if applicable.'
         }),
         ('Settings', {
@@ -215,6 +232,10 @@ class OpenHouseAdmin(admin.ModelAdmin):
         }),
         ('Contact Information', {
             'fields': ('contact_email', 'contact_phone')
+        }),
+        ('Listing Agent', {
+            'fields': ('listing_agent_name', 'listing_agent_link', 'listing_agent_image'),
+            'description': 'Optional listing agent information for courtesy credit'
         }),
         ('Settings', {
             'fields': ('published',)

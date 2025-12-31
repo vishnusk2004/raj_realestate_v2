@@ -8,7 +8,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Open House Schedule - {{ brand_name }}</title>
     <meta name="description" content="Visit our beautiful properties at your convenience. Book your open house viewing with {{ brand_name }}.">
-    <link rel="icon" type="image/svg+xml" href="{% static 'favicon.svg' %}">
+    <link rel="icon" type="image/png" href="{% static 'favicon.png' %}">
     
     <!-- Google Fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -369,6 +369,7 @@
     
 </head>
 <body>
+{% include 'Raj/social_media_sidebar.html' %}
 {% include 'Raj/navbar.html' %}
 
 <!-- Hero Section -->
@@ -455,6 +456,16 @@
                             </div>
                             <div class="text-xl font-bold text-primary mb-3">${{ open_house.price|floatformat:0|intcomma }}</div>
                             <p class="text-muted-foreground text-sm leading-relaxed mb-4 line-clamp-3">{{ open_house.description|truncatewords:20 }}</p>
+                            {% if open_house.listing_agent_name %}
+                            <p class="text-xs text-muted-foreground mb-3">
+                                Listing Agent: 
+                                {% if open_house.listing_agent_link %}
+                                    <a href="{{ open_house.listing_agent_link }}" target="_blank" rel="noopener noreferrer" class="text-primary hover:underline font-medium">{{ open_house.listing_agent_name }}</a>
+                                {% else %}
+                                    <span class="font-medium">{{ open_house.listing_agent_name }}</span>
+                                {% endif %}
+                            </p>
+                            {% endif %}
                             <div class="flex items-center justify-between">
                                 <button 
                                     class="book-open-house-btn inline-flex items-center justify-center gap-2 whitespace-nowrap text-sm font-medium ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 [&_svg]:pointer-events-none [&_svg]:size-4 [&_svg]:shrink-0 hover:bg-accent h-9 rounded-md text-primary hover:text-primary-dark px-3 py-2"

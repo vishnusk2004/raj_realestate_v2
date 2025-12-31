@@ -103,10 +103,17 @@ def home(request):
             except (ValueError, SyntaxError):
                 featured_property.cover_image_url = None  # Handle cases where image_url format is unexpected
 
-        # Get recently sold/leased properties (last 4 properties)
-        recent_properties = PropertyListing.objects.filter(
-            published=True
-        ).order_by('-created_at')[:4]
+        # Get Just Sold properties (12+ properties for show more)
+        just_sold_properties = PropertyListing.objects.filter(
+            published=True,
+            property_status='just_sold'
+        ).order_by('-created_at')
+        
+        # Get Just Leased properties (12+ properties for show more) - using 'for_lease' status for now
+        just_leased_properties = PropertyListing.objects.filter(
+            published=True,
+            property_status='for_lease'
+        ).order_by('-created_at')
 
         # Get featured communities
         featured_communities = Community.objects.filter(
@@ -122,7 +129,8 @@ def home(request):
         
         context = {
             'featured_properties': featured_properties,
-            'recent_properties': recent_properties,
+            'just_sold_properties': just_sold_properties,
+            'just_leased_properties': just_leased_properties,
             'featured_communities': featured_communities,
             'brand_name': settings.BRAND_NAME
         }

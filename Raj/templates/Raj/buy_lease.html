@@ -9,7 +9,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Buy & Lease Properties - {{ brand_name }}</title>
     <meta name="description" content="Find your perfect property with {{ brand_name }}. Browse our extensive collection of properties for sale and lease.">
-    <link rel="icon" type="image/svg+xml" href="{% static 'favicon.svg' %}">
+    <link rel="icon" type="image/png" href="{% static 'favicon.png' %}">
     
     <!-- Google Fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -132,6 +132,7 @@
     
 </head>
 <body>
+    {% include 'Raj/social_media_sidebar.html' %}
     {% include 'Raj/navbar.html' %}
 
     <main class="flex-1">
@@ -188,6 +189,7 @@
                 </div>
                 
                 <!-- Search and Filter Bar -->
+                {% comment %}
                 <!-- DON'T REMOVE THIS COMMENT - CLIENT REQUESTED TO HIDE SEARCH/FILTER -->
                 <div class="rounded-lg border bg-card text-card-foreground shadow-sm p-6 mb-8 shadow-soft">
                     <form method="GET" class="grid md:grid-cols-4 gap-4">
@@ -218,12 +220,13 @@
                                 Search
                             </button>
                     </form>
-    </div>
+                </div>
+                {% endcomment %}
 
     <!-- Properties Grid -->
     <!-- DON'T REMOVE THIS COMMENT - CLIENT REQUESTED TO HIDE LISTINGS -->
      {% if properties %}
-                <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-6 mb-16">
+                <div class="grid md:grid-cols-2 lg:grid-cols-4 gap-6 mb-16">
                     {% for property in properties %}
                     <div class="rounded-lg border bg-card text-card-foreground shadow-sm group overflow-hidden shadow-soft hover:shadow-medium transition-all duration-300 animate-fade-in" data-property-id="{{ property.id }}">
                         <div class="relative overflow-hidden">
@@ -259,7 +262,14 @@
                                     <span class="text-sm">{{ property.location }}</span>
                                 </div>
                                 {% if property.listing_agent_name %}
-                                <p class="text-xs text-muted-foreground">Courtesy to listing agent {{ property.listing_agent_name }}</p>
+                                <p class="text-xs text-muted-foreground">
+                                    Listing Agent: 
+                                    {% if property.listing_agent_link %}
+                                        <a href="{{ property.listing_agent_link }}" target="_blank" rel="noopener noreferrer" class="text-primary hover:underline font-medium">{{ property.listing_agent_name }}</a>
+                                    {% else %}
+                                        <span class="font-medium">{{ property.listing_agent_name }}</span>
+                                    {% endif %}
+                                </p>
                                 {% endif %}
                             </div>
                             <div class="flex items-center justify-between text-sm text-muted-foreground">
@@ -298,9 +308,15 @@
                         </div>
                         </div>
                             <div class="flex items-center justify-between pt-4 border-t">
+                                {% if property.property_status != 'just_sold' and property.property_status != 'for_lease' %}
                                 <div class="text-2xl font-bold text-primary">
-                                    {{ property.price|format_price_with_type:property.property_type }}
-                    </div>
+                                    {% if property.property_type == 'lease' %}
+                                        {{ property.price }}{% if property.price and not property.price|slice:":1" == "$" %}/month{% endif %}
+                                    {% else %}
+                                        {{ property.price }}
+                                    {% endif %}
+                                </div>
+                                {% endif %}
                                 <button type="button"
                                     class="view-details inline-flex items-center justify-center gap-2 whitespace-nowrap rounded-md text-sm font-medium ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 [&_svg]:pointer-events-none [&_svg]:size-4 [&_svg]:shrink-0 border bg-background h-10 px-4 py-2 border-primary text-primary hover:bg-primary hover:text-primary-foreground"
                                     data-id="{{ property.id }}"
@@ -317,6 +333,7 @@
                                     data-media='{{ property.get_all_media_urls|to_json }}'
                                     data-status="{{ property.property_status }}"
                                     data-agent-name="{{ property.listing_agent_name|default:''|escapejs }}"
+                                    data-agent-link="{{ property.listing_agent_link|default:'' }}"
                                     data-agent-image="{{ property.get_listing_agent_image_url|default:'' }}"
                                     data-contact-email="{{ property.contact_email }}"
                                     data-contact-phone="{{ property.contact_phone }}">
@@ -421,7 +438,11 @@
                     <div class="flex items-center gap-4">
                         <img id="modalListingAgentImage" src="" alt="Listing Agent" class="w-20 h-20 rounded-lg object-cover hidden border border-gray-200 shadow-sm">
                         <div>
-                            <p id="modalListingAgentName" class="text-base font-medium text-foreground mb-1"></p>
+                            <p class="text-base font-medium text-foreground mb-1">
+                                <span id="modalListingAgentNameText" class="text-muted-foreground">Listing Agent: </span>
+                                <span id="modalListingAgentName" class="font-semibold"></span>
+                                <a id="modalListingAgentLink" href="" target="_blank" rel="noopener noreferrer" class="hidden ml-2 text-primary hover:underline text-sm font-medium">Visit Profile →</a>
+                            </p>
                             <p class="text-sm text-muted-foreground">Courtesy to listing agent</p>
                         </div>
                     </div>
@@ -482,6 +503,7 @@
                 imagesRaw,
                 btn.dataset.status || '',
                 btn.dataset.agentName || '',
+                btn.dataset.agentLink || '',
                 btn.dataset.agentImage || '',
                 btn.dataset.mainImage || '',
                 btn.dataset.contactEmail || 'raj.gupta@kw.com',
@@ -490,7 +512,7 @@
             );
         });
         
-        function openPropertyModal(id, title, location, price, propertyType, bedrooms, bathrooms, area, description, additionalImages, propertyStatus, listingAgentName, listingAgentImageUrl, mainImage, contactEmail, contactPhone, mediaData) {
+        function openPropertyModal(id, title, location, price, propertyType, bedrooms, bathrooms, area, description, additionalImages, propertyStatus, listingAgentName, listingAgentLink, listingAgentImageUrl, mainImage, contactEmail, contactPhone, mediaData) {
             document.getElementById('modal-title').textContent = title;
             document.getElementById('modalLocation').textContent = location;
             
@@ -504,11 +526,32 @@
                 contactEmailLink.href = 'mailto:' + contactEmail;
             }
             
-            // Format price based on property type
-            if (propertyType === 'lease') {
-                document.getElementById('modalPrice').textContent = '$' + parseFloat(price).toLocaleString() + '/month';
+            // Format price - don't show for sold/leased properties
+            const priceElement = document.getElementById('modalPrice');
+            const priceRow = priceElement.closest('.flex.justify-between');
+            if (propertyStatus === 'just_sold' || propertyStatus === 'for_lease') {
+                // Hide price for sold/leased properties
+                if (priceRow) priceRow.style.display = 'none';
             } else {
-                document.getElementById('modalPrice').textContent = '$' + parseFloat(price).toLocaleString();
+                // Show price (handle as text, can be "upper 800s" or numeric)
+                if (priceRow) priceRow.style.display = 'flex';
+                if (price && price.trim()) {
+                    // Check if price is numeric
+                    const numericPrice = parseFloat(price);
+                    if (!isNaN(numericPrice)) {
+                        // It's a number, format it
+                        if (propertyType === 'lease') {
+                            priceElement.textContent = '$' + numericPrice.toLocaleString() + '/month';
+                        } else {
+                            priceElement.textContent = '$' + numericPrice.toLocaleString();
+                        }
+                    } else {
+                        // It's text like "upper 800s", display as-is
+                        priceElement.textContent = price;
+                    }
+                } else {
+                    priceElement.textContent = '-';
+                }
             }
             
             // Status
@@ -524,10 +567,17 @@
             // Listing agent
             const agentSection = document.getElementById('modalListingAgent');
             const agentNameEl = document.getElementById('modalListingAgentName');
+            const agentLinkEl = document.getElementById('modalListingAgentLink');
             const agentImgEl = document.getElementById('modalListingAgentImage');
             if (listingAgentName || listingAgentImageUrl) {
                 if (agentSection) agentSection.classList.remove('hidden');
                 if (agentNameEl) agentNameEl.textContent = listingAgentName || 'Listing Agent';
+                if (agentLinkEl && listingAgentLink) {
+                    agentLinkEl.href = listingAgentLink;
+                    agentLinkEl.classList.remove('hidden');
+                } else if (agentLinkEl) {
+                    agentLinkEl.classList.add('hidden');
+                }
                 if (agentImgEl) {
                     if (listingAgentImageUrl) {
                         agentImgEl.src = listingAgentImageUrl;

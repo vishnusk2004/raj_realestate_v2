@@ -67,23 +67,14 @@
 <nav class="bg-background/95 backdrop-blur-sm border-b shadow-soft sticky top-0 z-50">
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div class="flex justify-between items-center h-16">
-            <a class="flex items-center space-x-2" href="{% url 'home' %}">
-                <div class="w-8 h-8 bg-accent-gradient rounded-lg flex items-center justify-center">
-                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-building h-5 w-5 text-primary">
-                        <rect width="16" height="20" x="4" y="2" rx="2" ry="2"></rect>
-                        <path d="M9 22v-4h6v4"></path>
-                        <path d="M8 6h.01"></path>
-                        <path d="M16 6h.01"></path>
-                        <path d="M12 6h.01"></path>
-                        <path d="M12 10h.01"></path>
-                        <path d="M12 14h.01"></path>
-                        <path d="M16 10h.01"></path>
-                        <path d="M16 14h.01"></path>
-                        <path d="M8 10h.01"></path>
-                        <path d="M8 14h.01"></path>
-                    </svg>
+            <a class="flex items-center space-x-3" href="{% url 'home' %}">
+                <div class="flex items-center space-x-3">
+                    <img src="/media/Background_removed_image/image-removebg-preview.png" alt="Raj Reality Texas" class="h-12 w-auto object-contain" onerror="this.style.display='none'">
+                    <div class="flex flex-col">
+                        <span class="text-xl font-bold text-primary leading-tight">{{ brand_name }}</span>
+                        <span class="text-xs text-muted-foreground leading-tight">Texas Real Estate</span>
+                    </div>
                 </div>
-                <span class="text-xl font-bold text-primary">{{ brand_name }}</span>
             </a>
             <div class="hidden md:flex items-center space-x-1">
                 <a class="px-4 py-2 rounded-lg text-sm font-medium transition-all duration-200 flex items-center space-x-2 {% if request.resolver_match.url_name == 'home' %}bg-primary text-primary-foreground shadow-medium{% else %}text-muted-foreground hover:text-primary hover:bg-secondary{% endif %}" href="{% url 'home' %}">

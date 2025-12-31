@@ -9,7 +9,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>{{ community.name }} - {{ brand_name }}</title>
     <meta name="description" content="Explore properties in {{ community.name }}. {{ community.description|truncatewords:20 }}">
-    <link rel="icon" type="image/svg+xml" href="{% static 'favicon.svg' %}">
+    <link rel="icon" type="image/png" href="{% static 'favicon.png' %}">
     
     <!-- Google Fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -75,6 +75,7 @@
     </style>
 </head>
 <body>
+    {% include 'Raj/social_media_sidebar.html' %}
     {% include 'Raj/navbar.html' %}
 
     <main class="flex-1">
@@ -110,6 +111,7 @@
             <section class="py-16">
                 <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
                     <!-- Filters -->
+                    {% comment %}
                     <div class="mb-8">
                         <form method="GET" class="grid md:grid-cols-4 gap-4">
                             <div>
@@ -143,9 +145,14 @@
                             </div>
                         </form>
                     </div>
+                    {% endcomment %}
 
                     <!-- Properties Grid -->
                     {% if properties %}
+                    <div class="text-center mb-12">
+                        <h2 class="text-3xl md:text-4xl font-bold text-foreground mb-4">Properties in {{ community.name }}</h2>
+                        <p class="text-muted-foreground text-lg max-w-2xl mx-auto">Browse our available properties and successful transactions in {{ community.name }}. Your dream property could be next!</p>
+                    </div>
                     <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-6 mb-16">
                         {% for property in properties %}
                         <div class="rounded-lg border bg-card text-card-foreground shadow-sm group overflow-hidden shadow-soft hover:shadow-medium transition-all duration-300 animate-fade-in" data-property-id="{{ property.id }}">
@@ -213,9 +220,15 @@
                                     </div>
                                 </div>
                                 <div class="flex items-center justify-between pt-4 border-t">
+                                    {% if property.property_status != 'just_sold' and property.property_status != 'for_lease' %}
                                     <div class="text-2xl font-bold text-primary">
-                                        {{ property.price|format_price_with_type:property.property_type }}
+                                        {% if property.property_type == 'lease' %}
+                                            {{ property.price }}{% if property.price and not property.price|slice:":1" == "$" %}/month{% endif %}
+                                        {% else %}
+                                            {{ property.price }}
+                                        {% endif %}
                                     </div>
+                                    {% endif %}
                                     <button type="button"
                                         class="view-details inline-flex items-center justify-center gap-2 whitespace-nowrap rounded-md text-sm font-medium ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 [&_svg]:pointer-events-none [&_svg]:size-4 [&_svg]:shrink-0 border bg-background h-10 px-4 py-2 border-primary text-primary hover:bg-primary hover:text-primary-foreground"
                                         data-id="{{ property.id }}"
@@ -241,15 +254,6 @@
                             </div>
                         </div>
                         {% endfor %}
-                    </div>
-                    {% else %}
-                    <div class="text-center py-12">
-                        <svg xmlns="http://www.w3.org/2000/svg" width="64" height="64" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-home h-16 w-16 mx-auto mb-4 text-muted-foreground">
-                            <path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"></path>
-                            <polyline points="9,22 9,12 15,12 15,22"></polyline>
-                        </svg>
-                        <p class="text-lg font-medium text-foreground mb-2">No properties found</p>
-                        <p class="text-sm text-muted-foreground">Try adjusting your filters or check back later.</p>
                     </div>
                     {% endif %}
                 </div>
@@ -416,11 +420,32 @@
                 contactEmailLink.href = 'mailto:' + contactEmail;
             }
             
-            // Format price based on property type
-            if (propertyType === 'lease') {
-                document.getElementById('modalPrice').textContent = '$' + parseFloat(price).toLocaleString() + '/month';
+            // Format price - don't show for sold/leased properties
+            const priceElement = document.getElementById('modalPrice');
+            const priceRow = priceElement.closest('.flex.justify-between');
+            if (propertyStatus === 'just_sold' || propertyStatus === 'for_lease') {
+                // Hide price for sold/leased properties
+                if (priceRow) priceRow.style.display = 'none';
             } else {
-                document.getElementById('modalPrice').textContent = '$' + parseFloat(price).toLocaleString();
+                // Show price (handle as text, can be "upper 800s" or numeric)
+                if (priceRow) priceRow.style.display = 'flex';
+                if (price && price.trim()) {
+                    // Check if price is numeric
+                    const numericPrice = parseFloat(price);
+                    if (!isNaN(numericPrice)) {
+                        // It's a number, format it
+                        if (propertyType === 'lease') {
+                            priceElement.textContent = '$' + numericPrice.toLocaleString() + '/month';
+                        } else {
+                            priceElement.textContent = '$' + numericPrice.toLocaleString();
+                        }
+                    } else {
+                        // It's text like "upper 800s", display as-is
+                        priceElement.textContent = price;
+                    }
+                } else {
+                    priceElement.textContent = '-';
+                }
             }
             
             // Status
