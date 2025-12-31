@@ -35,65 +35,65 @@
 <!-- Interactive Mortgage Calculator Section -->
 <section class="py-12 bg-background">
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div class="grid lg:grid-cols-2 gap-6 items-start">
+        <div class="grid lg:grid-cols-2 gap-6 items-stretch">
             <!-- Calculator Input Form -->
-            <div class="rounded-lg border bg-card text-card-foreground shadow-sm p-8 shadow-soft">
-                <h2 class="text-2xl md:text-3xl font-bold text-foreground mb-6">Mortgage Calculator</h2>
-                <div class="space-y-4">
-                    <div class="space-y-2">
-                        <label class="text-sm font-medium text-foreground" for="calc_home_value">Home Value</label>
+            <div class="rounded-lg border bg-card text-card-foreground shadow-sm p-8 shadow-soft flex flex-col">
+                <h2 class="text-2xl md:text-3xl font-bold text-foreground mb-8">Mortgage Calculator</h2>
+                <div class="space-y-6 flex-grow">
+                    <div class="space-y-3">
+                        <label class="text-base font-semibold text-foreground" for="calc_home_value">Home Value</label>
                         <div class="relative">
-                            <span class="absolute left-3 top-1/2 transform -translate-y-1/2 text-muted-foreground">$</span>
-                            <input type="number" id="calc_home_value" value="400000" min="0" step="1000" class="calc-input flex h-9 w-full rounded-md border border-input bg-background px-3 py-2 text-sm ring-offset-background pl-8 placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2">
+                            <span class="absolute left-4 top-1/2 transform -translate-y-1/2 text-muted-foreground text-base">$</span>
+                            <input type="number" id="calc_home_value" value="400000" min="0" step="1000" class="calc-input flex h-14 w-full rounded-lg border-2 border-input bg-background px-4 py-3 text-base ring-offset-background pl-10 placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2">
                         </div>
                     </div>
 
-                    <div class="grid md:grid-cols-2 gap-3">
-                        <div class="space-y-2">
-                            <label class="text-sm font-medium text-foreground" for="calc_down_payment">Down Payment ($)</label>
+                    <div class="grid md:grid-cols-2 gap-5">
+                        <div class="space-y-3">
+                            <label class="text-base font-semibold text-foreground" for="calc_down_payment">Down Payment ($)</label>
                             <div class="relative">
-                                <span class="absolute left-3 top-1/2 transform -translate-y-1/2 text-muted-foreground">$</span>
-                                <input type="number" id="calc_down_payment" value="80000" min="0" step="1000" class="calc-input flex h-9 w-full rounded-md border border-input bg-background px-3 py-2 text-sm ring-offset-background pl-8 placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2">
+                                <span class="absolute left-4 top-1/2 transform -translate-y-1/2 text-muted-foreground text-base">$</span>
+                                <input type="number" id="calc_down_payment" value="80000" min="0" step="1000" class="calc-input flex h-14 w-full rounded-lg border-2 border-input bg-background px-4 py-3 text-base ring-offset-background pl-10 placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2">
                             </div>
                         </div>
-                        <div class="space-y-2">
-                            <label class="text-sm font-medium text-foreground" for="calc_down_payment_pct">Down Payment (%)</label>
+                        <div class="space-y-3">
+                            <label class="text-base font-semibold text-foreground" for="calc_down_payment_pct">Down Payment (%)</label>
                             <div class="relative">
-                                <input type="number" id="calc_down_payment_pct" value="20" min="0" max="100" step="0.1" class="calc-input flex h-9 w-full rounded-md border border-input bg-background px-3 py-2 text-sm ring-offset-background placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2">
-                                <span class="absolute right-3 top-1/2 transform -translate-y-1/2 text-muted-foreground">%</span>
+                                <input type="number" id="calc_down_payment_pct" value="20" min="0" max="100" step="0.1" class="calc-input flex h-14 w-full rounded-lg border-2 border-input bg-background px-4 py-3 text-base ring-offset-background placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2">
+                                <span class="absolute right-4 top-1/2 transform -translate-y-1/2 text-muted-foreground text-base">%</span>
                             </div>
                         </div>
                     </div>
 
-                    <div class="space-y-2">
-                        <label class="text-sm font-medium text-foreground" for="calc_loan_amount">Loan Amount</label>
+                    <div class="space-y-3">
+                        <label class="text-base font-semibold text-foreground" for="calc_loan_amount">Loan Amount</label>
                         <div class="relative">
-                            <span class="absolute left-3 top-1/2 transform -translate-y-1/2 text-muted-foreground">$</span>
-                            <input type="number" id="calc_loan_amount" value="320000" min="0" step="1000" class="calc-input flex h-9 w-full rounded-md border border-input bg-background px-3 py-2 text-sm ring-offset-background pl-8 placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2">
+                            <span class="absolute left-4 top-1/2 transform -translate-y-1/2 text-muted-foreground text-base">$</span>
+                            <input type="number" id="calc_loan_amount" value="320000" min="0" step="1000" class="calc-input flex h-14 w-full rounded-lg border-2 border-input bg-background px-4 py-3 text-base ring-offset-background pl-10 placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2">
                         </div>
                     </div>
 
-                    <div class="grid md:grid-cols-2 gap-3">
-                        <div class="space-y-2">
-                            <label class="text-sm font-medium text-foreground" for="calc_interest_rate">Interest Rate</label>
+                    <div class="grid md:grid-cols-2 gap-5">
+                        <div class="space-y-3">
+                            <label class="text-base font-semibold text-foreground" for="calc_interest_rate">Interest Rate</label>
                             <div class="relative">
-                                <input type="number" id="calc_interest_rate" value="6.5" min="0" max="20" step="0.01" class="calc-input flex h-9 w-full rounded-md border border-input bg-background px-3 py-2 text-sm ring-offset-background placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2">
-                                <span class="absolute right-3 top-1/2 transform -translate-y-1/2 text-muted-foreground">%</span>
+                                <input type="number" id="calc_interest_rate" value="6.5" min="0" max="20" step="0.01" class="calc-input flex h-14 w-full rounded-lg border-2 border-input bg-background px-4 py-3 text-base ring-offset-background placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2">
+                                <span class="absolute right-4 top-1/2 transform -translate-y-1/2 text-muted-foreground text-base">%</span>
                             </div>
                         </div>
-                        <div class="space-y-2">
-                            <label class="text-sm font-medium text-foreground" for="calc_loan_term">Loan Term (Years)</label>
+                        <div class="space-y-3">
+                            <label class="text-base font-semibold text-foreground" for="calc_loan_term">Loan Term (Years)</label>
                             <div class="relative">
-                                <input type="number" id="calc_loan_term" value="30" min="1" max="50" step="0.5" class="calc-input flex h-9 w-full rounded-md border border-input bg-background px-3 py-2 text-sm ring-offset-background placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2">
-                                <span class="absolute right-3 top-1/2 transform -translate-y-1/2 text-muted-foreground text-xs">years</span>
+                                <input type="number" id="calc_loan_term" value="30" min="1" max="50" step="0.5" class="calc-input flex h-14 w-full rounded-lg border-2 border-input bg-background px-4 py-3 text-base ring-offset-background placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2">
+                                <span class="absolute right-4 top-1/2 transform -translate-y-1/2 text-muted-foreground text-sm">years</span>
                             </div>
                         </div>
                     </div>
 
-                    <div class="space-y-2">
-                        <label class="text-sm font-medium text-foreground" for="calc_start_date">Start Date</label>
-                        <div class="grid grid-cols-3 gap-2">
-                            <select id="calc_start_month" class="calc-input flex h-9 w-full rounded-md border border-input bg-background px-3 py-2 text-sm ring-offset-background focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2">
+                    <div class="space-y-3">
+                        <label class="text-base font-semibold text-foreground" for="calc_start_date">Start Date</label>
+                        <div class="grid grid-cols-3 gap-3">
+                            <select id="calc_start_month" class="calc-input flex h-14 w-full rounded-lg border-2 border-input bg-background px-4 py-3 text-base ring-offset-background focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2">
                                 <option value="0">Jan</option>
                                 <option value="1">Feb</option>
                                 <option value="2">Mar</option>
@@ -107,42 +107,42 @@
                                 <option value="10">Nov</option>
                                 <option value="11">Dec</option>
                             </select>
-                            <input type="number" id="calc_start_year" value="2025" min="2020" max="2100" class="calc-input flex h-9 w-full rounded-md border border-input bg-background px-3 py-2 text-sm ring-offset-background placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2">
+                            <input type="number" id="calc_start_year" value="2025" min="2020" max="2100" class="calc-input flex h-14 w-full rounded-lg border-2 border-input bg-background px-4 py-3 text-base ring-offset-background placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2">
                         </div>
                     </div>
 
-                    <div class="grid md:grid-cols-2 gap-3">
-                        <div class="space-y-2">
-                            <label class="text-sm font-medium text-foreground" for="calc_property_tax">Property Tax</label>
+                    <div class="grid md:grid-cols-2 gap-5">
+                        <div class="space-y-3">
+                            <label class="text-base font-semibold text-foreground" for="calc_property_tax">Property Tax</label>
                             <div class="relative">
-                                <span class="absolute left-3 top-1/2 transform -translate-y-1/2 text-muted-foreground">$</span>
-                                <input type="number" id="calc_property_tax" value="3000" min="0" step="100" class="calc-input flex h-9 w-full rounded-md border border-input bg-background px-3 py-2 text-sm ring-offset-background pl-8 placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2">
-                                <span class="absolute right-3 top-1/2 transform -translate-y-1/2 text-xs text-muted-foreground">/yr</span>
+                                <span class="absolute left-4 top-1/2 transform -translate-y-1/2 text-muted-foreground text-base">$</span>
+                                <input type="number" id="calc_property_tax" value="3000" min="0" step="100" class="calc-input flex h-14 w-full rounded-lg border-2 border-input bg-background px-4 py-3 text-base ring-offset-background pl-10 placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2">
+                                <span class="absolute right-4 top-1/2 transform -translate-y-1/2 text-sm text-muted-foreground">/yr</span>
                             </div>
                         </div>
-                        <div class="space-y-2">
-                            <label class="text-sm font-medium text-foreground" for="calc_pmi">PMI</label>
+                        <div class="space-y-3">
+                            <label class="text-base font-semibold text-foreground" for="calc_pmi">PMI</label>
                             <div class="relative">
-                                <input type="number" id="calc_pmi" value="0" min="0" max="2" step="0.01" class="calc-input flex h-9 w-full rounded-md border border-input bg-background px-3 py-2 text-sm ring-offset-background placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2">
-                                <span class="absolute right-3 top-1/2 transform -translate-y-1/2 text-muted-foreground">%</span>
+                                <input type="number" id="calc_pmi" value="0" min="0" max="2" step="0.01" class="calc-input flex h-14 w-full rounded-lg border-2 border-input bg-background px-4 py-3 text-base ring-offset-background placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2">
+                                <span class="absolute right-4 top-1/2 transform -translate-y-1/2 text-muted-foreground text-base">%</span>
                             </div>
                         </div>
                     </div>
 
-                    <div class="grid md:grid-cols-2 gap-3">
-                        <div class="space-y-2">
-                            <label class="text-sm font-medium text-foreground" for="calc_home_insurance">Home Insurance</label>
+                    <div class="grid md:grid-cols-2 gap-5">
+                        <div class="space-y-3">
+                            <label class="text-base font-semibold text-foreground" for="calc_home_insurance">Home Insurance</label>
                             <div class="relative">
-                                <span class="absolute left-3 top-1/2 transform -translate-y-1/2 text-muted-foreground">$</span>
-                                <input type="number" id="calc_home_insurance" value="1500" min="0" step="100" class="calc-input flex h-9 w-full rounded-md border border-input bg-background px-3 py-2 text-sm ring-offset-background pl-8 placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2">
-                                <span class="absolute right-3 top-1/2 transform -translate-y-1/2 text-xs text-muted-foreground">/yr</span>
+                                <span class="absolute left-4 top-1/2 transform -translate-y-1/2 text-muted-foreground text-base">$</span>
+                                <input type="number" id="calc_home_insurance" value="1500" min="0" step="100" class="calc-input flex h-14 w-full rounded-lg border-2 border-input bg-background px-4 py-3 text-base ring-offset-background pl-10 placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2">
+                                <span class="absolute right-4 top-1/2 transform -translate-y-1/2 text-sm text-muted-foreground">/yr</span>
                             </div>
                         </div>
-                        <div class="space-y-2">
-                            <label class="text-sm font-medium text-foreground" for="calc_hoa">Monthly HOA</label>
+                        <div class="space-y-3">
+                            <label class="text-base font-semibold text-foreground" for="calc_hoa">Monthly HOA</label>
                             <div class="relative">
-                                <span class="absolute left-3 top-1/2 transform -translate-y-1/2 text-muted-foreground">$</span>
-                                <input type="number" id="calc_hoa" value="0" min="0" step="10" class="calc-input flex h-9 w-full rounded-md border border-input bg-background px-3 py-2 text-sm ring-offset-background pl-8 placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2">
+                                <span class="absolute left-4 top-1/2 transform -translate-y-1/2 text-muted-foreground text-base">$</span>
+                                <input type="number" id="calc_hoa" value="0" min="0" step="10" class="calc-input flex h-14 w-full rounded-lg border-2 border-input bg-background px-4 py-3 text-base ring-offset-background pl-10 placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2">
                             </div>
                         </div>
                     </div>
@@ -150,76 +150,76 @@
             </div>
 
             <!-- Results Display - Better Filled Layout -->
-            <div class="rounded-lg border bg-card text-card-foreground shadow-sm p-8 shadow-soft">
-                <h2 class="text-2xl md:text-3xl font-bold text-foreground mb-6">Mortgage Repayment Summary</h2>
-                <div id="mortgage_results" class="space-y-5">
+            <div class="rounded-lg border bg-card text-card-foreground shadow-sm p-8 shadow-soft flex flex-col">
+                <h2 class="text-2xl md:text-3xl font-bold text-foreground mb-8">Mortgage Repayment Summary</h2>
+                <div id="mortgage_results" class="space-y-6 flex-grow">
                     <!-- Monthly Payment Highlight -->
-                    <div class="text-center p-5 bg-primary/10 rounded-lg border border-primary/20">
-                        <div class="text-3xl font-bold text-primary mb-1" id="monthly_payment">$0.00</div>
-                        <div class="text-sm text-muted-foreground font-medium">Total Monthly Payment</div>
+                    <div class="text-center p-6 bg-primary/10 rounded-lg border-2 border-primary/20">
+                        <div class="text-4xl md:text-5xl font-bold text-primary mb-2" id="monthly_payment">$0.00</div>
+                        <div class="text-base text-muted-foreground font-semibold">Total Monthly Payment</div>
                     </div>
 
                     <!-- Key Metrics Grid -->
-                    <div class="grid grid-cols-2 gap-4">
-                        <div class="p-4 bg-muted/30 rounded-lg border border-border/50">
-                            <div class="text-xs text-muted-foreground mb-2">PMI</div>
-                            <div class="text-sm font-semibold text-foreground" id="pmi_status">not required</div>
+                    <div class="grid grid-cols-2 gap-5">
+                        <div class="p-6 bg-gradient-to-br from-primary/8 to-primary/5 rounded-lg border-2 border-primary/20 flex flex-col justify-between min-h-28">
+                            <div class="text-sm text-muted-foreground font-semibold tracking-wide\">PMI</div>
+                            <div class="text-lg font-bold text-foreground" id="pmi_status">not required</div>
                         </div>
-                        <div class="p-4 bg-muted/30 rounded-lg border border-border/50">
-                            <div class="text-xs text-muted-foreground mb-2">Down Payment</div>
-                            <div class="text-sm font-semibold text-foreground" id="down_payment_display">$0.00</div>
+                        <div class="p-6 bg-gradient-to-br from-green/8 to-green/5 rounded-lg border-2 border-green-200/30 flex flex-col justify-between min-h-28">
+                            <div class="text-sm text-muted-foreground font-semibold tracking-wide\">Down Payment</div>
+                            <div class="text-xl font-bold text-foreground" id="down_payment_display">$0.00</div>
                         </div>
-                        <div class="p-4 bg-muted/30 rounded-lg border border-border/50">
-                            <div class="text-xs text-muted-foreground mb-2">Down Payment %</div>
-                            <div class="text-sm font-semibold text-foreground" id="down_payment_pct_display">0%</div>
+                        <div class="p-6 bg-gradient-to-br from-blue/8 to-blue/5 rounded-lg border-2 border-blue-200/30 flex flex-col justify-between min-h-28">
+                            <div class="text-sm text-muted-foreground font-semibold tracking-wide\">Down Payment %</div>
+                            <div class="text-xl font-bold text-foreground\" id="down_payment_pct_display">0%</div>
                         </div>
-                        <div class="p-4 bg-muted/30 rounded-lg border border-border/50">
-                            <div class="text-xs text-muted-foreground mb-2">Pay-off Date</div>
-                            <div class="text-sm font-semibold text-foreground" id="payoff_date">-</div>
+                        <div class="p-6 bg-gradient-to-br from-orange/8 to-orange/5 rounded-lg border-2 border-orange-200/30 flex flex-col justify-between min-h-28">
+                            <div class="text-sm text-muted-foreground font-semibold tracking-wide\">Pay-off Date</div>
+                            <div class="text-lg font-bold text-foreground\" id="payoff_date">-</div>
                         </div>
                     </div>
 
                     <!-- Payment Breakdown Visualization -->
-                    <div class="pt-3 border-t">
-                        <h3 class="text-sm font-semibold text-foreground mb-3">Monthly Payment Breakdown</h3>
-                        <div class="space-y-2 mb-3">
-                            <div class="flex items-center justify-between text-xs">
+                    <div class="pt-4 border-t-2">
+                        <h3 class="text-base font-bold text-foreground mb-4">Monthly Payment Breakdown</h3>
+                        <div class="space-y-3 mb-4">
+                            <div class="flex items-center justify-between text-base">
                                 <div class="flex items-center gap-2">
-                                    <div class="w-3 h-3 rounded bg-blue-500"></div>
-                                    <span class="text-muted-foreground">Principal & Interest</span>
+                                    <div class="w-4 h-4 rounded bg-blue-500"></div>
+                                    <span class="text-muted-foreground font-medium">Principal & Interest</span>
                                 </div>
-                                <span class="font-semibold text-foreground" id="pi_amount">$0.00</span>
+                                <span class="font-bold text-foreground" id="pi_amount">$0.00</span>
                             </div>
-                            <div class="flex items-center justify-between text-xs">
+                            <div class="flex items-center justify-between text-base">
                                 <div class="flex items-center gap-2">
-                                    <div class="w-3 h-3 rounded bg-green-500"></div>
-                                    <span class="text-muted-foreground">Property Tax</span>
+                                    <div class="w-4 h-4 rounded bg-green-500"></div>
+                                    <span class="text-muted-foreground font-medium">Property Tax</span>
                                 </div>
-                                <span class="font-semibold text-foreground" id="tax_amount_display">$0.00</span>
+                                <span class="font-bold text-foreground" id="tax_amount_display">$0.00</span>
                             </div>
-                            <div class="flex items-center justify-between text-xs">
+                            <div class="flex items-center justify-between text-base">
                                 <div class="flex items-center gap-2">
-                                    <div class="w-3 h-3 rounded bg-yellow-500"></div>
-                                    <span class="text-muted-foreground">Insurance</span>
+                                    <div class="w-4 h-4 rounded bg-yellow-500"></div>
+                                    <span class="text-muted-foreground font-medium">Insurance</span>
                                 </div>
-                                <span class="font-semibold text-foreground" id="ins_amount_display">$0.00</span>
+                                <span class="font-bold text-foreground" id="ins_amount_display">$0.00</span>
                             </div>
-                            <div class="flex items-center justify-between text-xs" id="pmi_display_row" style="display: none;">
+                            <div class="flex items-center justify-between text-base" id="pmi_display_row" style="display: none;">
                                 <div class="flex items-center gap-2">
-                                    <div class="w-3 h-3 rounded bg-orange-500"></div>
-                                    <span class="text-muted-foreground">PMI</span>
+                                    <div class="w-4 h-4 rounded bg-orange-500"></div>
+                                    <span class="text-muted-foreground font-medium">PMI</span>
                                 </div>
-                                <span class="font-semibold text-foreground" id="pmi_amount_display">$0.00</span>
+                                <span class="font-bold text-foreground" id="pmi_amount_display">$0.00</span>
                             </div>
-                            <div class="flex items-center justify-between text-xs" id="hoa_display_row" style="display: none;">
+                            <div class="flex items-center justify-between text-base" id="hoa_display_row" style="display: none;">
                                 <div class="flex items-center gap-2">
-                                    <div class="w-3 h-3 rounded bg-purple-500"></div>
-                                    <span class="text-muted-foreground">HOA</span>
+                                    <div class="w-4 h-4 rounded bg-purple-500"></div>
+                                    <span class="text-muted-foreground font-medium">HOA</span>
                                 </div>
-                                <span class="font-semibold text-foreground" id="hoa_amount_display">$0.00</span>
+                                <span class="font-bold text-foreground" id="hoa_amount_display">$0.00</span>
                             </div>
                         </div>
-                        <div class="h-6 rounded-lg overflow-hidden flex" id="payment_chart">
+                        <div class="h-8 rounded-lg overflow-hidden flex" id="payment_chart">
                             <div class="bg-blue-500" id="pi_bar" style="width: 0%"></div>
                             <div class="bg-green-500" id="tax_bar" style="width: 0%"></div>
                             <div class="bg-yellow-500" id="ins_bar" style="width: 0%"></div>
@@ -229,32 +229,32 @@
                     </div>
 
                     <!-- Detailed Summary -->
-                    <div class="pt-4 border-t space-y-3">
+                    <div class="pt-5 border-t-2 space-y-2.5">
                         <div class="flex justify-between items-center text-sm py-1">
-                            <span class="text-muted-foreground">Total Interest Paid</span>
-                            <span class="font-semibold text-foreground" id="total_interest">$0.00</span>
+                            <span class="text-muted-foreground font-medium">Total Interest Paid</span>
+                            <span class="font-bold text-foreground" id="total_interest">$0.00</span>
                         </div>
                         <div class="flex justify-between items-center text-sm py-1">
-                            <span class="text-muted-foreground">Monthly Tax</span>
-                            <span class="font-semibold text-foreground" id="monthly_tax">$0.00</span>
+                            <span class="text-muted-foreground font-medium">Monthly Tax</span>
+                            <span class="font-bold text-foreground" id="monthly_tax">$0.00</span>
                         </div>
                         <div class="flex justify-between items-center text-sm py-1">
-                            <span class="text-muted-foreground">Total Tax Paid</span>
-                            <span class="font-semibold text-foreground" id="total_tax">$0.00</span>
+                            <span class="text-muted-foreground font-medium">Total Tax Paid</span>
+                            <span class="font-bold text-foreground" id="total_tax">$0.00</span>
                         </div>
                         <div class="flex justify-between items-center text-sm py-1">
-                            <span class="text-muted-foreground">Monthly Insurance</span>
-                            <span class="font-semibold text-foreground" id="monthly_insurance">$0.00</span>
+                            <span class="text-muted-foreground font-medium">Monthly Insurance</span>
+                            <span class="font-bold text-foreground" id="monthly_insurance">$0.00</span>
                         </div>
                         <div class="flex justify-between items-center text-sm py-1">
-                            <span class="text-muted-foreground">Total Insurance</span>
-                            <span class="font-semibold text-foreground" id="total_insurance">$0.00</span>
+                            <span class="text-muted-foreground font-medium">Total Insurance</span>
+                            <span class="font-bold text-foreground" id="total_insurance">$0.00</span>
                         </div>
                         <div class="flex justify-between items-center text-sm py-1">
-                            <span class="text-muted-foreground">Annual Payment</span>
-                            <span class="font-semibold text-foreground" id="annual_payment">$0.00</span>
+                            <span class="text-muted-foreground font-medium">Annual Payment</span>
+                            <span class="font-bold text-foreground" id="annual_payment">$0.00</span>
                         </div>
-                        <div class="flex justify-between items-center pt-3 border-t text-base font-semibold">
+                        <div class="flex justify-between items-center pt-3 border-t-2 text-base font-bold">
                             <span class="text-foreground">Total of All Payments</span>
                             <span class="text-foreground" id="total_payments">$0.00</span>
                         </div>
@@ -264,10 +264,10 @@
         </div>
 
         <!-- Advanced Calculator Section -->
-        <div class="mt-6">
-            <button id="show_advanced_btn" class="w-full py-3 px-4 rounded-lg border border-input bg-background hover:bg-muted/50 transition-colors text-center font-medium text-foreground">
-                <span>Show Advanced Calculations & Visualizations</span>
-                <svg class="inline-block ml-2 w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+        <div class="mt-8 mb-16">
+            <button id="show_advanced_btn" class="w-full py-4 px-6 rounded-lg border-2 border-primary/30 bg-gradient-to-r from-primary/5 to-primary/10 hover:from-primary/10 hover:to-primary/20 transition-all duration-300 font-semibold text-foreground shadow-sm hover:shadow-md group flex items-center justify-center gap-2 mb-8">
+                <span class="text-base">Show Advanced Calculations & Visualizations</span>
+                <svg class="w-5 h-5 transition-transform duration-300 group-hover:translate-y-1 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path>
                 </svg>
             </button>
@@ -331,6 +331,24 @@
                                 <div class="text-muted-foreground" id="equity_val10">$0</div>
                             </div>
                         </div>
+
+                        <!-- Principal vs Interest Chart Inside -->
+                        <div class="pt-4 border-t-2">
+                            <h4 class="text-base font-bold text-foreground mb-3">Principal vs Interest Over Time</h4>
+                            <div class="h-48 w-full relative bg-muted/10 rounded-lg p-4" id="amortization_chart_container">
+                                <canvas id="amortization_chart" style="width: 100%; height: 100%;"></canvas>
+                            </div>
+                            <div class="flex justify-center gap-6 text-xs mt-3">
+                                <div class="flex items-center gap-2">
+                                    <div class="w-3 h-3 rounded bg-blue-500"></div>
+                                    <span class="text-muted-foreground font-medium">Principal Paid</span>
+                                </div>
+                                <div class="flex items-center gap-2">
+                                    <div class="w-3 h-3 rounded bg-red-500"></div>
+                                    <span class="text-muted-foreground font-medium">Interest Paid</span>
+                                </div>
+                            </div>
+                        </div>
                     </div>
                 </div>
 
@@ -348,6 +366,56 @@
                         <div class="flex items-center gap-2">
                             <div class="w-3 h-3 rounded bg-red-500"></div>
                             <span>Interest</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Affordability Analysis -->
+                <div class="rounded-lg border bg-card text-card-foreground shadow-sm p-6 shadow-soft lg:col-span-2">
+                    <h3 class="text-xl font-bold text-foreground mb-4">Affordability Analysis</h3>
+                    <div class="grid lg:grid-cols-2 gap-6">
+                        <div class="space-y-4">
+                            <div class="p-4 bg-gradient-to-br from-green-100/20 to-green-50/20 rounded-lg border border-green-200/30">
+                                <div class="text-sm text-muted-foreground mb-1 font-medium">Monthly Income Required</div>
+                                <div class="text-2xl font-bold text-foreground" id="income_required">$0.00</div>
+                                <div class="text-xs text-muted-foreground mt-2">To comfortably afford this mortgage (28% DTI)</div>
+                            </div>
+                            <div class="p-4 bg-gradient-to-br from-blue-100/20 to-blue-50/20 rounded-lg border border-blue-200/30">
+                                <div class="text-sm text-muted-foreground mb-1 font-medium">Debt-to-Income Ratio (At Your Income)</div>
+                                <div class="text-2xl font-bold text-foreground" id="dti_ratio">-</div>
+                                <div class="text-xs text-muted-foreground mt-2 flex gap-2">
+                                    <span>Monthly Income:</span>
+                                    <input type="number" id="monthly_income_input" placeholder="Enter your income" class="flex h-6 w-24 rounded border border-input bg-background px-2 py-1 text-xs ring-offset-background placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring">
+                                </div>
+                            </div>
+                            <div class="p-4 bg-gradient-to-br from-purple-100/20 to-purple-50/20 rounded-lg border border-purple-200/30">
+                                <div class="text-sm text-muted-foreground mb-1 font-medium">Affordability Status</div>
+                                <div class="text-lg font-bold text-foreground" id="affordability_status">Calculate above</div>
+                                <div class="text-xs text-muted-foreground mt-2">Based on 28% front-end ratio</div>
+                            </div>
+                        </div>
+                        <div class="space-y-4">
+                            <div class="p-4 bg-muted/20 rounded-lg">
+                                <div class="text-sm text-muted-foreground mb-2 font-medium">Affordability Guidelines</div>
+                                <ul class="text-xs text-muted-foreground space-y-2">
+                                    <li class="flex items-start gap-2">
+                                        <span class="text-green-600 font-bold">✓</span>
+                                        <span><span class="font-semibold">28% DTI Rule:</span> Monthly payment ÷ Gross income should be ≤ 28%</span>
+                                    </li>
+                                    <li class="flex items-start gap-2">
+                                        <span class="text-blue-600 font-bold">ℹ</span>
+                                        <span><span class="font-semibold">43% Total DTI:</span> All debt payments ÷ Gross income should be ≤ 43%</span>
+                                    </li>
+                                    <li class="flex items-start gap-2">
+                                        <span class="text-orange-600 font-bold">!</span>
+                                        <span><span class="font-semibold">Down Payment Impact:</span> Higher down payment = lower monthly payment = better affordability</span>
+                                    </li>
+                                    <li class="flex items-start gap-2">
+                                        <span class="text-purple-600 font-bold">★</span>
+                                        <span><span class="font-semibold">Interest Rate:</span> Even 0.5% rate difference can save thousands over 30 years</span>
+                                    </li>
+                                </ul>
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -396,6 +464,7 @@ document.addEventListener('DOMContentLoaded', function() {
                                             (Math.pow(1 + monthlyRate, numPayments) - 1);
                     drawEquityChart(homeValue, loanAmount, downPayment, loanTerm, monthlyPayment, monthlyRate);
                     drawPaymentScheduleChart(loanAmount, monthlyPayment, monthlyRate, numPayments);
+                    drawAmortizationChart(loanAmount, monthlyPayment, monthlyRate, numPayments);
                 }
             }, 200);
         } else {
@@ -501,6 +570,7 @@ document.addEventListener('DOMContentLoaded', function() {
 
         updatePaymentBreakdown(monthlyPayment, monthlyTax, monthlyInsurance, monthlyPMI, hoa, totalMonthlyPayment);
         calculateAdvanced(homeValue, loanAmount, downPayment, interestRate, loanTerm, numPayments, monthlyPayment, totalInterest, totalPayments);
+        calculateAffordability(totalMonthlyPayment);
         
         if (advancedVisible) {
             setTimeout(() => {
@@ -546,6 +616,49 @@ document.addEventListener('DOMContentLoaded', function() {
             document.getElementById('hoa_bar').style.display = 'none';
         }
     }
+
+    // Calculate affordability metrics
+    function calculateAffordability(monthlyPayment) {
+        const incomeRequired = monthlyPayment / 0.28;
+        document.getElementById('income_required').textContent = '$' + incomeRequired.toLocaleString('en-US', {minimumFractionDigits: 2, maximumFractionDigits: 2});
+        
+        updateDTI();
+    }
+
+    // Update DTI when income changes
+    function updateDTI() {
+        const monthlyIncomeInput = document.getElementById('monthly_income_input');
+        const monthlyPayment = parseFloat(document.getElementById('monthly_payment').textContent.replace(/[$,]/g, '')) || 0;
+        const monthlyIncome = parseFloat(monthlyIncomeInput.value) || 0;
+        
+        if (monthlyIncome > 0) {
+            const dtiRatio = (monthlyPayment / monthlyIncome) * 100;
+            const dtiElement = document.getElementById('dti_ratio');
+            dtiElement.textContent = dtiRatio.toFixed(1) + '%';
+            
+            const affordabilityElement = document.getElementById('affordability_status');
+            if (dtiRatio <= 28) {
+                affordabilityElement.textContent = '✓ Excellent - Well within limits';
+                affordabilityElement.style.color = 'rgb(34, 197, 94)';
+            } else if (dtiRatio <= 36) {
+                affordabilityElement.textContent = '~ Good - Acceptable range';
+                affordabilityElement.style.color = 'rgb(59, 130, 246)';
+            } else if (dtiRatio <= 43) {
+                affordabilityElement.textContent = '! Tight - Maximum recommended';
+                affordabilityElement.style.color = 'rgb(249, 115, 22)';
+            } else {
+                affordabilityElement.textContent = '✗ Unaffordable - Beyond safe limits';
+                affordabilityElement.style.color = 'rgb(239, 68, 68)';
+            }
+        } else {
+            document.getElementById('dti_ratio').textContent = '-';
+            document.getElementById('affordability_status').textContent = 'Calculate above';
+            document.getElementById('affordability_status').style.color = 'inherit';
+        }
+    }
+
+    // Add event listener for income input
+    document.getElementById('monthly_income_input').addEventListener('input', updateDTI);
 
     // Calculate advanced metrics (same as before)
     function calculateAdvanced(homeValue, loanAmount, downPayment, interestRate, loanTerm, numPayments, monthlyPayment, totalInterest, totalPayments) {
@@ -817,6 +930,138 @@ document.addEventListener('DOMContentLoaded', function() {
         ctx.font = '11px sans-serif';
         ctx.textAlign = 'center';
         ctx.fillText('Year', width / 2, height - 10);
+    }
+
+    // Draw amortization chart (Principal vs Interest Over Time)
+    function drawAmortizationChart(loanAmount, monthlyPayment, monthlyRate, numPayments) {
+        const canvas = document.getElementById('amortization_chart');
+        if (!canvas) return;
+        const container = canvas.parentElement;
+        if (!container || container.offsetWidth === 0) return;
+        
+        const ctx = canvas.getContext('2d');
+        const width = Math.max(400, container.clientWidth - 32);
+        const height = Math.max(200, container.clientHeight - 32);
+        
+        canvas.width = width;
+        canvas.height = height;
+        
+        ctx.clearRect(0, 0, width, height);
+        
+        if (loanAmount <= 0 || monthlyRate <= 0) {
+            ctx.fillStyle = '#9ca3af';
+            ctx.font = '14px sans-serif';
+            ctx.textAlign = 'center';
+            ctx.fillText('Enter loan details to see chart', width / 2, height / 2);
+            return;
+        }
+        
+        const yearCount = Math.min(15, Math.floor(numPayments / 12));
+        if (yearCount <= 0) return;
+        
+        const padding = 50;
+        const chartWidth = width - padding * 2;
+        const chartHeight = height - padding * 2;
+        
+        let remainingBalance = loanAmount;
+        const cumulativePrincipal = [];
+        const cumulativeInterest = [];
+        let totalPrincipal = 0;
+        let totalInterest = 0;
+        
+        for (let year = 0; year < yearCount; year++) {
+            for (let i = 0; i < 12; i++) {
+                const interestPayment = remainingBalance * monthlyRate;
+                const principalPayment = monthlyPayment - interestPayment;
+                totalPrincipal += principalPayment;
+                totalInterest += interestPayment;
+                remainingBalance -= principalPayment;
+            }
+            cumulativePrincipal.push(totalPrincipal);
+            cumulativeInterest.push(totalInterest);
+        }
+        
+        const maxTotal = Math.max(...cumulativePrincipal.map((p, i) => p + cumulativeInterest[i]), 1);
+        const pointSpacing = chartWidth / (yearCount - 1 || 1);
+        
+        ctx.fillStyle = '#f9fafb';
+        ctx.fillRect(padding, padding, chartWidth, chartHeight);
+        
+        // Grid lines
+        ctx.strokeStyle = '#e5e7eb';
+        ctx.lineWidth = 1;
+        for (let i = 0; i <= 5; i++) {
+            const y = padding + (i / 5) * chartHeight;
+            ctx.beginPath();
+            ctx.moveTo(padding, y);
+            ctx.lineTo(width - padding, y);
+            ctx.stroke();
+        }
+        
+        // Axes
+        ctx.strokeStyle = '#6b7280';
+        ctx.lineWidth = 2;
+        ctx.beginPath();
+        ctx.moveTo(padding, height - padding);
+        ctx.lineTo(width - padding, height - padding);
+        ctx.moveTo(padding, padding);
+        ctx.lineTo(padding, height - padding);
+        ctx.stroke();
+        
+        // Draw lines
+        const lineWidth = 3;
+        
+        // Principal line (blue)
+        ctx.strokeStyle = '#3b82f6';
+        ctx.lineWidth = lineWidth;
+        ctx.beginPath();
+        cumulativePrincipal.forEach((value, index) => {
+            const x = padding + (index / (yearCount - 1 || 1)) * chartWidth;
+            const y = height - padding - (value / maxTotal) * chartHeight;
+            if (index === 0) ctx.moveTo(x, y);
+            else ctx.lineTo(x, y);
+        });
+        ctx.stroke();
+        
+        // Interest line (red)
+        ctx.strokeStyle = '#ef4444';
+        ctx.lineWidth = lineWidth;
+        ctx.beginPath();
+        cumulativeInterest.forEach((value, index) => {
+            const x = padding + (index / (yearCount - 1 || 1)) * chartWidth;
+            const y = height - padding - (value / maxTotal) * chartHeight;
+            if (index === 0) ctx.moveTo(x, y);
+            else ctx.lineTo(x, y);
+        });
+        ctx.stroke();
+        
+        // Draw points
+        cumulativePrincipal.forEach((value, index) => {
+            const x = padding + (index / (yearCount - 1 || 1)) * chartWidth;
+            const y = height - padding - (value / maxTotal) * chartHeight;
+            ctx.fillStyle = '#3b82f6';
+            ctx.beginPath();
+            ctx.arc(x, y, 4, 0, Math.PI * 2);
+            ctx.fill();
+        });
+        
+        cumulativeInterest.forEach((value, index) => {
+            const x = padding + (index / (yearCount - 1 || 1)) * chartWidth;
+            const y = height - padding - (value / maxTotal) * chartHeight;
+            ctx.fillStyle = '#ef4444';
+            ctx.beginPath();
+            ctx.arc(x, y, 4, 0, Math.PI * 2);
+            ctx.fill();
+        });
+        
+        // Labels
+        ctx.fillStyle = '#6b7280';
+        ctx.font = '10px sans-serif';
+        ctx.textAlign = 'center';
+        for (let i = 0; i < yearCount; i += Math.ceil(yearCount / 5)) {
+            const x = padding + (i / (yearCount - 1 || 1)) * chartWidth;
+            ctx.fillText(`Y${i + 1}`, x, height - padding + 15);
+        }
     }
 
     // Event listeners
