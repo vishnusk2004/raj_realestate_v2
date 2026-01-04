@@ -433,7 +433,7 @@ def open_house(request):
             messages.error(request, f'There was an error submitting your registration. Please try again. Error: {str(e)}')
     
     # Get all published open house events with related images
-    open_houses = OpenHouse.objects.filter(published=True).prefetch_related('images').order_by('-open_house_date', '-open_house_time')
+    open_houses = OpenHouse.objects.filter(published=True).prefetch_related('images').order_by('open_house_date', 'open_house_time')
     
     context = {
         'brand_name': settings.BRAND_NAME,
