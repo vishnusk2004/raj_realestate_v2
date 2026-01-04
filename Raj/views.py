@@ -57,7 +57,7 @@ def home(request):
         
         # Check for tracking code
         customer_code = request.GET.get('code')
-        if customer_code:
+        if customer_code and customer_code.startswith('u-'):
             # Handle tracking
             from .webhook_utils import get_client_ip, send_link_tracking_to_crm
             
@@ -207,7 +207,7 @@ def blog_detail(request, post_id):
     try:
         # Check for tracking code
         customer_code = request.GET.get('code')
-        if customer_code:
+        if customer_code and customer_code.startswith('u-'):
             # Handle tracking
             from .webhook_utils import get_client_ip, send_link_tracking_to_crm
             
@@ -1019,6 +1019,30 @@ def tracked_blog_detail_new(request, post_id, customer_code):
         # Get the blog post
         post = get_object_or_404(BlogPost, id=post_id, published=True)
         
+        # Also record into LinkTracking for unified tracking
+        try:
+            from .models import LinkTracking
+            from .webhook_utils import get_client_ip, send_link_tracking_to_crm
+            normalized_code = customer_code if customer_code.startswith('u-') else f'u-{customer_code}'
+            lt, _ = LinkTracking.objects.get_or_create(
+                customer_code=normalized_code,
+                page_type='blog',
+                page_id=str(post_id),
+                defaults={
+                    'original_url': request.build_absolute_uri(f'/blog/{post_id}/'),
+                    'tracked_url': request.build_absolute_uri(),
+                }
+            )
+            lt.record_click(
+                ip_address=get_client_ip(request),
+                user_agent=request.META.get('HTTP_USER_AGENT', ''),
+                referrer=request.META.get('HTTP_REFERER', ''),
+                language=request.META.get('HTTP_ACCEPT_LANGUAGE', '')
+            )
+            send_link_tracking_to_crm(lt, request)
+        except Exception:
+            pass
+        
         # Create or get tracking record
         tracking, created = BlogTracking.objects.get_or_create(
             blog_post_id=post_id,
@@ -1092,15 +1116,45 @@ def _tracked_page_view(request, page_type, page_id, customer_code, template_name
         from .models import LinkTracking
         from .webhook_utils import get_client_ip, send_link_tracking_to_crm
         
+        # Normalize code to include 'u-' prefix
+        normalized_code = customer_code if customer_code.startswith('u-') else f'u-{customer_code}'
+        
+        # Map incoming page_type to canonical type stored in DB
+        canonical_type_map = {
+            'buy-lease': 'buy',
+            'selling': 'sell',
+            'open-house': 'open_house',
+            'mortgage-calculator': 'mortgage',
+            'blog': 'blog',
+            'home': 'home',
+        }
+        canonical_page_type = canonical_type_map.get(page_type, page_type)
+        canonical_page_id = None  # tracked page views are section-level, no specific ID
+        
+        # Build original URL (clean URL without tracking code)
+        clean_path_map = {
+            'buy-lease': '/buy-lease/',
+            'selling': '/selling/',
+            'open-house': '/open-house/',
+            'mortgage-calculator': '/mortgage-calculator/',
+            'blog': '/blog/',
+            'terms-of-service': '/terms-of-service/',
+            'privacy-policy': '/privacy-policy/',
+            'cookie-policy': '/cookie-policy/',
+            'home': '/',
+        }
+        clean_path = clean_path_map.get(page_type, f'/{page_type}/')
+        original_url = request.build_absolute_uri(clean_path)
+        
         # Create or get tracking record
         tracking, created = LinkTracking.objects.get_or_create(
-            customer_code=customer_code,
+            customer_code=normalized_code,
+            page_type=canonical_page_type,
+            page_id=canonical_page_id,
             defaults={
-                'customer_name': customer_code,
-                'customer_email': f'{customer_code}@tracking.local',
-                'page_type': page_type,
-                'page_id': page_id,
-                'original_url': request.build_absolute_uri(),
+                'customer_name': normalized_code,
+                'customer_email': f'{normalized_code}@tracking.local',
+                'original_url': original_url,
                 'tracked_url': request.build_absolute_uri(),
             }
         )
@@ -1129,12 +1183,39 @@ def _tracked_page_view(request, page_type, page_id, customer_code, template_name
         return buy_lease(request)
     elif template_name == 'mortgage_calculator':
         return mortgage_calculator(request)
+    elif template_name == 'blog':
+        return blog(request)
+    elif template_name == 'terms_of_service':
+        return terms_of_service(request)
+    elif template_name == 'privacy_policy':
+        return privacy_policy(request)
+    elif template_name == 'cookie_policy':
+        return cookie_policy(request)
     else:
         # Fallback to home
         return redirect('home')
 
+def tracked_blog_root(request, customer_code):
+    """Tracked blog root page with customer code"""
+    return _tracked_page_view(request, 'blog', 'blog', customer_code, 'blog')
+
+def tracked_terms(request, customer_code):
+    """Tracked terms of service page"""
+    return _tracked_page_view(request, 'terms-of-service', 'terms-of-service', customer_code, 'terms_of_service')
+
+def tracked_privacy(request, customer_code):
+    """Tracked privacy policy page"""
+    return _tracked_page_view(request, 'privacy-policy', 'privacy-policy', customer_code, 'privacy_policy')
+
+def tracked_cookie(request, customer_code):
+    """Tracked cookie policy page"""
+    return _tracked_page_view(request, 'cookie-policy', 'cookie-policy', customer_code, 'cookie_policy')
+
 def general_tracking_redirect(request, customer_code):
     """General tracking redirect for customer codes like /ju131"""
+    # Normalize incoming code param to include 'u-' prefix
+    normalized_code = customer_code if customer_code.startswith('u-') else f'u-{customer_code}'
+    
     # List of protected URL patterns that should NOT be treated as tracking
     protected_patterns = [
         'admin', 'buy-lease', 'selling', 'blog', 'open-house', 
@@ -1144,7 +1225,7 @@ def general_tracking_redirect(request, customer_code):
     ]
     
     # Check if customer_code matches a protected pattern
-    if customer_code in protected_patterns:
+    if normalized_code in protected_patterns:
         from django.http import Http404
         raise Http404("Page not found")
     
@@ -1155,12 +1236,12 @@ def general_tracking_redirect(request, customer_code):
         
         # Create or get tracking record
         tracking, created = LinkTracking.objects.get_or_create(
-            customer_code=customer_code,
+            customer_code=normalized_code,
+            page_type='home',
+            page_id='home',
             defaults={
-                'customer_name': customer_code,
-                'customer_email': f'{customer_code}@tracking.local',
-                'page_type': 'home',
-                'page_id': 'home',
+                'customer_name': normalized_code,
+                'customer_email': f'{normalized_code}@tracking.local',
                 'original_url': request.build_absolute_uri(),
                 'tracked_url': request.build_absolute_uri(),
             }

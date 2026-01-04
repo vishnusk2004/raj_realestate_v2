@@ -92,6 +92,9 @@ class LinkTracking(models.Model):
         ('linkedin', 'LinkedIn'),
         ('telegram', 'Telegram'),
         ('youtube', 'YouTube'),
+        ('terms', 'Terms of Service'),
+        ('privacy', 'Privacy Policy'),
+        ('cookies', 'Cookie Policy'),
     ]
     
     customer_code = models.CharField(max_length=100, help_text="Unique customer code (e.g., NAE1495)")

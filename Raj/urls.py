@@ -40,15 +40,32 @@ urlpatterns = [
     path('cookie-policy/', views.cookie_policy, name='cookie_policy'),
     
     # New tracking URL patterns (must be after all other patterns)
-    # Blog tracking: /blog/<post_id>/<customer_code>/
-    path('blog/<int:post_id>/<str:customer_code>/', views.tracked_blog_detail_new, name='tracked_blog_detail_new'),
+    # Blog tracking: /blog/<post_id>/u-<customer_code>/
+    path('blog/<int:post_id>/u-<str:customer_code>/', views.tracked_blog_detail_new, name='tracked_blog_detail_new'),
+    path('blog/<int:post_id>/u-<str:customer_code>', views.tracked_blog_detail_new),
+    # Blog root tracking
+    path('blog/u-<str:customer_code>/', views.tracked_blog_root, name='tracked_blog_root'),
+    path('blog/u-<str:customer_code>', views.tracked_blog_root),
     
-    # Page tracking with customer codes: /<page>/<customer_code>/
-    path('open-house/<str:customer_code>/', views.tracked_open_house, name='tracked_open_house'),
-    path('selling/<str:customer_code>/', views.tracked_selling, name='tracked_selling'),
-    path('buy-lease/<str:customer_code>/', views.tracked_buy_lease, name='tracked_buy_lease'),
-    path('mortgage-calculator/<str:customer_code>/', views.tracked_mortgage_calculator, name='tracked_mortgage_calculator'),
+    # Page tracking with customer codes: /<page>/u-<customer_code>/
+    path('open-house/u-<str:customer_code>/', views.tracked_open_house, name='tracked_open_house'),
+    path('open-house/u-<str:customer_code>', views.tracked_open_house),
+    path('selling/u-<str:customer_code>/', views.tracked_selling, name='tracked_selling'),
+    path('selling/u-<str:customer_code>', views.tracked_selling),
+    path('buy-lease/u-<str:customer_code>/', views.tracked_buy_lease, name='tracked_buy_lease'),
+    path('buy-lease/u-<str:customer_code>', views.tracked_buy_lease),
+    path('mortgage-calculator/u-<str:customer_code>/', views.tracked_mortgage_calculator, name='tracked_mortgage_calculator'),
+    path('mortgage-calculator/u-<str:customer_code>', views.tracked_mortgage_calculator),
     
-    # General tracking: /<customer_code>/
-    path('<str:customer_code>/', views.general_tracking_redirect, name='general_tracking_redirect'),
+    # Legal pages tracking
+    path('terms-of-service/u-<str:customer_code>/', views.tracked_terms, name='tracked_terms'),
+    path('terms-of-service/u-<str:customer_code>', views.tracked_terms),
+    path('privacy-policy/u-<str:customer_code>/', views.tracked_privacy, name='tracked_privacy'),
+    path('privacy-policy/u-<str:customer_code>', views.tracked_privacy),
+    path('cookie-policy/u-<str:customer_code>/', views.tracked_cookie, name='tracked_cookie'),
+    path('cookie-policy/u-<str:customer_code>', views.tracked_cookie),
+    
+    # General tracking: /u-<customer_code>/
+    path('u-<str:customer_code>/', views.general_tracking_redirect, name='general_tracking_redirect'),
+    path('u-<str:customer_code>', views.general_tracking_redirect),
 ]

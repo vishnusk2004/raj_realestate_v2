@@ -23,6 +23,8 @@ class LinkTrackingMiddleware(MiddlewareMixin):
         if path == '/' and request.GET.get('url') and request.GET.get('code'):
             url = request.GET.get('url')
             customer_code = request.GET.get('code')
+            if not customer_code.startswith('u-'):
+                return None
             
             # Determine if it's an internal or external URL
             if url.startswith('/') or url.startswith(request.get_host()):
@@ -81,11 +83,11 @@ class LinkTrackingMiddleware(MiddlewareMixin):
         
         # First try social media pattern: /facebook/https://facebook.com/page/NAE1495
         # Updated to handle URLs with query parameters and mixed case customer codes
-        social_media_pattern = r'^/(facebook|instagram|twitter|linkedin|telegram|youtube)/(.+)/([A-Za-z0-9]{3,})/?$'
+        social_media_pattern = r'^/(facebook|instagram|twitter|linkedin|telegram|youtube)/(.+)/u-([^/]+)/?$'
         match = re.match(social_media_pattern, full_path)
         
         if match:
-            page_type, encoded_url, customer_code = match.groups()
+            page_type, encoded_url, code_without_prefix = match.groups()
             # Decode the URL (handle both encoded and unencoded URLs)
             if '%' in encoded_url:
                 # URL is encoded, decode it properly
@@ -95,34 +97,38 @@ class LinkTrackingMiddleware(MiddlewareMixin):
                 original_url = encoded_url
             page_id = None
         else:
-            # Try pattern with page ID: /blog/2/NAE1495
-            pattern_with_id = r'^/([^/]+)/([^/]+)/([A-Za-z0-9]{3,})/?$'
+            # Try pattern with page ID: /blog/2/u-NAE1495
+            pattern_with_id = r'^/([^/]+)/([^/]+)/u-([^/]+)/?$'
             match = re.match(pattern_with_id, full_path)
             
             if match:
-                page_type, page_id, customer_code = match.groups()
+                page_type, page_id, code_without_prefix = match.groups()
                 original_url = None
             else:
-                # Try pattern without page ID: /open-house/NAE1495
-                pattern_without_id = r'^/([^/]+)/([A-Za-z0-9]{3,})/?$'
+                # Try pattern without page ID: /open-house/u-NAE1495
+                pattern_without_id = r'^/([^/]+)/u-([^/]+)/?$'
                 match = re.match(pattern_without_id, full_path)
                 
                 if match:
-                    page_type, customer_code = match.groups()
+                    page_type, code_without_prefix = match.groups()
                     page_id = None
                     original_url = None
                 else:
-                    # Try root pattern: /NAE1495
-                    pattern_root = r'^/([A-Za-z0-9]{3,})/?$'
+                    # Try root pattern: /u-NAE1495
+                    pattern_root = r'^/u-([^/]+)/?$'
                     match = re.match(pattern_root, full_path)
                     
                     if match:
-                        customer_code = match.groups()[0]
+                        code_without_prefix = match.groups()[0]
                         page_type = ''
                         page_id = None
                         original_url = None
                     else:
                         return None
+        
+        # Build full customer code with prefix
+        if match:
+            customer_code = f'u-{code_without_prefix}'
         
         if match:
             
@@ -133,6 +139,9 @@ class LinkTrackingMiddleware(MiddlewareMixin):
                 'selling': 'sell',
                 'open-house': 'open_house',
                 'mortgage-calculator': 'mortgage',
+                'terms-of-service': 'terms',
+                'privacy-policy': 'privacy',
+                'cookie-policy': 'cookies',
                 '': 'home',  # root path
             }
             
@@ -193,7 +202,7 @@ class LinkTrackingMiddleware(MiddlewareMixin):
                 logger.error(f"Failed to send link tracking to CRM: {str(e)}")
             
             # Redirect to the clean URL (without tracking code)
-                return HttpResponseRedirect(original_url)
+            return HttpResponseRedirect(original_url)
 
         return None
     

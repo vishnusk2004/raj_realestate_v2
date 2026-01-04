@@ -349,6 +349,10 @@ class LinkTrackingAdmin(admin.ModelAdmin):
         }),
     )
 
+    def get_queryset(self, request):
+        qs = super().get_queryset(request)
+        return qs.filter(customer_code__startswith='u-')
+
 @admin.register(OpenHouseImage)
 class OpenHouseImageAdmin(admin.ModelAdmin):
     list_display = ('open_house', 'caption', 'is_primary', 'order', 'created_at')

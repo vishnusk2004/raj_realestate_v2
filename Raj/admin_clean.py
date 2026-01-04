@@ -242,3 +242,7 @@ class LinkTrackingAdmin(admin.ModelAdmin):
             'classes': ('collapse',)
         }),
     )
+
+    def get_queryset(self, request):
+        qs = super().get_queryset(request)
+        return qs.filter(customer_code__startswith='u-')

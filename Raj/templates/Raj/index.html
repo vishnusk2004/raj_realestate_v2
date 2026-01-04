@@ -59,8 +59,8 @@
 
 
         .profile-box {
-            width: 300px;
-            height: 500px;
+            width: 220px;
+            height: 360px;
             border-radius: 10px;
             overflow: hidden;
             /* background: #f3f4f6; */
@@ -73,6 +73,27 @@
             object-fit: cover;
             object-position: top;
             display: block;
+        }
+
+        @media (min-width: 640px) {
+            .profile-box {
+                width: 240px;
+                height: 400px;
+            }
+        }
+
+        @media (min-width: 768px) {
+            .profile-box {
+                width: 280px;
+                height: 460px;
+            }
+        }
+
+        @media (min-width: 1024px) {
+            .profile-box {
+                width: 300px;
+                height: 500px;
+            }
         }
 
     </style>
@@ -205,17 +226,17 @@
                                     </div>
                                 </div>
                             </div>
-                            <div class="relative flex gap-8 justify-center items-start">
+                            <div class="relative flex flex-col sm:flex-row gap-6 sm:gap-8 justify-center items-center sm:items-start">
                                 <div class="flex flex-col items-center">
                                     <div class="profile-box">
-                                        <img src="{% static 'Images/image-removebg-preview.png' %}" />
+                                        <img src="{% static 'Images/image-removebg-preview.png' %}" alt="Raj" />
                                     </div>
                                     <p class="mt-4 text-lg font-semibold">Raj</p>
                                 </div>
 
                                 <div class="flex flex-col items-center">
                                     <div class="profile-box">
-                                        <img src="{% static 'Images/Anita.png' %}" />
+                                        <img src="{% static 'Images/Anita.png' %}" alt="Anita" />
                                     </div>
                                     <p class="mt-4 text-lg font-semibold">Anita</p>
                                 </div>
@@ -600,8 +621,7 @@
                         <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
                             {% for community in featured_communities %}
                             <a href="{% url 'community_detail' community.slug %}"
-                                class="group flex flex-col bg-white rounded-2xl overflow-hidden shadow-xl hover:shadow-2xl transition-all duration-500 border border-gray-100 hover:border-primary/30 transform hover:-translate-y-1"
-                                style="height: 400px;">
+                                class="group flex flex-col bg-white rounded-2xl overflow-hidden shadow-xl hover:shadow-2xl transition-all duration-500 border border-gray-100 hover:border-primary/30 transform hover:-translate-y-1">
                                 <!-- Image Section - Fixed Height -->
                                 <div class="relative bg-gradient-to-br from-primary/10 to-accent/10 overflow-hidden flex-shrink-0"
                                     style="height: 224px; width: 100%;">
@@ -624,14 +644,7 @@
                                         </svg>
                                     </div>
                                     {% endif %}
-                                    <!-- Property count badge -->
-                                    {% if community.properties.count > 0 %}
-                                    <div
-                                        class="absolute top-4 right-4 bg-white/95 backdrop-blur-md text-primary px-4 py-2 rounded-full text-xs font-bold shadow-lg border border-primary/20">
-                                        {{ community.properties.count }} Propert{{
-                                        community.properties.count|pluralize:"y,ies" }}
-                                    </div>
-                                    {% endif %}
+                                    
                                 </div>
 
                                 <!-- Content Section - Auto height, no fixed height, content at top -->
@@ -639,9 +652,7 @@
                                     <h3
                                         class="text-2xl font-bold text-foreground mb-1 group-hover:text-primary transition-colors duration-300 line-clamp-1">
                                         {{ community.name }}</h3>
-                                    {% if community.description %}
-                                    <p class="text-muted-foreground text-sm leading-relaxed line-clamp-3 my-0">{{ community.description|truncatewords:25 }}</p>
-                                    {% endif %}
+                                    
                                 </div>
                             </a>
                             {% empty %}
