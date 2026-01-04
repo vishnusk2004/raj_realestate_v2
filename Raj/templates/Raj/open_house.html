@@ -461,8 +461,8 @@
                                     data-time="{{ open_house.open_house_time|time:"g:i A" }}"
                                     data-end-time="{% if open_house.open_house_end_time %}{{ open_house.open_house_end_time|time:"g:i A" }}{% endif %}"
                                     data-price="{{ open_house.price }}"
-                                    data-description="{{ open_house.description|escapejs }}"
-                                    data-agent-name="{{ open_house.listing_agent_name|default:''|escapejs }}"
+                                    data-description="{{ open_house.description|escape }}"
+                                    data-agent-name="{{ open_house.listing_agent_name|default:''|escape }}"
                                     data-agent-link="{{ open_house.listing_agent_link|default:'' }}"
                                     data-agent-image="{{ open_house.get_listing_agent_image_url|default:'' }}">
                                     Get More Info
@@ -482,8 +482,8 @@
                                     data-bedrooms="{{ open_house.bedrooms|default_if_none:'' }}"
                                     data-bathrooms="{{ open_house.bathrooms|default_if_none:'' }}"
                                     data-area="{{ open_house.area_sqft|default_if_none:'' }}"
-                                    data-description="{{ open_house.description|default:''|escapejs }}"
-                                    data-agent-name="{{ open_house.listing_agent_name|default:''|escapejs }}"
+                                    data-description="{{ open_house.description|default:''|escape }}"
+                                    data-agent-name="{{ open_house.listing_agent_name|default:''|escape }}"
                                     data-agent-link="{{ open_house.listing_agent_link|default:'' }}"
                                     data-agent-image="{{ open_house.get_listing_agent_image_url|default:'' }}"
                                     data-images="{{ open_house.get_all_image_urls|join:'|||' }}"

@@ -187,7 +187,7 @@
                                 <img src="{% static 'Images/Free_tag_image.png' %}" alt="Free" class="h-8 w-auto">
                                 <span class="text-sm text-muted-foreground italic">Personalized recommendations are free</span>
                             </div>
-                            <button type="submit" class="inline-flex items-center justify-center gap-2 text-lg ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 [&_svg]:pointer-events-none [&_svg]:size-4 [&_svg]:shrink-0 hover:bg-primary/90 h-12 rounded-md bg-primary hover:bg-primary-dark text-primary-foreground font-bold px-6 sm:px-10 py-2 border border-primary shadow-md hover:shadow-lg text-center">Submit to get the personalized recommendation</button>
+                            <button type="submit" class="inline-flex items-center justify-center gap-2 text-lg ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 [&_svg]:pointer-events-none [&_svg]:size-4 [&_svg]:shrink-0 hover:bg-primary/90 h-12 rounded-md bg-primary hover:bg-primary-dark text-primary-foreground font-bold px-8 sm:px-12 py-2 border border-primary shadow-md hover:shadow-lg text-center">Submit to get the personalized recommendation</button>
                         </div>
                     </form>
                 </div>
@@ -318,7 +318,7 @@
                         </div>
                             <div class="flex items-center justify-between pt-4 border-t">
                                 {% if property.property_status != 'just_sold' and property.property_status != 'for_lease' %}
-                                <div class="text-2xl font-bold text-primary">
+                                <div class="text-lg font-bold text-primary">
                                     {% if property.property_type == 'lease' %}
                                         {{ property.price }}{% if property.price and not property.price|slice:":1" == "$" %}/month{% endif %}
                                     {% else %}
@@ -329,19 +329,19 @@
                                 <button type="button"
                                     class="view-details inline-flex items-center justify-center gap-2 whitespace-nowrap rounded-md text-sm font-medium ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 [&_svg]:pointer-events-none [&_svg]:size-4 [&_svg]:shrink-0 border bg-background h-10 px-4 py-2 border-primary text-primary hover:bg-primary hover:text-primary-foreground"
                                     data-id="{{ property.id }}"
-                                    data-title="{{ property.title|escapejs }}"
-                                    data-location="{{ property.location|escapejs }}"
+                                    data-title="{{ property.title|escape }}"
+                                    data-location="{{ property.location|escape }}"
                                     data-price="{{ property.price }}"
                                     data-type="{{ property.property_type }}"
                                     data-bedrooms="{{ property.bedrooms|default_if_none:'' }}"
                                     data-bathrooms="{{ property.bathrooms|default_if_none:'' }}"
                                     data-area="{{ property.area_sqft|default_if_none:'' }}"
-                                    data-description="{{ property.description|default:''|escapejs }}"
+                                    data-description="{{ property.description|default:''|escape }}"
                                     data-images="{{ property.get_all_image_urls|join:'|||' }}"
                                     data-main-image="{{ property.get_main_image_url|default:'' }}"
                                     data-media='{{ property.get_all_media_urls|to_json }}'
                                     data-status="{{ property.property_status }}"
-                                    data-agent-name="{{ property.listing_agent_name|default:''|escapejs }}"
+                                    data-agent-name="{{ property.listing_agent_name|default:''|escape }}"
                                     data-agent-link="{{ property.listing_agent_link|default:'' }}"
                                     data-agent-image="{{ property.get_listing_agent_image_url|default:'' }}"
                                     data-contact-email="{{ property.contact_email }}"
@@ -580,7 +580,20 @@
             const agentImgEl = document.getElementById('modalListingAgentImage');
             if (listingAgentName || listingAgentImageUrl) {
                 if (agentSection) agentSection.classList.remove('hidden');
-                if (agentNameEl) agentNameEl.textContent = listingAgentName || 'Listing Agent';
+                if (agentNameEl) {
+                    // Render agent name as a clickable link when URL is available
+                    if (listingAgentLink) {
+                        const a = document.createElement('a');
+                        a.href = listingAgentLink;
+                        a.target = '_blank';
+                        a.rel = 'noopener noreferrer';
+                        a.className = 'text-primary hover:underline';
+                        a.textContent = listingAgentName || 'Listing Agent';
+                        agentNameEl.replaceChildren(a);
+                    } else {
+                        agentNameEl.textContent = listingAgentName || 'Listing Agent';
+                    }
+                }
                 if (agentLinkEl && listingAgentLink) {
                     agentLinkEl.href = listingAgentLink;
                     agentLinkEl.classList.remove('hidden');
