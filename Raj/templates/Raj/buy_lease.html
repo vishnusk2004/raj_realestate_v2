@@ -183,7 +183,11 @@
                             <textarea name="requirements" class="flex w-full rounded-md border border-input bg-background px-3 py-2 text-sm ring-offset-background placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50 min-h-[90px]" id="requirements" placeholder="Tell us about your specific requirements, preferences, or any questions you have..."></textarea>
         </div>
                         <div class="md:col-span-2 text-center mt-3">
-                            <button type="submit" class="inline-flex items-center justify-center gap-2 whitespace-nowrap text-sm ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 [&_svg]:pointer-events-none [&_svg]:size-4 [&_svg]:shrink-0 hover:bg-primary/90 h-10 rounded-md bg-primary hover:bg-primary-dark text-primary-foreground font-semibold px-10 py-2 border border-primary shadow-md hover:shadow-lg">Get Personalized Recommendations</button>
+                            <div class="flex items-center justify-center gap-3 mb-3">
+                                <img src="{% static 'Images/Free_tag_image.png' %}" alt="Free" class="h-8 w-auto">
+                                <span class="text-sm text-muted-foreground italic">Personalized recommendations are free</span>
+                            </div>
+                            <button type="submit" class="inline-flex items-center justify-center gap-2 whitespace-nowrap text-lg ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 [&_svg]:pointer-events-none [&_svg]:size-4 [&_svg]:shrink-0 hover:bg-primary/90 h-12 rounded-md bg-primary hover:bg-primary-dark text-primary-foreground font-bold px-10 py-2 border border-primary shadow-md hover:shadow-lg">Submit to get the personalized recommendation</button>
     </div>
                     </form>
                 </div>
@@ -262,14 +266,19 @@
                                     <span class="text-sm">{{ property.location }}</span>
                                 </div>
                                 {% if property.listing_agent_name %}
-                                <p class="text-xs text-muted-foreground">
-                                    Listing Agent: 
-                                    {% if property.listing_agent_link %}
-                                        <a href="{{ property.listing_agent_link }}" target="_blank" rel="noopener noreferrer" class="text-primary hover:underline font-medium">{{ property.listing_agent_name }}</a>
-                                    {% else %}
-                                        <span class="font-medium">{{ property.listing_agent_name }}</span>
+                                <div class="flex items-center gap-2 mt-2">
+                                    {% if property.get_listing_agent_image_url %}
+                                    <img src="{{ property.get_listing_agent_image_url }}" alt="{{ property.listing_agent_name }}" class="w-8 h-8 rounded-full object-cover border border-gray-200">
                                     {% endif %}
-                                </p>
+                                    <p class="text-xs text-muted-foreground">
+                                        Listing Agent: 
+                                        {% if property.listing_agent_link %}
+                                            <a href="{{ property.listing_agent_link }}" target="_blank" rel="noopener noreferrer" class="text-primary hover:underline font-medium">{{ property.listing_agent_name }}</a>
+                                        {% else %}
+                                            <span class="font-medium">{{ property.listing_agent_name }}</span>
+                                        {% endif %}
+                                    </p>
+                                </div>
                                 {% endif %}
                             </div>
                             <div class="flex items-center justify-between text-sm text-muted-foreground">

@@ -258,7 +258,7 @@ class PropertyListing(models.Model):
     video_url = models.URLField(max_length=500, blank=True, help_text="Property video URL (YouTube, Vimeo, or direct video URL)")
     featured = models.BooleanField(default=False, help_text="Featured properties appear first")
     published = models.BooleanField(default=True, help_text="Only published properties are visible")
-    listing_agent_name = models.CharField(max_length=200, blank=True, null=True, help_text="Name of the listing agent for courtesy credit")
+    listing_agent_name = models.CharField(max_length=200, help_text="Name of the listing agent for courtesy credit (required)")
     listing_agent_link = models.URLField(max_length=500, blank=True, null=True, help_text="Optional URL link for the listing agent (e.g., their profile page)")
     listing_agent_image = models.ImageField(upload_to='listing_agents/', blank=True, null=True, help_text="Optional image of the listing agent")
     contact_email = models.EmailField(help_text="Contact email for inquiries", default="raj.gupta@kw.com")
@@ -1128,6 +1128,32 @@ class OpenHouse(models.Model):
         if self.features:
             return [feature.strip() for feature in self.features.split('\n') if feature.strip()]
         return []
+    
+    def get_listing_agent_image_url(self):
+        """Return listing agent image URL if uploaded"""
+        if self.listing_agent_image and hasattr(self.listing_agent_image, 'url'):
+            try:
+                return self.listing_agent_image.url
+            except:
+                return None
+        return None
+    
+    def get_all_image_urls(self):
+        """Return list of all image URLs (main + related images)"""
+        image_urls = []
+        
+        # Add main image
+        main_image = self.get_main_image_url()
+        if main_image:
+            image_urls.append(main_image)
+        
+        # Add related images
+        for img in self.images.all():
+            img_url = img.get_image_url()
+            if img_url:
+                image_urls.append(img_url)
+        
+        return image_urls
     
     @property
     def is_past(self):

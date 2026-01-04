@@ -385,10 +385,6 @@
     <section class="py-16 bg-background">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             {% if open_houses %}
-                <div class="mb-12">
-                    <h2 class="text-2xl font-bold text-foreground mb-8">Upcoming Open Houses</h2>
-                </div>
-                
                 <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
                     {% for open_house in open_houses %}
                     <div class="rounded-lg border bg-card text-card-foreground shadow-sm overflow-hidden shadow-soft hover:shadow-medium transition-all duration-300 group">
@@ -455,18 +451,7 @@
                                 {% endif %}
                             </div>
                             <div class="text-xl font-bold text-primary mb-3">${{ open_house.price|floatformat:0|intcomma }}</div>
-                            <p class="text-muted-foreground text-sm leading-relaxed mb-4 line-clamp-3">{{ open_house.description|truncatewords:20 }}</p>
-                            {% if open_house.listing_agent_name %}
-                            <p class="text-xs text-muted-foreground mb-3">
-                                Listing Agent: 
-                                {% if open_house.listing_agent_link %}
-                                    <a href="{{ open_house.listing_agent_link }}" target="_blank" rel="noopener noreferrer" class="text-primary hover:underline font-medium">{{ open_house.listing_agent_name }}</a>
-                                {% else %}
-                                    <span class="font-medium">{{ open_house.listing_agent_name }}</span>
-                                {% endif %}
-                            </p>
-                            {% endif %}
-                            <div class="flex items-center justify-between">
+                            <div class="flex items-center justify-between gap-3 mb-4">
                                 <button 
                                     class="book-open-house-btn inline-flex items-center justify-center gap-2 whitespace-nowrap text-sm font-medium ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 [&_svg]:pointer-events-none [&_svg]:size-4 [&_svg]:shrink-0 hover:bg-accent h-9 rounded-md text-primary hover:text-primary-dark px-3 py-2"
                                     data-open-house-id="{{ open_house.id }}"
@@ -475,14 +460,54 @@
                                     data-date="{{ open_house.open_house_date|date:"M j, Y" }}"
                                     data-time="{{ open_house.open_house_time|time:"g:i A" }}"
                                     data-end-time="{% if open_house.open_house_end_time %}{{ open_house.open_house_end_time|time:"g:i A" }}{% endif %}"
-                                    data-price="{{ open_house.price }}">
+                                    data-price="{{ open_house.price }}"
+                                    data-description="{{ open_house.description|escapejs }}"
+                                    data-agent-name="{{ open_house.listing_agent_name|default:''|escapejs }}"
+                                    data-agent-link="{{ open_house.listing_agent_link|default:'' }}"
+                                    data-agent-image="{{ open_house.get_listing_agent_image_url|default:'' }}">
                                     Get More Info
                                     <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-arrow-right w-4 h-4 ml-1">
                                         <path d="M5 12h14"></path>
                                         <path d="m12 5 7 7-7 7"></path>
                                     </svg>
                                 </button>
+                                <button 
+                                    class="view-open-house-details-btn inline-flex items-center justify-center gap-2 whitespace-nowrap text-sm font-medium ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 border bg-background h-9 rounded-md px-3 py-2 border-primary text-primary hover:bg-primary hover:text-primary-foreground"
+                                    data-open-house-id="{{ open_house.id }}"
+                                    data-title="{{ open_house.title }}"
+                                    data-address="{{ open_house.property_address }}"
+                                    data-date="{{ open_house.open_house_date|date:"M j, Y" }}"
+                                    data-time="{{ open_house.open_house_time|time:"g:i A" }}"
+                                    data-end-time="{% if open_house.open_house_end_time %}{{ open_house.open_house_end_time|time:"g:i A" }}{% endif %}"
+                                    data-bedrooms="{{ open_house.bedrooms|default_if_none:'' }}"
+                                    data-bathrooms="{{ open_house.bathrooms|default_if_none:'' }}"
+                                    data-area="{{ open_house.area_sqft|default_if_none:'' }}"
+                                    data-description="{{ open_house.description|default:''|escapejs }}"
+                                    data-agent-name="{{ open_house.listing_agent_name|default:''|escapejs }}"
+                                    data-agent-link="{{ open_house.listing_agent_link|default:'' }}"
+                                    data-agent-image="{{ open_house.get_listing_agent_image_url|default:'' }}"
+                                    data-images="{{ open_house.get_all_image_urls|join:'|||' }}"
+                                    data-main-image="{{ open_house.get_main_image_url|default:'' }}">
+                                    View Details
+                                </button>
                             </div>
+                            {% if open_house.listing_agent_name %}
+                            <div class="flex items-center gap-3 pt-3 border-t">
+                                {% if open_house.get_listing_agent_image_url %}
+                                <img src="{{ open_house.get_listing_agent_image_url }}" alt="{{ open_house.listing_agent_name }}" class="w-12 h-12 rounded-full object-cover border-2 border-gray-200">
+                                {% endif %}
+                                <div>
+                                    <p class="text-xs text-muted-foreground mb-1">Listing Agent</p>
+                                    <p class="text-sm font-medium text-foreground">
+                                        {% if open_house.listing_agent_link %}
+                                            <a href="{{ open_house.listing_agent_link }}" target="_blank" rel="noopener noreferrer" class="text-primary hover:underline">{{ open_house.listing_agent_name }}</a>
+                                        {% else %}
+                                            {{ open_house.listing_agent_name }}
+                                        {% endif %}
+                                    </p>
+                                </div>
+                            </div>
+                            {% endif %}
                         </div>
                     </div>
                     {% endfor %}
@@ -582,7 +607,6 @@
                                 <h4 class="font-semibold" style="font-weight: 600; color: #111827;">${safeTitle}</h4>
                                 <p class="text-sm" style="font-size: 0.875rem; color: #4b5563;">${safeAddress}</p>
                                 <p class="text-sm" style="font-size: 0.875rem; color: #4b5563;">${safeDate} at ${safeTime}${safeEndTime ? ' - ' + safeEndTime : ''}</p>
-                                <p class="text-sm font-medium" style="font-size: 0.875rem; font-weight: 500; color: #111827;">$${formattedPrice}</p>
                         </div>
 
                             {% comment %}
@@ -694,11 +718,115 @@
                 document.body.classList.remove('modal-open');
             }
         }
+        
+        function openOpenHouseDetailsModal(openHouseId, title, address, date, time, endTime, bedrooms, bathrooms, area, description, agentName, agentLink, agentImage, images, mainImage) {
+            const escapeHtml = (text) => {
+                const div = document.createElement('div');
+                div.textContent = text;
+                return div.innerHTML;
+            };
+            
+            const safeTitle = escapeHtml(title || '');
+            const safeAddress = escapeHtml(address || '');
+            const safeDate = escapeHtml(date || '');
+            const safeTime = escapeHtml(time || '');
+            const safeEndTime = endTime ? escapeHtml(endTime) : '';
+            const safeDescription = escapeHtml(description || '');
+            const safeAgentName = escapeHtml(agentName || '');
+            
+            // Parse images
+            let imageList = [];
+            if (images) {
+                imageList = images.split('|||').filter(img => img.trim());
+            }
+            if (mainImage && !imageList.includes(mainImage)) {
+                imageList.unshift(mainImage);
+            }
+            
+            // Create modal HTML
+            const modalHTML = `
+                <div id="openHouseDetailsModal" class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-[9999] p-4" style="z-index: 9999;">
+                    <div class="modal-content bg-white rounded-lg shadow-xl max-w-4xl w-full max-h-[90vh] overflow-y-auto" style="background-color: white; border-radius: 0.5rem; box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.25);">
+                        <div class="p-6">
+                            <div class="flex justify-between items-center mb-4">
+                                <h3 class="text-2xl font-bold" style="color: #111827; font-size: 1.5rem; font-weight: 700;">${safeTitle}</h3>
+                                <button onclick="closeOpenHouseDetailsModal()" class="text-gray-400 hover:text-gray-600" style="color: #9ca3af; transition: color 0.15s ease-in-out;">
+                                    <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" style="width: 1.5rem; height: 1.5rem;">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path>
+                                    </svg>
+                                </button>
+                            </div>
+                            
+                            ${imageList.length > 0 ? `
+                            <div class="mb-4">
+                                <img src="${imageList[0]}" alt="${safeTitle}" class="w-full h-64 object-cover rounded-lg" style="max-height: 20rem;">
+                            </div>
+                            ` : ''}
+                            
+                            <div class="mb-4 p-4 bg-gray-50 rounded-lg" style="background-color: #f9fafb; border-radius: 0.5rem; margin-bottom: 1rem; padding: 1rem;">
+                                <p class="text-sm font-semibold mb-2" style="font-size: 0.875rem; font-weight: 600; color: #111827;">${safeAddress}</p>
+                                <p class="text-sm mb-2" style="font-size: 0.875rem; color: #4b5563;">${safeDate} at ${safeTime}${safeEndTime ? ' - ' + safeEndTime : ''}</p>
+                                ${bedrooms || bathrooms || area ? `
+                                <div class="flex gap-4 text-sm" style="font-size: 0.875rem; color: #4b5563;">
+                                    ${bedrooms ? `<span>${bedrooms} beds</span>` : ''}
+                                    ${bathrooms ? `<span>${bathrooms} baths</span>` : ''}
+                                    ${area ? `<span>${parseInt(area).toLocaleString()} sqft</span>` : ''}
+                                </div>
+                                ` : ''}
+                            </div>
+                            
+                            ${safeDescription ? `
+                            <div class="mb-4">
+                                <h4 class="font-semibold mb-2" style="font-weight: 600; color: #111827; margin-bottom: 0.5rem;">Description</h4>
+                                <p class="text-sm leading-relaxed" style="font-size: 0.875rem; color: #4b5563; line-height: 1.625; white-space: pre-wrap;">${safeDescription}</p>
+                            </div>
+                            ` : ''}
+                            
+                            ${agentName ? `
+                            <div class="mb-4 p-4 bg-gray-50 rounded-lg flex items-center gap-4" style="background-color: #f9fafb; border-radius: 0.5rem; margin-bottom: 1rem; padding: 1rem;">
+                                ${agentImage ? `<img src="${agentImage}" alt="${safeAgentName}" class="w-16 h-16 rounded-full object-cover border-2 border-gray-200" style="width: 4rem; height: 4rem; border-radius: 9999px; object-fit: cover; border: 2px solid #e5e7eb;">` : ''}
+                                <div>
+                                    <p class="text-xs text-gray-500 mb-1" style="font-size: 0.75rem; color: #6b7280; margin-bottom: 0.25rem;">Listing Agent</p>
+                                    <p class="text-sm font-medium" style="font-size: 0.875rem; font-weight: 500; color: #111827;">
+                                        ${agentLink ? `<a href="${agentLink}" target="_blank" rel="noopener noreferrer" class="text-blue-600 hover:underline">${safeAgentName}</a>` : safeAgentName}
+                                    </p>
+                                </div>
+                            </div>
+                            ` : ''}
+                            
+                            <div class="mt-6 flex gap-3" style="margin-top: 1.5rem; display: flex; gap: 0.75rem;">
+                                <button type="button" onclick="closeOpenHouseDetailsModal()" class="flex-1 px-4 py-2 border border-gray-300 rounded-md text-gray-700 hover:bg-gray-50" style="flex: 1; padding: 0.5rem 1rem; border: 1px solid #d1d5db; border-radius: 0.375rem; color: #374151; background-color: white; transition: all 0.15s ease-in-out; cursor: pointer;">
+                                    Close
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            `;
+            
+            // Add modal to page
+            document.body.insertAdjacentHTML('beforeend', modalHTML);
+            document.body.style.overflow = 'hidden';
+            document.body.classList.add('modal-open');
+        }
+        
+        function closeOpenHouseDetailsModal() {
+            const modal = document.getElementById('openHouseDetailsModal');
+            if (modal) {
+                modal.remove();
+                document.body.style.overflow = 'auto';
+                document.body.style.paddingRight = '';
+                document.body.classList.remove('modal-open');
+            }
+        }
 
 // Close modal when clicking outside
         document.addEventListener('click', function(e) {
             if (e.target.id === 'bookingModal') {
                 closeBookingModal();
+            }
+            if (e.target.id === 'openHouseDetailsModal') {
+                closeOpenHouseDetailsModal();
             }
         });
         
@@ -752,6 +880,29 @@
                 const price = btn.getAttribute('data-price');
                 
                 openBookingModal(openHouseId, title, address, date, time, endTime, price);
+            }
+            
+            // Handle View Details button
+            const viewDetailsBtn = e.target.closest('.view-open-house-details-btn');
+            if (viewDetailsBtn) {
+                e.preventDefault();
+                const openHouseId = viewDetailsBtn.getAttribute('data-open-house-id');
+                const title = viewDetailsBtn.getAttribute('data-title');
+                const address = viewDetailsBtn.getAttribute('data-address');
+                const date = viewDetailsBtn.getAttribute('data-date');
+                const time = viewDetailsBtn.getAttribute('data-time');
+                const endTime = viewDetailsBtn.getAttribute('data-end-time') || '';
+                const bedrooms = viewDetailsBtn.getAttribute('data-bedrooms') || '';
+                const bathrooms = viewDetailsBtn.getAttribute('data-bathrooms') || '';
+                const area = viewDetailsBtn.getAttribute('data-area') || '';
+                const description = viewDetailsBtn.getAttribute('data-description') || '';
+                const agentName = viewDetailsBtn.getAttribute('data-agent-name') || '';
+                const agentLink = viewDetailsBtn.getAttribute('data-agent-link') || '';
+                const agentImage = viewDetailsBtn.getAttribute('data-agent-image') || '';
+                const images = viewDetailsBtn.getAttribute('data-images') || '';
+                const mainImage = viewDetailsBtn.getAttribute('data-main-image') || '';
+                
+                openOpenHouseDetailsModal(openHouseId, title, address, date, time, endTime, bedrooms, bathrooms, area, description, agentName, agentLink, agentImage, images, mainImage);
             }
         });
         

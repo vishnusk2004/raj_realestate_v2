@@ -144,9 +144,9 @@ class PropertyListingAdmin(admin.ModelAdmin):
         ('Contact Information', {
             'fields': ('contact_email', 'contact_phone')
         }),
-        ('Listing Agent (optional)', {
+        ('Listing Agent (required)', {
             'fields': ('listing_agent_name', 'listing_agent_link', 'listing_agent_image'),
-            'description': 'Add courtesy listing agent details if applicable.'
+            'description': 'Listing agent information is required for all properties.'
         }),
         ('Settings', {
             'fields': ('featured', 'published')
@@ -233,9 +233,9 @@ class OpenHouseAdmin(admin.ModelAdmin):
         ('Contact Information', {
             'fields': ('contact_email', 'contact_phone')
         }),
-        ('Listing Agent', {
+        ('Listing Agent (required)', {
             'fields': ('listing_agent_name', 'listing_agent_link', 'listing_agent_image'),
-            'description': 'Optional listing agent information for courtesy credit'
+            'description': 'Listing agent information is required for all open houses.'
         }),
         ('Settings', {
             'fields': ('published',)
