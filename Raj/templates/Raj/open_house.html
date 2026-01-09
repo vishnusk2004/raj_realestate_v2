@@ -7,18 +7,20 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Open House Schedule - {{ brand_name }}</title>
-    <meta name="description" content="Visit our beautiful properties at your convenience. Book your open house viewing with {{ brand_name }}.">
+    <meta name="description"
+          content="Visit our beautiful properties at your convenience. Book your open house viewing with {{ brand_name }}.">
     <link rel="icon" type="image/png" href="{% static 'favicon.png' %}">
-    
+
     <!-- Google Fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Playfair+Display:wght@400;500;600;700&display=swap" rel="stylesheet">
-    
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Playfair+Display:wght@400;500;600;700&display=swap"
+          rel="stylesheet">
+
     <!-- Custom CSS -->
     <link rel="stylesheet" href="{% static 'css/django-main.css' %}">
     <link rel="stylesheet" href="{% static 'css/modal-gallery.css' %}">
-    
+
     <style>
         /* Ensure CSS variables are available */
         :root {
@@ -31,16 +33,16 @@
             --secondary: 220 13% 97%;
             --accent: 43 87% 52%;
         }
-        
+
         /* Missing utility classes for navbar */
         .border-border {
             border-color: hsl(var(--border));
         }
-        
+
         .shadow-soft {
             box-shadow: 0 2px 4px hsl(224 30% 12% / .06);
         }
-        
+
         /* Fix navbar desktop menu visibility - override hidden on md screens */
         @media (min-width: 768px) {
             /* Show navbar desktop menu on medium screens and up */
@@ -48,7 +50,7 @@
                 display: flex !important;
             }
         }
-        
+
         /* Open House Card Description - Scrollable */
         .open-house-description-container {
             max-height: 6rem; /* Approximately 4 lines */
@@ -59,60 +61,60 @@
             scrollbar-width: thin;
             scrollbar-color: #cbd5e0 #f7fafc;
         }
-        
+
         .open-house-description-container::-webkit-scrollbar {
             width: 6px;
         }
-        
+
         .open-house-description-container::-webkit-scrollbar-track {
             background: #f7fafc;
             border-radius: 3px;
         }
-        
+
         .open-house-description-container::-webkit-scrollbar-thumb {
             background: #cbd5e0;
             border-radius: 3px;
         }
-        
+
         .open-house-description-container::-webkit-scrollbar-thumb:hover {
             background: #a0aec0;
         }
-        
+
         .open-house-description {
             margin: 0;
             padding: 0;
         }
-        
+
         /* Ensure image container maintains aspect ratio */
         .open-house-image-container {
             height: 16rem; /* h-64 equivalent */
         }
-        
+
         /* Small tablets and large phones (640px - 767px) */
         @media (min-width: 640px) and (max-width: 767px) {
             .open-house-image-container {
                 height: 18rem;
             }
         }
-        
+
         /* Tablet sizes (768px - 1023px) - prevent layout breaking */
         @media (min-width: 768px) and (max-width: 1023px) {
             .open-house-image-container {
                 height: 20rem; /* Intermediate height for tablets */
             }
-            
+
             /* Force single column layout on tablets to prevent breaking */
             .grid[class*="lg:grid-cols-2"] {
                 grid-template-columns: 1fr !important;
             }
-            
+
             /* Prevent content overflow */
             .grid[class*="lg:grid-cols-2"] > div {
                 min-width: 0;
                 overflow: hidden;
                 width: 100%;
             }
-            
+
             /* Ensure images don't break layout */
             .open-house-image-container img {
                 max-width: 100%;
@@ -120,7 +122,7 @@
                 object-fit: cover;
             }
         }
-        
+
         /* Desktop sizes (1024px+) */
         @media (min-width: 1024px) {
             .open-house-image-container {
@@ -128,7 +130,7 @@
                 min-height: 25rem;
             }
         }
-        
+
         /* Modal styling to ensure visibility */
         #bookingModal {
             position: fixed !important;
@@ -143,7 +145,7 @@
             justify-content: center !important;
             padding: 1rem !important;
         }
-        
+
         #bookingModal .modal-content {
             background-color: white !important;
             border-radius: 0.5rem !important;
@@ -153,7 +155,7 @@
             max-height: 90vh !important;
             overflow-y: auto !important;
         }
-        
+
         #bookingModal input,
         #bookingModal select,
         #bookingModal textarea {
@@ -164,7 +166,7 @@
             font-size: 0.875rem !important;
             line-height: 1.25rem !important;
         }
-        
+
         #bookingModal input:focus,
         #bookingModal select:focus,
         #bookingModal textarea:focus {
@@ -172,29 +174,29 @@
             border-color: #3b82f6 !important;
             box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.1) !important;
         }
-        
+
         #bookingModal button {
             cursor: pointer !important;
             transition: all 0.15s ease-in-out !important;
         }
-        
+
         #bookingModal button:hover {
             opacity: 0.9 !important;
         }
-        
+
         /* Ensure modal is visible and properly positioned */
         body.modal-open {
             overflow: hidden !important;
         }
-        
+
         #bookingModal {
             backdrop-filter: blur(4px) !important;
         }
-        
+
         #bookingModal .modal-content {
             animation: modalSlideIn 0.3s ease-out !important;
         }
-        
+
         @keyframes modalSlideIn {
             from {
                 opacity: 0;
@@ -206,32 +208,32 @@
             }
         }
     </style>
-    
+
     <!-- Define gallery functions in head to ensure they're available before HTML renders -->
     <script>
         // Define gallery functions immediately in head to ensure global accessibility
         // These functions must be defined before any HTML that uses them
-        (function() {
+        (function () {
             'use strict';
-            
+
             // Initialize openHouseImages object
             window.openHouseImages = window.openHouseImages || {};
-            
+
             // Define gallery functions
-            window.openImageGallery = function(openHouseId) {
+            window.openImageGallery = function (openHouseId) {
                 if (!window.openHouseImages || !window.openHouseImages[openHouseId]) {
                     return;
                 }
-                
+
                 const imageData = window.openHouseImages[openHouseId];
                 const images = imageData.images.filter(img => img); // Remove empty images
-                
+
                 if (images.length === 0) {
                     return;
                 }
-                
+
                 let currentIndex = 0;
-                
+
                 // Create modal HTML
                 const modalHTML = `
                     <div id="imageGalleryModal" class="image-modal-backdrop" onclick="if(event.target.id === 'imageGalleryModal') window.closeImageGallery()">
@@ -280,59 +282,59 @@
                         </div>
                     </div>
                 `;
-                
+
                 // Remove existing modal if any
                 const existingModal = document.getElementById('imageGalleryModal');
                 if (existingModal) {
                     existingModal.remove();
                 }
-                
+
                 // Add modal to page
                 document.body.insertAdjacentHTML('beforeend', modalHTML);
                 document.body.style.overflow = 'hidden';
-                
+
                 // Store current index globally for navigation
                 window.currentGalleryIndex = 0;
                 window.currentGalleryImages = images;
-                
+
                 // Keyboard navigation
                 document.addEventListener('keydown', window.handleGalleryKeyPress);
             };
-            
-            window.navigateGallery = function(direction) {
+
+            window.navigateGallery = function (direction) {
                 if (!window.currentGalleryImages) return;
-                
+
                 const images = window.currentGalleryImages;
                 let newIndex = window.currentGalleryIndex + direction;
-                
+
                 if (newIndex < 0) {
                     newIndex = images.length - 1;
                 } else if (newIndex >= images.length) {
                     newIndex = 0;
                 }
-                
+
                 window.goToImage(newIndex);
             };
-            
-            window.goToImage = function(index) {
+
+            window.goToImage = function (index) {
                 if (!window.currentGalleryImages) return;
-                
+
                 const images = window.currentGalleryImages;
                 if (index < 0 || index >= images.length) return;
-                
+
                 window.currentGalleryIndex = index;
-                
+
                 const mainImage = document.getElementById('galleryMainImage');
                 if (mainImage) {
                     mainImage.src = images[index];
                 }
-                
+
                 // Update counter
                 const counter = document.getElementById('currentImageIndex');
                 if (counter) {
                     counter.textContent = index + 1;
                 }
-                
+
                 // Update thumbnails
                 const thumbnails = document.querySelectorAll('.image-modal-thumbnail');
                 thumbnails.forEach((thumb, idx) => {
@@ -343,8 +345,8 @@
                     }
                 });
             };
-            
-            window.handleGalleryKeyPress = function(e) {
+
+            window.handleGalleryKeyPress = function (e) {
                 if (document.getElementById('imageGalleryModal')) {
                     if (e.key === 'ArrowLeft') {
                         window.navigateGallery(-1);
@@ -355,8 +357,8 @@
                     }
                 }
             };
-            
-            window.closeImageGallery = function() {
+
+            window.closeImageGallery = function () {
                 const modal = document.getElementById('imageGalleryModal');
                 if (modal) {
                     modal.remove();
@@ -366,154 +368,154 @@
             };
         })();
     </script>
-    
+
 </head>
 <body>
 {% include 'Raj/social_media_sidebar.html' %}
 {% include 'Raj/navbar.html' %}
 
 <!-- Hero Section -->
-    <section class="bg-gradient-surface py-16 my-4">
-        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-            <div class="text-center">
-                <h1 class="text-4xl md:text-5xl font-bold text-foreground mb-4">Open House Schedule</h1>
-            </div>
+<section class="bg-gradient-surface py-16 my-4">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div class="text-center">
+            <h1 class="text-4xl md:text-5xl font-bold text-foreground mb-4">Open House Schedule</h1>
         </div>
-    </section>
+    </div>
+</section>
 
-    <!-- Open House Properties -->
-    <section class="py-16 bg-background">
+<!-- Open House Properties -->
+<section class="py-16 bg-background">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             {% if open_houses %}
-                <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
-                    {% for open_house in open_houses %}
-                    <div class="rounded-lg border bg-card text-card-foreground shadow-sm overflow-hidden shadow-soft hover:shadow-medium transition-all duration-300 group">
-                        <div class="relative overflow-hidden">
-                            {% if open_house.get_main_image_url %}
-                                <img src="{{ open_house.get_main_image_url }}" alt="{{ open_house.title }}" class="w-full h-48 object-cover group-hover:scale-105 transition-transform duration-300 cursor-pointer" data-open-house-id="{{ open_house.id }}" onclick="if(window.openImageGallery && typeof window.openImageGallery === 'function') { window.openImageGallery({{ open_house.id }}); }">
-                            {% else %}
-                                <img src="{% static 'images/property-1.jpg' %}" alt="{{ open_house.title }}" class="w-full h-48 object-cover group-hover:scale-105 transition-transform duration-300 cursor-pointer" data-open-house-id="{{ open_house.id }}" onclick="if(window.openImageGallery && typeof window.openImageGallery === 'function') { window.openImageGallery({{ open_house.id }}); }">
-                            {% endif %}
-                            <div class="inline-flex items-center rounded-full border px-2.5 py-0.5 text-xs font-semibold transition-colors focus:outline-none focus:ring-2 focus:ring-ring focus:ring-offset-2 border-transparent hover:bg-primary/80 absolute top-4 left-4 bg-accent text-accent-foreground">Open House</div>
-                            {% if open_house.get_main_image_url or open_house.images.all %}
-                                {% with total_images=open_house.images.all|length %}
-                                    {% if open_house.get_main_image_url %}
-                                        {% with total_images=total_images|add:1 %}
+                <div id="upcoming-section">
+                    <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-6" id="upcoming-grid">
+                        {% for open_house in open_houses %}
+                        <div class="open-house-card rounded-lg border bg-card text-card-foreground shadow-sm overflow-hidden shadow-soft hover:shadow-medium transition-all duration-300 group"
+                             data-date="{{ open_house.open_house_date|date:'Y-m-d' }}">
+
+                            <div class="relative overflow-hidden">
+                                {% if open_house.get_main_image_url %}
+                                    <img src="{{ open_house.get_main_image_url }}" alt="{{ open_house.title }}" class="w-full h-48 object-cover group-hover:scale-105 transition-transform duration-300 cursor-pointer" data-open-house-id="{{ open_house.id }}" onclick="if(window.openImageGallery && typeof window.openImageGallery === 'function') { window.openImageGallery({{ open_house.id }}); }">
+                                {% else %}
+                                    <img src="{% static 'images/property-1.jpg' %}" alt="{{ open_house.title }}" class="w-full h-48 object-cover group-hover:scale-105 transition-transform duration-300 cursor-pointer" data-open-house-id="{{ open_house.id }}" onclick="if(window.openImageGallery && typeof window.openImageGallery === 'function') { window.openImageGallery({{ open_house.id }}); }">
+                                {% endif %}
+                                <div class="inline-flex items-center rounded-full border px-2.5 py-0.5 text-xs font-semibold transition-colors focus:outline-none focus:ring-2 focus:ring-ring focus:ring-offset-2 border-transparent hover:bg-primary/80 absolute top-4 left-4 bg-accent text-accent-foreground">Open House</div>
+
+                                {% if open_house.get_main_image_url or open_house.images.all %}
+                                    {% with total_images=open_house.images.all|length %}
+                                        {% if open_house.get_main_image_url %}
+                                            {% with total_images=total_images|add:1 %}
+                                                {% if total_images > 1 %}
+                                                    <div class="absolute bottom-4 right-4 bg-black bg-opacity-70 text-white px-3 py-1 rounded-full text-sm font-medium cursor-pointer" data-gallery-id="{{ open_house.id }}" onclick="event.stopPropagation(); if(window.openImageGallery && typeof window.openImageGallery === 'function') { window.openImageGallery({{ open_house.id }}); }">
+                                                        View {{ total_images }} photos
+                                                    </div>
+                                                {% endif %}
+                                            {% endwith %}
+                                        {% else %}
                                             {% if total_images > 1 %}
                                                 <div class="absolute bottom-4 right-4 bg-black bg-opacity-70 text-white px-3 py-1 rounded-full text-sm font-medium cursor-pointer" data-gallery-id="{{ open_house.id }}" onclick="event.stopPropagation(); if(window.openImageGallery && typeof window.openImageGallery === 'function') { window.openImageGallery({{ open_house.id }}); }">
                                                     View {{ total_images }} photos
                                                 </div>
                                             {% endif %}
-                                        {% endwith %}
-                                    {% else %}
-                                        {% if total_images > 1 %}
-                                            <div class="absolute bottom-4 right-4 bg-black bg-opacity-70 text-white px-3 py-1 rounded-full text-sm font-medium cursor-pointer" data-gallery-id="{{ open_house.id }}" onclick="event.stopPropagation(); if(window.openImageGallery && typeof window.openImageGallery === 'function') { window.openImageGallery({{ open_house.id }}); }">
-                                                View {{ total_images }} photos
-                                            </div>
                                         {% endif %}
-                                    {% endif %}
-                                {% endwith %}
-                            {% endif %}
-                        </div>
-                        <div class="p-6">
-                            <div class="flex items-center text-sm text-muted-foreground mb-3">
-                                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-calendar w-4 h-4 mr-1">
-                                    <path d="M8 2v4"></path>
-                                    <path d="M16 2v4"></path>
-                                    <rect width="18" height="18" x="3" y="4" rx="2"></rect>
-                                    <path d="M3 10h18"></path>
-                                </svg>
-                                <span>{{ open_house.open_house_date|date:"M j, Y" }}</span>
-                                <span class="mx-2">•</span>
-                                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-clock w-4 h-4 mr-1">
-                                    <circle cx="12" cy="12" r="10"></circle>
-                                    <polyline points="12 6 12 12 16 14"></polyline>
-                                </svg>
-                                <span>{{ open_house.open_house_time|time:"g:i A" }}{% if open_house.open_house_end_time %} - {{ open_house.open_house_end_time|time:"g:i A" }}{% endif %}</span>
-                            </div>
-                            <h3 class="text-lg font-semibold text-foreground mb-2 line-clamp-2">{{ open_house.title }}</h3>
-                            <div class="flex items-center text-muted-foreground mb-3 text-sm">
-                                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-map-pin w-4 h-4 mr-1">
-                                    <path d="M20 10c0 4.993-5.539 10.193-7.399 11.799a1 1 0 0 1-1.202 0C9.539 20.193 4 14.993 4 10a8 8 0 0 1 16 0"></path>
-                                    <circle cx="12" cy="10" r="3"></circle>
-                                </svg>
-                                <span class="line-clamp-1">{{ open_house.property_address }}</span>
-                            </div>
-                            <div class="flex items-center space-x-4 text-sm text-muted-foreground mb-3">
-                                {% if open_house.bedrooms %}
-                                <span>{{ open_house.bedrooms }} beds</span>
-                                {% endif %}
-                                {% if open_house.bathrooms %}
-                                <span>{{ open_house.bathrooms }} baths</span>
-                                {% endif %}
-                                {% if open_house.area_sqft %}
-                                <span>{{ open_house.area_sqft|intcomma }} sqft</span>
+                                    {% endwith %}
                                 {% endif %}
                             </div>
-                            <div class="text-xl font-bold text-primary mb-3">${{ open_house.price|floatformat:0|intcomma }}</div>
-                            <div class="flex items-center justify-between gap-3 mb-4">
-                                <button 
-                                    class="book-open-house-btn inline-flex items-center justify-center gap-2 whitespace-nowrap text-sm font-medium ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 [&_svg]:pointer-events-none [&_svg]:size-4 [&_svg]:shrink-0 hover:bg-accent h-9 rounded-md text-primary hover:text-primary-dark px-3 py-2"
-                                    data-open-house-id="{{ open_house.id }}"
-                                    data-title="{{ open_house.title }}"
-                                    data-address="{{ open_house.property_address }}"
-                                    data-date="{{ open_house.open_house_date|date:"M j, Y" }}"
-                                    data-time="{{ open_house.open_house_time|time:"g:i A" }}"
-                                    data-end-time="{% if open_house.open_house_end_time %}{{ open_house.open_house_end_time|time:"g:i A" }}{% endif %}"
-                                    data-price="{{ open_house.price }}"
-                                    data-description="{{ open_house.description|escape }}"
-                                    data-agent-name="{{ open_house.listing_agent_name|default:''|escape }}"
-                                    data-agent-link="{{ open_house.listing_agent_link|default:'' }}"
-                                    data-agent-image="{{ open_house.get_listing_agent_image_url|default:'' }}">
-                                    Get More Info
-                                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-arrow-right w-4 h-4 ml-1">
-                                        <path d="M5 12h14"></path>
-                                        <path d="m12 5 7 7-7 7"></path>
+
+                            <div class="p-6">
+                                <div class="flex items-center text-sm text-muted-foreground mb-3">
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-calendar w-4 h-4 mr-1">
+                                        <path d="M8 2v4"></path>
+                                        <path d="M16 2v4"></path>
+                                        <rect width="18" height="18" x="3" y="4" rx="2"></rect>
+                                        <path d="M3 10h18"></path>
                                     </svg>
-                                </button>
-                                <button 
-                                    class="view-open-house-details-btn inline-flex items-center justify-center gap-2 whitespace-nowrap text-sm font-medium ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 border bg-background h-9 rounded-md px-3 py-2 border-primary text-primary hover:bg-primary hover:text-primary-foreground"
-                                    data-open-house-id="{{ open_house.id }}"
-                                    data-title="{{ open_house.title }}"
-                                    data-address="{{ open_house.property_address }}"
-                                    data-date="{{ open_house.open_house_date|date:"M j, Y" }}"
-                                    data-time="{{ open_house.open_house_time|time:"g:i A" }}"
-                                    data-end-time="{% if open_house.open_house_end_time %}{{ open_house.open_house_end_time|time:"g:i A" }}{% endif %}"
-                                    data-bedrooms="{{ open_house.bedrooms|default_if_none:'' }}"
-                                    data-bathrooms="{{ open_house.bathrooms|default_if_none:'' }}"
-                                    data-area="{{ open_house.area_sqft|default_if_none:'' }}"
-                                    data-description="{{ open_house.description|default:''|escape }}"
-                                    data-agent-name="{{ open_house.listing_agent_name|default:''|escape }}"
-                                    data-agent-link="{{ open_house.listing_agent_link|default:'' }}"
-                                    data-agent-image="{{ open_house.get_listing_agent_image_url|default:'' }}"
-                                    data-images="{{ open_house.get_all_image_urls|join:'|||' }}"
-                                    data-main-image="{{ open_house.get_main_image_url|default:'' }}">
-                                    View Details
-                                </button>
-                            </div>
-                            {% if open_house.listing_agent_name %}
-                            <div class="flex items-center gap-3 pt-3 border-t">
-                                {% if open_house.get_listing_agent_image_url %}
-                                <img src="{{ open_house.get_listing_agent_image_url }}" alt="{{ open_house.listing_agent_name }}" class="w-12 h-12 rounded-full object-cover border-2 border-gray-200">
-                                {% endif %}
-                                <div>
-                                    <p class="text-xs text-muted-foreground mb-1">Listing Agent</p>
-                                    <p class="text-sm font-medium text-foreground">
-                                        {% if open_house.listing_agent_link %}
-                                            <a href="{{ open_house.listing_agent_link }}" target="_blank" rel="noopener noreferrer" class="text-primary hover:underline">{{ open_house.listing_agent_name }}</a>
-                                        {% else %}
-                                            {{ open_house.listing_agent_name }}
-                                        {% endif %}
-                                    </p>
+                                    <span>{{ open_house.open_house_date|date:"M j, Y" }}</span>
+                                    <span class="mx-2">•</span>
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-clock w-4 h-4 mr-1">
+                                        <circle cx="12" cy="12" r="10"></circle>
+                                        <polyline points="12 6 12 12 16 14"></polyline>
+                                    </svg>
+                                    <span>{{ open_house.open_house_time|time:"g:i A" }}{% if open_house.open_house_end_time %} - {{ open_house.open_house_end_time|time:"g:i A" }}{% endif %}</span>
                                 </div>
+
+                                <h3 class="text-lg font-semibold text-foreground mb-2 line-clamp-2">{{ open_house.title }}</h3>
+
+                                <div class="flex items-center text-foreground mb-3 text-base font-medium">
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-map-pin w-4 h-4 mr-2 text-muted-foreground flex-shrink-0">
+                                        <path d="M20 10c0 4.993-5.539 10.193-7.399 11.799a1 1 0 0 1-1.202 0C9.539 20.193 4 14.993 4 10a8 8 0 0 1 16 0"></path>
+                                        <circle cx="12" cy="10" r="3"></circle>
+                                    </svg>
+                                    <span class="line-clamp-1">{{ open_house.property_address }}</span>
+                                </div>
+
+                                <div class="flex items-center space-x-4 text-sm text-muted-foreground mb-3">
+                                    {% if open_house.bedrooms %}
+                                    <span>{{ open_house.bedrooms }} beds</span>
+                                    {% endif %}
+                                    {% if open_house.bathrooms %}
+                                    <span>{{ open_house.bathrooms }} baths</span>
+                                    {% endif %}
+                                    {% if open_house.area_sqft %}
+                                    <span>{{ open_house.area_sqft|intcomma }} sqft</span>
+                                    {% endif %}
+                                </div>
+
+                                <div class="text-lg font-bold text-primary mb-4">${{ open_house.price|floatformat:0|intcomma }}</div>
+
+                                <div class="flex items-center justify-between gap-4 mb-4">
+                                    <button
+                                        class="flex-1 inline-flex items-center justify-center gap-2 whitespace-nowrap text-sm font-medium ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 border bg-background h-9 rounded-md px-3 py-2 border-primary text-primary hover:bg-primary hover:text-primary-foreground"
+                                        onclick="handleContactRajClick(this)"
+                                        data-open-house-id="{{ open_house.id }}"
+                                        data-title="{{ open_house.title }}"
+                                        data-address="{{ open_house.property_address }}"
+                                        data-date="{{ open_house.open_house_date|date:"M j, Y" }}"
+                                        data-time="{{ open_house.open_house_time|time:"g:i A" }}"
+                                        data-end-time="{% if open_house.open_house_end_time %}{{ open_house.open_house_end_time|time:"g:i A" }}{% endif %}"
+                                        data-price="{{ open_house.price }}">
+                                        Contact Raj
+                                    </button>
+                                    <button
+                                        class="flex-1 inline-flex items-center justify-center gap-2 whitespace-nowrap text-sm font-medium ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 border bg-background h-9 rounded-md px-3 py-2 border-primary text-primary hover:bg-primary hover:text-primary-foreground"
+                                        onclick="if(window.openImageGallery && typeof window.openImageGallery === 'function') { window.openImageGallery({{ open_house.id }}); }">
+                                        View Details
+                                    </button>
+                                </div>
+
+                                {% if open_house.listing_agent_name %}
+                                <div class="flex items-center gap-3 pt-3 border-t">
+                                    {% if open_house.get_listing_agent_image_url %}
+                                    <img src="{{ open_house.get_listing_agent_image_url }}" alt="{{ open_house.listing_agent_name }}" class="w-10 h-10 rounded-full object-cover border-2 border-gray-200">
+                                    {% endif %}
+                                    <div>
+                                        <p class="text-xs text-muted-foreground mb-1">Listing By</p>
+                                        <p class="text-sm font-medium text-foreground">
+                                            {% if open_house.listing_agent_link %}
+                                                <a href="{{ open_house.listing_agent_link }}" target="_blank" rel="noopener noreferrer" class="text-primary hover:underline">{{ open_house.listing_agent_name }}</a>
+                                            {% else %}
+                                                {{ open_house.listing_agent_name }}
+                                            {% endif %}
+                                        </p>
+                                    </div>
+                                </div>
+                                {% endif %}
                             </div>
-                            {% endif %}
                         </div>
+                        {% endfor %}
                     </div>
-                    {% endfor %}
                 </div>
-                
-                <!-- Store all image data for gallery -->
+
+                <div id="past-section" class="mt-24 hidden">
+                    <div class="flex items-center mb-8">
+                        <div class="h-px bg-border flex-1"></div>
+                        <h2 class="text-2xl md:text-3xl font-bold text-muted-foreground px-6 uppercase tracking-wide">Past Open Houses</h2>
+                        <div class="h-px bg-border flex-1"></div>
+                    </div>
+                    <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-6" id="past-grid">
+                        </div>
+                </div>
+
                 <script>
                     (function() {
                         window.openHouseImages = {};
@@ -528,7 +530,7 @@
                             images.push('{{ image.get_image_url|escapejs }}');
                             {% endif %}
                             {% endfor %}
-                            
+
                             if (images.length > 0) {
                                 window.openHouseImages[{{ open_house.id }}] = {
                                     title: '{{ open_house.title|escapejs }}',
@@ -554,294 +556,169 @@
                             <path d="m19.5 14.5-5 5"></path>
                         </svg>
                         <h3 class="text-xl font-semibold text-foreground mb-2">No Open Houses Scheduled</h3>
-                        <p class="text-muted-foreground mb-6">We don't have any open houses scheduled at the moment. Please check back later or contact us for more information.</p>
+                        <p class="text-muted-foreground mb-6">We don't have any open houses scheduled at the moment. Please check back later.</p>
                         <a href="{% url 'buy_lease' %}" class="inline-flex items-center justify-center gap-2 whitespace-nowrap rounded-md text-sm font-medium ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 [&_svg]:pointer-events-none [&_svg]:size-4 [&_svg]:shrink-0 hover:bg-accent h-10 text-primary hover:text-primary-foreground px-4 py-2 bg-accent hover:shadow-accent">
                             View Available Properties
                         </a>
                 </div>
             </div>
             {% endif %}
-    </div>
-</section>
+        </div>
+    </section>
 
 {% include 'Raj/footer.html' %}
 
-    <!-- Custom JavaScript -->
-    <script src="{% static 'js/django-main-fixed.js' %}"></script>
-    
-    <script>
-        // Gallery functions are now defined in <head> section to ensure they're available before HTML renders
-        // Only booking modal functions remain here
-        
-        function openBookingModal(openHouseId, title, address, date, time, endTime, price) {
-            // Escape HTML and handle price
-            const escapeHtml = (text) => {
-                const div = document.createElement('div');
-                div.textContent = text;
-                return div.innerHTML;
-            };
-            
-            const safeTitle = escapeHtml(title || '');
-            const safeAddress = escapeHtml(address || '');
-            const safeDate = escapeHtml(date || '');
-            const safeTime = escapeHtml(time || '');
-            const safeEndTime = endTime ? escapeHtml(endTime) : '';
-            const priceNum = parseFloat(price) || 0;
-            const formattedPrice = priceNum.toLocaleString('en-US', {minimumFractionDigits: 0, maximumFractionDigits: 0});
-            
-            // Create modal HTML
-            const modalHTML = `
-                <div id="bookingModal" class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-[9999] p-4" style="z-index: 9999;">
-                    <div class="modal-content bg-white rounded-lg shadow-xl max-w-2xl w-full max-h-[90vh] overflow-y-auto" style="background-color: white; border-radius: 0.5rem; box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.25); max-width: 42rem;">
-                        <div class="p-6">
-                            <div class="flex justify-between items-center mb-4">
-                                <h3 class="text-xl font-bold" style="color: #111827; font-size: 1.25rem; font-weight: 700;">Get More Info</h3>
-                                <button onclick="closeBookingModal()" class="text-gray-400 hover:text-gray-600" style="color: #9ca3af; transition: color 0.15s ease-in-out;">
-                                    <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" style="width: 1.5rem; height: 1.5rem;">
-                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path>
-                                    </svg>
-                                </button>
-                            </div>
+<!-- Custom JavaScript -->
+<script src="{% static 'js/django-main-fixed.js' %}"></script>
 
-                            <div class="mb-4 p-4 bg-gray-50 rounded-lg" style="background-color: #f9fafb; border-radius: 0.5rem; margin-bottom: 1rem; padding: 1rem;">
-                                <h4 class="font-semibold" style="font-weight: 600; color: #111827;">${safeTitle}</h4>
-                                <p class="text-sm" style="font-size: 0.875rem; color: #4b5563;">${safeAddress}</p>
-                                <p class="text-sm" style="font-size: 0.875rem; color: #4b5563;">${safeDate} at ${safeTime}${safeEndTime ? ' - ' + safeEndTime : ''}</p>
-                        </div>
+<script>
+    // 1. Contact Raj Handler
+    function handleContactRajClick(btn) {
+        const d = btn.dataset;
+        openBookingModal(d.openHouseId, d.title, d.address, d.date, d.time, d.endTime, d.price);
+    }
 
-                            {% comment %}
-                            DO NOT UNCOMMENT - Note about property type and budget fields disabled for now
-                            <div class="mb-4 p-3 bg-blue-50 rounded-lg" style="background-color: #eff6ff; border-radius: 0.5rem; margin-bottom: 1rem; padding: 0.75rem;">
-                                <p class="text-sm text-blue-700" style="font-size: 0.875rem; color: #1d4ed8; margin: 0;">
-                                    <strong>Note:</strong> If you're interested in this specific property, just fill in your contact details. The property type and budget fields below are only if you're looking for something different.
-                                </p>
-                        </div>
-                            {% endcomment %}
+    // 2. Sorting Logic (Runs automatically on load)
+    document.addEventListener('DOMContentLoaded', function() {
+        const upcomingGrid = document.getElementById('upcoming-grid');
+        const pastGrid = document.getElementById('past-grid');
+        const pastSection = document.getElementById('past-section');
 
-                            <form id="bookingForm" method="POST" action="{% url 'open_house' %}">
-                                {% csrf_token %}
-                                <input type="hidden" name="open_house_id" value="${openHouseId}">
-                                
-                                <div class="space-y-4" style="display: flex; flex-direction: column; gap: 1rem;">
-                                    <div>
-                                        <label class="block text-sm font-medium mb-1" style="display: block; font-size: 0.875rem; font-weight: 500; color: #374151; margin-bottom: 0.25rem;">Full Name *</label>
-                                        <input type="text" name="name" required class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500" style="width: 100%; padding: 0.5rem 0.75rem; border: 1px solid #d1d5db; border-radius: 0.375rem; outline: none; transition: all 0.15s ease-in-out;">
-                        </div>
+        if (!upcomingGrid) return; // Exit if no grid found
 
-                                    <div>
-                                        <label class="block text-sm font-medium mb-1" style="display: block; font-size: 0.875rem; font-weight: 500; color: #374151; margin-bottom: 0.25rem;">Email Address *</label>
-                                        <input type="email" name="email" required class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500" style="width: 100%; padding: 0.5rem 0.75rem; border: 1px solid #d1d5db; border-radius: 0.375rem; outline: none; transition: all 0.15s ease-in-out;">
-                            </div>
+        // Get all card elements
+        const cards = Array.from(upcomingGrid.getElementsByClassName('open-house-card'));
+        const today = new Date();
+        today.setHours(0, 0, 0, 0); // Normalize to midnight for fair comparison
 
-                                    <div>
-                                        <label class="block text-sm font-medium mb-1" style="display: block; font-size: 0.875rem; font-weight: 500; color: #374151; margin-bottom: 0.25rem;">Phone Number *</label>
-                                        <input type="tel" name="phone" required class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500" style="width: 100%; padding: 0.5rem 0.75rem; border: 1px solid #d1d5db; border-radius: 0.375rem; outline: none; transition: all 0.15s ease-in-out;">
-                        </div>
+        const upcoming = [];
+        const past = [];
 
-                                    {% comment %}
-                                    DO NOT UNCOMMENT - Property Type, Budget Range, Preferred Date, Preferred Time, and Message fields disabled for now
-                                    <div>
-                                        <label class="block text-sm font-medium mb-1" style="display: block; font-size: 0.875rem; font-weight: 500; color: #374151; margin-bottom: 0.25rem;">Property Type</label>
-                                        <p class="text-xs text-gray-500 mb-2" style="font-size: 0.75rem; color: #6b7280; margin-bottom: 0.5rem;">Fill this if you're looking for something else than this property</p>
-                                        <select name="property_type" class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500" style="width: 100%; padding: 0.5rem 0.75rem; border: 1px solid #d1d5db; border-radius: 0.375rem; outline: none; transition: all 0.15s ease-in-out;">
-                                    <option value="">Select property type</option>
-                                            <option value="house">House</option>
-                                            <option value="condo">Condo</option>
-                                            <option value="townhouse">Townhouse</option>
-                                            <option value="apartment">Apartment</option>
-                                </select>
-                            </div>
+        cards.forEach(card => {
+            const dateStr = card.getAttribute('data-date'); // Format: YYYY-MM-DD
+            if (dateStr) {
+                // Parse date safely (using split to avoid timezone issues)
+                const [y, m, d] = dateStr.split('-').map(Number);
+                const cardDate = new Date(y, m - 1, d);
 
-                                    <div>
-                                        <label class="block text-sm font-medium mb-1" style="display: block; font-size: 0.875rem; font-weight: 500; color: #374151; margin-bottom: 0.25rem;">Budget Range</label>
-                                        <p class="text-xs text-gray-500 mb-2" style="font-size: 0.75rem; color: #6b7280; margin-bottom: 0.5rem;">Fill this if you're looking for something else than this property</p>
-                                        <select name="budget_range" class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500" style="width: 100%; padding: 0.5rem 0.75rem; border: 1px solid #d1d5db; border-radius: 0.375rem; outline: none; transition: all 0.15s ease-in-out;">
-                                    <option value="">Select budget range</option>
-                                            <option value="under-300k">Under $300K</option>
-                                            <option value="300k-500k">$300K - $500K</option>
-                                            <option value="500k-750k">$500K - $750K</option>
-                                            <option value="750k-1m">$750K - $1M</option>
-                                            <option value="over-1m">Over $1M</option>
-                                </select>
-                        </div>
-
-                                    <div>
-                                        <label class="block text-sm font-medium mb-1" style="display: block; font-size: 0.875rem; font-weight: 500; color: #374151; margin-bottom: 0.25rem;">Preferred Date</label>
-                                        <input type="date" name="preferred_date" class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500" style="width: 100%; padding: 0.5rem 0.75rem; border: 1px solid #d1d5db; border-radius: 0.375rem; outline: none; transition: all 0.15s ease-in-out;">
-                        </div>
-
-                                    <div>
-                                        <label class="block text-sm font-medium mb-1" style="display: block; font-size: 0.875rem; font-weight: 500; color: #374151; margin-bottom: 0.25rem;">Preferred Time</label>
-                                        <select name="preferred_time" class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500" style="width: 100%; padding: 0.5rem 0.75rem; border: 1px solid #d1d5db; border-radius: 0.375rem; outline: none; transition: all 0.15s ease-in-out;">
-                                            <option value="">Select preferred time</option>
-                                            <option value="morning">Morning (9 AM - 12 PM)</option>
-                                            <option value="afternoon">Afternoon (12 PM - 5 PM)</option>
-                                            <option value="evening">Evening (5 PM - 8 PM)</option>
-                                        </select>
-            </div>
-            
-                                    <div>
-                                        <label class="block text-sm font-medium mb-1" style="display: block; font-size: 0.875rem; font-weight: 500; color: #374151; margin-bottom: 0.25rem;">Message</label>
-                                        <textarea name="message" rows="3" class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500" placeholder="Any special requirements or questions..." style="width: 100%; padding: 0.5rem 0.75rem; border: 1px solid #d1d5db; border-radius: 0.375rem; outline: none; transition: all 0.15s ease-in-out; resize: vertical;"></textarea>
-                </div>
-                                    {% endcomment %}
-            </div>
-
-                                <div class="mt-6 flex gap-3" style="margin-top: 1.5rem; display: flex; gap: 0.75rem;">
-                                    <button type="button" onclick="closeBookingModal()" class="flex-1 px-4 py-2 border border-gray-300 rounded-md text-gray-700 hover:bg-gray-50" style="flex: 1; padding: 0.5rem 1rem; border: 1px solid #d1d5db; border-radius: 0.375rem; color: #374151; background-color: white; transition: all 0.15s ease-in-out; cursor: pointer;">
-                                        Cancel
-            </button>
-                                    <button type="submit" class="flex-1 px-4 py-2 bg-blue-600 text-white rounded-md hover:bg-blue-700" style="flex: 1; padding: 0.5rem 1rem; background-color: #2563eb; color: white; border-radius: 0.375rem; border: none; transition: all 0.15s ease-in-out; cursor: pointer;">
-                                        Submit Request
-            </button>
-            </div>
-                            </form>
-        </div>
-            </div>
-        </div>
-            `;
-            
-            // Add modal to page
-            document.body.insertAdjacentHTML('beforeend', modalHTML);
-            
-            // Prevent body scroll and add modal class
-            document.body.style.overflow = 'hidden';
-            document.body.classList.add('modal-open');
-        }
-        
-        function closeBookingModal() {
-            const modal = document.getElementById('bookingModal');
-            if (modal) {
-                modal.remove();
-                document.body.style.overflow = 'auto';
-                document.body.style.paddingRight = '';
-                document.body.classList.remove('modal-open');
-            }
-        }
-        
-        function openOpenHouseDetailsModal(openHouseId, title, address, date, time, endTime, bedrooms, bathrooms, area, description, agentName, agentLink, agentImage, images, mainImage) {
-            const escapeHtml = (text) => {
-                const div = document.createElement('div');
-                div.textContent = text;
-                return div.innerHTML;
-            };
-            
-            const safeTitle = escapeHtml(title || '');
-            const safeAddress = escapeHtml(address || '');
-            const safeDate = escapeHtml(date || '');
-            const safeTime = escapeHtml(time || '');
-            const safeEndTime = endTime ? escapeHtml(endTime) : '';
-            const safeDescription = escapeHtml(description || '');
-            const safeAgentName = escapeHtml(agentName || '');
-            
-            // Parse images
-            let imageList = [];
-            if (images) {
-                imageList = images.split('|||').filter(img => img.trim());
-            }
-            if (mainImage && !imageList.includes(mainImage)) {
-                imageList.unshift(mainImage);
-            }
-            
-            // Create modal HTML
-            const modalHTML = `
-                <div id="openHouseDetailsModal" class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-[9999] p-4" style="z-index: 9999;">
-                    <div class="modal-content bg-white rounded-lg shadow-xl max-w-4xl w-full max-h-[90vh] overflow-y-auto" style="background-color: white; border-radius: 0.5rem; box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.25);">
-                        <div class="p-6">
-                            <div class="flex justify-between items-center mb-4">
-                                <h3 class="text-2xl font-bold" style="color: #111827; font-size: 1.5rem; font-weight: 700;">${safeTitle}</h3>
-                                <button onclick="closeOpenHouseDetailsModal()" class="text-gray-400 hover:text-gray-600" style="color: #9ca3af; transition: color 0.15s ease-in-out;">
-                                    <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" style="width: 1.5rem; height: 1.5rem;">
-                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path>
-                                    </svg>
-                                </button>
-                            </div>
-                            
-                            ${imageList.length > 0 ? `
-                            <div class="mb-4">
-                                <img src="${imageList[0]}" alt="${safeTitle}" class="w-full h-64 object-cover rounded-lg" style="max-height: 20rem;">
-                            </div>
-                            ` : ''}
-                            
-                            <div class="mb-4 p-4 bg-gray-50 rounded-lg" style="background-color: #f9fafb; border-radius: 0.5rem; margin-bottom: 1rem; padding: 1rem;">
-                                <p class="text-sm font-semibold mb-2" style="font-size: 0.875rem; font-weight: 600; color: #111827;">${safeAddress}</p>
-                                <p class="text-sm mb-2" style="font-size: 0.875rem; color: #4b5563;">${safeDate} at ${safeTime}${safeEndTime ? ' - ' + safeEndTime : ''}</p>
-                                ${bedrooms || bathrooms || area ? `
-                                <div class="flex gap-4 text-sm" style="font-size: 0.875rem; color: #4b5563;">
-                                    ${bedrooms ? `<span>${bedrooms} beds</span>` : ''}
-                                    ${bathrooms ? `<span>${bathrooms} baths</span>` : ''}
-                                    ${area ? `<span>${parseInt(area).toLocaleString()} sqft</span>` : ''}
-                                </div>
-                                ` : ''}
-                            </div>
-                            
-                            ${safeDescription ? `
-                            <div class="mb-4">
-                                <h4 class="font-semibold mb-2" style="font-weight: 600; color: #111827; margin-bottom: 0.5rem;">Description</h4>
-                                <p class="text-sm leading-relaxed" style="font-size: 0.875rem; color: #4b5563; line-height: 1.625; white-space: pre-wrap;">${safeDescription}</p>
-                            </div>
-                            ` : ''}
-                            
-                            ${agentName ? `
-                            <div class="mb-4 p-4 bg-gray-50 rounded-lg flex items-center gap-4" style="background-color: #f9fafb; border-radius: 0.5rem; margin-bottom: 1rem; padding: 1rem;">
-                                ${agentImage ? `<img src="${agentImage}" alt="${safeAgentName}" class="w-16 h-16 rounded-full object-cover border-2 border-gray-200" style="width: 4rem; height: 4rem; border-radius: 9999px; object-fit: cover; border: 2px solid #e5e7eb;">` : ''}
-                                <div>
-                                    <p class="text-xs text-gray-500 mb-1" style="font-size: 0.75rem; color: #6b7280; margin-bottom: 0.25rem;">Listing Agent</p>
-                                    <p class="text-sm font-medium" style="font-size: 0.875rem; font-weight: 500; color: #111827;">
-                                        ${agentLink ? `<a href="${agentLink}" target="_blank" rel="noopener noreferrer" class="text-blue-600 hover:underline">${safeAgentName}</a>` : safeAgentName}
-                                    </p>
-                                </div>
-                            </div>
-                            ` : ''}
-                            
-                            <div class="mt-6 flex gap-3" style="margin-top: 1.5rem; display: flex; gap: 0.75rem;">
-                                <button type="button" onclick="closeOpenHouseDetailsModal()" class="flex-1 px-4 py-2 border border-gray-300 rounded-md text-gray-700 hover:bg-gray-50" style="flex: 1; padding: 0.5rem 1rem; border: 1px solid #d1d5db; border-radius: 0.375rem; color: #374151; background-color: white; transition: all 0.15s ease-in-out; cursor: pointer;">
-                                    Close
-                                </button>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            `;
-            
-            // Add modal to page
-            document.body.insertAdjacentHTML('beforeend', modalHTML);
-            document.body.style.overflow = 'hidden';
-            document.body.classList.add('modal-open');
-        }
-        
-        function closeOpenHouseDetailsModal() {
-            const modal = document.getElementById('openHouseDetailsModal');
-            if (modal) {
-                modal.remove();
-                document.body.style.overflow = 'auto';
-                document.body.style.paddingRight = '';
-                document.body.classList.remove('modal-open');
-            }
-        }
-
-// Close modal when clicking outside
-        document.addEventListener('click', function(e) {
-            if (e.target.id === 'bookingModal') {
-                closeBookingModal();
-            }
-            if (e.target.id === 'openHouseDetailsModal') {
-                closeOpenHouseDetailsModal();
+                if (cardDate < today) {
+                    past.push({ element: card, date: cardDate });
+                } else {
+                    upcoming.push({ element: card, date: cardDate });
+                }
             }
         });
-        
-        // Image Gallery Modal Functions are already defined at the top of this script
-        // No need to redefine them here
+
+        // SORTING RULES:
+        // Upcoming: Ascending (Closest date first: 10th, 15th...)
+        upcoming.sort((a, b) => a.date - b.date);
+
+        // Past: Descending (Most recent past date first: 9th, 8th...)
+        past.sort((a, b) => b.date - a.date);
+
+        // Re-append Upcoming cards in correct order
+        upcoming.forEach(item => upcomingGrid.appendChild(item.element));
+
+        // Handle Past cards
+        if (past.length > 0) {
+            past.forEach(item => {
+                // Optional: Add visual distinction for past items
+                item.element.classList.add('opacity-80', 'grayscale-[0.2]');
+                pastGrid.appendChild(item.element);
+            });
+            pastSection.classList.remove('hidden'); // Show the section
+        } else {
+            pastSection.classList.add('hidden');
+        }
+    });
+
+    // 3. Modal Functions
+    function openBookingModal(openHouseId, title, address, date, time, endTime, price) {
+        // ... (Keep existing modal logic same as before)
+        const escapeHtml = (text) => {
+            const div = document.createElement('div');
+            div.textContent = text;
+            return div.innerHTML;
+        };
+
+        const safeTitle = escapeHtml(title || '');
+        const safeAddress = escapeHtml(address || '');
+        const safeDate = escapeHtml(date || '');
+        const safeTime = escapeHtml(time || '');
+        const safeEndTime = endTime ? escapeHtml(endTime) : '';
+        const priceNum = parseFloat(price) || 0;
+        const formattedPrice = priceNum.toLocaleString('en-US', {minimumFractionDigits: 0, maximumFractionDigits: 0});
+
+        const modalHTML = `
+            <div id="bookingModal" class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-[9999] p-4" style="z-index: 9999;">
+                <div class="modal-content bg-white rounded-lg shadow-xl max-w-2xl w-full max-h-[90vh] overflow-y-auto" style="background-color: white; border-radius: 0.5rem; box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.25); max-width: 42rem;">
+                    <div class="p-6">
+                        <div class="flex justify-between items-center mb-4">
+                            <h3 class="text-xl font-bold" style="color: #111827; font-size: 1.25rem; font-weight: 700;">Get More Info</h3>
+                            <button onclick="closeBookingModal()" class="text-gray-400 hover:text-gray-600" style="color: #9ca3af; transition: color 0.15s ease-in-out;">
+                                <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" style="width: 1.5rem; height: 1.5rem;">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path>
+                                </svg>
+                            </button>
+                        </div>
+                        <div class="mb-4 p-4 bg-gray-50 rounded-lg" style="background-color: #f9fafb; border-radius: 0.5rem; margin-bottom: 1rem; padding: 1rem;">
+                            <h4 class="font-semibold" style="font-weight: 600; color: #111827;">${safeTitle}</h4>
+                            <p class="text-sm" style="font-size: 0.875rem; color: #4b5563;">${safeAddress}</p>
+                            <p class="text-sm" style="font-size: 0.875rem; color: #4b5563;">${safeDate} at ${safeTime}${safeEndTime ? ' - ' + safeEndTime : ''}</p>
+                        </div>
+                        <form id="bookingForm" method="POST" action="{% url 'open_house' %}">
+                            {% csrf_token %}
+                            <input type="hidden" name="open_house_id" value="${openHouseId}">
+                            <div class="space-y-4" style="display: flex; flex-direction: column; gap: 1rem;">
+                                <div>
+                                    <label class="block text-sm font-medium mb-1" style="display: block; font-size: 0.875rem; font-weight: 500; color: #374151; margin-bottom: 0.25rem;">Full Name *</label>
+                                    <input type="text" name="name" required class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500" style="width: 100%; padding: 0.5rem 0.75rem; border: 1px solid #d1d5db; border-radius: 0.375rem; outline: none; transition: all 0.15s ease-in-out;">
+                                </div>
+                                <div>
+                                    <label class="block text-sm font-medium mb-1" style="display: block; font-size: 0.875rem; font-weight: 500; color: #374151; margin-bottom: 0.25rem;">Email Address *</label>
+                                    <input type="email" name="email" required class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500" style="width: 100%; padding: 0.5rem 0.75rem; border: 1px solid #d1d5db; border-radius: 0.375rem; outline: none; transition: all 0.15s ease-in-out;">
+                                </div>
+                                <div>
+                                    <label class="block text-sm font-medium mb-1" style="display: block; font-size: 0.875rem; font-weight: 500; color: #374151; margin-bottom: 0.25rem;">Phone Number *</label>
+                                    <input type="tel" name="phone" required class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500" style="width: 100%; padding: 0.5rem 0.75rem; border: 1px solid #d1d5db; border-radius: 0.375rem; outline: none; transition: all 0.15s ease-in-out;">
+                                </div>
+                            </div>
+                            <div class="mt-6 flex gap-3" style="margin-top: 1.5rem; display: flex; gap: 0.75rem;">
+                                <button type="button" onclick="closeBookingModal()" class="flex-1 px-4 py-2 border border-gray-300 rounded-md text-gray-700 hover:bg-gray-50" style="flex: 1; padding: 0.5rem 1rem; border: 1px solid #d1d5db; border-radius: 0.375rem; color: #374151; background-color: white; transition: all 0.15s ease-in-out; cursor: pointer;">Cancel</button>
+                                <button type="submit" class="flex-1 px-4 py-2 bg-blue-600 text-white rounded-md hover:bg-blue-700" style="flex: 1; padding: 0.5rem 1rem; background-color: #2563eb; color: white; border-radius: 0.375rem; border: none; transition: all 0.15s ease-in-out; cursor: pointer;">Submit Request</button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        `;
+        document.body.insertAdjacentHTML('beforeend', modalHTML);
+        document.body.style.overflow = 'hidden';
+        document.body.classList.add('modal-open');
+    }
+
+    function closeBookingModal() {
+        const modal = document.getElementById('bookingModal');
+        if (modal) {
+            modal.remove();
+            document.body.style.overflow = 'auto';
+            document.body.style.paddingRight = '';
+            document.body.classList.remove('modal-open');
+        }
+    }
+
+    document.addEventListener('click', function(e) {
+        if (e.target.id === 'bookingModal') {
+            closeBookingModal();
+        }
+    });
 </script>
 
-    {% include 'Raj/success_popup.html' %}
-    
-    <script>
+<script>
     // Handle Book/Get More Info button clicks using data attributes
-    // Also add event delegation for image gallery as backup
-    document.addEventListener('DOMContentLoaded', function() {
+    document.addEventListener('DOMContentLoaded', function () {
         // Event delegation for image gallery clicks (backup to onclick handlers)
-        document.addEventListener('click', function(e) {
+        document.addEventListener('click', function (e) {
             // Check if clicked element is an image with data-open-house-id
             const image = e.target.closest('img[data-open-house-id]');
             if (image && window.openImageGallery && typeof window.openImageGallery === 'function') {
@@ -852,7 +729,7 @@
                     return;
                 }
             }
-            
+
             // Check for gallery button
             const galleryButton = e.target.closest('[data-gallery-id]');
             if (galleryButton && window.openImageGallery && typeof window.openImageGallery === 'function') {
@@ -865,9 +742,9 @@
                 }
             }
         });
-        
+
         // Use event delegation for book buttons
-        document.addEventListener('click', function(e) {
+        document.addEventListener('click', function (e) {
             const btn = e.target.closest('.book-open-house-btn');
             if (btn) {
                 e.preventDefault();
@@ -878,10 +755,83 @@
                 const time = btn.getAttribute('data-time');
                 const endTime = btn.getAttribute('data-end-time') || '';
                 const price = btn.getAttribute('data-price');
-                
+
                 openBookingModal(openHouseId, title, address, date, time, endTime, price);
             }
-            
+        });
+
+        // Use event delegation to handle dynamically created forms
+        document.addEventListener('submit', function (e) {
+            const form = e.target;
+
+            if (form && form.action && form.action.includes('open-house')) {
+                e.preventDefault();
+
+                // Get form data
+                const formData = new FormData(form);
+                const name = formData.get('name');
+
+                // Show success popup
+                const message = `Thank you for your open house registration, ${name}! Our team will contact you within 24 hours to confirm your visit and provide additional details.`;
+                showSuccessPopup(message);
+
+                // Submit form after showing popup
+                setTimeout(() => {
+                    form.submit();
+                }, 2000);
+            }
+        });
+    });
+</script>
+
+{% include 'Raj/success_popup.html' %}
+
+<script>
+    // Handle Book/Get More Info button clicks using data attributes
+    // Also add event delegation for image gallery as backup
+    document.addEventListener('DOMContentLoaded', function () {
+        // Event delegation for image gallery clicks (backup to onclick handlers)
+        document.addEventListener('click', function (e) {
+            // Check if clicked element is an image with data-open-house-id
+            const image = e.target.closest('img[data-open-house-id]');
+            if (image && window.openImageGallery && typeof window.openImageGallery === 'function') {
+                const openHouseId = image.getAttribute('data-open-house-id');
+                if (openHouseId) {
+                    e.preventDefault();
+                    window.openImageGallery(parseInt(openHouseId));
+                    return;
+                }
+            }
+
+            // Check for gallery button
+            const galleryButton = e.target.closest('[data-gallery-id]');
+            if (galleryButton && window.openImageGallery && typeof window.openImageGallery === 'function') {
+                const openHouseId = galleryButton.getAttribute('data-gallery-id');
+                if (openHouseId) {
+                    e.preventDefault();
+                    e.stopPropagation();
+                    window.openImageGallery(parseInt(openHouseId));
+                    return;
+                }
+            }
+        });
+
+        // Use event delegation for book buttons
+        document.addEventListener('click', function (e) {
+            const btn = e.target.closest('.book-open-house-btn');
+            if (btn) {
+                e.preventDefault();
+                const openHouseId = btn.getAttribute('data-open-house-id');
+                const title = btn.getAttribute('data-title');
+                const address = btn.getAttribute('data-address');
+                const date = btn.getAttribute('data-date');
+                const time = btn.getAttribute('data-time');
+                const endTime = btn.getAttribute('data-end-time') || '';
+                const price = btn.getAttribute('data-price');
+
+                openBookingModal(openHouseId, title, address, date, time, endTime, price);
+            }
+
             // Handle View Details button
             const viewDetailsBtn = e.target.closest('.view-open-house-details-btn');
             if (viewDetailsBtn) {
@@ -901,26 +851,26 @@
                 const agentImage = viewDetailsBtn.getAttribute('data-agent-image') || '';
                 const images = viewDetailsBtn.getAttribute('data-images') || '';
                 const mainImage = viewDetailsBtn.getAttribute('data-main-image') || '';
-                
+
                 openOpenHouseDetailsModal(openHouseId, title, address, date, time, endTime, bedrooms, bathrooms, area, description, agentName, agentLink, agentImage, images, mainImage);
             }
         });
-        
+
         // Use event delegation to handle dynamically created forms
-        document.addEventListener('submit', function(e) {
+        document.addEventListener('submit', function (e) {
             const form = e.target;
-            
+
             if (form && form.action && form.action.includes('open-house')) {
                 e.preventDefault();
-                
+
                 // Get form data
                 const formData = new FormData(form);
                 const name = formData.get('name');
-                
+
                 // Show success popup
                 const message = `Thank you for your open house registration, ${name}! Our team will contact you within 24 hours to confirm your visit and provide additional details.`;
                 showSuccessPopup(message);
-                
+
                 // Submit form after showing popup
                 setTimeout(() => {
                     form.submit();

@@ -7,291 +7,376 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Sell & Evaluate - {{ brand_name }}</title>
-    <meta name="description" content="Get top dollar for your property with {{ brand_name }}. Professional real estate services with AI-powered insights.">
+    <meta name="description"
+          content="Get top dollar for your property with {{ brand_name }}. Professional real estate services with AI-powered insights.">
     <link rel="icon" type="image/png" href="{% static 'favicon.png' %}">
-    
+
     <!-- Google Fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Playfair+Display:wght@400;500;600;700&display=swap" rel="stylesheet">
-    
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Playfair+Display:wght@400;500;600;700&display=swap"
+          rel="stylesheet">
+
     <!-- Custom CSS -->
     <link rel="stylesheet" href="{% static 'css/django-main.css' %}">
     <style>
-    /* Fix dropdown styling */
-    select {
-        background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' fill='none' viewBox='0 0 20 20'%3e%3cpath stroke='%236b7280' stroke-linecap='round' stroke-linejoin='round' stroke-width='1.5' d='m6 8 4 4 4-4'/%3e%3c/svg%3e");
-        background-position: right 0.5rem center;
-        background-repeat: no-repeat;
-        background-size: 1.5em 1.5em;
-        padding-right: 2.5rem;
-        -webkit-appearance: none !important;
-        -moz-appearance: none !important;
-        appearance: none !important;
-        background-color: transparent;
-    }
+        /* Fix dropdown styling */
+        select {
+            background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' fill='none' viewBox='0 0 20 20'%3e%3cpath stroke='%236b7280' stroke-linecap='round' stroke-linejoin='round' stroke-width='1.5' d='m6 8 4 4 4-4'/%3e%3c/svg%3e");
+            background-position: right 0.5rem center;
+            background-repeat: no-repeat;
+            background-size: 1.5em 1.5em;
+            padding-right: 2.5rem;
+            -webkit-appearance: none !important;
+            -moz-appearance: none !important;
+            appearance: none !important;
+            background-color: transparent;
+        }
 
-    select:focus {
-        background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' fill='none' viewBox='0 0 20 20'%3e%3cpath stroke='%232563eb' stroke-linecap='round' stroke-linejoin='round' stroke-width='1.5' d='m6 8 4 4 4-4'/%3e%3c/svg%3e");
-    }
+        select:focus {
+            background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' fill='none' viewBox='0 0 20 20'%3e%3cpath stroke='%232563eb' stroke-linecap='round' stroke-linejoin='round' stroke-width='1.5' d='m6 8 4 4 4-4'/%3e%3c/svg%3e");
+        }
 
-    /* Additional fixes for different browsers */
-    select::-ms-expand {
-        display: none;
-    }
+        /* Additional fixes for different browsers */
+        select::-ms-expand {
+            display: none;
+        }
     </style>
-    
+
 </head>
 <body>
-    {% include 'Raj/social_media_sidebar.html' %}
-    {% include 'Raj/navbar.html' %}
+{% include 'Raj/social_media_sidebar.html' %}
+{% include 'Raj/navbar.html' %}
 
-    <main class="flex-1">
-        <div class="min-h-screen bg-surface-gradient">
-            <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
-    <div class="text-center mb-16">
-                    <div class="inline-flex items-center rounded-full border px-2.5 py-0.5 text-xs font-semibold transition-colors focus:outline-none focus:ring-2 focus:ring-ring focus:ring-offset-2 hover:bg-primary/80 mb-4 bg-accent/10 text-accent-foreground border-accent/20">Sell Your Property</div>
-                    <h1 class="text-4xl md:text-5xl font-bold text-foreground mb-6">Get Top Dollar for Your Property</h1>
+<main class="flex-1">
+    <div class="min-h-screen bg-surface-gradient">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
+            <div class="text-center mb-12">
+                {#                    <div class="inline-flex items-center rounded-full border px-2.5 py-0.5 text-xs font-semibold transition-colors focus:outline-none focus:ring-2 focus:ring-ring focus:ring-offset-2 hover:bg-primary/80 mb-4 bg-accent/10 text-accent-foreground border-accent/20">Sell Your Property</div>#}
+                <h1 class="text-4xl md:text-5xl font-bold text-foreground mb-6">Get Top Dollar for Your Property</h1>
             </div>
 
-                <!-- Contact Form -->
-                <div class="rounded-lg border bg-card text-card-foreground shadow-sm p-6 shadow-medium mb-16">
-                    <div class="text-center mb-6">
-                        <p class="text-muted-foreground text-base">Tell us more by filling the form below and let our expert team help you</p>
-                    </div>
-                    <form method="POST" action="{% url 'selling' %}" class="grid md:grid-cols-2 gap-4 max-w-4xl mx-auto">
-                        {% csrf_token %}
-                        <div class="space-y-1.5">
-                            <label class="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70" for="name">Name</label>
-                            <div class="relative">
-                                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-user absolute left-3 top-3 h-4 w-4 text-muted-foreground">
-                                    <path d="M19 21v-2a4 4 0 0 0-4-4H9a4 4 0 0 0-4 4v2"></path>
-                                    <circle cx="12" cy="7" r="4"></circle>
-                                </svg>
-                                <input name="name" required class="flex h-10 w-full rounded-md border border-input bg-background px-3 py-2 text-sm ring-offset-background file:border-0 file:bg-transparent file:text-sm file:font-medium file:text-foreground placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50 pl-10" id="name" placeholder="Enter your name">
-                            </div>
-                        </div>
-                        <div class="space-y-1.5">
-                            <label class="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70" for="email">Email</label>
-                            <div class="relative">
-                                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-mail absolute left-3 top-3 h-4 w-4 text-muted-foreground">
-                                    <rect width="20" height="16" x="2" y="4" rx="2"></rect>
-                                    <path d="m22 7-8.97 5.7a1.94 1.94 0 0 1-2.06 0L2 7"></path>
-                                </svg>
-                                <input type="email" name="email" required class="flex h-10 w-full rounded-md border border-input bg-background px-3 py-2 text-sm ring-offset-background file:border-0 file:bg-transparent file:text-sm file:font-medium file:text-foreground placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50 pl-10" id="email" placeholder="Enter your email">
-                            </div>
-                        </div>
-                        <div class="space-y-1.5">
-                            <label class="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70" for="phone">Phone Number</label>
-                            <div class="relative">
-                                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-phone absolute left-3 top-3 h-4 w-4 text-muted-foreground">
-                                    <path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"></path>
-                                </svg>
-                                <input name="phone" required class="flex h-10 w-full rounded-md border border-input bg-background px-3 py-2 text-sm ring-offset-background file:border-0 file:bg-transparent file:text-sm file:font-medium file:text-foreground placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50 pl-10" id="phone" placeholder="Enter your phone number">
-                            </div>
-                        </div>
-                        <div class="md:col-span-2 space-y-1.5">
-                            <label class="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70" for="requirements">Additional Details</label>
-                            <textarea name="message" class="flex w-full rounded-md border border-input bg-background px-3 py-2 text-sm ring-offset-background placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50 min-h-[90px]" id="requirements" placeholder="Tell us about your specific requirements, preferences, or any questions you have..."></textarea>
-                        </div>
-                        <div class="md:col-span-2 text-center mt-3">
-                            <div class="flex items-center justify-center gap-3 mb-3">
-                                <img src="{% static 'Images/Free_tag_image.png' %}" alt="Free" class="h-8 w-auto">
-                                <span class="text-sm text-muted-foreground italic">Personalized recommendations are free</span>
-                            </div>
-                            <button type="submit" class="inline-flex items-center justify-center gap-2 text-lg ring-offset-background transition-all focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 [&_svg]:pointer-events-none [&_svg]:size-4 [&_svg]:shrink-0 h-12 rounded-md bg-primary text-primary-foreground font-bold px-8 sm:px-12 py-2 border border-primary shadow-md hover:shadow-lg hover:bg-primary/90 transition-all duration-300 text-center">Submit to get the personalized recommendation</button>
-                        </div>
-                    </form>
+            <!-- Contact Form -->
+            <div class="rounded-lg border bg-card text-card-foreground shadow-sm p-6 shadow-medium mb-16">
+                <div class="text-center mb-6">
+                    <p class="text-muted-foreground text-base">Tell us more by filling the form below and let our expert
+                        team help you</p>
                 </div>
 
-                <!-- Our Proven Selling Process Section -->
-                <div class="mb-16">
-                    <div class="text-center mb-12">
-                        <h2 class="text-3xl md:text-4xl font-bold text-foreground mb-4">Our Proven Selling Process</h2>
-                        <p class="text-muted-foreground text-lg max-w-2xl mx-auto">We've refined our process to ensure maximum results for every client. Here's how we'll help you sell your property.</p>
+                <form method="POST" action="{% url 'selling' %}" class="grid md:grid-cols-2 gap-4 max-w-4xl mx-auto">
+                    {% csrf_token %}
+                    <div class="space-y-1.5">
+                        <label class="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70"
+                               for="name">Name</label>
+                        <div class="relative">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"
+                                 fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                                 stroke-linejoin="round"
+                                 class="lucide lucide-user absolute left-3 top-3 h-4 w-4 text-muted-foreground">
+                                <path d="M19 21v-2a4 4 0 0 0-4-4H9a4 4 0 0 0-4 4v2"></path>
+                                <circle cx="12" cy="7" r="4"></circle>
+                            </svg>
+                            <input name="name" required
+                                   class="flex h-10 w-full rounded-md border border-input bg-background px-3 py-2 text-sm ring-offset-background file:border-0 file:bg-transparent file:text-sm file:font-medium file:text-foreground placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50 pl-10"
+                                   id="name" placeholder="Enter your name">
+                        </div>
                     </div>
-                    <div class="grid md:grid-cols-2 lg:grid-cols-4 gap-6">
-                        <div class="rounded-lg border bg-card text-card-foreground shadow-sm p-6 text-center shadow-soft hover:shadow-medium transition-all duration-300">
-                            <div class="bg-accent text-accent-foreground w-12 h-12 rounded-full flex items-center justify-center mx-auto mb-4 text-xl font-bold">1</div>
-                            <h3 class="text-lg font-semibold text-foreground mb-3">Property Evaluation</h3>
-                            <p class="text-muted-foreground text-sm leading-relaxed">We conduct a comprehensive analysis of your property and market conditions</p>
+                    <div class="space-y-1.5">
+                        <label class="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70"
+                               for="email">Email</label>
+                        <div class="relative">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"
+                                 fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                                 stroke-linejoin="round"
+                                 class="lucide lucide-mail absolute left-3 top-3 h-4 w-4 text-muted-foreground">
+                                <rect width="20" height="16" x="2" y="4" rx="2"></rect>
+                                <path d="m22 7-8.97 5.7a1.94 1.94 0 0 1-2.06 0L2 7"></path>
+                            </svg>
+                            <input type="email" name="email" required
+                                   class="flex h-10 w-full rounded-md border border-input bg-background px-3 py-2 text-sm ring-offset-background file:border-0 file:bg-transparent file:text-sm file:font-medium file:text-foreground placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50 pl-10"
+                                   id="email" placeholder="Enter your email">
                         </div>
-                        <div class="rounded-lg border bg-card text-card-foreground shadow-sm p-6 text-center shadow-soft hover:shadow-medium transition-all duration-300">
-                            <div class="bg-accent text-accent-foreground w-12 h-12 rounded-full flex items-center justify-center mx-auto mb-4 text-xl font-bold">2</div>
-                            <h3 class="text-lg font-semibold text-foreground mb-3">Strategic Pricing</h3>
-                            <p class="text-muted-foreground text-sm leading-relaxed">Our experts set the optimal price to attract buyers and maximize returns</p>
+                    </div>
+                    <div class="space-y-1.5">
+                        <label class="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70"
+                               for="phone">Phone Number</label>
+                        <div class="relative">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"
+                                 fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                                 stroke-linejoin="round"
+                                 class="lucide lucide-phone absolute left-3 top-3 h-4 w-4 text-muted-foreground">
+                                <path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"></path>
+                            </svg>
+                            <input name="phone" required
+                                   class="flex h-10 w-full rounded-md border border-input bg-background px-3 py-2 text-sm ring-offset-background file:border-0 file:bg-transparent file:text-sm file:font-medium file:text-foreground placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50 pl-10"
+                                   id="phone" placeholder="Enter your phone number">
                         </div>
-                        <div class="rounded-lg border bg-card text-card-foreground shadow-sm p-6 text-center shadow-soft hover:shadow-medium transition-all duration-300">
-                            <div class="bg-accent text-accent-foreground w-12 h-12 rounded-full flex items-center justify-center mx-auto mb-4 text-xl font-bold">3</div>
-                            <h3 class="text-lg font-semibold text-foreground mb-3">Professional Marketing</h3>
-                            <p class="text-muted-foreground text-sm leading-relaxed">High-quality photography, virtual tours, and multi-channel marketing</p>
-                        </div>
-                        <div class="rounded-lg border bg-card text-card-foreground shadow-sm p-6 text-center shadow-soft hover:shadow-medium transition-all duration-300">
-                            <div class="bg-accent text-accent-foreground w-12 h-12 rounded-full flex items-center justify-center mx-auto mb-4 text-xl font-bold">4</div>
-                            <h3 class="text-lg font-semibold text-foreground mb-3">Closing Support</h3>
-                            <p class="text-muted-foreground text-sm leading-relaxed">Full support through negotiations, inspections, and closing procedures</p>
-                        </div>
+                    </div>
+                    <div class="md:col-span-2 space-y-1.5">
+                        <label class="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70"
+                               for="requirements">Additional Details</label>
+                        <textarea name="message"
+                                  class="flex w-full rounded-md border border-input bg-background px-3 py-2 text-sm ring-offset-background placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50 min-h-[90px]"
+                                  id="requirements"
+                                  placeholder="Tell us about your specific requirements, preferences, or any questions you have..."></textarea>
+                    </div>
+
+                    <div class="md:col-span-2 mt-5">
+                        <div class="flex flex-col items-center justify-center">
+
+                            <div class="flex flex-wrap items-baseline justify-center gap-2 text-center mb-0">
+                                <img src="{% static 'Images/Free_tag_image.png' %}" alt="Free"
+                                     class="h-10 w-auto self-center mr-1">
+                                <p class="text-lg md:text-xl text-muted-foreground">
+                                    Get your personalized recommendation
+                                    <span class="font-display font-bold text-primary text-2xl md:text-3xl tracking-tight ml-1">Absolutely FREE</span>
+                                </p>
+                            </div>
+
+                            <button type="submit"
+                                    class="w-full sm:w-auto min-w-[240px] inline-flex items-center justify-center gap-2 bg-primary hover:bg-primary/90 text-primary-foreground text-lg font-semibold py-4 px-8 rounded-lg shadow-md transition-all hover:-translate-y-0.5 active:translate-y-0 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 h-auto">
+                                Submit and Connect
+                            </button>
+
+                            <p class="text-xs text-muted-foreground mt-4">
+                                No hidden fees. No obligation.
+                            </p>
                         </div>
                     </div>
 
-                <!-- How Much Is My House Worth Section -->
-                <div class="mb-16">
-                    <div class="text-center mb-12">
-                        <h2 class="text-3xl md:text-4xl font-bold text-foreground mb-4">How Much Is My House Worth?</h2>
-                        <p class="text-muted-foreground text-lg max-w-2xl mx-auto">Understanding your home's true market value is crucial for a successful sale. Here's how we determine the right price for your property.</p>
-                    </div>
-                    <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
-                        <div class="rounded-lg border bg-card text-card-foreground shadow-sm p-6 shadow-soft hover:shadow-medium transition-all duration-300">
-                            <div class="bg-accent/10 w-12 h-12 rounded-full flex items-center justify-center mx-auto mb-4">
-                                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-search w-6 h-6 text-accent">
-                                    <circle cx="11" cy="11" r="8"></circle>
-                                    <path d="m21 21-4.35-4.35"></path>
-                                </svg>
+                </form>
             </div>
-                            <h3 class="text-lg font-semibold text-foreground mb-3">Comparative Market Analysis</h3>
-                            <p class="text-muted-foreground text-sm leading-relaxed">We analyze recently sold properties in your area with similar features, size, and condition to determine your home's market value.</p>
-        </div>
-                        <div class="rounded-lg border bg-card text-card-foreground shadow-sm p-6 shadow-soft hover:shadow-medium transition-all duration-300">
-                            <div class="bg-accent/10 w-12 h-12 rounded-full flex items-center justify-center mx-auto mb-4">
-                                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-trending-up w-6 h-6 text-accent">
-                                    <polyline points="22 7 13.5 15.5 8.5 10.5 2 17"></polyline>
-                                    <polyline points="16 7 22 7 22 13"></polyline>
-                                </svg>
-            </div>
-                            <h3 class="text-lg font-semibold text-foreground mb-3">Market Trends Analysis</h3>
-                            <p class="text-muted-foreground text-sm leading-relaxed">We track local market trends, inventory levels, and buyer demand to ensure your pricing strategy aligns with current market conditions.</p>
-        </div>
-                        <div class="rounded-lg border bg-card text-card-foreground shadow-sm p-6 shadow-soft hover:shadow-medium transition-all duration-300">
-                            <div class="bg-accent/10 w-12 h-12 rounded-full flex items-center justify-center mx-auto mb-4">
-                                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-home w-6 h-6 text-accent">
-                                    <path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"></path>
-                                    <polyline points="9,22 9,12 15,12 15,22"></polyline>
-                                </svg>
-                            </div>
-                            <h3 class="text-lg font-semibold text-foreground mb-3">Property Condition Assessment</h3>
-                            <p class="text-muted-foreground text-sm leading-relaxed">We evaluate your home's condition, recent updates, and unique features that can positively or negatively impact its market value.</p>
+
+            <!-- Our Proven Selling Process Section -->
+            <div class="mb-16">
+                <div class="text-center mb-12">
+                    <h2 class="text-3xl md:text-4xl font-bold text-foreground mb-4">Our Proven Selling Process</h2>
+                    <p class="text-muted-foreground text-lg max-w-2xl mx-auto">We've refined our process to ensure
+                        maximum results for every client. Here's how we'll help you sell your property.</p>
+                </div>
+                <div class="grid md:grid-cols-2 lg:grid-cols-4 gap-6">
+                    <div class="rounded-lg border bg-card text-card-foreground shadow-sm p-6 text-center shadow-soft hover:shadow-medium transition-all duration-300">
+                        <div class="bg-accent text-accent-foreground w-12 h-12 rounded-full flex items-center justify-center mx-auto mb-4 text-xl font-bold">
+                            1
                         </div>
+                        <h3 class="text-lg font-semibold text-foreground mb-3">Property Evaluation</h3>
+                        <p class="text-muted-foreground text-sm leading-relaxed">We conduct a comprehensive analysis of
+                            your property and market conditions</p>
                     </div>
-                    <div class="mt-8 text-center">
-                        <p class="text-muted-foreground mb-4">Ready to find out your home's true value?</p>
-                        <button onclick="scrollToForm()" class="inline-flex items-center justify-center gap-2 text-sm ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 [&_svg]:pointer-events-none [&_svg]:size-4 [&_svg]:shrink-0 hover:bg-primary/90 h-11 rounded-md bg-primary hover:bg-primary-dark text-primary-foreground font-semibold px-8 sm:px-12 border border-primary shadow-md hover:shadow-lg text-center">
-                            Get Free Home Valuation
-                        </button>
+                    <div class="rounded-lg border bg-card text-card-foreground shadow-sm p-6 text-center shadow-soft hover:shadow-medium transition-all duration-300">
+                        <div class="bg-accent text-accent-foreground w-12 h-12 rounded-full flex items-center justify-center mx-auto mb-4 text-xl font-bold">
+                            2
+                        </div>
+                        <h3 class="text-lg font-semibold text-foreground mb-3">Strategic Pricing</h3>
+                        <p class="text-muted-foreground text-sm leading-relaxed">Our experts set the optimal price to
+                            attract buyers and maximize returns</p>
+                    </div>
+                    <div class="rounded-lg border bg-card text-card-foreground shadow-sm p-6 text-center shadow-soft hover:shadow-medium transition-all duration-300">
+                        <div class="bg-accent text-accent-foreground w-12 h-12 rounded-full flex items-center justify-center mx-auto mb-4 text-xl font-bold">
+                            3
+                        </div>
+                        <h3 class="text-lg font-semibold text-foreground mb-3">Professional Marketing</h3>
+                        <p class="text-muted-foreground text-sm leading-relaxed">High-quality photography, virtual
+                            tours, and multi-channel marketing</p>
+                    </div>
+                    <div class="rounded-lg border bg-card text-card-foreground shadow-sm p-6 text-center shadow-soft hover:shadow-medium transition-all duration-300">
+                        <div class="bg-accent text-accent-foreground w-12 h-12 rounded-full flex items-center justify-center mx-auto mb-4 text-xl font-bold">
+                            4
+                        </div>
+                        <h3 class="text-lg font-semibold text-foreground mb-3">Closing Support</h3>
+                        <p class="text-muted-foreground text-sm leading-relaxed">Full support through negotiations,
+                            inspections, and closing procedures</p>
                     </div>
                 </div>
+            </div>
 
-                <!-- How to Get House Ready to Sell Section -->
-                <div class="mb-16">
-                    <div class="text-center mb-12">
-                        <h2 class="text-3xl md:text-4xl font-bold text-foreground mb-4">How to Get Your House Ready to Sell</h2>
-                        <p class="text-muted-foreground text-lg max-w-2xl mx-auto">First impressions matter. Follow our proven checklist to prepare your home for maximum appeal and faster sales.</p>
+            <!-- How Much Is My House Worth Section -->
+            <div class="mb-16">
+                <div class="text-center mb-12">
+                    <h2 class="text-3xl md:text-4xl font-bold text-foreground mb-4">How Much Is My House Worth?</h2>
+                    <p class="text-muted-foreground text-lg max-w-2xl mx-auto">Understanding your home's true market
+                        value is crucial for a successful sale. Here's how we determine the right price for your
+                        property.</p>
+                </div>
+                <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
+                    <div class="rounded-lg border bg-card text-card-foreground shadow-sm p-6 shadow-soft hover:shadow-medium transition-all duration-300">
+                        <div class="bg-accent/10 w-12 h-12 rounded-full flex items-center justify-center mx-auto mb-4">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"
+                                 fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                                 stroke-linejoin="round" class="lucide lucide-search w-6 h-6 text-accent">
+                                <circle cx="11" cy="11" r="8"></circle>
+                                <path d="m21 21-4.35-4.35"></path>
+                            </svg>
+                        </div>
+                        <h3 class="text-lg font-semibold text-foreground mb-3">Comparative Market Analysis</h3>
+                        <p class="text-muted-foreground text-sm leading-relaxed">We analyze recently sold properties in
+                            your area with similar features, size, and condition to determine your home's market
+                            value.</p>
                     </div>
-                    <div class="grid md:grid-cols-2 gap-8">
-                        <div class="space-y-6">
-                            <div class="rounded-lg border bg-card text-card-foreground shadow-sm p-6 shadow-soft">
-                                <div class="flex items-start space-x-4">
-                                    <div class="bg-accent/10 w-10 h-10 rounded-full flex items-center justify-center flex-shrink-0">
-                                        <span class="text-accent font-bold text-sm">1</span>
-                                    </div>
-                                    <div>
-                                        <h3 class="text-lg font-semibold text-foreground mb-2">Deep Clean & Declutter</h3>
-                                        <p class="text-muted-foreground text-sm leading-relaxed">Remove personal items, excess furniture, and deep clean every room. A clean, spacious home appears larger and more appealing to buyers.</p>
-                                    </div>
+                    <div class="rounded-lg border bg-card text-card-foreground shadow-sm p-6 shadow-soft hover:shadow-medium transition-all duration-300">
+                        <div class="bg-accent/10 w-12 h-12 rounded-full flex items-center justify-center mx-auto mb-4">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"
+                                 fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                                 stroke-linejoin="round" class="lucide lucide-trending-up w-6 h-6 text-accent">
+                                <polyline points="22 7 13.5 15.5 8.5 10.5 2 17"></polyline>
+                                <polyline points="16 7 22 7 22 13"></polyline>
+                            </svg>
+                        </div>
+                        <h3 class="text-lg font-semibold text-foreground mb-3">Market Trends Analysis</h3>
+                        <p class="text-muted-foreground text-sm leading-relaxed">We track local market trends, inventory
+                            levels, and buyer demand to ensure your pricing strategy aligns with current market
+                            conditions.</p>
+                    </div>
+                    <div class="rounded-lg border bg-card text-card-foreground shadow-sm p-6 shadow-soft hover:shadow-medium transition-all duration-300">
+                        <div class="bg-accent/10 w-12 h-12 rounded-full flex items-center justify-center mx-auto mb-4">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"
+                                 fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                                 stroke-linejoin="round" class="lucide lucide-home w-6 h-6 text-accent">
+                                <path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"></path>
+                                <polyline points="9,22 9,12 15,12 15,22"></polyline>
+                            </svg>
+                        </div>
+                        <h3 class="text-lg font-semibold text-foreground mb-3">Property Condition Assessment</h3>
+                        <p class="text-muted-foreground text-sm leading-relaxed">We evaluate your home's condition,
+                            recent updates, and unique features that can positively or negatively impact its market
+                            value.</p>
+                    </div>
+                </div>
+                <div class="mt-8 text-center">
+                    <p class="text-muted-foreground mb-4">Ready to find out your home's true value?</p>
+                    <button onclick="scrollToForm()"
+                            class="inline-flex items-center justify-center gap-2 text-sm ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 [&_svg]:pointer-events-none [&_svg]:size-4 [&_svg]:shrink-0 hover:bg-primary/90 h-11 rounded-md bg-primary hover:bg-primary-dark text-primary-foreground font-semibold px-8 sm:px-12 border border-primary shadow-md hover:shadow-lg text-center">
+                        Get Free Home Valuation
+                    </button>
+                </div>
+            </div>
+
+            <!-- How to Get House Ready to Sell Section -->
+            <div class="mb-16">
+                <div class="text-center mb-12">
+                    <h2 class="text-3xl md:text-4xl font-bold text-foreground mb-4">How to Get Your House Ready to
+                        Sell</h2>
+                    <p class="text-muted-foreground text-lg max-w-2xl mx-auto">First impressions matter. Follow our
+                        proven checklist to prepare your home for maximum appeal and faster sales.</p>
+                </div>
+                <div class="grid md:grid-cols-2 gap-8">
+                    <div class="space-y-6">
+                        <div class="rounded-lg border bg-card text-card-foreground shadow-sm p-6 shadow-soft">
+                            <div class="flex items-start space-x-4">
+                                <div class="bg-accent/10 w-10 h-10 rounded-full flex items-center justify-center flex-shrink-0">
+                                    <span class="text-accent font-bold text-sm">1</span>
+                                </div>
+                                <div>
+                                    <h3 class="text-lg font-semibold text-foreground mb-2">Deep Clean & Declutter</h3>
+                                    <p class="text-muted-foreground text-sm leading-relaxed">Remove personal items,
+                                        excess furniture, and deep clean every room. A clean, spacious home appears
+                                        larger and more appealing to buyers.</p>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="rounded-lg border bg-card text-card-foreground shadow-sm p-6 shadow-soft">
+                            <div class="flex items-start space-x-4">
+                                <div class="bg-accent/10 w-10 h-10 rounded-full flex items-center justify-center flex-shrink-0">
+                                    <span class="text-accent font-bold text-sm">2</span>
+                                </div>
+                                <div>
+                                    <h3 class="text-lg font-semibold text-foreground mb-2">Minor Repairs & Updates</h3>
+                                    <p class="text-muted-foreground text-sm leading-relaxed">Fix leaky faucets, squeaky
+                                        doors, and broken fixtures. Consider fresh paint, updated hardware, and modern
+                                        lighting fixtures.</p>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="rounded-lg border bg-card text-card-foreground shadow-sm p-6 shadow-soft">
+                            <div class="flex items-start space-x-4">
+                                <div class="bg-accent/10 w-10 h-10 rounded-full flex items-center justify-center flex-shrink-0">
+                                    <span class="text-accent font-bold text-sm">3</span>
+                                </div>
+                                <div>
+                                    <h3 class="text-lg font-semibold text-foreground mb-2">Curb Appeal Enhancement</h3>
+                                    <p class="text-muted-foreground text-sm leading-relaxed">Landscape the front yard,
+                                        clean the exterior, paint the front door, and ensure the entrance is welcoming
+                                        and well-lit.</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="space-y-6">
+                        <div class="rounded-lg border bg-card text-card-foreground shadow-sm p-6 shadow-soft">
+                            <div class="flex items-start space-x-4">
+                                <div class="bg-accent/10 w-10 h-10 rounded-full flex items-center justify-center flex-shrink-0">
+                                    <span class="text-accent font-bold text-sm">4</span>
+                                </div>
+                                <div>
+                                    <h3 class="text-lg font-semibold text-foreground mb-2">Professional Staging</h3>
+                                    <p class="text-muted-foreground text-sm leading-relaxed">Arrange furniture to
+                                        maximize space, add neutral decor, and create inviting living areas that help
+                                        buyers envision themselves in the home.</p>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="rounded-lg border bg-card text-card-foreground shadow-sm p-6 shadow-soft">
+                            <div class="flex items-start space-x-4">
+                                <div class="bg-accent/10 w-10 h-10 rounded-full flex items-center justify-center flex-shrink-0">
+                                    <span class="text-accent font-bold text-sm">5</span>
+                                </div>
+                                <div>
+                                    <h3 class="text-lg font-semibold text-foreground mb-2">Professional Photography</h3>
+                                    <p class="text-muted-foreground text-sm leading-relaxed">High-quality photos
+                                        showcase your home's best features and attract more potential buyers online.</p>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="rounded-lg border bg-card text-card-foreground shadow-sm p-6 shadow-soft">
+                            <div class="flex items-start space-x-4">
+                                <div class="bg-accent/10 w-10 h-10 rounded-full flex items-center justify-center flex-shrink-0">
+                                    <span class="text-accent font-bold text-sm">6</span>
+                                </div>
+                                <div>
+                                    <h3 class="text-lg font-semibold text-foreground mb-2">Pre-Listing Inspection</h3>
+                                    <p class="text-muted-foreground text-sm leading-relaxed">Address any major issues
+                                        before listing to avoid surprises during the buyer's inspection and ensure a
+                                        smooth transaction.</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="mt-8 text-center">
+                    <p class="text-muted-foreground mb-4">Need help preparing your home for sale?</p>
+                    <button onclick="scrollToForm()"
+                            class="inline-flex items-center justify-center gap-2 whitespace-nowrap text-sm ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 [&_svg]:pointer-events-none [&_svg]:size-4 [&_svg]:shrink-0 hover:bg-primary/90 h-11 rounded-md bg-primary hover:bg-primary-dark text-primary-foreground font-semibold px-8 border border-primary shadow-md hover:shadow-lg">
+                        Get Home Preparation Guide
+                    </button>
+                </div>
+            </div>
+
+
+        </div>
     </div>
-</div>
-                            <div class="rounded-lg border bg-card text-card-foreground shadow-sm p-6 shadow-soft">
-                                <div class="flex items-start space-x-4">
-                                    <div class="bg-accent/10 w-10 h-10 rounded-full flex items-center justify-center flex-shrink-0">
-                                        <span class="text-accent font-bold text-sm">2</span>
-                                    </div>
-                                    <div>
-                                        <h3 class="text-lg font-semibold text-foreground mb-2">Minor Repairs & Updates</h3>
-                                        <p class="text-muted-foreground text-sm leading-relaxed">Fix leaky faucets, squeaky doors, and broken fixtures. Consider fresh paint, updated hardware, and modern lighting fixtures.</p>
-                                    </div>
-            </div>
-        </div>
-                            <div class="rounded-lg border bg-card text-card-foreground shadow-sm p-6 shadow-soft">
-                                <div class="flex items-start space-x-4">
-                                    <div class="bg-accent/10 w-10 h-10 rounded-full flex items-center justify-center flex-shrink-0">
-                                        <span class="text-accent font-bold text-sm">3</span>
-                                    </div>
-                                    <div>
-                                        <h3 class="text-lg font-semibold text-foreground mb-2">Curb Appeal Enhancement</h3>
-                                        <p class="text-muted-foreground text-sm leading-relaxed">Landscape the front yard, clean the exterior, paint the front door, and ensure the entrance is welcoming and well-lit.</p>
-                        </div>
-                        </div>
-                            </div>
-                        </div>
-                        <div class="space-y-6">
-                            <div class="rounded-lg border bg-card text-card-foreground shadow-sm p-6 shadow-soft">
-                                <div class="flex items-start space-x-4">
-                                    <div class="bg-accent/10 w-10 h-10 rounded-full flex items-center justify-center flex-shrink-0">
-                                        <span class="text-accent font-bold text-sm">4</span>
-                                    </div>
-                                    <div>
-                                        <h3 class="text-lg font-semibold text-foreground mb-2">Professional Staging</h3>
-                                        <p class="text-muted-foreground text-sm leading-relaxed">Arrange furniture to maximize space, add neutral decor, and create inviting living areas that help buyers envision themselves in the home.</p>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="rounded-lg border bg-card text-card-foreground shadow-sm p-6 shadow-soft">
-                                <div class="flex items-start space-x-4">
-                                    <div class="bg-accent/10 w-10 h-10 rounded-full flex items-center justify-center flex-shrink-0">
-                                        <span class="text-accent font-bold text-sm">5</span>
-                                    </div>
-                                    <div>
-                                        <h3 class="text-lg font-semibold text-foreground mb-2">Professional Photography</h3>
-                                        <p class="text-muted-foreground text-sm leading-relaxed">High-quality photos showcase your home's best features and attract more potential buyers online.</p>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="rounded-lg border bg-card text-card-foreground shadow-sm p-6 shadow-soft">
-                                <div class="flex items-start space-x-4">
-                                    <div class="bg-accent/10 w-10 h-10 rounded-full flex items-center justify-center flex-shrink-0">
-                                        <span class="text-accent font-bold text-sm">6</span>
-                                    </div>
-                                    <div>
-                                        <h3 class="text-lg font-semibold text-foreground mb-2">Pre-Listing Inspection</h3>
-                                        <p class="text-muted-foreground text-sm leading-relaxed">Address any major issues before listing to avoid surprises during the buyer's inspection and ensure a smooth transaction.</p>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                        </div>
-                    <div class="mt-8 text-center">
-                        <p class="text-muted-foreground mb-4">Need help preparing your home for sale?</p>
-                        <button onclick="scrollToForm()" class="inline-flex items-center justify-center gap-2 whitespace-nowrap text-sm ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 [&_svg]:pointer-events-none [&_svg]:size-4 [&_svg]:shrink-0 hover:bg-primary/90 h-11 rounded-md bg-primary hover:bg-primary-dark text-primary-foreground font-semibold px-8 border border-primary shadow-md hover:shadow-lg">
-                            Get Home Preparation Guide
-                        </button>
-</div>
-                </div>
+</main>
 
+{% include 'Raj/footer.html' %}
+{% include 'Raj/success_popup.html' %}
 
-            </div>
-        </div>
-    </main>
-    
-    {% include 'Raj/footer.html' %}
-    {% include 'Raj/success_popup.html' %}
-    
-    <script src="{% static 'js/django-main-fixed.js' %}"></script>
-    
-    <script>
+<script src="{% static 'js/django-main-fixed.js' %}"></script>
+
+<script>
     // Handle form submission with success popup
-    document.addEventListener('DOMContentLoaded', function() {
+    document.addEventListener('DOMContentLoaded', function () {
         const form = document.querySelector('form[action="{% url 'selling' %}"]');
         if (form) {
-            form.addEventListener('submit', function(e) {
+            form.addEventListener('submit', function (e) {
                 e.preventDefault();
-                
+
                 // Get form data
                 const formData = new FormData(form);
                 const name = formData.get('name');
-                
+
                 // Show success popup
                 const message = `Thank you for your property evaluation request, ${name}! Our team will contact you within 24 hours with a comprehensive market analysis and selling strategy for your property.`;
                 showSuccessPopup(message);
-                
+
                 // Submit form after showing popup
                 setTimeout(() => {
                     form.submit();
@@ -306,23 +391,23 @@
         if (form) {
             // Find the parent container div
             const formContainer = form.closest('.rounded-lg.border.bg-card');
-            
-            formContainer.scrollIntoView({ 
+
+            formContainer.scrollIntoView({
                 behavior: 'smooth',
                 block: 'start'
             });
-            
+
             // Add a subtle highlight effect to the container
             formContainer.style.transition = 'box-shadow 0.3s ease';
             formContainer.style.boxShadow = '0 0 20px rgba(59, 130, 246, 0.5)';
-            
+
             // Remove highlight after 3 seconds
             setTimeout(() => {
                 formContainer.style.boxShadow = '';
             }, 3000);
         }
     }
-    </script>
+</script>
 </body>
 </html>
 
