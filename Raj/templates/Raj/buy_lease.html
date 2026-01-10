@@ -244,7 +244,7 @@
             </div>
         </div>
 
-            {% if properties %}
+        {% if properties %}
             <section class="py-16 bg-background">
                 <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
                     <div class="text-center mb-12">
@@ -264,7 +264,8 @@
                                         {% else %}
                                             <div class="w-full h-48 bg-muted flex items-center justify-center">
                                                 <svg xmlns="http://www.w3.org/2000/svg" width="48" height="48"
-                                                     viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                                                     viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                                                     stroke-width="2"
                                                      stroke-linecap="round" stroke-linejoin="round"
                                                      class="lucide lucide-home h-12 w-12 text-muted-foreground">
                                                     <path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"></path>
@@ -280,8 +281,10 @@
                                         <button onclick="toggleFavorite('{{ property.id }}')"
                                                 class="inline-flex items-center justify-center gap-2 whitespace-nowrap text-sm font-medium ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 [&_svg]:pointer-events-none [&_svg]:size-4 [&_svg]:shrink-0 hover:text-accent-foreground h-9 rounded-md px-3 absolute top-4 right-4 bg-background/80 hover:bg-background text-primary favorite-btn"
                                                 data-property-id="{{ property.id }}">
-                                            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"
-                                                 fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                                            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24"
+                                                 viewBox="0 0 24 24"
+                                                 fill="none" stroke="currentColor" stroke-width="2"
+                                                 stroke-linecap="round"
                                                  stroke-linejoin="round" class="lucide lucide-heart h-4 w-4">
                                                 <path d="M19 14c1.49-1.46 3-3.21 3-5.5A5.5 5.5 0 0 0 16.5 3c-1.76 0-3 .5-4.5 2-1.5-1.5-2.74-2-4.5-2A5.5 5.5 0 0 0 2 8.5c0 2.3 1.5 4.05 3 5.5l7 7Z"></path>
                                             </svg>
@@ -293,7 +296,8 @@
                                             <h3 class="text-lg font-semibold text-foreground mb-2 line-clamp-1">{{ property.title }}</h3>
                                             <div class="flex items-center text-muted-foreground mb-1">
                                                 <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24"
-                                                     viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                                                     viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                                                     stroke-width="2"
                                                      stroke-linecap="round" stroke-linejoin="round"
                                                      class="lucide lucide-map-pin h-4 w-4 mr-1">
                                                     <path d="M20 10c0 4.993-5.539 10.193-7.399 11.799a1 1 0 0 1-1.202 0C9.539 20.193 4 14.993 4 10a8 8 0 0 1 16 0"></path>
@@ -327,7 +331,8 @@
                                                     <div class="flex items-center">
                                                         <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24"
                                                              viewBox="0 0 24 24" fill="none" stroke="currentColor"
-                                                             stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
+                                                             stroke-width="2" stroke-linecap="round"
+                                                             stroke-linejoin="round"
                                                              class="lucide lucide-bed h-4 w-4 mr-1">
                                                             <path d="M2 4v16"></path>
                                                             <path d="M2 8h18a2 2 0 0 1 2 2v10"></path>
@@ -341,7 +346,8 @@
                                                     <div class="flex items-center">
                                                         <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24"
                                                              viewBox="0 0 24 24" fill="none" stroke="currentColor"
-                                                             stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
+                                                             stroke-width="2" stroke-linecap="round"
+                                                             stroke-linejoin="round"
                                                              class="lucide lucide-bath h-4 w-4 mr-1">
                                                             <path d="M10 4 8 6"></path>
                                                             <path d="M17 19v2"></path>
@@ -356,7 +362,8 @@
                                                     <div class="flex items-center">
                                                         <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24"
                                                              viewBox="0 0 24 24" fill="none" stroke="currentColor"
-                                                             stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
+                                                             stroke-width="2" stroke-linecap="round"
+                                                             stroke-linejoin="round"
                                                              class="lucide lucide-square h-4 w-4 mr-1">
                                                             <rect width="18" height="18" x="3" y="3" rx="2"></rect>
                                                         </svg>
@@ -372,27 +379,24 @@
                                                 </div>
                                             {% endif %}
                                             <button type="button"
-                                                    class="view-details inline-flex items-center justify-center gap-2 whitespace-nowrap rounded-md text-sm font-medium ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 [&_svg]:pointer-events-none [&_svg]:size-4 [&_svg]:shrink-0 border bg-background h-10 px-4 py-2 border-primary text-primary hover:bg-primary hover:text-primary-foreground"
-                                                    data-id="{{ property.id }}"
-                                                    data-title="{{ property.title|escape }}"
-                                                    data-location="{{ property.location|escape }}"
-                                                    data-price="{{ property.price }}"
-                                                    data-type="{{ property.property_type }}"
-                                                    data-bedrooms="{{ property.bedrooms|default_if_none:'' }}"
-                                                    data-bathrooms="{{ property.bathrooms|default_if_none:'' }}"
-                                                    data-area="{{ property.area_sqft|default_if_none:'' }}"
-                                                    data-description="{{ property.description|default:''|escape }}"
-                                                    data-images="{{ property.get_all_image_urls|join:'|||' }}"
-                                                    data-main-image="{{ property.get_main_image_url|default:'' }}"
-                                                    data-media='{{ property.get_all_media_urls|to_json }}'
-                                                    data-status="{{ property.property_status }}"
-                                                    data-agent-name="{{ property.listing_agent_name|default:''|escape }}"
-                                                    data-agent-link="{{ property.listing_agent_link|default:'' }}"
-                                                    data-agent-image="{{ property.get_listing_agent_image_url|default:'' }}"
-                                                    data-contact-email="{{ property.contact_email }}"
-                                                    data-contact-phone="{{ property.contact_phone }}">
-                                                View Details
-                                            </button>
+        class="view-details inline-flex items-center justify-center gap-2 whitespace-nowrap rounded-md text-sm font-medium ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 border bg-background h-10 px-4 py-2 border-primary text-primary hover:bg-primary hover:text-primary-foreground"
+        onclick="fetchAndOpenModal(this)"
+        data-id="{{ property.id }}"
+        data-title="{{ property.title|escape }}"
+        data-location="{{ property.location|escape }}"
+        data-price="{{ property.price }}"
+        data-type="{{ property.property_type }}"
+        data-bedrooms="{{ property.bedrooms|default_if_none:'' }}"
+        data-bathrooms="{{ property.bathrooms|default_if_none:'' }}"
+        data-area="{{ property.area_sqft|default_if_none:'' }}"
+        data-status="{{ property.property_status }}"
+        data-agent-name="{{ property.listing_agent_name|default:''|escape }}"
+        data-agent-link="{{ property.listing_agent_link|default:'' }}"
+        data-agent-image="{{ property.get_listing_agent_image_url|default:'' }}"
+        data-contact-email="{{ property.contact_email }}"
+        data-contact-phone="{{ property.contact_phone }}">
+    View Details
+</button>
                                         </div>
                                     </div>
                                 </div>
@@ -421,7 +425,8 @@
                                         {% else %}
                                             <div class="w-full h-48 bg-muted flex items-center justify-center">
                                                 <svg xmlns="http://www.w3.org/2000/svg" width="48" height="48"
-                                                     viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                                                     viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                                                     stroke-width="2"
                                                      stroke-linecap="round" stroke-linejoin="round"
                                                      class="lucide lucide-home h-12 w-12 text-muted-foreground">
                                                     <path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"></path>
@@ -437,8 +442,10 @@
                                         <button onclick="toggleFavorite('{{ property.id }}')"
                                                 class="inline-flex items-center justify-center gap-2 whitespace-nowrap text-sm font-medium ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 [&_svg]:pointer-events-none [&_svg]:size-4 [&_svg]:shrink-0 hover:text-accent-foreground h-9 rounded-md px-3 absolute top-4 right-4 bg-background/80 hover:bg-background text-primary favorite-btn"
                                                 data-property-id="{{ property.id }}">
-                                            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"
-                                                 fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                                            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24"
+                                                 viewBox="0 0 24 24"
+                                                 fill="none" stroke="currentColor" stroke-width="2"
+                                                 stroke-linecap="round"
                                                  stroke-linejoin="round" class="lucide lucide-heart h-4 w-4">
                                                 <path d="M19 14c1.49-1.46 3-3.21 3-5.5A5.5 5.5 0 0 0 16.5 3c-1.76 0-3 .5-4.5 2-1.5-1.5-2.74-2-4.5-2A5.5 5.5 0 0 0 2 8.5c0 2.3 1.5 4.05 3 5.5l7 7Z"></path>
                                             </svg>
@@ -450,7 +457,8 @@
                                             <h3 class="text-lg font-semibold text-foreground mb-2 line-clamp-1">{{ property.title }}</h3>
                                             <div class="flex items-center text-muted-foreground mb-1">
                                                 <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24"
-                                                     viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                                                     viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                                                     stroke-width="2"
                                                      stroke-linecap="round" stroke-linejoin="round"
                                                      class="lucide lucide-map-pin h-4 w-4 mr-1">
                                                     <path d="M20 10c0 4.993-5.539 10.193-7.399 11.799a1 1 0 0 1-1.202 0C9.539 20.193 4 14.993 4 10a8 8 0 0 1 16 0"></path>
@@ -484,7 +492,8 @@
                                                     <div class="flex items-center">
                                                         <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24"
                                                              viewBox="0 0 24 24" fill="none" stroke="currentColor"
-                                                             stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
+                                                             stroke-width="2" stroke-linecap="round"
+                                                             stroke-linejoin="round"
                                                              class="lucide lucide-bed h-4 w-4 mr-1">
                                                             <path d="M2 4v16"></path>
                                                             <path d="M2 8h18a2 2 0 0 1 2 2v10"></path>
@@ -498,7 +507,8 @@
                                                     <div class="flex items-center">
                                                         <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24"
                                                              viewBox="0 0 24 24" fill="none" stroke="currentColor"
-                                                             stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
+                                                             stroke-width="2" stroke-linecap="round"
+                                                             stroke-linejoin="round"
                                                              class="lucide lucide-bath h-4 w-4 mr-1">
                                                             <path d="M10 4 8 6"></path>
                                                             <path d="M17 19v2"></path>
@@ -513,7 +523,8 @@
                                                     <div class="flex items-center">
                                                         <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24"
                                                              viewBox="0 0 24 24" fill="none" stroke="currentColor"
-                                                             stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
+                                                             stroke-width="2" stroke-linecap="round"
+                                                             stroke-linejoin="round"
                                                              class="lucide lucide-square h-4 w-4 mr-1">
                                                             <rect width="18" height="18" x="3" y="3" rx="2"></rect>
                                                         </svg>
@@ -527,54 +538,76 @@
                                                 <div class="text-lg font-bold text-primary">
                                                     {{ property.price }}
                                                     {% if property.price and not property.price|slice:":1" == "$" %}
-                                                    /month{% endif %}
+                                                        /month{% endif %}
                                                 </div>
                                             {% endif %}
                                             <button type="button"
-                                                    class="view-details inline-flex items-center justify-center gap-2 whitespace-nowrap rounded-md text-sm font-medium ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 [&_svg]:pointer-events-none [&_svg]:size-4 [&_svg]:shrink-0 border bg-background h-10 px-4 py-2 border-primary text-primary hover:bg-primary hover:text-primary-foreground"
-                                                    data-id="{{ property.id }}"
-                                                    data-title="{{ property.title|escape }}"
-                                                    data-location="{{ property.location|escape }}"
-                                                    data-price="{{ property.price }}"
-                                                    data-type="{{ property.property_type }}"
-                                                    data-bedrooms="{{ property.bedrooms|default_if_none:'' }}"
-                                                    data-bathrooms="{{ property.bathrooms|default_if_none:'' }}"
-                                                    data-area="{{ property.area_sqft|default_if_none:'' }}"
-                                                    data-description="{{ property.description|default:''|escape }}"
-                                                    data-images="{{ property.get_all_image_urls|join:'|||' }}"
-                                                    data-main-image="{{ property.get_main_image_url|default:'' }}"
-                                                    data-media='{{ property.get_all_media_urls|to_json }}'
-                                                    data-status="{{ property.property_status }}"
-                                                    data-agent-name="{{ property.listing_agent_name|default:''|escape }}"
-                                                    data-agent-link="{{ property.listing_agent_link|default:'' }}"
-                                                    data-agent-image="{{ property.get_listing_agent_image_url|default:'' }}"
-                                                    data-contact-email="{{ property.contact_email }}"
-                                                    data-contact-phone="{{ property.contact_phone }}">
-                                                View Details
-                                            </button>
+        class="view-details inline-flex items-center justify-center gap-2 whitespace-nowrap rounded-md text-sm font-medium ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 border bg-background h-10 px-4 py-2 border-primary text-primary hover:bg-primary hover:text-primary-foreground"
+        onclick="fetchAndOpenModal(this)"
+        data-id="{{ property.id }}"
+        data-title="{{ property.title|escape }}"
+        data-location="{{ property.location|escape }}"
+        data-price="{{ property.price }}"
+        data-type="{{ property.property_type }}"
+        data-bedrooms="{{ property.bedrooms|default_if_none:'' }}"
+        data-bathrooms="{{ property.bathrooms|default_if_none:'' }}"
+        data-area="{{ property.area_sqft|default_if_none:'' }}"
+        data-status="{{ property.property_status }}"
+        data-agent-name="{{ property.listing_agent_name|default:''|escape }}"
+        data-agent-link="{{ property.listing_agent_link|default:'' }}"
+        data-agent-image="{{ property.get_listing_agent_image_url|default:'' }}"
+        data-contact-email="{{ property.contact_email }}"
+        data-contact-phone="{{ property.contact_phone }}">
+    View Details
+</button>
                                         </div>
                                     </div>
                                 </div>
                             {% endif %}
                         {% endfor %}
                     </div>
+                    <div class="flex justify-center mt-12 space-x-2">
+                        {% if properties.has_previous %}
+                            <a href="?page=
+
+
+                                    {{ properties.previous_page_number }}{% if current_type %}&property_type={{ current_type }}{% endif %}{% if search_query %}&search={{ search_query }}{% endif %}"
+                               class="px-4 py-2 bg-white border border-gray-300 rounded-md text-sm font-medium text-gray-700 hover:bg-gray-50">
+                                Previous
+                            </a>
+                        {% endif %}
+
+                        <span class="px-4 py-2 text-sm text-gray-700">
+        Page {{ properties.number }} of {{ properties.paginator.num_pages }}
+    </span>
+
+                        {% if properties.has_next %}
+                            <a href="?page=
+
+
+                                    {{ properties.next_page_number }}{% if current_type %}&property_type={{ current_type }}{% endif %}{% if search_query %}&search={{ search_query }}{% endif %}"
+                               class="px-4 py-2 bg-white border border-gray-300 rounded-md text-sm font-medium text-gray-700 hover:bg-gray-50">
+                                Next
+                            </a>
+                        {% endif %}
+                    </div>
                 </div>
             </section>
-            {% else %}
-                <div class="flex flex-col items-center justify-center py-20 px-4 mb-16">
-                    <div class="w-20 h-20 bg-muted rounded-full flex items-center justify-center mb-8">
-                        <svg xmlns="http://www.w3.org/2000/svg" width="40" height="40" viewBox="0 0 24 24" fill="none"
-                             stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
-                             class="lucide lucide-home text-muted-foreground">
-                            <path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"></path>
-                            <polyline points="9,22 9,12 15,12 15,22"></polyline>
-                        </svg>
-                    </div>
-                    <h3 class="text-2xl font-semibold text-foreground mb-4 text-center">No Properties Found</h3>
-                    <p class="text-muted-foreground text-center max-w-lg text-lg">We're working on adding more
-                        properties. Check back soon or contact us for personalized assistance.</p>
+        {% else %}
+            <div class="flex flex-col items-center justify-center py-20 px-4 mb-16">
+                <div class="w-20 h-20 bg-muted rounded-full flex items-center justify-center mb-8">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="40" height="40" viewBox="0 0 24 24" fill="none"
+                         stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
+                         class="lucide lucide-home text-muted-foreground">
+                        <path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"></path>
+                        <polyline points="9,22 9,12 15,12 15,22"></polyline>
+                    </svg>
                 </div>
-            {% endif %}
+                <h3 class="text-2xl font-semibold text-foreground mb-4 text-center">No Properties Found</h3>
+                <p class="text-muted-foreground text-center max-w-lg text-lg">We're working on adding more
+                    properties. Check back soon or contact us for personalized assistance.</p>
+            </div>
+        {% endif %}
 
     </div>
 </main>
@@ -618,7 +651,7 @@
                         </svg>
                     </button>
                     <div id="imageDots" class="absolute bottom-2 left-1/2 transform -translate-x-1/2 flex space-x-2">
-                        </div>
+                    </div>
                 </div>
             </div>
             <div class="grid md:grid-cols-2 gap-6">
@@ -723,34 +756,103 @@
     let currentMediaIndex = 0;
     let propertyMedia = []; // Array of {type: 'image'|'video', url: string, alt?: string}
 
-    // Handle "View Details" buttons safely via data attributes
-    document.addEventListener('click', function (e) {
-        const btn = e.target.closest('.view-details');
-        if (!btn) return;
-        const imagesRaw = btn.dataset.images || '';
-        openPropertyModal(
-            btn.dataset.id,
-            btn.dataset.title || '',
-            btn.dataset.location || '',
-            btn.dataset.price || '',
-            btn.dataset.type || '',
-            btn.dataset.bedrooms || '',
-            btn.dataset.bathrooms || '',
-            btn.dataset.area || '',
-            btn.dataset.description || '',
-            imagesRaw,
-            btn.dataset.status || '',
-            btn.dataset.agentName || '',
-            btn.dataset.agentLink || '',
-            btn.dataset.agentImage || '',
-            btn.dataset.mainImage || '',
-            btn.dataset.contactEmail || 'raj.gupta@kw.com',
-            btn.dataset.contactPhone || '(832) 785-0140',
-            btn.dataset.media || '[]'
-        );
-    });
+    // NEW: Function to fetch data first, then open modal
+    function fetchAndOpenModal(btn) {
+        const id = btn.dataset.id;
 
-    function openPropertyModal(id, title, location, price, propertyType, bedrooms, bathrooms, area, description, additionalImages, propertyStatus, listingAgentName, listingAgentLink, listingAgentImageUrl, mainImage, contactEmail, contactPhone, mediaData) {
+        // OPTIMIZATION: Grab the main image directly from the visible card
+        // This saves us from storing the huge image data in the button
+        const card = btn.closest('.group');
+        const mainImageSrc = card ? card.querySelector('img').src : '';
+
+        // 1. Open modal immediately
+        updateModalContent(
+            id,
+            btn.dataset.title,
+            btn.dataset.location,
+            btn.dataset.price,
+            btn.dataset.type,
+            btn.dataset.bedrooms,
+            btn.dataset.bathrooms,
+            btn.dataset.area,
+            "Loading details...",
+            "",
+            btn.dataset.status,
+            btn.dataset.agentName,
+            btn.dataset.agentLink,
+            btn.dataset.agentImage,
+            mainImageSrc, // <--- Using the image from the card
+            btn.dataset.contactEmail,
+            btn.dataset.contactPhone,
+            "[]"
+        );
+
+        document.getElementById('propertyModal').classList.remove('hidden');
+        document.body.style.overflow = 'hidden';
+
+        // 2. Fetch the heavy data (Description + All Images)
+        fetch(`/api/property/${id}/`)
+            .then(response => response.json())
+            .then(data => {
+                document.getElementById('modalDescriptionText').textContent = data.description;
+                // Update media using the ID, Title, API images, and the main image we already found
+                setupPropertyMedia(id, btn.dataset.title, JSON.stringify(data.images), mainImageSrc, JSON.stringify(data.media));
+            })
+            .catch(err => {
+                console.error("Error loading property details:", err);
+                document.getElementById('modalDescriptionText').textContent = "Failed to load additional details.";
+            });
+    }
+
+    // NEW: Handle "View Details" with API Fetch
+    function fetchAndOpenModal(btn) {
+        const id = btn.dataset.id;
+
+        // 1. Open modal immediately with basic info (Title, Price, Main Image)
+        // We pass placeholder values for the heavy data (description, images)
+        updateModalContent(
+            id,
+            btn.dataset.title,
+            btn.dataset.location,
+            btn.dataset.price,
+            btn.dataset.type,
+            btn.dataset.bedrooms,
+            btn.dataset.bathrooms,
+            btn.dataset.area,
+            "Loading details...", // Placeholder description
+            "", // No extra images yet
+            btn.dataset.status,
+            btn.dataset.agentName,
+            btn.dataset.agentLink,
+            btn.dataset.agentImage,
+            btn.dataset.mainImage, // Show main image immediately
+            btn.dataset.contactEmail,
+            btn.dataset.contactPhone,
+            "[]"
+        );
+
+        document.getElementById('propertyModal').classList.remove('hidden');
+        document.body.style.overflow = 'hidden';
+
+        // 2. Fetch the heavy data (Description + All Images) from server
+        fetch(`/api/property/${id}/`)
+            .then(response => response.json())
+            .then(data => {
+                // Update description
+                document.getElementById('modalDescriptionText').textContent = data.description;
+
+                // Load the full gallery (Main Image + API Images)
+                // We re-run the media setup with the full list
+                setupPropertyMedia(id, btn.dataset.title, JSON.stringify(data.images), btn.dataset.mainImage, JSON.stringify(data.media));
+            })
+            .catch(err => {
+                console.error("Error loading property details:", err);
+                document.getElementById('modalDescriptionText').textContent = "Failed to load additional details.";
+            });
+    }
+
+    // Helper function to update the DOM elements (Renamed from openPropertyModal)
+    function updateModalContent(id, title, location, price, propertyType, bedrooms, bathrooms, area, description, additionalImages, propertyStatus, listingAgentName, listingAgentLink, listingAgentImageUrl, mainImage, contactEmail, contactPhone, mediaData) {
         document.getElementById('modal-title').textContent = title;
         document.getElementById('modalLocation').textContent = location;
 
@@ -764,27 +866,22 @@
             contactEmailLink.href = 'mailto:' + contactEmail;
         }
 
-        // Format price - don't show for sold/leased properties
+        // Format price
         const priceElement = document.getElementById('modalPrice');
         const priceRow = priceElement.closest('.flex.justify-between');
         if (propertyStatus === 'just_sold' || propertyStatus === 'for_lease') {
-            // Hide price for sold/leased properties
             if (priceRow) priceRow.style.display = 'none';
         } else {
-            // Show price (handle as text, can be "upper 800s" or numeric)
             if (priceRow) priceRow.style.display = 'flex';
             if (price && price.trim()) {
-                // Check if price is numeric
                 const numericPrice = parseFloat(price);
                 if (!isNaN(numericPrice)) {
-                    // It's a number, format it
                     if (propertyType === 'lease') {
                         priceElement.textContent = '$' + numericPrice.toLocaleString() + '/month';
                     } else {
                         priceElement.textContent = '$' + numericPrice.toLocaleString();
                     }
                 } else {
-                    // It's text like "upper 800s", display as-is
                     priceElement.textContent = price;
                 }
             } else {
@@ -802,7 +899,7 @@
         document.getElementById('modalBathrooms').textContent = bathrooms || '-';
         document.getElementById('modalArea').textContent = area ? parseFloat(area).toLocaleString() : '-';
 
-        // Listing agent
+        // Listing agent logic
         const agentSection = document.getElementById('modalListingAgent');
         const agentNameEl = document.getElementById('modalListingAgentName');
         const agentLinkEl = document.getElementById('modalListingAgentLink');
@@ -810,7 +907,6 @@
         if (listingAgentName || listingAgentImageUrl) {
             if (agentSection) agentSection.classList.remove('hidden');
             if (agentNameEl) {
-                // Render agent name as a clickable link when URL is available
                 if (listingAgentLink) {
                     const a = document.createElement('a');
                     a.href = listingAgentLink;
@@ -841,22 +937,15 @@
             if (agentSection) agentSection.classList.add('hidden');
         }
 
-        // Handle description
-        if (description && description.trim()) {
-            document.getElementById('modalDescriptionText').textContent = description;
-            document.getElementById('modalDescription').classList.remove('hidden');
-        } else {
-            document.getElementById('modalDescription').classList.add('hidden');
-        }
+        // Description
+        document.getElementById('modalDescriptionText').textContent = description || '';
+        document.getElementById('modalDescription').classList.remove('hidden');
 
-        // Set up media (images + videos)
+        // Initial Media Setup (Main Image only)
         setupPropertyMedia(id, title, additionalImages, mainImage, mediaData);
 
-        // Set up features based on property data
+        // Features
         setupPropertyFeatures(bedrooms, bathrooms, area, propertyType);
-
-        document.getElementById('propertyModal').classList.remove('hidden');
-        document.body.style.overflow = 'hidden';
     }
 
     function parseImageList(imagesString) {

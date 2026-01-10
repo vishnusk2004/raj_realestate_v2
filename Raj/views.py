@@ -5,12 +5,14 @@ from django.core.serializers import serialize
 from django.utils.safestring import mark_safe
 from django.conf import settings
 from django.shortcuts import render, redirect, get_object_or_404
+from django.core.paginator import Paginator
 from django.http import HttpResponse, JsonResponse
 from django.contrib import messages
 from django.utils import timezone
 from django.views.decorators.csrf import csrf_exempt
 from django.db import models
-from .models import BlogTracking, BlogPost, PropertyListing, OpenHouse, OpenHouseRegistration, PropertyInquiry, MortgageInquiry, LinkTracking, Community
+from .models import BlogTracking, BlogPost, PropertyListing, OpenHouse, OpenHouseRegistration, PropertyInquiry, \
+    MortgageInquiry, LinkTracking, Community
 from .forms import BlogPostForm
 import uuid
 import json
@@ -27,7 +29,7 @@ def send_podium_webhook(tracking_data):
     """
     try:
         podium_url = "https://workflow-automation.podio.com/catch/sajz0io9683p7b0"
-        
+
         payload = {
             "event": "blog_link_opened",
             "tracking_code": tracking_data.get('tracking_code'),
@@ -40,7 +42,7 @@ def send_podium_webhook(tracking_data):
             "ip_address": tracking_data.get('ip_address'),
             "user_agent": tracking_data.get('user_agent')
         }
-        
+
         response = requests.post(podium_url, json=payload, timeout=10)
         response.raise_for_status()
         return True
@@ -48,25 +50,27 @@ def send_podium_webhook(tracking_data):
         print(f"Failed to send Podium webhook: {str(e)}")
         return False
 
+
 def home(request):
     try:
         # Debug: Print BRAND_NAME to console
         print(f"DEBUG: BRAND_NAME from settings = '{settings.BRAND_NAME}'")
         print(f"DEBUG: BRAND_NAME type = {type(settings.BRAND_NAME)}")
         print(f"DEBUG: BRAND_NAME repr = {repr(settings.BRAND_NAME)}")
-        
+
         # Check for tracking code
         customer_code = request.GET.get('code')
         if customer_code and customer_code.startswith('u-'):
             # Handle tracking
             from .webhook_utils import get_client_ip, send_link_tracking_to_crm
-            
+
             # Get system information
             ip_address = get_client_ip(request)
             user_agent = request.META.get('HTTP_USER_AGENT', '')
             referrer = request.META.get('HTTP_REFERER', '')
-            language = request.META.get('HTTP_ACCEPT_LANGUAGE', '').split(',')[0][:50] if request.META.get('HTTP_ACCEPT_LANGUAGE') else ''
-            
+            language = request.META.get('HTTP_ACCEPT_LANGUAGE', '').split(',')[0][:50] if request.META.get(
+                'HTTP_ACCEPT_LANGUAGE') else ''
+
             # Create or update tracking record
             tracking_record, created = LinkTracking.objects.get_or_create(
                 customer_code=customer_code,
@@ -77,21 +81,22 @@ def home(request):
                     'tracked_url': request.build_absolute_uri(),
                 }
             )
-            
+
             tracking_record.record_click(
                 ip_address=ip_address,
                 user_agent=user_agent,
                 referrer=referrer,
                 language=language
             )
-            
+
             # Send to CRM
             try:
                 send_link_tracking_to_crm(tracking_record, request)
             except Exception as e:
                 print(f"Failed to send link tracking to CRM: {str(e)}")
-        
-        featured_properties = Property.objects.all()[:8]  # Get the first 8 properties or however many you want to display
+
+        featured_properties = Property.objects.all()[
+                              :8]  # Get the first 8 properties or however many you want to display
 
         # Update each property's image_url to only contain the first URL
         for featured_property in featured_properties:
@@ -108,7 +113,7 @@ def home(request):
             published=True,
             property_status='just_sold'
         ).order_by('-created_at')
-        
+
         # Get Just Leased properties (12+ properties for show more) - using 'for_lease' status for now
         just_leased_properties = PropertyListing.objects.filter(
             published=True,
@@ -126,7 +131,7 @@ def home(request):
         print(f"DEBUG: BRAND_NAME from settings = '{settings.BRAND_NAME}'")
         print(f"DEBUG: BRAND_NAME type = {type(settings.BRAND_NAME)}")
         print(f"DEBUG: BRAND_NAME repr = {repr(settings.BRAND_NAME)}")
-        
+
         context = {
             'featured_properties': featured_properties,
             'just_sold_properties': just_sold_properties,
@@ -171,14 +176,14 @@ def blog(request):
         # Get filter parameters
         category = request.GET.get('category', '')
         search_query = request.GET.get('search', '')
-        
+
         # Start with published blog posts
         posts = BlogPost.objects.filter(published=True)
-        
+
         # Filter by category
         if category and category != 'all':
             posts = posts.filter(category=category)
-        
+
         # Filter by search query
         if search_query:
             posts = posts.filter(
@@ -186,10 +191,10 @@ def blog(request):
                 models.Q(content__icontains=search_query) |
                 models.Q(excerpt__icontains=search_query)
             )
-        
+
         # Order by creation date (newest first)
         posts = posts.order_by('-created_at')
-        
+
         context = {
             'posts': posts,
             'current_category': category,
@@ -210,13 +215,14 @@ def blog_detail(request, post_id):
         if customer_code and customer_code.startswith('u-'):
             # Handle tracking
             from .webhook_utils import get_client_ip, send_link_tracking_to_crm
-            
+
             # Get system information
             ip_address = get_client_ip(request)
             user_agent = request.META.get('HTTP_USER_AGENT', '')
             referrer = request.META.get('HTTP_REFERER', '')
-            language = request.META.get('HTTP_ACCEPT_LANGUAGE', '').split(',')[0][:50] if request.META.get('HTTP_ACCEPT_LANGUAGE') else ''
-            
+            language = request.META.get('HTTP_ACCEPT_LANGUAGE', '').split(',')[0][:50] if request.META.get(
+                'HTTP_ACCEPT_LANGUAGE') else ''
+
             # Create or update tracking record
             tracking_record, created = LinkTracking.objects.get_or_create(
                 customer_code=customer_code,
@@ -227,26 +233,27 @@ def blog_detail(request, post_id):
                     'tracked_url': request.build_absolute_uri(),
                 }
             )
-            
+
             tracking_record.record_click(
                 ip_address=ip_address,
                 user_agent=user_agent,
                 referrer=referrer,
                 language=language
             )
-            
+
             # Send to CRM
             try:
                 send_link_tracking_to_crm(tracking_record, request)
             except Exception as e:
                 print(f"Failed to send link tracking to CRM: {str(e)}")
-        
+
         # Get the specific blog post from database
         post = get_object_or_404(BlogPost, id=post_id, published=True)
-        
+
         # Get related posts (exclude current post, limit to 2)
-        related_posts = BlogPost.objects.filter(published=True).exclude(id=post_id).order_by('-featured', '-created_at')[:2]
-        
+        related_posts = BlogPost.objects.filter(published=True).exclude(id=post_id).order_by('-featured',
+                                                                                             '-created_at')[:2]
+
         context = {
             'post': post,
             'related_posts': related_posts,
@@ -284,16 +291,16 @@ def selling(request):
             estimated_value = request.POST.get('estimated_value', '')
             timeline = request.POST.get('timeline', '')
             message = request.POST.get('message', '')
-            
+
             # Validate required fields
             if not all([name, email, phone]):
                 messages.error(request, 'Please fill in all required fields (Name, Email, and Phone Number).')
                 return redirect('selling')
-            
+
             # Get system info
             from .webhook_utils import get_system_info
             system_info = get_system_info(request)
-            
+
             # Create and save the contact
             contact = SellingContact.objects.create(
                 name=name,
@@ -309,7 +316,7 @@ def selling(request):
                 referrer=system_info.get('referrer'),
                 language=system_info.get('language')
             )
-            
+
             # Send to CRM via webhook
             from .webhook_utils import send_to_crm, format_selling_contact_data
             form_data = {
@@ -325,13 +332,13 @@ def selling(request):
             }
             lead_data = format_selling_contact_data(form_data)
             send_to_crm('selling_contact', lead_data, request)
-            
+
             messages.success(request, 'Thank you! Our team will contact you within 24 hours.')
             return redirect('selling')
-            
+
         except Exception as e:
             messages.error(request, 'There was an error submitting your request. Please try again.')
-    
+
     context = {
         'brand_name': settings.BRAND_NAME
     }
@@ -355,15 +362,16 @@ def home_valuation(request):
             address = request.POST.get('address')
             property_type = request.POST.get('property_type')
             message = request.POST.get('message')
-            
+
             # Create a simple contact record (you can create a model for this if needed)
             # For now, we'll just show success message
-            messages.success(request, 'Your home valuation request has been submitted successfully! We will contact you within 24 hours.')
+            messages.success(request,
+                             'Your home valuation request has been submitted successfully! We will contact you within 24 hours.')
             return redirect('home_valuation')  # Redirect to clear the POST data
-            
+
         except Exception as e:
             messages.error(request, 'There was an error submitting your request. Please try again.')
-    
+
     context = {
         'brand_name': settings.BRAND_NAME
     }
@@ -383,15 +391,15 @@ def open_house(request):
             preferred_date = request.POST.get('preferred_date', '')
             preferred_time = request.POST.get('preferred_time', '')
             open_house_id = request.POST.get('open_house_id')
-            
+
             # Validate required fields
             if not all([name, email, phone, open_house_id]):
                 messages.error(request, 'Please fill in all required fields.')
                 return redirect('open_house')
-            
+
             # Get the selected open house
             open_house_obj = get_object_or_404(OpenHouse, id=open_house_id, published=True)
-            
+
             # Create the registration
             registration = OpenHouseRegistration.objects.create(
                 open_house=open_house_obj,
@@ -403,7 +411,7 @@ def open_house(request):
                 interested_in_leasing=False,
                 preferred_contact_time=preferred_time.lower() if preferred_time else 'anytime'
             )
-            
+
             # Send to CRM via webhook
             from .webhook_utils import send_to_crm, format_open_house_data
             form_data = {
@@ -425,16 +433,19 @@ def open_house(request):
             }
             lead_data = format_open_house_data(form_data)
             send_to_crm('open_house_registration', lead_data, request)
-            
-            messages.success(request, f'Thank you for registering for "{open_house_obj.title}"! We will contact you within 24 hours.')
+
+            messages.success(request,
+                             f'Thank you for registering for "{open_house_obj.title}"! We will contact you within 24 hours.')
             return redirect('open_house')  # Redirect to clear the POST data
-            
+
         except Exception as e:
-            messages.error(request, f'There was an error submitting your registration. Please try again. Error: {str(e)}')
-    
+            messages.error(request,
+                           f'There was an error submitting your registration. Please try again. Error: {str(e)}')
+
     # Get all published open house events with related images
-    open_houses = OpenHouse.objects.filter(published=True).prefetch_related('images').order_by('open_house_date', 'open_house_time')
-    
+    open_houses = OpenHouse.objects.filter(published=True).prefetch_related('images').order_by('open_house_date',
+                                                                                               'open_house_time')
+
     context = {
         'brand_name': settings.BRAND_NAME,
         'open_houses': open_houses
@@ -461,14 +472,14 @@ def tracked_blog_detail(request, tracking_code):
     try:
         # Get the tracking record
         tracking = get_object_or_404(BlogTracking, tracking_code=tracking_code)
-        
+
         # Mark as opened if not already opened
         if not tracking.is_opened:
             # Get client IP and user agent
             ip_address = request.META.get('REMOTE_ADDR')
             user_agent = request.META.get('HTTP_USER_AGENT', '')
             tracking.mark_as_opened(ip_address=ip_address, user_agent=user_agent)
-            
+
             # Send real-time notification to Podium webhook
             webhook_data = {
                 'tracking_code': str(tracking.tracking_code),
@@ -482,13 +493,15 @@ def tracked_blog_detail(request, tracking_code):
                 'user_agent': user_agent
             }
             send_podium_webhook(webhook_data)
-        
+
         # Get the blog post from database
         post = get_object_or_404(BlogPost, id=tracking.blog_post_id, published=True)
-        
+
         # Get related posts (exclude current post, limit to 2)
-        related_posts = BlogPost.objects.filter(published=True).exclude(id=tracking.blog_post_id).order_by('-featured', '-created_at')[:2]
-        
+        related_posts = BlogPost.objects.filter(published=True).exclude(id=tracking.blog_post_id).order_by('-featured',
+                                                                                                           '-created_at')[
+                        :2]
+
         context = {
             'post': post,
             'related_posts': related_posts,
@@ -496,7 +509,7 @@ def tracked_blog_detail(request, tracking_code):
             'brand_name': settings.BRAND_NAME
         }
         return render(request, 'Raj/blog_detail.html', context)
-        
+
     except Exception as e:
         return HttpResponse(f"Error in tracked blog view: {str(e)}", status=500)
 
@@ -536,7 +549,7 @@ def create_tracking_link(request):
                 data = json.loads(request.body)
             else:
                 data = request.POST
-            
+
             # Validate required fields
             blog_post_id = data.get('blog_post_id')
             if not blog_post_id:
@@ -544,7 +557,7 @@ def create_tracking_link(request):
                     'success': False,
                     'error': 'blog_post_id is required'
                 }, status=400)
-            
+
             try:
                 blog_post_id = int(blog_post_id)
             except ValueError:
@@ -552,19 +565,19 @@ def create_tracking_link(request):
                     'success': False,
                     'error': 'blog_post_id must be a valid integer'
                 }, status=400)
-            
+
             member_phone = data.get('member_phone', '').strip()
             member_email = data.get('member_email', '').strip()
             member_name = data.get('member_name', '').strip()
             crm_reference = data.get('crm_reference', '').strip()
-            
+
             # At least one contact method must be provided
             if not member_phone and not member_email:
                 return JsonResponse({
                     'success': False,
                     'error': 'At least one of member_phone or member_email must be provided'
                 }, status=400)
-            
+
             # Create tracking record
             tracking = BlogTracking.objects.create(
                 blog_post_id=blog_post_id,
@@ -573,12 +586,12 @@ def create_tracking_link(request):
                 member_phone=member_phone,
                 crm_reference=crm_reference
             )
-            
+
             # Generate the new tracking URL format
             # Use customer_code (crm_reference) if available, otherwise use tracking_code
             customer_code = crm_reference or str(tracking.tracking_code)
             tracking_url = request.build_absolute_uri(f'/blog/{blog_post_id}/{customer_code}/')
-            
+
             return JsonResponse({
                 'success': True,
                 'tracking_code': str(tracking.tracking_code),
@@ -589,13 +602,13 @@ def create_tracking_link(request):
                 'blog_post_id': blog_post_id,
                 'crm_reference': crm_reference
             })
-            
+
         except Exception as e:
             return JsonResponse({
                 'success': False,
                 'error': str(e)
             }, status=500)
-    
+
     return JsonResponse({
         'success': False,
         'error': 'Only POST requests allowed'
@@ -606,15 +619,15 @@ def tracking_dashboard(request):
     """Admin dashboard to view tracking statistics"""
     if not request.user.is_staff:
         return HttpResponse("Access denied", status=403)
-    
+
     # Get tracking statistics
     total_trackings = BlogTracking.objects.count()
     opened_trackings = BlogTracking.objects.filter(is_opened=True).count()
     unopened_trackings = total_trackings - opened_trackings
-    
+
     # Get recent trackings
     recent_trackings = BlogTracking.objects.all()[:10]
-    
+
     # Get statistics by blog post
     blog_stats = {}
     for tracking in BlogTracking.objects.all():
@@ -624,7 +637,7 @@ def tracking_dashboard(request):
         blog_stats[post_id]['total'] += 1
         if tracking.is_opened:
             blog_stats[post_id]['opened'] += 1
-    
+
     context = {
         'total_trackings': total_trackings,
         'opened_trackings': opened_trackings,
@@ -634,7 +647,7 @@ def tracking_dashboard(request):
         'blog_stats': blog_stats,
         'brand_name': settings.BRAND_NAME
     }
-    
+
     return render(request, 'Raj/tracking_dashboard.html', context)
 
 
@@ -659,7 +672,7 @@ def blog_add(request):
             return redirect('blog_admin')
     else:
         form = BlogPostForm()
-    
+
     context = {
         'form': form,
         'title': 'Add New Blog Post',
@@ -671,7 +684,7 @@ def blog_add(request):
 def blog_edit(request, post_id):
     """Edit existing blog post"""
     post = get_object_or_404(BlogPost, id=post_id)
-    
+
     if request.method == 'POST':
         form = BlogPostForm(request.POST, instance=post)
         if form.is_valid():
@@ -680,7 +693,7 @@ def blog_edit(request, post_id):
             return redirect('blog_admin')
     else:
         form = BlogPostForm(instance=post)
-    
+
     context = {
         'form': form,
         'title': f'Edit: {post.title}',
@@ -693,12 +706,12 @@ def blog_edit(request, post_id):
 def blog_delete(request, post_id):
     """Delete blog post"""
     post = get_object_or_404(BlogPost, id=post_id)
-    
+
     if request.method == 'POST':
         post.delete()
         messages.success(request, 'Blog post deleted successfully!')
         return redirect('blog_admin')
-    
+
     context = {
         'post': post,
         'brand_name': settings.BRAND_NAME
@@ -707,20 +720,21 @@ def blog_delete(request, post_id):
 
 
 def buy_lease(request):
-    """Buy/Lease properties page"""
+    """Buy/Lease properties page with Pagination"""
     # Get filter parameters
     property_type = request.GET.get('property_type', '')
     search_query = request.GET.get('search', '')
     price_range = request.GET.get('price_range', '')
     property_id = request.GET.get('property_id', '')
-    
-    # Start with published properties and include related images and videos
-    properties = PropertyListing.objects.filter(published=True).prefetch_related('images', 'videos')
-    
+
+    # 1. Start with published properties
+    # IMPORTANT: Removed .prefetch_related('images') to save memory
+    properties = PropertyListing.objects.filter(published=True)
+
     # Filter by property type
     if property_type in ['buy', 'lease']:
         properties = properties.filter(property_type=property_type)
-    
+
     # Filter by search query
     if search_query:
         properties = properties.filter(
@@ -729,7 +743,7 @@ def buy_lease(request):
             models.Q(address__icontains=search_query) |
             models.Q(description__icontains=search_query)
         )
-    
+
     # Filter by price range
     if price_range:
         try:
@@ -738,13 +752,17 @@ def buy_lease(request):
             max_price = int(max_price)
             properties = properties.filter(price__gte=min_price, price__lte=max_price)
         except (ValueError, AttributeError):
-            pass  # Invalid price range, ignore filter
-    
-    # Order by featured first, then by creation date
+            pass
+
     properties = properties.order_by('-featured', '-created_at')
-    
+
+    # --- 2. PAGINATION (This reduces page size from 14MB to ~50KB) ---
+    paginator = Paginator(properties, 12)  # Show only 12 properties per page
+    page_number = request.GET.get('page')
+    page_obj = paginator.get_page(page_number)
+
     context = {
-        'properties': properties,
+        'properties': page_obj,  # Pass the page object (12 items), not the full list
         'current_type': property_type,
         'search_query': search_query,
         'price_range': price_range,
@@ -752,6 +770,20 @@ def buy_lease(request):
         'brand_name': settings.BRAND_NAME
     }
     return render(request, 'Raj/buy_lease.html', context)
+
+
+# --- 3. ADD THIS API FUNCTION AT THE BOTTOM OF views.py ---
+def get_property_details(request, property_id):
+    """API to fetch heavy images only when clicked"""
+    try:
+        property = get_object_or_404(PropertyListing, id=property_id)
+        return JsonResponse({
+            'description': property.description,
+            'images': property.get_all_image_urls(),
+            'media': property.get_all_media_urls()
+        })
+    except Exception as e:
+        return JsonResponse({'error': str(e)}, status=500)
 
 
 def debug_images(request):
@@ -762,6 +794,7 @@ def debug_images(request):
         'brand_name': settings.BRAND_NAME
     }
     return render(request, 'Raj/debug_images.html', context)
+
 
 def debug_blog_image(request, post_id):
     """Debug page to test blog post images"""
@@ -786,26 +819,26 @@ def debug_open_house_images(request, open_house_id):
 def community_detail(request, slug):
     """Community detail page showing all properties in that community"""
     community = get_object_or_404(Community, slug=slug, published=True)
-    
+
     # Get filter parameters
     property_type = request.GET.get('property_type', '')
     property_status = request.GET.get('property_status', '')
     search_query = request.GET.get('search', '')
-    
+
     # Start with properties in this community
     properties = PropertyListing.objects.filter(
         community=community,
         published=True
     ).prefetch_related('images', 'videos')
-    
+
     # Filter by property type
     if property_type in ['buy', 'lease']:
         properties = properties.filter(property_type=property_type)
-    
+
     # Filter by property status
     if property_status:
         properties = properties.filter(property_status=property_status)
-    
+
     # Filter by search query
     if search_query:
         properties = properties.filter(
@@ -814,10 +847,10 @@ def community_detail(request, slug):
             models.Q(address__icontains=search_query) |
             models.Q(description__icontains=search_query)
         )
-    
+
     # Order by featured first, then by creation date
     properties = properties.order_by('-featured', '-created_at')
-    
+
     context = {
         'community': community,
         'properties': properties,
@@ -826,7 +859,7 @@ def community_detail(request, slug):
         'property_status_filter': property_status,
         'search_query': search_query,
     }
-    
+
     return render(request, 'Raj/community_detail.html', context)
 
 
@@ -842,16 +875,16 @@ def property_inquiry(request):
             budget_range = request.POST.get('budget_range', '')
             location = request.POST.get('location', '')
             requirements = request.POST.get('requirements', '')
-            
+
             # Validate required fields
             if not all([name, email, phone]):
                 messages.error(request, 'Please fill in all required fields.')
                 return redirect('buy_lease')
-            
+
             # Get system info
             from .webhook_utils import get_client_ip, get_system_info
             system_info = get_system_info(request)
-            
+
             # Create the inquiry with safety truncation
             inquiry = PropertyInquiry.objects.create(
                 name=name[:100] if name else None,  # Truncate to 100 chars
@@ -864,9 +897,10 @@ def property_inquiry(request):
                 ip_address=system_info.get('ip_address'),
                 user_agent=system_info.get('user_agent'),  # TextField, no truncation needed
                 referrer=system_info.get('referrer'),
-                language=system_info.get('language')[:50] if system_info.get('language') else None  # Truncate to 50 chars
+                language=system_info.get('language')[:50] if system_info.get('language') else None
+                # Truncate to 50 chars
             )
-            
+
             # Send to CRM via webhook
             from .webhook_utils import send_to_crm, format_property_inquiry_data
             form_data = {
@@ -883,14 +917,15 @@ def property_inquiry(request):
             }
             lead_data = format_property_inquiry_data(form_data)
             send_to_crm('property_inquiry', lead_data, request)
-            
-            messages.success(request, f'Thank you for your inquiry, {name}! Our team will contact you within 24 hours to help you find the perfect property.')
+
+            messages.success(request,
+                             f'Thank you for your inquiry, {name}! Our team will contact you within 24 hours to help you find the perfect property.')
             return redirect('buy_lease')
-            
+
         except Exception as e:
             messages.error(request, f'There was an error submitting your inquiry. Please try again. Error: {str(e)}')
             return redirect('buy_lease')
-    
+
     # If not POST, redirect to buy_lease page
     return redirect('buy_lease')
 
@@ -909,39 +944,39 @@ def mortgage_inquiry(request):
             loan_term = request.POST.get('loan_term', '')
             credit_score = request.POST.get('credit_score', '')
             additional_info = request.POST.get('additional_info', '')
-            
+
             # Validate required fields
             if not all([name, email, phone]):
                 messages.error(request, 'Please fill in all required fields.')
                 return redirect('mortgage_calculator')
-            
+
             # Convert numeric fields
             home_price_decimal = None
             down_payment_decimal = None
             loan_term_int = None
-            
+
             if home_price:
                 try:
                     home_price_decimal = float(home_price)
                 except ValueError:
                     pass
-            
+
             if down_payment:
                 try:
                     down_payment_decimal = float(down_payment)
                 except ValueError:
                     pass
-            
+
             if loan_term:
                 try:
                     loan_term_int = int(loan_term)
                 except ValueError:
                     pass
-            
+
             # Get system info
             from .webhook_utils import get_client_ip, get_system_info
             system_info = get_system_info(request)
-            
+
             # Create the inquiry with safety truncation
             inquiry = MortgageInquiry.objects.create(
                 name=name[:100] if name else None,  # Truncate to 100 chars
@@ -956,9 +991,10 @@ def mortgage_inquiry(request):
                 ip_address=system_info.get('ip_address'),
                 user_agent=system_info.get('user_agent'),  # TextField, no truncation needed
                 referrer=system_info.get('referrer'),
-                language=system_info.get('language')[:50] if system_info.get('language') else None  # Truncate to 50 chars
+                language=system_info.get('language')[:50] if system_info.get('language') else None
+                # Truncate to 50 chars
             )
-            
+
             # Send to CRM via webhook
             from .webhook_utils import send_to_crm, format_mortgage_inquiry_data
             form_data = {
@@ -977,14 +1013,15 @@ def mortgage_inquiry(request):
             }
             lead_data = format_mortgage_inquiry_data(form_data)
             send_to_crm('mortgage_inquiry', lead_data, request)
-            
-            messages.success(request, f'Thank you for your mortgage inquiry, {name}! Our team will analyze your situation and provide you with personalized mortgage information within 24 hours.')
+
+            messages.success(request,
+                             f'Thank you for your mortgage inquiry, {name}! Our team will analyze your situation and provide you with personalized mortgage information within 24 hours.')
             return redirect('mortgage_calculator')
-            
+
         except Exception as e:
             messages.error(request, f'There was an error submitting your inquiry. Please try again. Error: {str(e)}')
             return redirect('mortgage_calculator')
-    
+
     # If not POST, redirect to mortgage calculator page
     return redirect('mortgage_calculator')
 
@@ -1018,7 +1055,7 @@ def tracked_blog_detail_new(request, post_id, customer_code):
     try:
         # Get the blog post
         post = get_object_or_404(BlogPost, id=post_id, published=True)
-        
+
         # Also record into LinkTracking for unified tracking
         try:
             from .models import LinkTracking
@@ -1042,7 +1079,7 @@ def tracked_blog_detail_new(request, post_id, customer_code):
             send_link_tracking_to_crm(lt, request)
         except Exception:
             pass
-        
+
         # Create or get tracking record
         tracking, created = BlogTracking.objects.get_or_create(
             blog_post_id=post_id,
@@ -1053,14 +1090,14 @@ def tracked_blog_detail_new(request, post_id, customer_code):
                 'crm_reference': customer_code,
             }
         )
-        
+
         # Mark as opened if not already opened
         if not tracking.is_opened:
             # Get client IP and user agent
             ip_address = request.META.get('REMOTE_ADDR')
             user_agent = request.META.get('HTTP_USER_AGENT', '')
             tracking.mark_as_opened(ip_address=ip_address, user_agent=user_agent)
-            
+
             # Send real-time notification to Podium webhook
             webhook_data = {
                 'tracking_code': str(tracking.tracking_code),
@@ -1075,11 +1112,11 @@ def tracked_blog_detail_new(request, post_id, customer_code):
                 'referrer': request.META.get('HTTP_REFERER', ''),
                 'language': request.META.get('HTTP_ACCEPT_LANGUAGE', ''),
             }
-            
+
             # Send to CRM
             from .webhook_utils import send_link_tracking_to_crm
             send_link_tracking_to_crm(tracking, request)
-        
+
         # Render the blog post normally
         context = {
             'post': post,
@@ -1088,7 +1125,7 @@ def tracked_blog_detail_new(request, post_id, customer_code):
             'customer_code': customer_code,
         }
         return render(request, 'Raj/blog_detail.html', context)
-        
+
     except Exception as e:
         # If there's an error, redirect to the blog post without tracking
         return redirect('blog_detail', post_id=post_id)
@@ -1098,27 +1135,32 @@ def tracked_open_house(request, customer_code):
     """Tracked open house page with customer code"""
     return _tracked_page_view(request, 'open-house', 'open-house', customer_code, 'open_house')
 
+
 def tracked_selling(request, customer_code):
     """Tracked selling page with customer code"""
     return _tracked_page_view(request, 'selling', 'selling', customer_code, 'selling')
+
 
 def tracked_buy_lease(request, customer_code):
     """Tracked buy-lease page with customer code"""
     return _tracked_page_view(request, 'buy-lease', 'buy-lease', customer_code, 'buy_lease')
 
+
 def tracked_mortgage_calculator(request, customer_code):
     """Tracked mortgage calculator page with customer code"""
-    return _tracked_page_view(request, 'mortgage-calculator', 'mortgage-calculator', customer_code, 'mortgage_calculator')
+    return _tracked_page_view(request, 'mortgage-calculator', 'mortgage-calculator', customer_code,
+                              'mortgage_calculator')
+
 
 def _tracked_page_view(request, page_type, page_id, customer_code, template_name):
     """Generic tracked page view that handles tracking and renders the page"""
     try:
         from .models import LinkTracking
         from .webhook_utils import get_client_ip, send_link_tracking_to_crm
-        
+
         # Normalize code to include 'u-' prefix
         normalized_code = customer_code if customer_code.startswith('u-') else f'u-{customer_code}'
-        
+
         # Map incoming page_type to canonical type stored in DB
         canonical_type_map = {
             'buy-lease': 'buy',
@@ -1130,7 +1172,7 @@ def _tracked_page_view(request, page_type, page_id, customer_code, template_name
         }
         canonical_page_type = canonical_type_map.get(page_type, page_type)
         canonical_page_id = None  # tracked page views are section-level, no specific ID
-        
+
         # Build original URL (clean URL without tracking code)
         clean_path_map = {
             'buy-lease': '/buy-lease/',
@@ -1145,7 +1187,7 @@ def _tracked_page_view(request, page_type, page_id, customer_code, template_name
         }
         clean_path = clean_path_map.get(page_type, f'/{page_type}/')
         original_url = request.build_absolute_uri(clean_path)
-        
+
         # Create or get tracking record
         tracking, created = LinkTracking.objects.get_or_create(
             customer_code=normalized_code,
@@ -1158,7 +1200,7 @@ def _tracked_page_view(request, page_type, page_id, customer_code, template_name
                 'tracked_url': request.build_absolute_uri(),
             }
         )
-        
+
         # Record the click
         tracking.record_click(
             ip_address=get_client_ip(request),
@@ -1166,14 +1208,14 @@ def _tracked_page_view(request, page_type, page_id, customer_code, template_name
             referrer=request.META.get('HTTP_REFERER', ''),
             language=request.META.get('HTTP_ACCEPT_LANGUAGE', '')
         )
-        
+
         # Send to CRM
         send_link_tracking_to_crm(tracking, request)
-        
+
     except Exception as e:
         # If tracking fails, still render the page
         pass
-    
+
     # Render the appropriate page with tracking context
     if template_name == 'open_house':
         return open_house(request)
@@ -1195,45 +1237,50 @@ def _tracked_page_view(request, page_type, page_id, customer_code, template_name
         # Fallback to home
         return redirect('home')
 
+
 def tracked_blog_root(request, customer_code):
     """Tracked blog root page with customer code"""
     return _tracked_page_view(request, 'blog', 'blog', customer_code, 'blog')
+
 
 def tracked_terms(request, customer_code):
     """Tracked terms of service page"""
     return _tracked_page_view(request, 'terms-of-service', 'terms-of-service', customer_code, 'terms_of_service')
 
+
 def tracked_privacy(request, customer_code):
     """Tracked privacy policy page"""
     return _tracked_page_view(request, 'privacy-policy', 'privacy-policy', customer_code, 'privacy_policy')
+
 
 def tracked_cookie(request, customer_code):
     """Tracked cookie policy page"""
     return _tracked_page_view(request, 'cookie-policy', 'cookie-policy', customer_code, 'cookie_policy')
 
+
 def general_tracking_redirect(request, customer_code):
     """General tracking redirect for customer codes like /ju131"""
     # Normalize incoming code param to include 'u-' prefix
     normalized_code = customer_code if customer_code.startswith('u-') else f'u-{customer_code}'
-    
+
     # List of protected URL patterns that should NOT be treated as tracking
     protected_patterns = [
-        'admin', 'buy-lease', 'selling', 'blog', 'open-house', 
-        'mortgage-calculator', 'terms-of-service', 'privacy-policy', 
+        'admin', 'buy-lease', 'selling', 'blog', 'open-house',
+        'mortgage-calculator', 'terms-of-service', 'privacy-policy',
         'cookie-policy', 'static', 'media', 'favicon.ico',
         'api', 'tracking-dashboard', 'blog-admin'
     ]
-    
+
     # Check if customer_code matches a protected pattern
     if normalized_code in protected_patterns:
         from django.http import Http404
         raise Http404("Page not found")
-    
+
     # Create a general tracking record
     try:
         from .models import LinkTracking
         from .webhook_utils import get_client_ip, send_link_tracking_to_crm
-        
+
         # Create or get tracking record
         tracking, created = LinkTracking.objects.get_or_create(
             customer_code=normalized_code,
@@ -1246,7 +1293,7 @@ def general_tracking_redirect(request, customer_code):
                 'tracked_url': request.build_absolute_uri(),
             }
         )
-        
+
         # Record the click
         tracking.record_click(
             ip_address=get_client_ip(request),
@@ -1254,14 +1301,14 @@ def general_tracking_redirect(request, customer_code):
             referrer=request.META.get('HTTP_REFERER', ''),
             language=request.META.get('HTTP_ACCEPT_LANGUAGE', '')
         )
-        
+
         # Send to CRM
         send_link_tracking_to_crm(tracking, request)
-        
+
     except Exception as e:
         # If tracking fails, still redirect to home
         pass
-    
+
     # Redirect to home page with tracking
     return redirect('home')
 
