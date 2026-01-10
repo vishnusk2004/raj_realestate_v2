@@ -12,13 +12,11 @@
           content="Find your perfect property with {{ brand_name }}. Browse our extensive collection of properties for sale and lease.">
     <link rel="icon" type="image/png" href="{% static 'favicon.png' %}">
 
-    <!-- Google Fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Playfair+Display:wght@400;500;600;700&display=swap"
           rel="stylesheet">
 
-    <!-- Custom CSS -->
     <link rel="stylesheet" href="{% static 'css/django-main.css' %}">
     <style>
         /* Fix dropdown styling */
@@ -152,8 +150,7 @@
                 <h1 class="text-4xl md:text-5xl font-bold text-foreground mb-4">Find Your Perfect Property</h1>
             </div>
 
-            <!-- Contact Form -->
-            <div class="rounded-lg border bg-card text-card-foreground shadow-sm p-6 shadow-medium mb-8">
+            <div class="rounded-lg border bg-card text-card-foreground shadow-sm p-6 shadow-medium mb-16">
                 <div class="text-center mb-6">
                     <p class="text-muted-foreground text-base">Tell us more by filling the form below and let our expert
                         team help you</p>
@@ -245,198 +242,325 @@
 
                 </form>
             </div>
+        </div>
 
-            <!-- Search and Filter Bar -->
-            {% comment %}
-                <!-- DON'T REMOVE THIS COMMENT - CLIENT REQUESTED TO HIDE SEARCH/FILTER -->
-                <div class="rounded-lg border bg-card text-card-foreground shadow-sm p-6 mb-8 shadow-soft">
-                    <form method="GET" class="grid md:grid-cols-4 gap-4">
-                        <div class="relative">
-                            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-search absolute left-3 top-3 h-4 w-4 text-muted-foreground">
-                                <circle cx="11" cy="11" r="8"></circle>
-                                <path d="m21 21-4.3-4.3"></path>
-                            </svg>
-                            <input name="search" class="flex h-10 w-full rounded-md border border-input bg-background px-3 py-2 text-base ring-offset-background file:border-0 file:bg-transparent file:text-sm file:font-medium file:text-foreground placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50 md:text-sm pl-10" placeholder="Search properties..." value="{{ request.GET.search }}">
-                        </div>
-                        <select name="property_type" class="h-10 w-full rounded-md border border-input bg-background px-3 py-2 text-sm ring-offset-background focus:outline-none focus:ring-2 focus:ring-ring focus:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50 appearance-none cursor-pointer">
-                            <option value="">Property Type</option>
-                            <option value="buy" {% if request.GET.property_type == 'buy' %}selected{% endif %}>For Sale</option>
-                            <option value="lease" {% if request.GET.property_type == 'lease' %}selected{% endif %}>For Lease</option>
-                            </select>
-                        <select name="price_range" class="h-10 w-full rounded-md border border-input bg-background px-3 py-2 text-sm ring-offset-background focus:outline-none focus:ring-2 focus:ring-ring focus:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50 appearance-none cursor-pointer">
-                            <option value="">Price Range</option>
-                            <option value="0-500000" {% if request.GET.price_range == '0-500000' %}selected{% endif %}>Under $500K</option>
-                            <option value="500000-1000000" {% if request.GET.price_range == '500000-1000000' %}selected{% endif %}>$500K - $1M</option>
-                            <option value="1000000-2000000" {% if request.GET.price_range == '1000000-2000000' %}selected{% endif %}>$1M - $2M</option>
-                            <option value="2000000-5000000" {% if request.GET.price_range == '2000000-5000000' %}selected{% endif %}>$2M - $5M</option>
-                            <option value="5000000-999999999" {% if request.GET.price_range == '5000000-999999999' %}selected{% endif %}>$5M+</option>
-                        </select>
-                        <button type="submit" class="inline-flex items-center justify-center gap-2 whitespace-nowrap rounded-md text-sm font-medium ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 [&_svg]:pointer-events-none [&_svg]:size-4 [&_svg]:shrink-0 h-10 px-4 py-2 bg-primary hover:bg-primary-dark text-primary-foreground">
-                            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-filter w-4 h-4 mr-2">
-                                <polygon points="22 3 2 3 10 12.46 10 19 14 21 14 12.46 22 3"></polygon>
-                            </svg>
-                                Search
-                            </button>
-                    </form>
-                </div>
-                {% endcomment %}
-
-            <!-- Properties Grid -->
-            <!-- DON'T REMOVE THIS COMMENT - CLIENT REQUESTED TO HIDE LISTINGS -->
             {% if properties %}
-                <div class="grid md:grid-cols-2 lg:grid-cols-4 gap-6 mb-16">
-                    {% for property in properties %}
-                        <div class="rounded-lg border bg-card text-card-foreground shadow-sm group overflow-hidden shadow-soft hover:shadow-medium transition-all duration-300 animate-fade-in"
-                             data-property-id="{{ property.id }}">
-                            <div class="relative overflow-hidden">
-                                {% if property.get_main_image_url %}
-                                    <img src="{{ property.get_main_image_url }}" alt="{{ property.title }}"
-                                         class="w-full h-48 object-cover group-hover:scale-105 transition-transform duration-300"
-                                         loading="lazy" decoding="async">
-                                {% else %}
-                                    <div class="w-full h-48 bg-muted flex items-center justify-center">
-                                        <svg xmlns="http://www.w3.org/2000/svg" width="48" height="48"
-                                             viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
-                                             stroke-linecap="round" stroke-linejoin="round"
-                                             class="lucide lucide-home h-12 w-12 text-muted-foreground">
-                                            <path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"></path>
-                                            <polyline points="9,22 9,12 15,12 15,22"></polyline>
-                                        </svg>
+            <section class="py-16 bg-background">
+                <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+                    <div class="text-center mb-12">
+                        <h2 class="text-3xl md:text-4xl font-bold text-foreground mb-4">Properties For Sale</h2>
+                    </div>
+
+                    <div class="grid md:grid-cols-2 lg:grid-cols-4 gap-6">
+                        {% for property in properties %}
+                            {% if property.property_type == 'buy' %}
+                                <div class="rounded-lg border bg-card text-card-foreground shadow-sm group overflow-hidden shadow-soft hover:shadow-medium transition-all duration-300 animate-fade-in"
+                                     data-property-id="{{ property.id }}">
+                                    <div class="relative overflow-hidden">
+                                        {% if property.get_main_image_url %}
+                                            <img src="{{ property.get_main_image_url }}" alt="{{ property.title }}"
+                                                 class="w-full h-48 object-cover group-hover:scale-105 transition-transform duration-300"
+                                                 loading="lazy" decoding="async">
+                                        {% else %}
+                                            <div class="w-full h-48 bg-muted flex items-center justify-center">
+                                                <svg xmlns="http://www.w3.org/2000/svg" width="48" height="48"
+                                                     viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                                                     stroke-linecap="round" stroke-linejoin="round"
+                                                     class="lucide lucide-home h-12 w-12 text-muted-foreground">
+                                                    <path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"></path>
+                                                    <polyline points="9,22 9,12 15,12 15,22"></polyline>
+                                                </svg>
+                                            </div>
+                                        {% endif %}
+                                        <div class="absolute top-4 left-4 flex gap-2 flex-wrap">
+                                            <div class="inline-flex items-center rounded-full border px-2.5 py-0.5 text-xs font-semibold transition-colors focus:outline-none focus:ring-2 focus:ring-ring focus:ring-offset-2 border-transparent bg-accent text-accent-foreground">
+                                                {{ property.get_property_status_display }}
+                                            </div>
+                                        </div>
+                                        <button onclick="toggleFavorite('{{ property.id }}')"
+                                                class="inline-flex items-center justify-center gap-2 whitespace-nowrap text-sm font-medium ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 [&_svg]:pointer-events-none [&_svg]:size-4 [&_svg]:shrink-0 hover:text-accent-foreground h-9 rounded-md px-3 absolute top-4 right-4 bg-background/80 hover:bg-background text-primary favorite-btn"
+                                                data-property-id="{{ property.id }}">
+                                            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"
+                                                 fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                                                 stroke-linejoin="round" class="lucide lucide-heart h-4 w-4">
+                                                <path d="M19 14c1.49-1.46 3-3.21 3-5.5A5.5 5.5 0 0 0 16.5 3c-1.76 0-3 .5-4.5 2-1.5-1.5-2.74-2-4.5-2A5.5 5.5 0 0 0 2 8.5c0 2.3 1.5 4.05 3 5.5l7 7Z"></path>
+                                            </svg>
+                                        </button>
                                     </div>
-                                {% endif %}
-                                <div class="absolute top-4 left-4 flex gap-2 flex-wrap">
-                                    <div class="inline-flex items-center rounded-full border px-2.5 py-0.5 text-xs font-semibold transition-colors focus:outline-none focus:ring-2 focus:ring-ring focus:ring-offset-2 border-transparent bg-primary text-primary-foreground">
-                                        {{ property.get_property_status_display }}
-                                    </div>
-                                </div>
-                                <button onclick="toggleFavorite('{{ property.id }}')"
-                                        class="inline-flex items-center justify-center gap-2 whitespace-nowrap text-sm font-medium ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 [&_svg]:pointer-events-none [&_svg]:size-4 [&_svg]:shrink-0 hover:text-accent-foreground h-9 rounded-md px-3 absolute top-4 right-4 bg-background/80 hover:bg-background text-primary favorite-btn"
-                                        data-property-id="{{ property.id }}">
-                                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"
-                                         fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
-                                         stroke-linejoin="round" class="lucide lucide-heart h-4 w-4">
-                                        <path d="M19 14c1.49-1.46 3-3.21 3-5.5A5.5 5.5 0 0 0 16.5 3c-1.76 0-3 .5-4.5 2-1.5-1.5-2.74-2-4.5-2A5.5 5.5 0 0 0 2 8.5c0 2.3 1.5 4.05 3 5.5l7 7Z"></path>
-                                    </svg>
-                                </button>
-                            </div>
-                            <div class="p-6 space-y-4">
-                                <div>
-                                    <h3 class="text-lg font-semibold text-foreground mb-2 line-clamp-1">{{ property.title }}</h3>
-                                    <div class="flex items-center text-muted-foreground mb-1">
-                                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24"
-                                             viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
-                                             stroke-linecap="round" stroke-linejoin="round"
-                                             class="lucide lucide-map-pin h-4 w-4 mr-1">
-                                            <path d="M20 10c0 4.993-5.539 10.193-7.399 11.799a1 1 0 0 1-1.202 0C9.539 20.193 4 14.993 4 10a8 8 0 0 1 16 0"></path>
-                                            <circle cx="12" cy="10" r="3"></circle>
-                                        </svg>
-                                        <span class="text-sm">{{ property.location }}</span>
-                                    </div>
-                                    {% if property.listing_agent_name %}
-                                        <div class="flex items-center gap-2 mt-2">
-                                            {% if property.get_listing_agent_image_url %}
-                                                <img src="{{ property.get_listing_agent_image_url }}"
-                                                     alt="{{ property.listing_agent_name }}"
-                                                     class="w-8 h-8 rounded-full object-cover border border-gray-200">
+
+                                    <div class="p-6 space-y-4">
+                                        <div>
+                                            <h3 class="text-lg font-semibold text-foreground mb-2 line-clamp-1">{{ property.title }}</h3>
+                                            <div class="flex items-center text-muted-foreground mb-1">
+                                                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24"
+                                                     viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                                                     stroke-linecap="round" stroke-linejoin="round"
+                                                     class="lucide lucide-map-pin h-4 w-4 mr-1">
+                                                    <path d="M20 10c0 4.993-5.539 10.193-7.399 11.799a1 1 0 0 1-1.202 0C9.539 20.193 4 14.993 4 10a8 8 0 0 1 16 0"></path>
+                                                    <circle cx="12" cy="10" r="3"></circle>
+                                                </svg>
+                                                <span class="text-sm">{{ property.location }}</span>
+                                            </div>
+                                            {% if property.listing_agent_name %}
+                                                <div class="flex items-center gap-2 mt-2">
+                                                    {% if property.get_listing_agent_image_url %}
+                                                        <img src="{{ property.get_listing_agent_image_url }}"
+                                                             alt="{{ property.listing_agent_name }}"
+                                                             class="w-8 h-8 rounded-full object-cover border border-gray-200">
+                                                    {% endif %}
+                                                    <p class="text-xs text-muted-foreground">
+                                                        Listing Agent:
+                                                        {% if property.listing_agent_link %}
+                                                            <a href="{{ property.listing_agent_link }}" target="_blank"
+                                                               rel="noopener noreferrer"
+                                                               class="text-primary hover:underline font-medium">{{ property.listing_agent_name }}</a>
+                                                        {% else %}
+                                                            <span class="font-medium">{{ property.listing_agent_name }}</span>
+                                                        {% endif %}
+                                                    </p>
+                                                </div>
                                             {% endif %}
-                                            <p class="text-xs text-muted-foreground">
-                                                Listing Agent:
-                                                {% if property.listing_agent_link %}
-                                                    <a href="{{ property.listing_agent_link }}" target="_blank"
-                                                       rel="noopener noreferrer"
-                                                       class="text-primary hover:underline font-medium">{{ property.listing_agent_name }}</a>
-                                                {% else %}
-                                                    <span class="font-medium">{{ property.listing_agent_name }}</span>
+                                        </div>
+                                        <div class="flex items-center justify-between text-sm text-muted-foreground">
+                                            <div class="flex items-center space-x-4">
+                                                {% if property.bedrooms %}
+                                                    <div class="flex items-center">
+                                                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24"
+                                                             viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                                                             stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
+                                                             class="lucide lucide-bed h-4 w-4 mr-1">
+                                                            <path d="M2 4v16"></path>
+                                                            <path d="M2 8h18a2 2 0 0 1 2 2v10"></path>
+                                                            <path d="M2 17h20"></path>
+                                                            <path d="M6 8v9"></path>
+                                                        </svg>
+                                                        <span>{{ property.bedrooms }}</span>
+                                                    </div>
                                                 {% endif %}
-                                            </p>
+                                                {% if property.bathrooms %}
+                                                    <div class="flex items-center">
+                                                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24"
+                                                             viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                                                             stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
+                                                             class="lucide lucide-bath h-4 w-4 mr-1">
+                                                            <path d="M10 4 8 6"></path>
+                                                            <path d="M17 19v2"></path>
+                                                            <path d="M2 12h20"></path>
+                                                            <path d="M7 19v2"></path>
+                                                            <path d="M9 5 7.621 3.621A2.121 2.121 0 0 0 4 5v12a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2v-5"></path>
+                                                        </svg>
+                                                        <span>{{ property.bathrooms }}</span>
+                                                    </div>
+                                                {% endif %}
+                                                {% if property.area_sqft %}
+                                                    <div class="flex items-center">
+                                                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24"
+                                                             viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                                                             stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
+                                                             class="lucide lucide-square h-4 w-4 mr-1">
+                                                            <rect width="18" height="18" x="3" y="3" rx="2"></rect>
+                                                        </svg>
+                                                        <span>{{ property.area_sqft|floatformat:0 }}</span>
+                                                    </div>
+                                                {% endif %}
+                                            </div>
                                         </div>
-                                    {% endif %}
-                                </div>
-                                <div class="flex items-center justify-between text-sm text-muted-foreground">
-                                    <div class="flex items-center space-x-4">
-                                        {% if property.bedrooms %}
-                                            <div class="flex items-center">
-                                                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24"
-                                                     viewBox="0 0 24 24" fill="none" stroke="currentColor"
-                                                     stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
-                                                     class="lucide lucide-bed h-4 w-4 mr-1">
-                                                    <path d="M2 4v16"></path>
-                                                    <path d="M2 8h18a2 2 0 0 1 2 2v10"></path>
-                                                    <path d="M2 17h20"></path>
-                                                    <path d="M6 8v9"></path>
-                                                </svg>
-                                                <span>{{ property.bedrooms }}</span>
-                                            </div>
-                                        {% endif %}
-                                        {% if property.bathrooms %}
-                                            <div class="flex items-center">
-                                                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24"
-                                                     viewBox="0 0 24 24" fill="none" stroke="currentColor"
-                                                     stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
-                                                     class="lucide lucide-bath h-4 w-4 mr-1">
-                                                    <path d="M10 4 8 6"></path>
-                                                    <path d="M17 19v2"></path>
-                                                    <path d="M2 12h20"></path>
-                                                    <path d="M7 19v2"></path>
-                                                    <path d="M9 5 7.621 3.621A2.121 2.121 0 0 0 4 5v12a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2v-5"></path>
-                                                </svg>
-                                                <span>{{ property.bathrooms }}</span>
-                                            </div>
-                                        {% endif %}
-                                        {% if property.area_sqft %}
-                                            <div class="flex items-center">
-                                                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24"
-                                                     viewBox="0 0 24 24" fill="none" stroke="currentColor"
-                                                     stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
-                                                     class="lucide lucide-square h-4 w-4 mr-1">
-                                                    <rect width="18" height="18" x="3" y="3" rx="2"></rect>
-                                                </svg>
-                                                <span>{{ property.area_sqft|floatformat:0 }}</span>
-                                            </div>
-                                        {% endif %}
+                                        <div class="flex items-center justify-between pt-4 border-t">
+                                            {% if property.property_status != 'just_sold' and property.property_status != 'for_lease' %}
+                                                <div class="text-lg font-bold text-primary">
+                                                    {{ property.price }}
+                                                </div>
+                                            {% endif %}
+                                            <button type="button"
+                                                    class="view-details inline-flex items-center justify-center gap-2 whitespace-nowrap rounded-md text-sm font-medium ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 [&_svg]:pointer-events-none [&_svg]:size-4 [&_svg]:shrink-0 border bg-background h-10 px-4 py-2 border-primary text-primary hover:bg-primary hover:text-primary-foreground"
+                                                    data-id="{{ property.id }}"
+                                                    data-title="{{ property.title|escape }}"
+                                                    data-location="{{ property.location|escape }}"
+                                                    data-price="{{ property.price }}"
+                                                    data-type="{{ property.property_type }}"
+                                                    data-bedrooms="{{ property.bedrooms|default_if_none:'' }}"
+                                                    data-bathrooms="{{ property.bathrooms|default_if_none:'' }}"
+                                                    data-area="{{ property.area_sqft|default_if_none:'' }}"
+                                                    data-description="{{ property.description|default:''|escape }}"
+                                                    data-images="{{ property.get_all_image_urls|join:'|||' }}"
+                                                    data-main-image="{{ property.get_main_image_url|default:'' }}"
+                                                    data-media='{{ property.get_all_media_urls|to_json }}'
+                                                    data-status="{{ property.property_status }}"
+                                                    data-agent-name="{{ property.listing_agent_name|default:''|escape }}"
+                                                    data-agent-link="{{ property.listing_agent_link|default:'' }}"
+                                                    data-agent-image="{{ property.get_listing_agent_image_url|default:'' }}"
+                                                    data-contact-email="{{ property.contact_email }}"
+                                                    data-contact-phone="{{ property.contact_phone }}">
+                                                View Details
+                                            </button>
+                                        </div>
                                     </div>
                                 </div>
-                                <div class="flex items-center justify-between pt-4 border-t">
-                                    {% if property.property_status != 'just_sold' and property.property_status != 'for_lease' %}
-                                        <div class="text-lg font-bold text-primary">
-                                            {% if property.property_type == 'lease' %}
-                                                {{ property.price }}
-                                                {% if property.price and not property.price|slice:":1" == "$" %}
-                                                    /month{% endif %}
-                                            {% else %}
-                                                {{ property.price }}
+                            {% endif %}
+                        {% endfor %}
+                    </div>
+                </div>
+            </section>
+
+            <section class="py-16 bg-surface-gradient">
+                <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+                    <div class="text-center mb-12">
+                        <h2 class="text-3xl md:text-4xl font-bold text-foreground mb-4">Properties For Lease</h2>
+                    </div>
+
+                    <div class="grid md:grid-cols-2 lg:grid-cols-4 gap-6">
+                        {% for property in properties %}
+                            {% if property.property_type == 'lease' %}
+                                <div class="rounded-lg border bg-card text-card-foreground shadow-sm group overflow-hidden shadow-soft hover:shadow-medium transition-all duration-300 animate-fade-in"
+                                     data-property-id="{{ property.id }}">
+                                    <div class="relative overflow-hidden">
+                                        {% if property.get_main_image_url %}
+                                            <img src="{{ property.get_main_image_url }}" alt="{{ property.title }}"
+                                                 class="w-full h-48 object-cover group-hover:scale-105 transition-transform duration-300"
+                                                 loading="lazy" decoding="async">
+                                        {% else %}
+                                            <div class="w-full h-48 bg-muted flex items-center justify-center">
+                                                <svg xmlns="http://www.w3.org/2000/svg" width="48" height="48"
+                                                     viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                                                     stroke-linecap="round" stroke-linejoin="round"
+                                                     class="lucide lucide-home h-12 w-12 text-muted-foreground">
+                                                    <path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"></path>
+                                                    <polyline points="9,22 9,12 15,12 15,22"></polyline>
+                                                </svg>
+                                            </div>
+                                        {% endif %}
+                                        <div class="absolute top-4 left-4 flex gap-2 flex-wrap">
+                                            <div class="inline-flex items-center rounded-full border px-2.5 py-0.5 text-xs font-semibold transition-colors focus:outline-none focus:ring-2 focus:ring-ring focus:ring-offset-2 border-transparent bg-accent text-accent-foreground">
+                                                {{ property.get_property_status_display }}
+                                            </div>
+                                        </div>
+                                        <button onclick="toggleFavorite('{{ property.id }}')"
+                                                class="inline-flex items-center justify-center gap-2 whitespace-nowrap text-sm font-medium ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 [&_svg]:pointer-events-none [&_svg]:size-4 [&_svg]:shrink-0 hover:text-accent-foreground h-9 rounded-md px-3 absolute top-4 right-4 bg-background/80 hover:bg-background text-primary favorite-btn"
+                                                data-property-id="{{ property.id }}">
+                                            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"
+                                                 fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                                                 stroke-linejoin="round" class="lucide lucide-heart h-4 w-4">
+                                                <path d="M19 14c1.49-1.46 3-3.21 3-5.5A5.5 5.5 0 0 0 16.5 3c-1.76 0-3 .5-4.5 2-1.5-1.5-2.74-2-4.5-2A5.5 5.5 0 0 0 2 8.5c0 2.3 1.5 4.05 3 5.5l7 7Z"></path>
+                                            </svg>
+                                        </button>
+                                    </div>
+
+                                    <div class="p-6 space-y-4">
+                                        <div>
+                                            <h3 class="text-lg font-semibold text-foreground mb-2 line-clamp-1">{{ property.title }}</h3>
+                                            <div class="flex items-center text-muted-foreground mb-1">
+                                                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24"
+                                                     viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                                                     stroke-linecap="round" stroke-linejoin="round"
+                                                     class="lucide lucide-map-pin h-4 w-4 mr-1">
+                                                    <path d="M20 10c0 4.993-5.539 10.193-7.399 11.799a1 1 0 0 1-1.202 0C9.539 20.193 4 14.993 4 10a8 8 0 0 1 16 0"></path>
+                                                    <circle cx="12" cy="10" r="3"></circle>
+                                                </svg>
+                                                <span class="text-sm">{{ property.location }}</span>
+                                            </div>
+                                            {% if property.listing_agent_name %}
+                                                <div class="flex items-center gap-2 mt-2">
+                                                    {% if property.get_listing_agent_image_url %}
+                                                        <img src="{{ property.get_listing_agent_image_url }}"
+                                                             alt="{{ property.listing_agent_name }}"
+                                                             class="w-8 h-8 rounded-full object-cover border border-gray-200">
+                                                    {% endif %}
+                                                    <p class="text-xs text-muted-foreground">
+                                                        Listing Agent:
+                                                        {% if property.listing_agent_link %}
+                                                            <a href="{{ property.listing_agent_link }}" target="_blank"
+                                                               rel="noopener noreferrer"
+                                                               class="text-primary hover:underline font-medium">{{ property.listing_agent_name }}</a>
+                                                        {% else %}
+                                                            <span class="font-medium">{{ property.listing_agent_name }}</span>
+                                                        {% endif %}
+                                                    </p>
+                                                </div>
                                             {% endif %}
                                         </div>
-                                    {% endif %}
-                                    <button type="button"
-                                            class="view-details inline-flex items-center justify-center gap-2 whitespace-nowrap rounded-md text-sm font-medium ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 [&_svg]:pointer-events-none [&_svg]:size-4 [&_svg]:shrink-0 border bg-background h-10 px-4 py-2 border-primary text-primary hover:bg-primary hover:text-primary-foreground"
-                                            data-id="{{ property.id }}"
-                                            data-title="{{ property.title|escape }}"
-                                            data-location="{{ property.location|escape }}"
-                                            data-price="{{ property.price }}"
-                                            data-type="{{ property.property_type }}"
-                                            data-bedrooms="{{ property.bedrooms|default_if_none:'' }}"
-                                            data-bathrooms="{{ property.bathrooms|default_if_none:'' }}"
-                                            data-area="{{ property.area_sqft|default_if_none:'' }}"
-                                            data-description="{{ property.description|default:''|escape }}"
-                                            data-images="{{ property.get_all_image_urls|join:'|||' }}"
-                                            data-main-image="{{ property.get_main_image_url|default:'' }}"
-                                            data-media='{{ property.get_all_media_urls|to_json }}'
-                                            data-status="{{ property.property_status }}"
-                                            data-agent-name="{{ property.listing_agent_name|default:''|escape }}"
-                                            data-agent-link="{{ property.listing_agent_link|default:'' }}"
-                                            data-agent-image="{{ property.get_listing_agent_image_url|default:'' }}"
-                                            data-contact-email="{{ property.contact_email }}"
-                                            data-contact-phone="{{ property.contact_phone }}">
-                                        View Details
-                                    </button>
+                                        <div class="flex items-center justify-between text-sm text-muted-foreground">
+                                            <div class="flex items-center space-x-4">
+                                                {% if property.bedrooms %}
+                                                    <div class="flex items-center">
+                                                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24"
+                                                             viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                                                             stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
+                                                             class="lucide lucide-bed h-4 w-4 mr-1">
+                                                            <path d="M2 4v16"></path>
+                                                            <path d="M2 8h18a2 2 0 0 1 2 2v10"></path>
+                                                            <path d="M2 17h20"></path>
+                                                            <path d="M6 8v9"></path>
+                                                        </svg>
+                                                        <span>{{ property.bedrooms }}</span>
+                                                    </div>
+                                                {% endif %}
+                                                {% if property.bathrooms %}
+                                                    <div class="flex items-center">
+                                                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24"
+                                                             viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                                                             stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
+                                                             class="lucide lucide-bath h-4 w-4 mr-1">
+                                                            <path d="M10 4 8 6"></path>
+                                                            <path d="M17 19v2"></path>
+                                                            <path d="M2 12h20"></path>
+                                                            <path d="M7 19v2"></path>
+                                                            <path d="M9 5 7.621 3.621A2.121 2.121 0 0 0 4 5v12a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2v-5"></path>
+                                                        </svg>
+                                                        <span>{{ property.bathrooms }}</span>
+                                                    </div>
+                                                {% endif %}
+                                                {% if property.area_sqft %}
+                                                    <div class="flex items-center">
+                                                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24"
+                                                             viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                                                             stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
+                                                             class="lucide lucide-square h-4 w-4 mr-1">
+                                                            <rect width="18" height="18" x="3" y="3" rx="2"></rect>
+                                                        </svg>
+                                                        <span>{{ property.area_sqft|floatformat:0 }}</span>
+                                                    </div>
+                                                {% endif %}
+                                            </div>
+                                        </div>
+                                        <div class="flex items-center justify-between pt-4 border-t">
+                                            {% if property.property_status != 'just_sold' and property.property_status != 'for_lease' %}
+                                                <div class="text-lg font-bold text-primary">
+                                                    {{ property.price }}
+                                                    {% if property.price and not property.price|slice:":1" == "$" %}
+                                                    /month{% endif %}
+                                                </div>
+                                            {% endif %}
+                                            <button type="button"
+                                                    class="view-details inline-flex items-center justify-center gap-2 whitespace-nowrap rounded-md text-sm font-medium ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 [&_svg]:pointer-events-none [&_svg]:size-4 [&_svg]:shrink-0 border bg-background h-10 px-4 py-2 border-primary text-primary hover:bg-primary hover:text-primary-foreground"
+                                                    data-id="{{ property.id }}"
+                                                    data-title="{{ property.title|escape }}"
+                                                    data-location="{{ property.location|escape }}"
+                                                    data-price="{{ property.price }}"
+                                                    data-type="{{ property.property_type }}"
+                                                    data-bedrooms="{{ property.bedrooms|default_if_none:'' }}"
+                                                    data-bathrooms="{{ property.bathrooms|default_if_none:'' }}"
+                                                    data-area="{{ property.area_sqft|default_if_none:'' }}"
+                                                    data-description="{{ property.description|default:''|escape }}"
+                                                    data-images="{{ property.get_all_image_urls|join:'|||' }}"
+                                                    data-main-image="{{ property.get_main_image_url|default:'' }}"
+                                                    data-media='{{ property.get_all_media_urls|to_json }}'
+                                                    data-status="{{ property.property_status }}"
+                                                    data-agent-name="{{ property.listing_agent_name|default:''|escape }}"
+                                                    data-agent-link="{{ property.listing_agent_link|default:'' }}"
+                                                    data-agent-image="{{ property.get_listing_agent_image_url|default:'' }}"
+                                                    data-contact-email="{{ property.contact_email }}"
+                                                    data-contact-phone="{{ property.contact_phone }}">
+                                                View Details
+                                            </button>
+                                        </div>
+                                    </div>
                                 </div>
-                            </div>
-                        </div>
-                    {% endfor %}
+                            {% endif %}
+                        {% endfor %}
+                    </div>
                 </div>
+            </section>
             {% else %}
-                <!-- No Properties Found - Centered -->
                 <div class="flex flex-col items-center justify-center py-20 px-4 mb-16">
                     <div class="w-20 h-20 bg-muted rounded-full flex items-center justify-center mb-8">
                         <svg xmlns="http://www.w3.org/2000/svg" width="40" height="40" viewBox="0 0 24 24" fill="none"
@@ -452,13 +576,11 @@
                 </div>
             {% endif %}
 
-        </div>
     </div>
 </main>
 
 {% include 'Raj/footer.html' %}
 
-<!-- Property Details Modal -->
 <div id="propertyModal" class="fixed inset-0 bg-black bg-opacity-50 z-50 hidden flex items-center justify-center p-4">
     <div role="dialog" aria-describedby="modal-description" aria-labelledby="modal-title" data-state="open"
          class="fixed left-[50%] top-[50%] z-50 grid w-full translate-x-[-50%] translate-y-[-50%] gap-4 border bg-background p-6 shadow-lg duration-200 data-[state=open]:animate-in data-[state=closed]:animate-out data-[state=closed]:fade-out-0 data-[state=open]:fade-in-0 data-[state=closed]:zoom-out-95 data-[state=open]:zoom-in-95 data-[state=closed]:slide-out-to-left-1/2 data-[state=closed]:slide-out-to-top-[48%] data-[state=open]:slide-in-from-left-1/2 data-[state=open]:slide-in-from-top-[48%] sm:rounded-lg max-w-4xl max-h-[90vh] overflow-y-auto"
@@ -496,8 +618,7 @@
                         </svg>
                     </button>
                     <div id="imageDots" class="absolute bottom-2 left-1/2 transform -translate-x-1/2 flex space-x-2">
-                        <!-- Dots will be generated by JavaScript -->
-                    </div>
+                        </div>
                 </div>
             </div>
             <div class="grid md:grid-cols-2 gap-6">

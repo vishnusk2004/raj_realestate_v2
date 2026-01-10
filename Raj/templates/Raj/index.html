@@ -1,5 +1,6 @@
 {% load static %}
 {% load humanize %}
+{% load price_filters %}
 
 <!DOCTYPE html>
 <html lang="en">
@@ -12,14 +13,12 @@
           content="Professional real estate services with AI-powered insights. Find your perfect property with {{ brand_name }}.">
     <link rel="icon" type="image/png" href="{% static 'favicon.png' %}">
 
-    <!-- Google Fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link
             href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Playfair+Display:wght@400;500;600;700&display=swap"
             rel="stylesheet">
 
-    <!-- Custom CSS -->
     <link rel="stylesheet" href="{% static 'css/django-main.css' %}">
     <style>
         /* Prevent layout shift - reserve space for images */
@@ -135,6 +134,24 @@
             }
         }
 
+        /* Modal Styles */
+        #imageCarousel {
+            display: flex !important;
+            align-items: center !important;
+            justify-content: center !important;
+            background-color: #f3f4f6 !important;
+            min-height: 16rem !important;
+            max-height: 24rem !important;
+        }
+
+        #modalImageSrc {
+            object-fit: contain !important;
+            object-position: center !important;
+            max-width: 100% !important;
+            max-height: 24rem !important;
+            width: auto !important;
+            height: auto !important;
+        }
     </style>
 
 </head>
@@ -161,7 +178,6 @@
                         <p class="text-xl md:text-2xl text-primary-foreground mb-10 mx-auto leading-relaxed text-balance whitespace-nowrap md:whitespace-normal"
                            style="text-shadow: 2px 2px 6px rgba(0,0,0,0.8);">Discover the best properties and
                             insights with our expert real estate solutions.</p>
-                        <!-- Buy, Sell, Lease Labels - Above Call Button -->
                         <div class="flex justify-center gap-12 mb-6 max-w-[600px] mx-auto">
                                 <span class="text-lg text-white text-center underline drop-shadow-xl"
                                       style="text-shadow:2px 2px 4px rgba(0,0,0,0.8); color: white;">Buy</span>
@@ -174,7 +190,6 @@
                            class="text-2xl md:text-3xl mb-8 font-bold bg-black/40 px-8 py-4 rounded-lg border-2 border-white/60 backdrop-blur-sm hover:bg-black/50 transition-all duration-300 block text-center no-underline mx-auto max-w-[600px] shadow-xl hover:shadow-2xl"
                            style="color: #ffffff !important; text-shadow: 2px 2px 4px rgba(0,0,0,0.8);">Call Raj
                             832-785-0140</a>
-                        <!-- Property Type Options - Below Call Button with spacing -->
                         <div class="flex flex-wrap justify-center gap-12 mb-10 max-w-[600px] mx-auto">
                                 <span class="font-semibold text-lg text-white text-center underline drop-shadow-xl"
                                       style="text-shadow:2px 2px 3px rgba(0,0,0,0.8); color: white;">Residential</span>
@@ -185,39 +200,6 @@
                             <span class="font-semibold text-lg text-white text-center underline drop-shadow-xl"
                                   style="text-shadow:2px 2px 3px rgba(0,0,0,0.8); color: white;">Industrial</span>
                         </div>
-                        {% comment %}
-                            <div class="grid grid-cols-2 md:grid-cols-4 gap-4 max-w-3xl mx-auto mb-12">
-                                <a href="{% url 'selling' %}">
-                                    <button
-                                        class="inline-flex items-center justify-center gap-2 whitespace-nowrap rounded-md text-sm font-medium ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 [&_svg]:pointer-events-none [&_svg]:size-4 [&_svg]:shrink-0 border hover:text-accent-foreground h-10 px-4 py-2 w-full bg-primary-foreground/10 border-primary-foreground/20 text-primary-foreground hover:bg-primary-foreground/20 transition-smooth backdrop-blur-sm">Sell
-                                        Your Home</button>
-                                </a>
-                                <a href="{% url 'buy_lease' %}">
-                                    <button
-                                        class="inline-flex items-center justify-center gap-2 whitespace-nowrap rounded-md text-sm font-medium ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 [&_svg]:pointer-events-none [&_svg]:size-4 [&_svg]:shrink-0 border hover:text-accent-foreground h-10 px-4 py-2 w-full bg-primary-foreground/10 border-primary-foreground/20 text-primary-foreground hover:bg-primary-foreground/20 transition-smooth backdrop-blur-sm">Lease
-                                        Property</button>
-                                </a>
-                                <a href="{% url 'open_house' %}">
-                                    <button
-                                        class="inline-flex items-center justify-center gap-2 whitespace-nowrap rounded-md text-sm font-medium ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 [&_svg]:pointer-events-none [&_svg]:size-4 [&_svg]:shrink-0 border hover:text-accent-foreground h-10 px-4 py-2 w-full bg-primary-foreground/10 border-primary-foreground/20 text-primary-foreground hover:bg-primary-foreground/20 transition-smooth backdrop-blur-sm">Open
-                                        Houses</button>
-                                </a>
-                                <a href="{% url 'mortgage_calculator' %}">
-                                    <button
-                                        class="inline-flex items-center justify-center gap-2 whitespace-nowrap rounded-md text-sm font-medium ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 [&_svg]:pointer-events-none [&_svg]:size-4 [&_svg]:shrink-0 border hover:text-accent-foreground h-10 px-4 py-2 w-full bg-primary-foreground/10 border-primary-foreground/20 text-primary-foreground hover:bg-primary-foreground/20 transition-smooth backdrop-blur-sm">Mortgage
-                                        Calculator</button>
-                                </a>
-                            </div>
-                            {% endcomment %}
-                        <!-- Watch Our Story button commented out as requested by client -->
-                        <!--
-                        <button class="inline-flex items-center justify-center gap-2 whitespace-nowrap ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 [&_svg]:pointer-events-none [&_svg]:size-4 [&_svg]:shrink-0 hover:bg-primary/90 h-11 rounded-md bg-gradient-accent hover:shadow-accent text-primary font-semibold text-lg px-10 py-4 transition-smooth transform hover:scale-105">
-                            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-play w-5 h-5 mr-3">
-                                <polygon points="6 3 20 12 6 21 6 3"></polygon>
-                            </svg>
-                            Watch Our Story
-                        </button>
-                        -->
                     </div>
                 </div>
             </section>
@@ -287,7 +269,6 @@
                         </div>
                     </div>
 
-                    <!-- Services Section - Below the About Raj content -->
                     <div class="mt-8">
                         <div class="grid grid-cols-2 md:grid-cols-4 gap-6">
                             <div class="flex items-center space-x-3">
@@ -392,7 +373,6 @@
                 </div>
             </section>
 
-            <!-- Just Sold Section -->
             <section class="py-16 bg-background">
                 <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
                     <div class="text-center mb-12">
@@ -400,141 +380,7 @@
                     </div>
                     <div class="grid md:grid-cols-2 lg:grid-cols-4 gap-6" id="just-sold-grid">
                         {% for property in just_sold_properties %}
-                            <div
-                                    class="property-card rounded-lg border bg-card text-card-foreground shadow-sm group overflow-hidden shadow-soft hover:shadow-medium transition-all duration-300 animate-fade-in {% if forloop.counter > 12 %}hidden{% endif %}">
-                                <div class="relative overflow-hidden">
-                                    {% if property.get_main_image_url %}
-                                        <img src="{{ property.get_main_image_url }}" alt="{{ property.title }}"
-                                             class="w-full h-48 object-cover group-hover:scale-105 transition-transform duration-300"
-                                             loading="lazy" decoding="async">
-                                    {% else %}
-                                        <div class="w-full h-48 bg-muted flex items-center justify-center">
-                                            <svg xmlns="http://www.w3.org/2000/svg" width="48" height="48"
-                                                 viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
-                                                 stroke-linecap="round" stroke-linejoin="round"
-                                                 class="lucide lucide-home h-12 w-12 text-muted-foreground">
-                                                <path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"></path>
-                                                <polyline points="9,22 9,12 15,12 15,22"></polyline>
-                                            </svg>
-                                        </div>
-                                    {% endif %}
-                                    <div class="absolute top-4 left-4 flex gap-2 flex-wrap">
-                                        <div
-                                                class="inline-flex items-center rounded-full border px-2.5 py-0.5 text-xs font-semibold transition-colors focus:outline-none focus:ring-2 focus:ring-ring focus:ring-offset-2 border-transparent bg-primary text-primary-foreground">
-                                            {{ property.get_property_status_display }}
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="p-6 space-y-4">
-                                    <div>
-                                        <h3 class="text-lg font-semibold text-foreground mb-2 line-clamp-1">{{ property.title }}</h3>
-                                        <div class="flex items-center text-muted-foreground mb-3">
-                                            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24"
-                                                 viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
-                                                 stroke-linecap="round" stroke-linejoin="round"
-                                                 class="lucide lucide-map-pin h-4 w-4 mr-1">
-                                                <path
-                                                        d="M20 10c0 4.993-5.539 10.193-7.399 11.799a1 1 0 0 1-1.202 0C9.539 20.193 4 14.993 4 10a8 8 0 0 1 16 0">
-                                                </path>
-                                                <circle cx="12" cy="10" r="3"></circle>
-                                            </svg>
-                                            <span class="text-sm">{{ property.location }}</span>
-                                        </div>
-                                    </div>
-                                    <div class="flex items-center justify-between text-sm text-muted-foreground">
-                                        <div class="flex items-center space-x-4">
-                                            {% if property.bedrooms %}
-                                                <div class="flex items-center">
-                                                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24"
-                                                         viewBox="0 0 24 24" fill="none" stroke="currentColor"
-                                                         stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
-                                                         class="lucide lucide-bed h-4 w-4 mr-1">
-                                                        <path d="M2 4v16"></path>
-                                                        <path d="M2 8h18a2 2 0 0 1 2 2v10"></path>
-                                                        <path d="M2 17h20"></path>
-                                                        <path d="M6 8v9"></path>
-                                                    </svg>
-                                                    <span>{{ property.bedrooms }}</span>
-                                                </div>
-                                            {% endif %}
-                                            {% if property.bathrooms %}
-                                                <div class="flex items-center">
-                                                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24"
-                                                         viewBox="0 0 24 24" fill="none" stroke="currentColor"
-                                                         stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
-                                                         class="lucide lucide-bath h-4 w-4 mr-1">
-                                                        <path d="M10 4 8 6"></path>
-                                                        <path d="M17 19v2"></path>
-                                                        <path d="M2 12h20"></path>
-                                                        <path d="M7 19v2"></path>
-                                                        <path
-                                                                d="M9 5 7.621 3.621A2.121 2.121 0 0 0 4 5v12a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2v-5">
-                                                        </path>
-                                                    </svg>
-                                                    <span>{{ property.bathrooms }}</span>
-                                                </div>
-                                            {% endif %}
-                                            {% if property.area_sqft %}
-                                                <div class="flex items-center">
-                                                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24"
-                                                         viewBox="0 0 24 24" fill="none" stroke="currentColor"
-                                                         stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
-                                                         class="lucide lucide-square h-4 w-4 mr-1">
-                                                        <rect width="18" height="18" x="3" y="3" rx="2"></rect>
-                                                    </svg>
-                                                    <span>{{ property.area_sqft|floatformat:0 }}</span>
-                                                </div>
-                                            {% endif %}
-                                        </div>
-                                    </div>
-                                    <div class="flex items-center justify-end pt-4 border-t">
-                                        <a href="{% url 'buy_lease' %}?property_id={{ property.id }}"
-                                           class="flex-shrink-0">
-                                            <button
-                                                    class="inline-flex items-center justify-center gap-2 whitespace-nowrap rounded-md text-sm font-medium ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 [&_svg]:pointer-events-none [&_svg]:size-4 [&_svg]:shrink-0 border bg-background h-10 px-3 py-2 border-primary text-primary hover:bg-primary hover:text-primary-foreground text-xs">
-                                                View
-                                                Details
-                                            </button>
-                                        </a>
-                                    </div>
-                                </div>
-                            </div>
-                        {% empty %}
-                            <div class="col-span-full text-center py-12">
-                                <div class="text-muted-foreground">
-                                    <svg xmlns="http://www.w3.org/2000/svg" width="48" height="48" viewBox="0 0 24 24"
-                                         fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
-                                         stroke-linejoin="round" class="lucide lucide-home h-12 w-12 mx-auto mb-4">
-                                        <path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"></path>
-                                        <polyline points="9,22 9,12 15,12 15,22"></polyline>
-                                    </svg>
-                                    <p class="text-lg font-medium">No properties sold yet</p>
-                                    <p class="text-sm">Check back soon for new listings!</p>
-                                </div>
-                            </div>
-                        {% endfor %}
-                    </div>
-                    {% if just_sold_properties|length > 12 %}
-                        <div class="text-center mt-12">
-                            <button onclick="toggleShowMore('just-sold')" id="just-sold-toggle"
-                                    class="inline-flex items-center justify-center gap-2 whitespace-nowrap rounded-lg text-base font-semibold ring-offset-background transition-all focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 bg-primary text-primary-foreground hover:bg-primary/90 px-8 py-3 shadow-md hover:shadow-lg">
-                                Show More
-                            </button>
-                        </div>
-                    {% endif %}
-                </div>
-            </section>
-
-            <!-- Just Leased Section -->
-            <section class="py-16 bg-surface-gradient">
-                <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-                    <div class="text-center mb-12">
-                        <h2 class="text-3xl md:text-4xl font-bold text-foreground mb-4">Recently Leased</h2>
-                    </div>
-                    <div class="grid md:grid-cols-2 lg:grid-cols-4 gap-6" id="just-leased-grid">
-                        {% for property in just_leased_properties %}
-                            <div
-                                    class="property-card rounded-lg border bg-card text-card-foreground shadow-sm group overflow-hidden shadow-soft hover:shadow-medium transition-all duration-300 animate-fade-in {% if forloop.counter > 12 %}hidden{% endif %}">
+                            <div class="property-card rounded-lg border bg-card text-card-foreground shadow-sm group overflow-hidden shadow-soft hover:shadow-medium transition-all duration-300 animate-fade-in {% if forloop.counter > 12 %}hidden{% endif %}">
                                 <div class="relative overflow-hidden">
                                     {% if property.get_main_image_url %}
                                         <img src="{{ property.get_main_image_url }}" alt="{{ property.title }}"
@@ -621,14 +467,173 @@
                                         </div>
                                     </div>
                                     <div class="flex items-center justify-end pt-4 border-t">
-                                        <a href="{% url 'buy_lease' %}?property_id={{ property.id }}"
-                                           class="flex-shrink-0">
-                                            <button
-                                                    class="inline-flex items-center justify-center gap-2 whitespace-nowrap rounded-md text-sm font-medium ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 [&_svg]:pointer-events-none [&_svg]:size-4 [&_svg]:shrink-0 border bg-background h-10 px-3 py-2 border-primary text-primary hover:bg-primary hover:text-primary-foreground text-xs">
-                                                View
-                                                Details
-                                            </button>
-                                        </a>
+                                        <button type="button"
+                                                class="view-details inline-flex items-center justify-center gap-2 whitespace-nowrap rounded-md text-sm font-medium ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 [&_svg]:pointer-events-none [&_svg]:size-4 [&_svg]:shrink-0 border bg-background h-10 px-3 py-2 border-primary text-primary hover:bg-primary hover:text-primary-foreground text-xs"
+                                                data-id="{{ property.id }}"
+                                                data-title="{{ property.title|escape }}"
+                                                data-location="{{ property.location|escape }}"
+                                                data-price="{{ property.price }}"
+                                                data-type="{{ property.property_type }}"
+                                                data-bedrooms="{{ property.bedrooms|default_if_none:'' }}"
+                                                data-bathrooms="{{ property.bathrooms|default_if_none:'' }}"
+                                                data-area="{{ property.area_sqft|default_if_none:'' }}"
+                                                data-description="{{ property.description|default:''|escape }}"
+                                                data-images="{{ property.get_all_image_urls|join:'|||' }}"
+                                                data-main-image="{{ property.get_main_image_url|default:'' }}"
+                                                data-media='{{ property.get_all_media_urls|to_json }}'
+                                                data-status="{{ property.property_status }}"
+                                                data-agent-name="{{ property.listing_agent_name|default:''|escape }}"
+                                                data-agent-link="{{ property.listing_agent_link|default:'' }}"
+                                                data-agent-image="{{ property.get_listing_agent_image_url|default:'' }}"
+                                                data-contact-email="{{ property.contact_email }}"
+                                                data-contact-phone="{{ property.contact_phone }}">
+                                            View Details
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+                        {% empty %}
+                            <div class="col-span-full text-center py-12">
+                                <div class="text-muted-foreground">
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="48" height="48" viewBox="0 0 24 24"
+                                         fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                                         stroke-linejoin="round" class="lucide lucide-home h-12 w-12 mx-auto mb-4">
+                                        <path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"></path>
+                                        <polyline points="9,22 9,12 15,12 15,22"></polyline>
+                                    </svg>
+                                    <p class="text-lg font-medium">No properties sold yet</p>
+                                    <p class="text-sm">Check back soon for new listings!</p>
+                                </div>
+                            </div>
+                        {% endfor %}
+                    </div>
+                    {% if just_sold_properties|length > 12 %}
+                        <div class="text-center mt-12">
+                            <button onclick="toggleShowMore('just-sold')" id="just-sold-toggle"
+                                    class="inline-flex items-center justify-center gap-2 whitespace-nowrap rounded-lg text-base font-semibold ring-offset-background transition-all focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 bg-primary text-primary-foreground hover:bg-primary/90 px-8 py-3 shadow-md hover:shadow-lg">
+                                Show More
+                            </button>
+                        </div>
+                    {% endif %}
+                </div>
+            </section>
+
+            <section class="py-16 bg-surface-gradient">
+                <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+                    <div class="text-center mb-12">
+                        <h2 class="text-3xl md:text-4xl font-bold text-foreground mb-4">Recently Leased</h2>
+                    </div>
+                    <div class="grid md:grid-cols-2 lg:grid-cols-4 gap-6" id="just-leased-grid">
+                        {% for property in just_leased_properties %}
+                            <div class="property-card rounded-lg border bg-card text-card-foreground shadow-sm group overflow-hidden shadow-soft hover:shadow-medium transition-all duration-300 animate-fade-in {% if forloop.counter > 12 %}hidden{% endif %}">
+                                <div class="relative overflow-hidden">
+                                    {% if property.get_main_image_url %}
+                                        <img src="{{ property.get_main_image_url }}" alt="{{ property.title }}"
+                                             class="w-full h-48 object-cover group-hover:scale-105 transition-transform duration-300"
+                                             loading="lazy" decoding="async">
+                                    {% else %}
+                                        <div class="w-full h-48 bg-muted flex items-center justify-center">
+                                            <svg xmlns="http://www.w3.org/2000/svg" width="48" height="48"
+                                                 viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                                                 stroke-linecap="round" stroke-linejoin="round"
+                                                 class="lucide lucide-home h-12 w-12 text-muted-foreground">
+                                                <path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"></path>
+                                                <polyline points="9,22 9,12 15,12 15,22"></polyline>
+                                            </svg>
+                                        </div>
+                                    {% endif %}
+                                    <div class="absolute top-4 left-4 flex gap-2 flex-wrap">
+                                        <div
+                                                class="inline-flex items-center rounded-full border px-2.5 py-0.5 text-xs font-semibold transition-colors focus:outline-none focus:ring-2 focus:ring-ring focus:ring-offset-2 border-transparent bg-accent text-accent-foreground">
+                                            {{ property.get_property_status_display }}
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="p-6 space-y-4">
+                                    <div>
+                                        <h3 class="text-lg font-semibold text-foreground mb-2 line-clamp-1">{{ property.title }}</h3>
+                                        <div class="flex items-center text-muted-foreground mb-3">
+                                            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24"
+                                                 viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                                                 stroke-linecap="round" stroke-linejoin="round"
+                                                 class="lucide lucide-map-pin h-4 w-4 mr-1">
+                                                <path
+                                                        d="M20 10c0 4.993-5.539 10.193-7.399 11.799a1 1 0 0 1-1.202 0C9.539 20.193 4 14.993 4 10a8 8 0 0 1 16 0">
+                                                </path>
+                                                <circle cx="12" cy="10" r="3"></circle>
+                                            </svg>
+                                            <span class="text-sm">{{ property.location }}</span>
+                                        </div>
+                                    </div>
+                                    <div class="flex items-center justify-between text-sm text-muted-foreground">
+                                        <div class="flex items-center space-x-4">
+                                            {% if property.bedrooms %}
+                                                <div class="flex items-center">
+                                                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24"
+                                                         viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                                                         stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
+                                                         class="lucide lucide-bed h-4 w-4 mr-1">
+                                                        <path d="M2 4v16"></path>
+                                                        <path d="M2 8h18a2 2 0 0 1 2 2v10"></path>
+                                                        <path d="M2 17h20"></path>
+                                                        <path d="M6 8v9"></path>
+                                                    </svg>
+                                                    <span>{{ property.bedrooms }}</span>
+                                                </div>
+                                            {% endif %}
+                                            {% if property.bathrooms %}
+                                                <div class="flex items-center">
+                                                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24"
+                                                         viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                                                         stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
+                                                         class="lucide lucide-bath h-4 w-4 mr-1">
+                                                        <path d="M10 4 8 6"></path>
+                                                        <path d="M17 19v2"></path>
+                                                        <path d="M2 12h20"></path>
+                                                        <path d="M7 19v2"></path>
+                                                        <path
+                                                                d="M9 5 7.621 3.621A2.121 2.121 0 0 0 4 5v12a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2v-5">
+                                                        </path>
+                                                    </svg>
+                                                    <span>{{ property.bathrooms }}</span>
+                                                </div>
+                                            {% endif %}
+                                            {% if property.area_sqft %}
+                                                <div class="flex items-center">
+                                                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24"
+                                                         viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                                                         stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
+                                                         class="lucide lucide-square h-4 w-4 mr-1">
+                                                        <rect width="18" height="18" x="3" y="3" rx="2"></rect>
+                                                    </svg>
+                                                    <span>{{ property.area_sqft|floatformat:0 }}</span>
+                                                </div>
+                                            {% endif %}
+                                        </div>
+                                    </div>
+                                    <div class="flex items-center justify-end pt-4 border-t">
+                                        <button type="button"
+                                                class="view-details inline-flex items-center justify-center gap-2 whitespace-nowrap rounded-md text-sm font-medium ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 [&_svg]:pointer-events-none [&_svg]:size-4 [&_svg]:shrink-0 border bg-background h-10 px-3 py-2 border-primary text-primary hover:bg-primary hover:text-primary-foreground text-xs"
+                                                data-id="{{ property.id }}"
+                                                data-title="{{ property.title|escape }}"
+                                                data-location="{{ property.location|escape }}"
+                                                data-price="{{ property.price }}"
+                                                data-type="{{ property.property_type }}"
+                                                data-bedrooms="{{ property.bedrooms|default_if_none:'' }}"
+                                                data-bathrooms="{{ property.bathrooms|default_if_none:'' }}"
+                                                data-area="{{ property.area_sqft|default_if_none:'' }}"
+                                                data-description="{{ property.description|default:''|escape }}"
+                                                data-images="{{ property.get_all_image_urls|join:'|||' }}"
+                                                data-main-image="{{ property.get_main_image_url|default:'' }}"
+                                                data-media='{{ property.get_all_media_urls|to_json }}'
+                                                data-status="{{ property.property_status }}"
+                                                data-agent-name="{{ property.listing_agent_name|default:''|escape }}"
+                                                data-agent-link="{{ property.listing_agent_link|default:'' }}"
+                                                data-agent-image="{{ property.get_listing_agent_image_url|default:'' }}"
+                                                data-contact-email="{{ property.contact_email }}"
+                                                data-contact-phone="{{ property.contact_phone }}">
+                                            View Details
+                                        </button>
                                     </div>
                                 </div>
                             </div>
@@ -670,7 +675,6 @@
                         {% for community in featured_communities %}
                             <a href="{% url 'community_detail' community.slug %}"
                                class="group flex flex-col bg-white rounded-2xl overflow-hidden shadow-xl hover:shadow-2xl transition-all duration-500 border border-gray-100 hover:border-primary/30 transform hover:-translate-y-1">
-                                <!-- Image Section - Fixed Height -->
                                 <div class="relative bg-gradient-to-br from-primary/10 to-accent/10 overflow-hidden flex-shrink-0"
                                      style="height: 224px; width: 100%;">
                                     {% if community.get_image_url %}
@@ -696,7 +700,6 @@
 
                                 </div>
 
-                                <!-- Content Section - Auto height, no fixed height, content at top -->
                                 <div class="p-6 bg-white flex flex-col justify-start">
                                     <h3
                                             class="text-2xl font-bold text-foreground mb-1 group-hover:text-primary transition-colors duration-300 line-clamp-1">
@@ -727,10 +730,9 @@
                 </div>
             </section>
 
-            <!-- Spacing between sections -->
-            <div class="py-12 mb-16"></div>
+{#            <div class="py-12 mb-16"></div>#}
 
-            <section class="py-16 bg-white text-gray-800">
+            <section class="py-12 bg-white text-gray-800">
                 <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
                     <div class="grid grid-cols-1 md:grid-cols-3 gap-8 max-w-5xl mx-auto">
                         <div class="text-center animate-fade-in group">
@@ -808,7 +810,7 @@
                 </div>
             </section>
 
-            <section class="py-16 bg-surface-gradient">
+            <section class="py-10 bg-surface-gradient">
                 <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
                     <div class="text-center mb-12">
                         <div
@@ -1046,7 +1048,156 @@
 
             {% include 'Raj/footer.html' %}
 
-            <!-- Custom JavaScript -->
+            <div id="propertyModal"
+                 class="fixed inset-0 bg-black bg-opacity-50 z-50 hidden flex items-center justify-center p-4">
+                <div role="dialog" aria-describedby="modal-description" aria-labelledby="modal-title" data-state="open"
+                     class="fixed left-[50%] top-[50%] z-50 grid w-full translate-x-[-50%] translate-y-[-50%] gap-4 border bg-background p-6 shadow-lg duration-200 data-[state=open]:animate-in data-[state=closed]:animate-out data-[state=closed]:fade-out-0 data-[state=open]:fade-in-0 data-[state=closed]:zoom-out-95 data-[state=open]:zoom-in-95 data-[state=closed]:slide-out-to-left-1/2 data-[state=closed]:slide-out-to-top-[48%] data-[state=open]:slide-in-from-left-1/2 data-[state=open]:slide-in-from-top-[48%] sm:rounded-lg max-w-4xl max-h-[90vh] overflow-y-auto"
+                     tabindex="-1" style="pointer-events: auto;">
+                    <div class="flex flex-col space-y-1.5 text-center sm:text-left">
+                        <h2 id="modal-title" class="tracking-tight text-2xl font-bold">Property Details</h2>
+                    </div>
+                    <div class="space-y-6">
+                        <div id="modalMedia" class="relative">
+                            <div id="mediaCarousel"
+                                 class="relative overflow-hidden rounded-lg flex items-center justify-center bg-gray-100"
+                                 style="min-height: 16rem; max-height: 24rem; width: 100%; display: flex; align-items: center; justify-content: center;">
+                                <img id="modalImageSrc" src="" alt="Property Image"
+                                     class="w-full max-h-[24rem] object-contain transition-opacity duration-300 hidden"
+                                     loading="lazy" decoding="async">
+                                <video id="modalVideoSrc" controls controlsList="nodownload noplaybackrate"
+                                       disablePictureInPicture
+                                       oncontextmenu="return false;" onselectstart="return false;"
+                                       ondragstart="return false;"
+                                       preload="none"
+                                       class="w-full h-full max-h-[24rem] object-contain transition-opacity duration-300 hidden"
+                                       style="aspect-ratio: auto; user-select: none; -webkit-user-select: none; -moz-user-select: none; -ms-user-select: none;">
+                                    Your browser does not support the video tag.
+                                </video>
+                            </div>
+                            <div id="imageNavigation" class="hidden">
+                                <button id="prevImage"
+                                        class="absolute left-2 top-1/2 transform -translate-y-1/2 bg-black text-white p-4 rounded-full hover:bg-gray-800 transition-all shadow-2xl border-2 border-white">
+                                    <svg class="w-7 h-7" fill="none" stroke="currentColor" viewBox="0 0 24 24"
+                                         stroke-width="3">
+                                        <path stroke-linecap="round" stroke-linejoin="round" d="M15 19l-7-7 7-7"></path>
+                                    </svg>
+                                </button>
+                                <button id="nextImage"
+                                        class="absolute right-2 top-1/2 transform -translate-y-1/2 bg-black text-white p-4 rounded-full hover:bg-gray-800 transition-all shadow-2xl border-2 border-white">
+                                    <svg class="w-7 h-7" fill="none" stroke="currentColor" viewBox="0 0 24 24"
+                                         stroke-width="3">
+                                        <path stroke-linecap="round" stroke-linejoin="round" d="M9 5l7 7-7 7"></path>
+                                    </svg>
+                                </button>
+                                <div id="imageDots"
+                                     class="absolute bottom-2 left-1/2 transform -translate-x-1/2 flex space-x-2">
+                                    </div>
+                            </div>
+                        </div>
+                        <div class="grid md:grid-cols-2 gap-6">
+                            <div>
+                                <h3 class="text-xl font-semibold mb-4">Property Details</h3>
+                                <div class="space-y-2 text-sm">
+                                    <div class="flex justify-between">
+                                        <span class="text-muted-foreground">Price:</span>
+                                        <span id="modalPrice" class="font-semibold text-primary">-</span>
+                                    </div>
+                                    <div class="flex justify-between">
+                                        <span class="text-muted-foreground">Location:</span>
+                                        <span id="modalLocation">-</span>
+                                    </div>
+                                    <div class="flex justify-between">
+                                        <span class="text-muted-foreground">Status:</span>
+                                        <span id="modalStatus">-</span>
+                                    </div>
+                                    <div class="flex justify-between">
+                                        <span class="text-muted-foreground">Bedrooms:</span>
+                                        <span id="modalBedrooms">-</span>
+                                    </div>
+                                    <div class="flex justify-between">
+                                        <span class="text-muted-foreground">Bathrooms:</span>
+                                        <span id="modalBathrooms">-</span>
+                                    </div>
+                                    <div class="flex justify-between">
+                                        <span class="text-muted-foreground">Square Feet:</span>
+                                        <span id="modalArea">-</span>
+                                    </div>
+                                </div>
+                            </div>
+                            <div>
+                                <h3 class="text-xl font-semibold mb-4">Features</h3>
+                                <div id="modalFeatures" class="flex flex-wrap gap-2">
+                                    <span class="bg-secondary text-secondary-foreground px-3 py-1 rounded-full text-sm">Modern Kitchen</span>
+                                    <span class="bg-secondary text-secondary-foreground px-3 py-1 rounded-full text-sm">Hardwood Floors</span>
+                                    <span class="bg-secondary text-secondary-foreground px-3 py-1 rounded-full text-sm">Central AC</span>
+                                </div>
+                            </div>
+                        </div>
+                        <div id="modalListingAgent" class="hidden border-t pt-4">
+                            <h3 class="text-xl font-semibold mb-3">Listing Agent</h3>
+                            <div class="flex items-center gap-4">
+                                <img id="modalListingAgentImage" src="" alt="Listing Agent"
+                                     class="w-20 h-20 rounded-lg object-cover hidden border border-gray-200 shadow-sm">
+                                <div>
+                                    <p class="text-base font-medium text-foreground mb-1">
+                                        <span id="modalListingAgentNameText" class="text-muted-foreground">Listing Agent: </span>
+                                        <span id="modalListingAgentName" class="font-semibold"></span>
+                                        <a id="modalListingAgentLink" href="" target="_blank" rel="noopener noreferrer"
+                                           class="hidden ml-2 text-primary hover:underline text-sm font-medium">Visit
+                                            Profile →</a>
+                                    </p>
+                                    <p class="text-sm text-muted-foreground">Courtesy to listing agent</p>
+                                </div>
+                            </div>
+                        </div>
+                        <div id="modalDescription" class="hidden">
+                            <h3 class="text-xl font-semibold mb-4">Description</h3>
+                            <p id="modalDescriptionText" class="text-muted-foreground leading-relaxed">-</p>
+                        </div>
+                        <div class="border-t pt-4">
+                            <h3 class="text-xl font-semibold mb-4">Contact Raj</h3>
+                            <div class="grid grid-cols-2 gap-4">
+                                <a id="modalContactPhone" href="tel:832-785-0140"
+                                   class="inline-flex items-center justify-center gap-2 whitespace-nowrap rounded-md text-sm font-medium ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 bg-primary text-primary-foreground hover:bg-primary/90 h-12 px-4 py-2">
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24"
+                                         fill="none"
+                                         stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                                         stroke-linejoin="round"
+                                         class="lucide lucide-phone">
+                                        <path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"></path>
+                                    </svg>
+                                    Call Raj
+                                </a>
+                                <a id="modalContactEmail" href="mailto:raj.gupta@kw.com"
+                                   class="inline-flex items-center justify-center gap-2 whitespace-nowrap rounded-md text-sm font-medium ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 border bg-background h-12 px-4 py-2 border-primary text-primary hover:bg-primary hover:text-primary-foreground">
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24"
+                                         fill="none"
+                                         stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                                         stroke-linejoin="round"
+                                         class="lucide lucide-mail">
+                                        <rect width="20" height="16" x="2" y="4" rx="2"></rect>
+                                        <path d="m22 7-10 5L2 7"></path>
+                                    </svg>
+                                    Email Raj
+                                </a>
+                            </div>
+                            <p class="text-sm text-muted-foreground mt-3 text-center">Get expert advice on this
+                                property</p>
+                        </div>
+                    </div>
+                    <button type="button" onclick="closePropertyModal()"
+                            class="absolute right-4 top-4 rounded-sm opacity-70 ring-offset-background transition-opacity data-[state=open]:bg-accent data-[state=open]:text-muted-foreground hover:opacity-100 focus:outline-none focus:ring-2 focus:ring-ring focus:ring-offset-2 disabled:pointer-events-none">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none"
+                             stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
+                             class="lucide lucide-x h-4 w-4">
+                            <path d="M18 6 6 18"></path>
+                            <path d="m6 6 12 12"></path>
+                        </svg>
+                        <span class="sr-only">Close</span>
+                    </button>
+                </div>
+            </div>
+
             <script src="{% static 'js/django-main-fixed.js' %}"></script>
 
             <script>
@@ -1178,6 +1329,567 @@
                             favoriteBtn.style.color = 'hsl(var(--destructive))';
                         }
                     });
+                });
+            </script>
+
+            <script>
+                let currentMediaIndex = 0;
+                let propertyMedia = []; // Array of {type: 'image'|'video', url: string, alt?: string}
+
+                // Handle "View Details" buttons safely via data attributes
+                document.addEventListener('click', function (e) {
+                    const btn = e.target.closest('.view-details');
+                    if (!btn) return;
+                    const imagesRaw = btn.dataset.images || '';
+                    openPropertyModal(
+                        btn.dataset.id,
+                        btn.dataset.title || '',
+                        btn.dataset.location || '',
+                        btn.dataset.price || '',
+                        btn.dataset.type || '',
+                        btn.dataset.bedrooms || '',
+                        btn.dataset.bathrooms || '',
+                        btn.dataset.area || '',
+                        btn.dataset.description || '',
+                        imagesRaw,
+                        btn.dataset.status || '',
+                        btn.dataset.agentName || '',
+                        btn.dataset.agentLink || '',
+                        btn.dataset.agentImage || '',
+                        btn.dataset.mainImage || '',
+                        btn.dataset.contactEmail || 'raj.gupta@kw.com',
+                        btn.dataset.contactPhone || '(832) 785-0140',
+                        btn.dataset.media || '[]'
+                    );
+                });
+
+                function openPropertyModal(id, title, location, price, propertyType, bedrooms, bathrooms, area, description, additionalImages, propertyStatus, listingAgentName, listingAgentLink, listingAgentImageUrl, mainImage, contactEmail, contactPhone, mediaData) {
+                    document.getElementById('modal-title').textContent = title;
+                    document.getElementById('modalLocation').textContent = location;
+
+                    // Update contact links
+                    const contactPhoneLink = document.getElementById('modalContactPhone');
+                    const contactEmailLink = document.getElementById('modalContactEmail');
+                    if (contactPhoneLink && contactPhone) {
+                        contactPhoneLink.href = 'tel:' + contactPhone.replace(/[^\d+]/g, '');
+                    }
+                    if (contactEmailLink && contactEmail) {
+                        contactEmailLink.href = 'mailto:' + contactEmail;
+                    }
+
+                    // Format price - don't show for sold/leased properties
+                    const priceElement = document.getElementById('modalPrice');
+                    const priceRow = priceElement.closest('.flex.justify-between');
+                    if (propertyStatus === 'just_sold' || propertyStatus === 'for_lease') {
+                        // Hide price for sold/leased properties
+                        if (priceRow) priceRow.style.display = 'none';
+                    } else {
+                        // Show price (handle as text, can be "upper 800s" or numeric)
+                        if (priceRow) priceRow.style.display = 'flex';
+                        if (price && price.trim()) {
+                            // Check if price is numeric
+                            const numericPrice = parseFloat(price);
+                            if (!isNaN(numericPrice)) {
+                                // It's a number, format it
+                                if (propertyType === 'lease') {
+                                    priceElement.textContent = '$' + numericPrice.toLocaleString() + '/month';
+                                } else {
+                                    priceElement.textContent = '$' + numericPrice.toLocaleString();
+                                }
+                            } else {
+                                // It's text like "upper 800s", display as-is
+                                priceElement.textContent = price;
+                            }
+                        } else {
+                            priceElement.textContent = '-';
+                        }
+                    }
+
+                    // Status
+                    const statusElement = document.getElementById('modalStatus');
+                    if (statusElement) {
+                        statusElement.textContent = propertyStatus ? propertyStatus.replace(/_/g, ' ').replace(/\b\w/g, l => l.toUpperCase()) : '-';
+                    }
+
+                    document.getElementById('modalBedrooms').textContent = bedrooms || '-';
+                    document.getElementById('modalBathrooms').textContent = bathrooms || '-';
+                    document.getElementById('modalArea').textContent = area ? parseFloat(area).toLocaleString() : '-';
+
+                    // Listing agent
+                    const agentSection = document.getElementById('modalListingAgent');
+                    const agentNameEl = document.getElementById('modalListingAgentName');
+                    const agentLinkEl = document.getElementById('modalListingAgentLink');
+                    const agentImgEl = document.getElementById('modalListingAgentImage');
+                    if (listingAgentName || listingAgentImageUrl) {
+                        if (agentSection) agentSection.classList.remove('hidden');
+                        if (agentNameEl) {
+                            // Render agent name as a clickable link when URL is available
+                            if (listingAgentLink) {
+                                const a = document.createElement('a');
+                                a.href = listingAgentLink;
+                                a.target = '_blank';
+                                a.rel = 'noopener noreferrer';
+                                a.className = 'text-primary hover:underline';
+                                a.textContent = listingAgentName || 'Listing Agent';
+                                agentNameEl.replaceChildren(a);
+                            } else {
+                                agentNameEl.textContent = listingAgentName || 'Listing Agent';
+                            }
+                        }
+                        if (agentLinkEl && listingAgentLink) {
+                            agentLinkEl.href = listingAgentLink;
+                            agentLinkEl.classList.remove('hidden');
+                        } else if (agentLinkEl) {
+                            agentLinkEl.classList.add('hidden');
+                        }
+                        if (agentImgEl) {
+                            if (listingAgentImageUrl) {
+                                agentImgEl.src = listingAgentImageUrl;
+                                agentImgEl.classList.remove('hidden');
+                            } else {
+                                agentImgEl.classList.add('hidden');
+                            }
+                        }
+                    } else {
+                        if (agentSection) agentSection.classList.add('hidden');
+                    }
+
+                    // Handle description
+                    if (description && description.trim()) {
+                        document.getElementById('modalDescriptionText').textContent = description;
+                        document.getElementById('modalDescription').classList.remove('hidden');
+                    } else {
+                        document.getElementById('modalDescription').classList.add('hidden');
+                    }
+
+                    // Set up media (images + videos)
+                    setupPropertyMedia(id, title, additionalImages, mainImage, mediaData);
+
+                    // Set up features based on property data
+                    setupPropertyFeatures(bedrooms, bathrooms, area, propertyType);
+
+                    document.getElementById('propertyModal').classList.remove('hidden');
+                    document.body.style.overflow = 'hidden';
+                }
+
+                function parseImageList(imagesString) {
+                    if (!imagesString || !imagesString.trim()) return [];
+                    let raw = imagesString.trim();
+
+                    // Decode HTML entities (fix escaped semicolons in base64 data URLs)
+                    const textarea = document.createElement('textarea');
+                    textarea.innerHTML = raw;
+                    raw = textarea.value;
+
+                    // Try JSON array
+                    if (raw.startsWith('[') && raw.endsWith(']')) {
+                        try {
+                            const arr = JSON.parse(raw);
+                            if (Array.isArray(arr)) return arr.filter(Boolean).map(url => {
+                                // Decode HTML entities in each URL
+                                const ta = document.createElement('textarea');
+                                ta.innerHTML = url;
+                                return ta.value;
+                            });
+                        } catch (_) {
+                        }
+                    }
+
+                    // Try common separators
+                    const separators = ['|||', '\n', ',', '|'];
+                    for (const sep of separators) {
+                        if (raw.includes(sep)) {
+                            return raw.split(sep).map(s => {
+                                const trimmed = s.trim();
+                                if (!trimmed) return null;
+                                // Decode HTML entities in each URL
+                                const ta = document.createElement('textarea');
+                                ta.innerHTML = trimmed;
+                                return ta.value;
+                            }).filter(Boolean);
+                        }
+                    }
+
+                    // Decode single URL
+                    const ta = document.createElement('textarea');
+                    ta.innerHTML = raw;
+                    return [ta.value];
+                }
+
+                function setupPropertyMedia(propertyId, title, additionalImages, mainImage, mediaData) {
+                    propertyMedia = [];
+                    const seenUrls = new Set(); // Track seen URLs to avoid duplicates
+
+                    // Try to parse mediaData (JSON array with type and url)
+                    try {
+                        // Remove any HTML entities and clean the string
+                        let cleanMediaData = mediaData || '[]';
+                        if (typeof cleanMediaData === 'string') {
+                            // Decode HTML entities
+                            const textarea = document.createElement('textarea');
+                            textarea.innerHTML = cleanMediaData;
+                            cleanMediaData = textarea.value;
+                        }
+
+                        const mediaArray = JSON.parse(cleanMediaData);
+                        console.log('Parsed media array:', mediaArray);
+
+                        if (Array.isArray(mediaArray) && mediaArray.length > 0) {
+                            mediaArray.forEach((item) => {
+                                if (item && item.url && item.url.trim() && !seenUrls.has(item.url.trim())) {
+                                    seenUrls.add(item.url.trim());
+                                    propertyMedia.push({
+                                        type: item.type || 'image',
+                                        url: item.url.trim(),
+                                        alt: title
+                                    });
+                                }
+                            });
+                        }
+                    } catch (e) {
+                        console.error('Could not parse mediaData:', e, 'Raw data:', mediaData);
+                        console.log('Falling back to images only');
+                    }
+
+                    // Fallback: Parse all images from additionalImages (which includes main + all others)
+                    if (propertyMedia.length === 0) {
+                        const imageUrls = parseImageList(additionalImages);
+
+                        // Add all images, avoiding duplicates
+                        imageUrls.forEach((url) => {
+                            if (url && url.trim() && !seenUrls.has(url.trim())) {
+                                seenUrls.add(url.trim());
+                                propertyMedia.push({
+                                    type: 'image',
+                                    url: url.trim(),
+                                    alt: title
+                                });
+                            }
+                        });
+
+                        // Also add main image if it's not already in the list
+                        if (mainImage && mainImage.trim() && !seenUrls.has(mainImage.trim())) {
+                            propertyMedia.unshift({ // Add at the beginning
+                                type: 'image',
+                                url: mainImage.trim(),
+                                alt: title
+                            });
+                        }
+                    }
+
+                    // If no media found, use a placeholder image
+                    if (propertyMedia.length === 0) {
+                        propertyMedia.push({
+                            type: 'image',
+                            url: '/static/Images/placeholder-property.jpg',
+                            alt: title
+                        });
+                    }
+
+                    console.log('Property media loaded:', propertyMedia.length, propertyMedia); // Debug
+
+                    // Set up carousel
+                    currentMediaIndex = 0;
+                    updateMediaDisplay();
+                    setupMediaNavigation();
+                }
+
+                function updateMediaDisplay() {
+                    const imageElement = document.getElementById('modalImageSrc');
+                    const videoElement = document.getElementById('modalVideoSrc');
+                    const navigation = document.getElementById('imageNavigation');
+                    const dotsContainer = document.getElementById('imageDots');
+
+                    if (propertyMedia.length > 0 && currentMediaIndex >= 0 && currentMediaIndex < propertyMedia.length) {
+                        const currentMedia = propertyMedia[currentMediaIndex];
+
+                        // Hide both elements first
+                        imageElement.classList.add('hidden');
+                        videoElement.classList.add('hidden');
+
+                        if (currentMedia.type === 'video') {
+                            // Show video
+                            let videoUrl = currentMedia.url;
+
+                            // Handle YouTube/Vimeo embed URLs - use iframe instead of video element
+                            if (videoUrl.includes('youtube.com/embed/') || videoUrl.includes('player.vimeo.com/video/')) {
+                                // Create or update iframe for YouTube/Vimeo
+                                let iframe = document.getElementById('modalVideoIframe');
+                                if (!iframe) {
+                                    iframe = document.createElement('iframe');
+                                    iframe.id = 'modalVideoIframe';
+                                    iframe.className = 'w-full h-full max-h-[24rem] transition-opacity duration-300';
+                                    iframe.style.aspectRatio = '16/9'; // Standard video aspect ratio
+                                    iframe.style.minHeight = '16rem';
+                                    iframe.setAttribute('frameborder', '0');
+                                    iframe.setAttribute('allow', 'accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture');
+                                    iframe.setAttribute('allowfullscreen', '');
+                                    iframe.setAttribute('oncontextmenu', 'return false;');
+                                    iframe.style.pointerEvents = 'auto';
+                                    videoElement.parentElement.appendChild(iframe);
+                                }
+                                iframe.src = videoUrl;
+                                iframe.classList.remove('hidden');
+                                videoElement.classList.add('hidden');
+                            } else {
+                                // Use video element for direct video files
+                                let iframe = document.getElementById('modalVideoIframe');
+                                if (iframe) iframe.classList.add('hidden');
+
+                                // Load video to get its dimensions
+                                videoElement.src = videoUrl;
+                                videoElement.classList.remove('hidden');
+
+                                // Additional protection: prevent video download
+                                videoElement.addEventListener('contextmenu', function (e) {
+                                    e.preventDefault();
+                                    return false;
+                                });
+                                videoElement.addEventListener('dragstart', function (e) {
+                                    e.preventDefault();
+                                    return false;
+                                });
+
+                                // Wait for video metadata to load, then adjust display based on aspect ratio
+                                videoElement.onloadedmetadata = function () {
+                                    const video = this;
+                                    const container = video.parentElement;
+                                    const videoAspectRatio = video.videoWidth / video.videoHeight;
+                                    const containerWidth = container.offsetWidth || 600; // Fallback width
+                                    const containerHeight = Math.min(container.offsetHeight || 384, 384); // Max 24rem
+                                    const containerAspectRatio = containerWidth / containerHeight;
+
+                                    // Reset styles first
+                                    video.style.width = '';
+                                    video.style.height = '';
+                                    video.style.maxWidth = '';
+                                    video.style.maxHeight = '';
+
+                                    // Adjust video display based on aspect ratio
+                                    if (videoAspectRatio > containerAspectRatio) {
+                                        // Video is wider (landscape like 16:9) - fit to width
+                                        video.style.width = '100%';
+                                        video.style.height = 'auto';
+                                        video.style.maxHeight = '24rem';
+                                        video.style.objectFit = 'contain';
+                                    } else {
+                                        // Video is taller (portrait like 9:16) - fit to height, center horizontally
+                                        video.style.width = 'auto';
+                                        video.style.height = '100%';
+                                        video.style.maxHeight = '24rem';
+                                        video.style.maxWidth = '100%';
+                                        video.style.objectFit = 'contain';
+                                    }
+                                };
+
+                                // Wait for video metadata to load, then adjust display
+                                videoElement.onloadedmetadata = function () {
+                                    const video = this;
+                                    const container = video.parentElement;
+                                    const videoAspectRatio = video.videoWidth / video.videoHeight;
+                                    const containerAspectRatio = container.offsetWidth / container.offsetHeight;
+
+                                    // Adjust video display based on aspect ratio
+                                    if (videoAspectRatio > containerAspectRatio) {
+                                        // Video is wider (landscape) - fit to width
+                                        video.style.width = '100%';
+                                        video.style.height = 'auto';
+                                        video.style.maxHeight = '24rem';
+                                    } else {
+                                        // Video is taller (portrait) - fit to height
+                                        video.style.width = 'auto';
+                                        video.style.height = '100%';
+                                        video.style.maxHeight = '24rem';
+                                        video.style.maxWidth = '100%';
+                                    }
+                                };
+
+                                // Pause any previous video
+                                videoElement.pause();
+                            }
+                        } else {
+                            // Hide iframe when showing image
+                            let iframe = document.getElementById('modalVideoIframe');
+                            if (iframe) iframe.classList.add('hidden');
+
+                            // Show image
+                            imageElement.src = '';
+                            imageElement.style.opacity = '0';
+
+                            // Ensure image loads properly
+                            imageElement.onerror = function () {
+                                console.error('Failed to load image:', currentMediaIndex, currentMedia.url.substring(0, 100));
+                                imageElement.style.opacity = '1';
+                                // Try next media if available
+                                if (propertyMedia.length > currentMediaIndex + 1) {
+                                    currentMediaIndex++;
+                                    updateMediaDisplay();
+                                }
+                            };
+
+                            imageElement.onload = function () {
+                                console.log('Image loaded successfully:', currentMediaIndex, propertyMedia.length);
+                                imageElement.style.opacity = '1';
+                            };
+
+                            // Set new image source
+                            imageElement.src = currentMedia.url;
+                            imageElement.alt = currentMedia.alt || 'Property Image';
+                            imageElement.classList.remove('hidden');
+
+                            // Force opacity back in case onload doesn't fire (for cached images)
+                            setTimeout(() => {
+                                if (imageElement.complete) {
+                                    imageElement.style.opacity = '1';
+                                }
+                            }, 100);
+                        }
+
+                        // Show/hide navigation based on number of media items
+                        if (propertyMedia.length > 1) {
+                            navigation.classList.remove('hidden');
+                        } else {
+                            navigation.classList.add('hidden');
+                        }
+
+                        setupImageDots();
+                    } else {
+                        console.error('No media or invalid index:', propertyMedia.length, currentMediaIndex);
+                    }
+                }
+
+                function setupMediaNavigation() {
+                    const prevButton = document.getElementById('prevImage');
+                    const nextButton = document.getElementById('nextImage');
+
+                    if (prevButton) {
+                        prevButton.onclick = () => {
+                            if (propertyMedia.length > 0) {
+                                // Pause current video if playing
+                                const videoElement = document.getElementById('modalVideoSrc');
+                                if (videoElement && !videoElement.classList.contains('hidden')) {
+                                    videoElement.pause();
+                                }
+                                // Clear iframe src to stop YouTube/Vimeo videos
+                                const iframe = document.getElementById('modalVideoIframe');
+                                if (iframe && !iframe.classList.contains('hidden')) {
+                                    iframe.src = '';
+                                }
+                                currentMediaIndex = (currentMediaIndex - 1 + propertyMedia.length) % propertyMedia.length;
+                                console.log('Previous media:', currentMediaIndex, propertyMedia.length);
+                                updateMediaDisplay();
+                            }
+                        };
+                    }
+
+                    if (nextButton) {
+                        nextButton.onclick = () => {
+                            if (propertyMedia.length > 0) {
+                                // Pause current video if playing
+                                const videoElement = document.getElementById('modalVideoSrc');
+                                if (videoElement && !videoElement.classList.contains('hidden')) {
+                                    videoElement.pause();
+                                }
+                                // Clear iframe src to stop YouTube/Vimeo videos
+                                const iframe = document.getElementById('modalVideoIframe');
+                                if (iframe && !iframe.classList.contains('hidden')) {
+                                    iframe.src = '';
+                                }
+                                currentMediaIndex = (currentMediaIndex + 1) % propertyMedia.length;
+                                console.log('Next media:', currentMediaIndex, propertyMedia.length);
+                                updateMediaDisplay();
+                            }
+                        };
+                    }
+                }
+
+                function setupImageDots() {
+                    const dotsContainer = document.getElementById('imageDots');
+                    dotsContainer.innerHTML = '';
+
+                    propertyMedia.forEach((media, index) => {
+                        const dot = document.createElement('button');
+                        dot.className = `w-3 h-3 rounded-full transition-all border-2 ${
+                            index === currentMediaIndex
+                                ? 'bg-white border-white shadow-lg'
+                                : 'bg-white bg-opacity-30 border-white border-opacity-50 hover:bg-opacity-60'
+                        }`;
+                        // Add video indicator
+                        if (media.type === 'video') {
+                            dot.innerHTML = '<svg class="w-2 h-2" fill="currentColor" viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg>';
+                        }
+                        dot.onclick = () => {
+                            // Pause current video if playing
+                            const videoElement = document.getElementById('modalVideoSrc');
+                            if (videoElement && !videoElement.classList.contains('hidden')) {
+                                videoElement.pause();
+                            }
+                            currentMediaIndex = index;
+                            updateMediaDisplay();
+                        };
+                        dotsContainer.appendChild(dot);
+                    });
+                }
+
+                function setupPropertyFeatures(bedrooms, bathrooms, area, propertyType) {
+                    console.log('Setting up features:', {bedrooms, bathrooms, area, propertyType});
+                    const features = [];
+
+                    // Add features based on available data
+                    if (bedrooms && bedrooms > 0) {
+                        features.push(`${bedrooms} Bedroom${bedrooms > 1 ? 's' : ''}`);
+                    }
+
+                    if (bathrooms && bathrooms > 0) {
+                        features.push(`${bathrooms} Bathroom${bathrooms > 1 ? 's' : ''}`);
+                    }
+
+                    if (area && area > 0) {
+                        features.push(`${parseInt(area).toLocaleString()} sq ft`);
+                    }
+
+                    // Add property type specific features
+                    if (propertyType === 'lease') {
+                        features.push('Available for Lease');
+                    } else {
+                        features.push('Available for Sale');
+                    }
+
+                    // Add some common features if we have basic data
+                    if (bedrooms && bathrooms) {
+                        features.push('Modern Design');
+                        features.push('Well Maintained');
+                    }
+
+                    console.log('Generated features:', features);
+
+                    const featuresContainer = document.getElementById('modalFeatures');
+                    if (features.length > 0) {
+                        featuresContainer.innerHTML = features.map(feature =>
+                            `<span class="bg-secondary text-secondary-foreground px-3 py-1 rounded-full text-sm">${feature}</span>`
+                        ).join('');
+                    } else {
+                        featuresContainer.innerHTML = '<span class="text-muted-foreground text-sm">No additional features listed</span>';
+                    }
+                }
+
+                function closePropertyModal() {
+                    document.getElementById('propertyModal').classList.add('hidden');
+                    document.body.style.overflow = 'auto';
+                }
+
+                // Close modal when clicking outside
+                document.getElementById('propertyModal').addEventListener('click', function (e) {
+                    if (e.target === this) {
+                        closePropertyModal();
+                    }
+                });
+
+                // Close modal with Escape key
+                document.addEventListener('keydown', function (e) {
+                    if (e.key === 'Escape') {
+                        closePropertyModal();
+                    }
                 });
             </script>
 
