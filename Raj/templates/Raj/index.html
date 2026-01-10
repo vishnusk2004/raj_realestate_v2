@@ -165,7 +165,7 @@
         <div class="min-h-screen">
             <section class="relative h-screen flex items-center justify-center overflow-hidden">
                 <video class="absolute inset-0 w-full h-full object-cover" autoplay muted loop>
-                    <source src="{% static 'videos/reachrajforreal_hero_video.mp4' %}" type="video/mp4">
+                    <source src="{% static 'videos/hero_video_v2.mp4' %}" type="video/mp4">
                 </video>
                 <div class="absolute inset-0 bg-gradient-hero opacity-60"></div>
                 <div class="relative z-10 text-center max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
@@ -175,9 +175,10 @@
                             Austin (ATX)</p>
                         <h1 class="font-display text-balance leading-[1.1] text-primary-foreground mb-8"
                             style="text-shadow: 2px 2px 8px rgba(0,0,0,0.8);">Find Your Dream Home With Us</h1>
-                        <p class="text-xl md:text-2xl text-primary-foreground mb-10 mx-auto leading-relaxed text-balance whitespace-nowrap md:whitespace-normal"
-                           style="text-shadow: 2px 2px 6px rgba(0,0,0,0.8);">Discover the best properties and
-                            insights with our expert real estate solutions.</p>
+                        <p class="text-xl md:text-2xl text-primary-foreground mx-auto leading-relaxed whitespace-nowrap md:whitespace-normal"
+                           style="text-shadow: 2px 2px 6px rgba(0,0,0,0.8); margin-bottom: 5rem !important;">
+                            Discover the best properties and insights with our expert real estate solutions.
+                        </p>
                         <div class="flex justify-center gap-12 mb-6 max-w-[600px] mx-auto">
                                 <span class="text-lg text-white text-center underline drop-shadow-xl"
                                       style="text-shadow:2px 2px 4px rgba(0,0,0,0.8); color: white;">Buy</span>
@@ -468,7 +469,8 @@
                                     </div>
                                     <div class="flex items-center justify-end pt-4 border-t">
                                         <button type="button"
-                                                class="view-details inline-flex items-center justify-center gap-2 whitespace-nowrap rounded-md text-sm font-medium ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 [&_svg]:pointer-events-none [&_svg]:size-4 [&_svg]:shrink-0 border bg-background h-10 px-3 py-2 border-primary text-primary hover:bg-primary hover:text-primary-foreground text-xs"
+                                                class="view-details inline-flex items-center justify-center gap-2 whitespace-nowrap rounded-md text-sm font-medium ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 border bg-background h-10 px-3 py-2 border-primary text-primary hover:bg-primary hover:text-primary-foreground text-xs"
+                                                onclick="fetchAndOpenModal(this)"
                                                 data-id="{{ property.id }}"
                                                 data-title="{{ property.title|escape }}"
                                                 data-location="{{ property.location|escape }}"
@@ -477,10 +479,6 @@
                                                 data-bedrooms="{{ property.bedrooms|default_if_none:'' }}"
                                                 data-bathrooms="{{ property.bathrooms|default_if_none:'' }}"
                                                 data-area="{{ property.area_sqft|default_if_none:'' }}"
-                                                data-description="{{ property.description|default:''|escape }}"
-                                                data-images="{{ property.get_all_image_urls|join:'|||' }}"
-                                                data-main-image="{{ property.get_main_image_url|default:'' }}"
-                                                data-media='{{ property.get_all_media_urls|to_json }}'
                                                 data-status="{{ property.property_status }}"
                                                 data-agent-name="{{ property.listing_agent_name|default:''|escape }}"
                                                 data-agent-link="{{ property.listing_agent_link|default:'' }}"
@@ -613,7 +611,8 @@
                                     </div>
                                     <div class="flex items-center justify-end pt-4 border-t">
                                         <button type="button"
-                                                class="view-details inline-flex items-center justify-center gap-2 whitespace-nowrap rounded-md text-sm font-medium ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 [&_svg]:pointer-events-none [&_svg]:size-4 [&_svg]:shrink-0 border bg-background h-10 px-3 py-2 border-primary text-primary hover:bg-primary hover:text-primary-foreground text-xs"
+                                                class="view-details inline-flex items-center justify-center gap-2 whitespace-nowrap rounded-md text-sm font-medium ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 border bg-background h-10 px-3 py-2 border-primary text-primary hover:bg-primary hover:text-primary-foreground text-xs"
+                                                onclick="fetchAndOpenModal(this)"
                                                 data-id="{{ property.id }}"
                                                 data-title="{{ property.title|escape }}"
                                                 data-location="{{ property.location|escape }}"
@@ -622,10 +621,6 @@
                                                 data-bedrooms="{{ property.bedrooms|default_if_none:'' }}"
                                                 data-bathrooms="{{ property.bathrooms|default_if_none:'' }}"
                                                 data-area="{{ property.area_sqft|default_if_none:'' }}"
-                                                data-description="{{ property.description|default:''|escape }}"
-                                                data-images="{{ property.get_all_image_urls|join:'|||' }}"
-                                                data-main-image="{{ property.get_main_image_url|default:'' }}"
-                                                data-media='{{ property.get_all_media_urls|to_json }}'
                                                 data-status="{{ property.property_status }}"
                                                 data-agent-name="{{ property.listing_agent_name|default:''|escape }}"
                                                 data-agent-link="{{ property.listing_agent_link|default:'' }}"
@@ -730,7 +725,7 @@
                 </div>
             </section>
 
-{#            <div class="py-12 mb-16"></div>#}
+            {#            <div class="py-12 mb-16"></div>#}
 
             <section class="py-12 bg-white text-gray-800">
                 <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
@@ -1091,7 +1086,7 @@
                                 </button>
                                 <div id="imageDots"
                                      class="absolute bottom-2 left-1/2 transform -translate-x-1/2 flex space-x-2">
-                                    </div>
+                                </div>
                             </div>
                         </div>
                         <div class="grid md:grid-cols-2 gap-6">
@@ -1337,67 +1332,74 @@
                 let propertyMedia = []; // Array of {type: 'image'|'video', url: string, alt?: string}
 
                 // Handle "View Details" buttons safely via data attributes
-                document.addEventListener('click', function (e) {
-                    const btn = e.target.closest('.view-details');
-                    if (!btn) return;
-                    const imagesRaw = btn.dataset.images || '';
-                    openPropertyModal(
-                        btn.dataset.id,
-                        btn.dataset.title || '',
-                        btn.dataset.location || '',
-                        btn.dataset.price || '',
-                        btn.dataset.type || '',
-                        btn.dataset.bedrooms || '',
-                        btn.dataset.bathrooms || '',
-                        btn.dataset.area || '',
-                        btn.dataset.description || '',
-                        imagesRaw,
-                        btn.dataset.status || '',
-                        btn.dataset.agentName || '',
-                        btn.dataset.agentLink || '',
-                        btn.dataset.agentImage || '',
-                        btn.dataset.mainImage || '',
-                        btn.dataset.contactEmail || 'raj.gupta@kw.com',
-                        btn.dataset.contactPhone || '(832) 785-0140',
-                        btn.dataset.media || '[]'
-                    );
-                });
+                // NEW: Function to fetch data first, then open modal
+                // NEW: Function to fetch data first, then open modal
+                function fetchAndOpenModal(btn) {
+                    const id = btn.dataset.id;
 
-                function openPropertyModal(id, title, location, price, propertyType, bedrooms, bathrooms, area, description, additionalImages, propertyStatus, listingAgentName, listingAgentLink, listingAgentImageUrl, mainImage, contactEmail, contactPhone, mediaData) {
+                    // OPTIMIZATION: Grab the main image directly from the visible card
+                    const card = btn.closest('.property-card');
+                    const mainImageSrc = card ? card.querySelector('img').src : '';
+
+                    // 1. Open modal immediately with basic info
+                    updateModalContent(
+                        id,
+                        btn.dataset.title,
+                        btn.dataset.location,
+                        btn.dataset.price,
+                        btn.dataset.type,
+                        btn.dataset.bedrooms,
+                        btn.dataset.bathrooms,
+                        btn.dataset.area,
+                        "Loading details...",
+                        "",
+                        btn.dataset.status,
+                        btn.dataset.agentName,
+                        btn.dataset.agentLink,
+                        btn.dataset.agentImage,
+                        mainImageSrc,
+                        btn.dataset.contactEmail,
+                        btn.dataset.contactPhone,
+                        "[]"
+                    );
+
+                    document.getElementById('propertyModal').classList.remove('hidden');
+                    document.body.style.overflow = 'hidden';
+
+                    // 2. Fetch the heavy data (Description + All Images) from server
+                    fetch(`/api/property/${id}/`)
+                        .then(response => response.json())
+                        .then(data => {
+                            document.getElementById('modalDescriptionText').textContent = data.description;
+                            setupPropertyMedia(id, btn.dataset.title, JSON.stringify(data.images), mainImageSrc, JSON.stringify(data.media));
+                        })
+                        .catch(err => {
+                            console.error("Error loading details:", err);
+                            document.getElementById('modalDescriptionText').textContent = "Details could not be loaded.";
+                        });
+                }
+
+                // Helper to update DOM elements
+                function updateModalContent(id, title, location, price, propertyType, bedrooms, bathrooms, area, description, additionalImages, propertyStatus, listingAgentName, listingAgentLink, listingAgentImageUrl, mainImage, contactEmail, contactPhone, mediaData) {
                     document.getElementById('modal-title').textContent = title;
                     document.getElementById('modalLocation').textContent = location;
 
-                    // Update contact links
                     const contactPhoneLink = document.getElementById('modalContactPhone');
                     const contactEmailLink = document.getElementById('modalContactEmail');
-                    if (contactPhoneLink && contactPhone) {
-                        contactPhoneLink.href = 'tel:' + contactPhone.replace(/[^\d+]/g, '');
-                    }
-                    if (contactEmailLink && contactEmail) {
-                        contactEmailLink.href = 'mailto:' + contactEmail;
-                    }
+                    if (contactPhoneLink && contactPhone) contactPhoneLink.href = 'tel:' + contactPhone.replace(/[^\d+]/g, '');
+                    if (contactEmailLink && contactEmail) contactEmailLink.href = 'mailto:' + contactEmail;
 
-                    // Format price - don't show for sold/leased properties
                     const priceElement = document.getElementById('modalPrice');
                     const priceRow = priceElement.closest('.flex.justify-between');
                     if (propertyStatus === 'just_sold' || propertyStatus === 'for_lease') {
-                        // Hide price for sold/leased properties
                         if (priceRow) priceRow.style.display = 'none';
                     } else {
-                        // Show price (handle as text, can be "upper 800s" or numeric)
                         if (priceRow) priceRow.style.display = 'flex';
                         if (price && price.trim()) {
-                            // Check if price is numeric
                             const numericPrice = parseFloat(price);
                             if (!isNaN(numericPrice)) {
-                                // It's a number, format it
-                                if (propertyType === 'lease') {
-                                    priceElement.textContent = '$' + numericPrice.toLocaleString() + '/month';
-                                } else {
-                                    priceElement.textContent = '$' + numericPrice.toLocaleString();
-                                }
+                                priceElement.textContent = propertyType === 'lease' ? '$' + numericPrice.toLocaleString() + '/month' : '$' + numericPrice.toLocaleString();
                             } else {
-                                // It's text like "upper 800s", display as-is
                                 priceElement.textContent = price;
                             }
                         } else {
@@ -1405,71 +1407,41 @@
                         }
                     }
 
-                    // Status
                     const statusElement = document.getElementById('modalStatus');
-                    if (statusElement) {
-                        statusElement.textContent = propertyStatus ? propertyStatus.replace(/_/g, ' ').replace(/\b\w/g, l => l.toUpperCase()) : '-';
-                    }
+                    if (statusElement) statusElement.textContent = propertyStatus ? propertyStatus.replace(/_/g, ' ').replace(/\b\w/g, l => l.toUpperCase()) : '-';
 
                     document.getElementById('modalBedrooms').textContent = bedrooms || '-';
                     document.getElementById('modalBathrooms').textContent = bathrooms || '-';
                     document.getElementById('modalArea').textContent = area ? parseFloat(area).toLocaleString() : '-';
 
-                    // Listing agent
                     const agentSection = document.getElementById('modalListingAgent');
                     const agentNameEl = document.getElementById('modalListingAgentName');
                     const agentLinkEl = document.getElementById('modalListingAgentLink');
                     const agentImgEl = document.getElementById('modalListingAgentImage');
+
                     if (listingAgentName || listingAgentImageUrl) {
                         if (agentSection) agentSection.classList.remove('hidden');
                         if (agentNameEl) {
-                            // Render agent name as a clickable link when URL is available
                             if (listingAgentLink) {
-                                const a = document.createElement('a');
-                                a.href = listingAgentLink;
-                                a.target = '_blank';
-                                a.rel = 'noopener noreferrer';
-                                a.className = 'text-primary hover:underline';
-                                a.textContent = listingAgentName || 'Listing Agent';
-                                agentNameEl.replaceChildren(a);
+                                agentNameEl.innerHTML = `<a href="${listingAgentLink}" target="_blank" class="text-primary hover:underline">${listingAgentName}</a>`;
                             } else {
                                 agentNameEl.textContent = listingAgentName || 'Listing Agent';
                             }
                         }
-                        if (agentLinkEl && listingAgentLink) {
-                            agentLinkEl.href = listingAgentLink;
-                            agentLinkEl.classList.remove('hidden');
-                        } else if (agentLinkEl) {
-                            agentLinkEl.classList.add('hidden');
-                        }
+                        if (agentLinkEl) agentLinkEl.classList.toggle('hidden', !listingAgentLink);
                         if (agentImgEl) {
-                            if (listingAgentImageUrl) {
-                                agentImgEl.src = listingAgentImageUrl;
-                                agentImgEl.classList.remove('hidden');
-                            } else {
-                                agentImgEl.classList.add('hidden');
-                            }
+                            agentImgEl.classList.toggle('hidden', !listingAgentImageUrl);
+                            if (listingAgentImageUrl) agentImgEl.src = listingAgentImageUrl;
                         }
                     } else {
                         if (agentSection) agentSection.classList.add('hidden');
                     }
 
-                    // Handle description
-                    if (description && description.trim()) {
-                        document.getElementById('modalDescriptionText').textContent = description;
-                        document.getElementById('modalDescription').classList.remove('hidden');
-                    } else {
-                        document.getElementById('modalDescription').classList.add('hidden');
-                    }
+                    document.getElementById('modalDescriptionText').textContent = description || '';
+                    document.getElementById('modalDescription').classList.remove('hidden');
 
-                    // Set up media (images + videos)
                     setupPropertyMedia(id, title, additionalImages, mainImage, mediaData);
-
-                    // Set up features based on property data
                     setupPropertyFeatures(bedrooms, bathrooms, area, propertyType);
-
-                    document.getElementById('propertyModal').classList.remove('hidden');
-                    document.body.style.overflow = 'hidden';
                 }
 
                 function parseImageList(imagesString) {

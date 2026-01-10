@@ -50,6 +50,7 @@ urlpatterns = [
     # Page tracking with customer codes: /<page>/u-<customer_code>/
     path('open-house/u-<str:customer_code>/', views.tracked_open_house, name='tracked_open_house'),
     path('open-house/u-<str:customer_code>', views.tracked_open_house),
+    path('api/open-house/<int:open_house_id>/', views.get_open_house_details, name='open_house_api'),
     path('selling/u-<str:customer_code>/', views.tracked_selling, name='tracked_selling'),
     path('selling/u-<str:customer_code>', views.tracked_selling),
     path('buy-lease/u-<str:customer_code>/', views.tracked_buy_lease, name='tracked_buy_lease'),

@@ -108,17 +108,17 @@ def home(request):
             except (ValueError, SyntaxError):
                 featured_property.cover_image_url = None  # Handle cases where image_url format is unexpected
 
-        # Get Just Sold properties (12+ properties for show more)
+        # Get Just Sold properties (LIMIT TO 12 to save memory)
         just_sold_properties = PropertyListing.objects.filter(
             published=True,
             property_status='just_sold'
-        ).order_by('-created_at')
+        ).order_by('-created_at')[:12]  # <--- ADDED [:12]
 
-        # Get Just Leased properties (12+ properties for show more) - using 'for_lease' status for now
+        # Get Just Leased properties (LIMIT TO 12 to save memory)
         just_leased_properties = PropertyListing.objects.filter(
             published=True,
             property_status='for_lease'
-        ).order_by('-created_at')
+        ).order_by('-created_at')[:12]  # <--- ADDED [:12]
 
         # Get featured communities
         featured_communities = Community.objects.filter(
@@ -451,6 +451,35 @@ def open_house(request):
         'open_houses': open_houses
     }
     return render(request, 'Raj/open_house.html', context)
+
+
+def get_open_house_details(request, open_house_id):
+    """API to fetch open house images dynamically"""
+    try:
+        open_house = get_object_or_404(OpenHouse, id=open_house_id)
+
+        images = []
+
+        # 1. Add Main Image FIRST (This was missing!)
+        main_img = open_house.get_main_image_url()
+        if main_img:
+            images.append(main_img)
+
+        # 2. Add Gallery Images
+        # Use the related name 'images' defined in your model
+        if hasattr(open_house, 'images'):
+            for img in open_house.images.all():
+                img_url = img.get_image_url()
+                if img_url:
+                    images.append(img_url)
+
+        return JsonResponse({
+            'title': open_house.title,  # Added title for the modal header
+            'description': getattr(open_house, 'description', ''),
+            'images': images
+        })
+    except Exception as e:
+        return JsonResponse({'error': str(e)}, status=500)
 
 
 def mortgage_calculator(request):
@@ -1311,5 +1340,3 @@ def general_tracking_redirect(request, customer_code):
 
     # Redirect to home page with tracking
     return redirect('home')
-
-

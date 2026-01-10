@@ -194,34 +194,22 @@ class Community(models.Model):
             self.image_base64 = image_to_base64(self.image_file)
         
         super().save(*args, **kwargs)
-    
+
     def get_image_url(self):
-        """Return the image URL - prefer base64, then file, then URL"""
-        # First priority: base64 data
-        if self.image_base64:
-            from .image_utils import get_image_data_url
-            return get_image_data_url(self.image_base64)
-        
-        # Second priority: uploaded file
+        """Return the image URL - PREFER FILE URL to save memory"""
+        # 1. First priority: Uploaded File (Fast/Light)
         if self.image_file and self.image_file.name:
             try:
-                from django.conf import settings
-                if not settings.DEBUG and self.image_url:
-                    return self.image_url
                 return self.image_file.url
             except:
-                if self.image_url:
-                    return self.image_url
-                return self.image_file.url
-        
-        # Third priority: URL field
-        elif self.image_url:
-            if self.image_url.startswith('data:'):
-                return self.image_url
-            else:
-                return self.image_url
-        
-        return None
+                pass
+
+        # 2. Second priority: Base64 (Fallback)
+        if self.image_base64:
+            return self.image_base64
+
+        # 3. Third priority: URL field
+        return self.image_url or ''
 
 
 class PropertyListing(models.Model):
@@ -307,46 +295,36 @@ class PropertyListing(models.Model):
         if self.additional_images:
             return [url.strip() for url in self.additional_images.split('\n') if url.strip()]
         return []
-    
+
     def get_all_image_urls(self):
-        """Return list of all image URLs (main + additional + related images) - prioritize base64"""
+        """Return list of all image URLs - PREFER FILES over Base64"""
         image_urls = []
-        
-        # Add main image - prioritize base64
-        if self.image_base64:
-            image_urls.append(self.image_base64)
-        elif self.image_file and self.image_file.name:
-            # Convert file to base64 if not already done
-            try:
-                from .image_utils import image_to_base64
-                base64_data = image_to_base64(self.image_file)
-                if base64_data:
-                    image_urls.append(base64_data)
-            except:
-                pass
-        elif self.image_url:
-            image_urls.append(self.image_url)
-        
-        # Add related images - prioritize base64
+
+        # Add main image
+        main_image = self.get_main_image_url()
+        if main_image:
+            image_urls.append(main_image)
+
+        # Add related images
         for img in self.images.all():
-            if img.image_base64:
-                image_urls.append(img.image_base64)
-            elif img.image_file and img.image_file.name:
-                # Convert file to base64 if not already done
+            # Check for file first
+            if img.image_file and img.image_file.name:
                 try:
-                    from .image_utils import image_to_base64
-                    base64_data = image_to_base64(img.image_file)
-                    if base64_data:
-                        image_urls.append(base64_data)
+                    image_urls.append(img.image_file.url)
+                    continue  # Skip to next image if file found
                 except:
                     pass
+
+            # Fallback to base64
+            if img.image_base64:
+                image_urls.append(img.image_base64)
             elif img.image_url:
                 image_urls.append(img.image_url)
-        
-        # Add additional images from text field (these should already be base64 or URLs)
+
+        # Add additional images from text field
         additional_urls = self.get_additional_images_list()
         image_urls.extend(additional_urls)
-        
+
         return image_urls
     
     def get_video_url(self):
@@ -425,38 +403,25 @@ class PropertyListing(models.Model):
                 media_items.append({'type': 'video', 'url': video_url})
         
         return media_items
-    
+
     def get_main_image_url(self):
-        """Return the main image URL - prefer base64, then file, then URL"""
-        # First priority: base64 data
+        """Return the main image URL - PREFER FILE URL to save memory"""
+        # 1. First Priority: Uploaded File (Fastest for page load)
+        if self.image_file and self.image_file.name:
+            try:
+                return self.image_file.url
+            except:
+                pass
+
+        # 2. Second Priority: Base64 (Only if file fails)
         if self.image_base64:
             from .image_utils import get_image_data_url
             return get_image_data_url(self.image_base64)
-        
-        # Second priority: uploaded file
-        if self.image_file and self.image_file.name:
-            # In production, if the file exists but might not be accessible,
-            # fall back to the image_url if available
-            try:
-                # Check if we're in production (no DEBUG mode)
-                from django.conf import settings
-                if not settings.DEBUG and self.image_url:
-                    return self.image_url
-                return self.image_file.url
-            except:
-                # If there's any error accessing the file, fall back to URL
-                if self.image_url:
-                    return self.image_url
-                return self.image_file.url
-        
-        # Third priority: URL field
+
+        # 3. Third Priority: External URL
         elif self.image_url:
-            # Check if it's a data URL or regular URL
-            if self.image_url.startswith('data:'):
-                return self.image_url
-            else:
-                return self.image_url
-        
+            return self.image_url
+
         return None
 
     def get_listing_agent_image_url(self):
@@ -540,20 +505,23 @@ class BlogPost(models.Model):
         ordering = ['-featured', '-created_at']
         verbose_name = "Blog Post"
         verbose_name_plural = "Blog Posts"
-    
+
+        # Find this inside class PropertyListingImage(models.Model):
     def get_image_url(self):
-        """Return the image URL - prefer base64, then file, then URL"""
-        # First priority: base64 data
-        if self.image_base64:
-            from .image_utils import get_image_data_url
-            return get_image_data_url(self.image_base64)
-        
-        # Second priority: uploaded file
+        """Return the image URL - PREFER FILE URL to save memory"""
+        # 1. First priority: Uploaded File (Fast/Light)
         if self.image_file and self.image_file.name:
-            return self.image_file.url
-        
-        # Third priority: URL
-        return self.image_url
+            try:
+                return self.image_file.url
+            except:
+                pass
+
+        # 2. Second priority: Base64 (Fallback)
+        if self.image_base64:
+            return self.image_base64
+
+        # 3. Third priority: URL field
+        return self.image_url or ''
     
     def __str__(self):
         return self.title
@@ -933,27 +901,22 @@ class PropertyListingImage(models.Model):
         ordering = ['order', 'created_at']
         verbose_name = "Property Listing Image"
         verbose_name_plural = "Property Listing Images"
-    
+
+        # Find this inside class PropertyListingImage(models.Model):
     def get_image_url(self):
-        """Return the image URL - prefer base64, then file, then URL"""
-        # First priority: base64 data
-        if self.image_base64:
-            return self.image_base64
-        
-        # Second priority: uploaded file - convert to base64
+        """Return the image URL - PREFER FILE URL to save memory"""
+        # 1. First priority: Uploaded File (Fast/Light)
         if self.image_file and self.image_file.name:
             try:
-                from .image_utils import image_to_base64
-                base64_data = image_to_base64(self.image_file)
-                if base64_data:
-                    # Store the base64 data for future use
-                    self.image_base64 = base64_data
-                    self.save(update_fields=['image_base64'])
-                    return base64_data
+                return self.image_file.url
             except:
                 pass
-        
-        # Third priority: URL field
+
+        # 2. Second priority: Base64 (Fallback)
+        if self.image_base64:
+            return self.image_base64
+
+        # 3. Third priority: URL field
         return self.image_url or ''
     
     def __str__(self):
@@ -1083,38 +1046,28 @@ class OpenHouse(models.Model):
     def __str__(self):
         date_str = self.open_house_date.strftime('%Y-%m-%d') if self.open_house_date else 'No Date'
         return f"{self.title} - {date_str}"
-    
+
+        # NEW CODE (Reduces Page Size to ~50KB)
     def get_main_image_url(self):
-        """Return the main image URL - prefer base64, then file, then URL"""
-        # First priority: base64 data
+        """Return the main image URL - PREFER FILE URL to save memory"""
+        # 1. First Priority: Uploaded File (Fastest/Lightest)
+        if self.image_file and self.image_file.name:
+            try:
+                from django.conf import settings
+                # If file exists, return its URL immediately
+                return self.image_file.url
+            except:
+                pass
+
+        # 2. Second Priority: Base64 (Fallback only)
         if self.image_base64:
             from .image_utils import get_image_data_url
             return get_image_data_url(self.image_base64)
-        
-        # Second priority: uploaded file
-        if self.image_file and self.image_file.name:
-            # In production, if the file exists but might not be accessible,
-            # fall back to the image_url if available
-            try:
-                # Check if we're in production (no DEBUG mode)
-                from django.conf import settings
-                if not settings.DEBUG and self.image_url:
-                    return self.image_url
-                return self.image_file.url
-            except:
-                # If there's any error accessing the file, fall back to URL
-                if self.image_url:
-                    return self.image_url
-                return self.image_file.url
-        
-        # Third priority: URL field
+
+        # 3. Third Priority: External URL
         elif self.image_url:
-            # Check if it's a data URL or regular URL
-            if self.image_url.startswith('data:'):
-                return self.image_url
-            else:
-                return self.image_url
-        
+            return self.image_url
+
         return None
     
     def save(self, *args, **kwargs):
@@ -1182,31 +1135,22 @@ class OpenHouseImage(models.Model):
         ordering = ['order', 'created_at']
         verbose_name = "Open House Image"
         verbose_name_plural = "Open House Images"
-    
+
     def get_image_url(self):
-        """Return the image URL - prefer base64, then file, then URL"""
-        # First priority: base64 data
+        """Return the image URL - PREFER FILE URL"""
+        # 1. First priority: uploaded file
+        if self.image_file and self.image_file.name:
+            try:
+                return self.image_file.url
+            except:
+                pass
+
+        # 2. Second priority: base64 data
         if self.image_base64:
             from .image_utils import get_image_data_url
             return get_image_data_url(self.image_base64)
-        
-        # Second priority: uploaded file
-        if self.image_file and self.image_file.name:
-            # In production, if the file exists but might not be accessible,
-            # fall back to the image_url if available
-            try:
-                # Check if we're in production (no DEBUG mode)
-                from django.conf import settings
-                if not settings.DEBUG and self.image_url:
-                    return self.image_url
-                return self.image_file.url
-            except:
-                # If there's any error accessing the file, fall back to URL
-                if self.image_url:
-                    return self.image_url
-                return self.image_file.url
-        
-        # Third priority: URL field
+
+        # 3. Third priority: URL field
         return self.image_url
     
     def __str__(self):
