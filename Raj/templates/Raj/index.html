@@ -164,36 +164,44 @@
     <main class="flex-1">
         <div class="min-h-screen">
             <section class="relative h-screen flex items-center justify-center overflow-hidden">
-                <video class="absolute inset-0 w-full h-full object-cover" autoplay muted loop>
+                <video class="absolute inset-0 w-full h-full object-cover" autoplay muted loop playsinline
+                       poster="{% static 'Images/hero-poster.jpg' %}">
                     <source src="{% static 'videos/hero_video_v2.mp4' %}" type="video/mp4">
                 </video>
+
                 <div class="absolute inset-0 bg-gradient-hero opacity-60"></div>
-                <div class="relative z-10 text-center max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
+
+                <div class="relative z-10 text-center max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
                     <div class="animate-fade-in-up">
                         <p class="text-sm text-primary-foreground mb-4"
-                           style="text-shadow: 2px 2px 4px rgba(0,0,0,0.8);">Serving all of Houston (HTX) and
-                            Austin (ATX)</p>
+                           style="text-shadow: 2px 2px 4px rgba(0,0,0,0.8);">Serving all of Houston (HTX) and Austin
+                            (ATX)</p>
+
                         <h1 class="font-display text-balance leading-[1.1] text-primary-foreground mb-8"
                             style="text-shadow: 2px 2px 8px rgba(0,0,0,0.8);">Find Your Dream Home With Us</h1>
-                        <p class="text-xl md:text-2xl text-primary-foreground mx-auto leading-relaxed whitespace-nowrap md:whitespace-normal"
-                           style="text-shadow: 2px 2px 6px rgba(0,0,0,0.8); margin-bottom: 5rem !important;">
+
+                        <p class="text-xl md:text-2xl text-primary-foreground mx-auto leading-relaxed whitespace-normal md:whitespace-nowrap"
+                           style="text-shadow: 2px 2px 6px rgba(0,0,0,0.8); margin-bottom: 5rem;">
                             Discover the best properties and insights with our expert real estate solutions.
                         </p>
+
                         <div class="flex justify-center gap-12 mb-6 max-w-[600px] mx-auto">
-                                <span class="text-lg text-white text-center underline drop-shadow-xl"
-                                      style="text-shadow:2px 2px 4px rgba(0,0,0,0.8); color: white;">Buy</span>
-                            <span class="text-lg  text-white text-center underline drop-shadow-xl"
+                <span class="text-lg text-white text-center underline drop-shadow-xl"
+                      style="text-shadow:2px 2px 4px rgba(0,0,0,0.8); color: white;">Buy</span>
+                            <span class="text-lg text-white text-center underline drop-shadow-xl"
                                   style="text-shadow:2px 2px 4px rgba(0,0,0,0.8); color: white;">Sell</span>
-                            <span class="text-lg  text-white text-center underline drop-shadow-xl"
+                            <span class="text-lg text-white text-center underline drop-shadow-xl"
                                   style="text-shadow:2px 2px 4px rgba(0,0,0,0.8); color: white;">Lease</span>
                         </div>
+
                         <a href="tel:832-785-0140"
                            class="text-2xl md:text-3xl mb-8 font-bold bg-black/40 px-8 py-4 rounded-lg border-2 border-white/60 backdrop-blur-sm hover:bg-black/50 transition-all duration-300 block text-center no-underline mx-auto max-w-[600px] shadow-xl hover:shadow-2xl"
                            style="color: #ffffff !important; text-shadow: 2px 2px 4px rgba(0,0,0,0.8);">Call Raj
                             832-785-0140</a>
-                        <div class="flex flex-wrap justify-center gap-12 mb-10 max-w-[600px] mx-auto">
-                                <span class="font-semibold text-lg text-white text-center underline drop-shadow-xl"
-                                      style="text-shadow:2px 2px 3px rgba(0,0,0,0.8); color: white;">Residential</span>
+
+                        <div class="flex flex-wrap justify-center gap-8 md:gap-12 mb-10 max-w-[600px] mx-auto">
+                <span class="font-semibold text-lg text-white text-center underline drop-shadow-xl"
+                      style="text-shadow:2px 2px 3px rgba(0,0,0,0.8); color: white;">Residential</span>
                             <span class="font-semibold text-lg text-white text-center underline drop-shadow-xl"
                                   style="text-shadow:2px 2px 3px rgba(0,0,0,0.8); color: white;">Commercial</span>
                             <span class="font-semibold text-lg text-white text-center underline drop-shadow-xl"
