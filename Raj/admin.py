@@ -372,3 +372,47 @@ class OpenHouseImageAdmin(admin.ModelAdmin):
             'classes': ('collapse',)
         }),
     )
+
+
+
+from django.contrib import admin
+from .models import GeneralInquiry, PropertyListing, BlogPost, OpenHouse  # ... keep your existing imports
+
+
+# Register the new model
+@admin.register(GeneralInquiry)
+class GeneralInquiryAdmin(admin.ModelAdmin):
+    # Columns to show in the list view
+    list_display = ('name', 'phone', 'source_page', 'created_at', 'is_contacted')
+
+    # Add filters on the right side
+    list_filter = ('is_contacted', 'source_page', 'created_at')
+
+    # Add search capability
+    search_fields = ('name', 'email', 'phone', 'message', 'admin_notes')
+
+    # Allow checking the "Contacted" box directly from the list view
+    list_editable = ('is_contacted',)
+
+    # Organize the form layout when you click into a specific inquiry
+    fieldsets = (
+        ('Contact Info', {
+            'fields': ('name', 'email', 'phone', 'source_page')
+        }),
+        ('Inquiry Details', {
+            'fields': ('message', 'created_at')
+        }),
+        ('Admin Management', {
+            'fields': ('is_contacted', 'admin_notes'),
+            'description': 'Use these fields to track your follow-up progress.',
+            'classes': ('wide', 'extrapretty'),
+        }),
+        ('System Info', {
+            'fields': ('ip_address', 'user_agent'),
+            'classes': ('collapse',)
+        }),
+    )
+    readonly_fields = ('created_at', 'ip_address', 'user_agent')
+
+    class Media:
+        js = ('js/admin_smart_save.js',)

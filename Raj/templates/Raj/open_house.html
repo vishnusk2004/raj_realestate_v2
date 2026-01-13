@@ -465,7 +465,7 @@
 
                                 <div class="flex items-center justify-between gap-4 mb-4">
                                     <button
-                                        class="flex-1 inline-flex items-center justify-center gap-2 whitespace-nowrap text-sm font-medium ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 border bg-background h-9 rounded-md px-3 py-2 border-primary text-primary hover:bg-primary hover:text-primary-foreground"
+                                        class="flex-1 inline-flex items-center justify-center gap-2 whitespace-nowrap text-sm font-medium ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 border bg-gray-100 h-9 rounded-md px-3 py-2 border-primary text-primary hover:bg-primary hover:text-primary-foreground"
                                         onclick="handleContactRajClick(this)"
                                         data-open-house-id="{{ open_house.id }}"
                                         data-title="{{ open_house.title }}"
@@ -477,7 +477,7 @@
                                         Contact Raj
                                     </button>
                                     <button
-                                        class="flex-1 inline-flex items-center justify-center gap-2 whitespace-nowrap text-sm font-medium ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 border bg-background h-9 rounded-md px-3 py-2 border-primary text-primary hover:bg-primary hover:text-primary-foreground"
+                                        class="flex-1 inline-flex items-center justify-center gap-2 whitespace-nowrap text-sm font-medium ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 border bg-gray-100 h-9 rounded-md px-3 py-2 border-primary text-primary hover:bg-primary hover:text-primary-foreground"
                                         onclick="if(window.openImageGallery && typeof window.openImageGallery === 'function') { window.openImageGallery({{ open_house.id }}); }">
                                         View Details
                                     </button>
@@ -744,8 +744,6 @@
         // Handle Past cards
         if (past.length > 0) {
             past.forEach(item => {
-                // Optional: Add visual distinction for past items
-                item.element.classList.add('opacity-80', 'grayscale-[0.2]');
                 pastGrid.appendChild(item.element);
             });
             pastSection.classList.remove('hidden'); // Show the section

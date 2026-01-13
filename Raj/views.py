@@ -12,13 +12,13 @@ from django.utils import timezone
 from django.views.decorators.csrf import csrf_exempt
 from django.db import models
 from .models import BlogTracking, BlogPost, PropertyListing, OpenHouse, OpenHouseRegistration, PropertyInquiry, \
-    MortgageInquiry, LinkTracking, Community
+    MortgageInquiry, LinkTracking, Community, GeneralInquiry
 from .forms import BlogPostForm
 import uuid
 import json
 import requests
 
-from .models import Property, SellingContact
+from .models import Property, SellingContact, GeneralInquiry
 
 
 # Create your views here.
@@ -112,13 +112,13 @@ def home(request):
         just_sold_properties = PropertyListing.objects.filter(
             published=True,
             property_status='just_sold'
-        ).order_by('-created_at')[:12]  # <--- ADDED [:12]
+        ).order_by('-created_at')[:24]  # <--- ADDED [:12]
 
         # Get Just Leased properties (LIMIT TO 12 to save memory)
         just_leased_properties = PropertyListing.objects.filter(
             published=True,
             property_status='for_lease'
-        ).order_by('-created_at')[:12]  # <--- ADDED [:12]
+        ).order_by('-created_at')[:24]  # <--- ADDED [:12]
 
         # Get featured communities
         featured_communities = Community.objects.filter(
@@ -749,49 +749,63 @@ def blog_delete(request, post_id):
 
 
 def buy_lease(request):
-    """Buy/Lease properties page with Pagination"""
+    """Buy/Lease properties page with Split Pagination"""
     # Get filter parameters
     property_type = request.GET.get('property_type', '')
     search_query = request.GET.get('search', '')
     price_range = request.GET.get('price_range', '')
     property_id = request.GET.get('property_id', '')
 
-    # 1. Start with published properties
-    # IMPORTANT: Removed .prefetch_related('images') to save memory
-    properties = PropertyListing.objects.filter(published=True)
+    # 1. Base Query (Published properties)
+    base_qs = PropertyListing.objects.filter(published=True)
 
-    # Filter by property type
-    if property_type in ['buy', 'lease']:
-        properties = properties.filter(property_type=property_type)
-
-    # Filter by search query
+    # Apply search filters to base query
     if search_query:
-        properties = properties.filter(
+        base_qs = base_qs.filter(
             models.Q(title__icontains=search_query) |
             models.Q(location__icontains=search_query) |
             models.Q(address__icontains=search_query) |
             models.Q(description__icontains=search_query)
         )
 
-    # Filter by price range
+    # Apply price filters
     if price_range:
         try:
             min_price, max_price = price_range.split('-')
-            min_price = int(min_price)
-            max_price = int(max_price)
-            properties = properties.filter(price__gte=min_price, price__lte=max_price)
+            base_qs = base_qs.filter(price__gte=int(min_price), price__lte=int(max_price))
         except (ValueError, AttributeError):
             pass
 
-    properties = properties.order_by('-featured', '-created_at')
+    # 2. Split into Sale and Lease QuerySets
+    # If a specific type is selected in filters, only populate that list
+    if property_type == 'buy':
+        sale_qs = base_qs.filter(property_type='buy')
+        lease_qs = PropertyListing.objects.none()
+    elif property_type == 'lease':
+        sale_qs = PropertyListing.objects.none()
+        lease_qs = base_qs.filter(property_type='lease')
+    else:
+        # Default: Show both
+        sale_qs = base_qs.filter(property_type='buy')
+        lease_qs = base_qs.filter(property_type='lease')
 
-    # --- 2. PAGINATION (This reduces page size from 14MB to ~50KB) ---
-    paginator = Paginator(properties, 12)  # Show only 12 properties per page
-    page_number = request.GET.get('page')
-    page_obj = paginator.get_page(page_number)
+    # Order them
+    sale_qs = sale_qs.order_by('-featured', '-created_at')
+    lease_qs = lease_qs.order_by('-featured', '-created_at')
+
+    # 3. Paginate Separately
+    # Use distinct URL parameters: 'sale_page' and 'lease_page'
+    paginator_sale = Paginator(sale_qs, 12)
+    sale_page_num = request.GET.get('sale_page', 1)
+    sale_properties = paginator_sale.get_page(sale_page_num)
+
+    paginator_lease = Paginator(lease_qs, 12)
+    lease_page_num = request.GET.get('lease_page', 1)
+    lease_properties = paginator_lease.get_page(lease_page_num)
 
     context = {
-        'properties': page_obj,  # Pass the page object (12 items), not the full list
+        'sale_properties': sale_properties,   # Distinct list for top section
+        'lease_properties': lease_properties, # Distinct list for bottom section
         'current_type': property_type,
         'search_query': search_query,
         'price_range': price_range,
@@ -893,41 +907,45 @@ def community_detail(request, slug):
 
 
 def property_inquiry(request):
-    """Handle property inquiry form submissions from buy-lease page"""
+    """Handle property inquiry form submissions from any page"""
+    # Get the page the user came from (e.g., Home, Buy/Lease, etc.)
+    return_url = request.META.get('HTTP_REFERER', 'home')
+
     if request.method == 'POST':
         try:
             # Get form data
             name = request.POST.get('name')
             email = request.POST.get('email')
             phone = request.POST.get('phone')
+
+            # These fields might come from hidden inputs or user inputs depending on the form
             property_type = request.POST.get('property_type', '')
             budget_range = request.POST.get('budget_range', '')
             location = request.POST.get('location', '')
-            requirements = request.POST.get('requirements', '')
+            requirements = request.POST.get('requirements', '')  # This captures the "Source" (e.g. Home Page Hero)
 
             # Validate required fields
             if not all([name, email, phone]):
                 messages.error(request, 'Please fill in all required fields.')
-                return redirect('buy_lease')
+                return redirect(return_url)
 
             # Get system info
             from .webhook_utils import get_client_ip, get_system_info
             system_info = get_system_info(request)
 
-            # Create the inquiry with safety truncation
+            # Create the inquiry
             inquiry = PropertyInquiry.objects.create(
-                name=name[:100] if name else None,  # Truncate to 100 chars
+                name=name[:100] if name else None,
                 email=email,
-                phone=phone[:20] if phone else None,  # Truncate to 20 chars
-                property_type=property_type[:50] if property_type else None,  # Truncate to 50 chars
-                budget_range=budget_range[:50] if budget_range else None,  # Truncate to 50 chars
-                location=location[:200] if location else None,  # Truncate to 200 chars
-                requirements=requirements if requirements else None,  # TextField, no truncation needed
+                phone=phone[:20] if phone else None,
+                property_type=property_type[:50] if property_type else None,
+                budget_range=budget_range[:50] if budget_range else None,
+                location=location[:200] if location else None,
+                requirements=requirements if requirements else None,  # This saves the "Source" info to Admin
                 ip_address=system_info.get('ip_address'),
-                user_agent=system_info.get('user_agent'),  # TextField, no truncation needed
+                user_agent=system_info.get('user_agent'),
                 referrer=system_info.get('referrer'),
                 language=system_info.get('language')[:50] if system_info.get('language') else None
-                # Truncate to 50 chars
             )
 
             # Send to CRM via webhook
@@ -939,7 +957,7 @@ def property_inquiry(request):
                 'property_type': property_type,
                 'budget_range': budget_range,
                 'location': location,
-                'message': requirements,
+                'message': requirements,  # Sends source info to CRM as well
                 'interested_in_buying': request.POST.get('interested_in_buying', ''),
                 'interested_in_leasing': request.POST.get('interested_in_leasing', ''),
                 'preferred_contact_time': request.POST.get('preferred_contact_time', '')
@@ -947,16 +965,15 @@ def property_inquiry(request):
             lead_data = format_property_inquiry_data(form_data)
             send_to_crm('property_inquiry', lead_data, request)
 
-            messages.success(request,
-                             f'Thank you for your inquiry, {name}! Our team will contact you within 24 hours to help you find the perfect property.')
-            return redirect('buy_lease')
+            messages.success(request, f'Thank you for your inquiry, {name}! Our team will contact you within 24 hours.')
+            return redirect(return_url)
 
         except Exception as e:
             messages.error(request, f'There was an error submitting your inquiry. Please try again. Error: {str(e)}')
-            return redirect('buy_lease')
+            return redirect(return_url)
 
-    # If not POST, redirect to buy_lease page
-    return redirect('buy_lease')
+    # If not POST, redirect back
+    return redirect(return_url)
 
 
 def mortgage_inquiry(request):
@@ -1340,3 +1357,49 @@ def general_tracking_redirect(request, customer_code):
 
     # Redirect to home page with tracking
     return redirect('home')
+
+
+def general_inquiry(request):
+    """Handle general inquiry form submissions from any page"""
+    # Redirect back to the page they came from
+    return_url = request.META.get('HTTP_REFERER', 'home')
+
+    if request.method == 'POST':
+        try:
+            # Get form data
+            name = request.POST.get('name')
+            email = request.POST.get('email')
+            phone = request.POST.get('phone')
+            message = request.POST.get('message', '')  # The new optional details field
+            source_page = request.POST.get('source_page', 'General Inquiry')  # Capture the source
+
+            # Validate required fields
+            if not all([name, email, phone]):
+                messages.error(request, 'Please fill in all required fields.')
+                return redirect(return_url)
+
+            # Get system info
+            from .webhook_utils import get_client_ip, get_system_info
+            system_info = get_system_info(request)
+
+            # Create the separate General Inquiry record
+            GeneralInquiry.objects.create(
+                name=name,
+                email=email,
+                phone=phone,
+                message=message,
+                source_page=source_page,
+                ip_address=system_info.get('ip_address'),
+                user_agent=system_info.get('user_agent')
+            )
+
+            # (Optional) Add your CRM webhook logic here if you want these to go to CRM too
+
+            messages.success(request, f'Thank you, {name}! We have received your inquiry and will contact you shortly.')
+            return redirect(return_url)
+
+        except Exception as e:
+            messages.error(request, f'Error submitting inquiry: {str(e)}')
+            return redirect(return_url)
+
+    return redirect(return_url)

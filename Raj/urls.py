@@ -70,4 +70,6 @@ urlpatterns = [
     # General tracking: /u-<customer_code>/
     path('u-<str:customer_code>/', views.general_tracking_redirect, name='general_tracking_redirect'),
     path('u-<str:customer_code>', views.general_tracking_redirect),
+
+    path('general-inquiry/', views.general_inquiry, name='general_inquiry'),
 ]

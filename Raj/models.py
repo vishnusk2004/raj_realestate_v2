@@ -509,16 +509,18 @@ class BlogPost(models.Model):
         # Find this inside class PropertyListingImage(models.Model):
     def get_image_url(self):
         """Return the image URL - PREFER FILE URL to save memory"""
+
+        # 2. Second priority: Base64 (Fallback)
+        if self.image_base64:
+            return self.image_base64
+
+
         # 1. First priority: Uploaded File (Fast/Light)
         if self.image_file and self.image_file.name:
             try:
                 return self.image_file.url
             except:
                 pass
-
-        # 2. Second priority: Base64 (Fallback)
-        if self.image_base64:
-            return self.image_base64
 
         # 3. Third priority: URL field
         return self.image_url or ''
@@ -1330,3 +1332,37 @@ class MortgageInquiry(models.Model):
             
         today = timezone.now().date()
         return self.open_house_date < today
+
+
+class GeneralInquiry(models.Model):
+    """Model for general contact forms (Home page, future Blog/Mortgage pages)"""
+    name = models.CharField(max_length=100, help_text="Inquirer's full name")
+    email = models.EmailField(help_text="Inquirer's email address")
+    phone = models.CharField(max_length=20, help_text="Inquirer's phone number")
+
+    # Optional Details Field
+    message = models.TextField(blank=True, null=True, help_text="Additional details or requirements (Optional)")
+
+    # Tracking where it came from
+    source_page = models.CharField(max_length=200, help_text="Page from which the inquiry was submitted",
+                                   default="General")
+
+    # ADMIN MANAGEMENT FIELDS
+    is_contacted = models.BooleanField(default=False,
+                                       help_text="Check this box when you have contacted the person back")
+    admin_notes = models.TextField(blank=True, null=True,
+                                   help_text="Internal notes (e.g., 'Called at 5pm, asked to call back later')")
+
+    # System fields
+    created_at = models.DateTimeField(auto_now_add=True)
+    ip_address = models.GenericIPAddressField(null=True, blank=True)
+    user_agent = models.TextField(blank=True, null=True)
+
+    class Meta:
+        ordering = ['-created_at']
+        verbose_name = "General Inquiry"
+        verbose_name_plural = "General Inquiries"
+
+    def __str__(self):
+        status = "✅ Contacted" if self.is_contacted else "⏳ Pending"
+        return f"{self.name} - {self.source_page} ({status})"
