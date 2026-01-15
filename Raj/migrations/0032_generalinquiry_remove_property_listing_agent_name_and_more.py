@@ -31,14 +31,14 @@ class Migration(migrations.Migration):
                 'ordering': ['-created_at'],
             },
         ),
-        migrations.RemoveField(
-            model_name='property',
-            name='listing_agent_name',
-        ),
-        migrations.RemoveField(
-            model_name='property',
-            name='listing_agent_url',
-        ),
+#        migrations.RemoveField(
+#            model_name='property',
+#            name='listing_agent_name',
+#        ),
+#        migrations.RemoveField(
+#            model_name='property',
+#            name='listing_agent_url',
+#        ),
         migrations.AlterField(
             model_name='linktracking',
             name='page_type',
