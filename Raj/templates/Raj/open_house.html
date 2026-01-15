@@ -207,6 +207,45 @@
                 transform: translateY(0) scale(1);
             }
         }
+
+        #mediaCarousel {
+            display: flex !important;
+            align-items: center !important;
+            justify-content: center !important;
+            background-color: #f3f4f6 !important;
+            min-height: 16rem !important;
+            max-height: 24rem !important;
+        }
+
+        #modalImageSrc {
+            object-fit: contain !important;
+            object-position: center !important;
+            max-width: 100% !important;
+            max-height: 24rem !important;
+            width: auto !important;
+            height: auto !important;
+        }
+
+        /* Navigation Arrows */
+        #prevImage, #nextImage {
+            z-index: 1000 !important;
+            position: absolute !important;
+            display: block !important;
+            visibility: visible !important;
+            opacity: 1 !important;
+            pointer-events: auto !important;
+            cursor: pointer;
+        }
+
+        #prevImage:hover, #nextImage:hover {
+            transform: translateY(-50%) scale(1.1) !important;
+            transition: all 0.3s ease !important;
+        }
+
+        /* Ensure Modal sits on top */
+        #propertyModal {
+            z-index: 9999 !important;
+        }
     </style>
 
     <!-- Define gallery functions in head to ensure they're available before HTML renders -->
@@ -385,187 +424,233 @@
 
 <!-- Open House Properties -->
 <section class="py-16 bg-background">
-        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-            {% if open_houses %}
-                <div id="upcoming-section">
-                    <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-6" id="upcoming-grid">
-                        {% for open_house in open_houses %}
-                        <div class="open-house-card rounded-lg border bg-card text-card-foreground shadow-sm overflow-hidden shadow-soft hover:shadow-medium transition-all duration-300 group"
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        {% if open_houses %}
+            <div id="upcoming-section">
+                <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-6" id="upcoming-grid">
+                    {% for open_house in open_houses %}
+                        <div class="rounded-lg border bg-card text-card-foreground shadow-sm group overflow-hidden shadow-soft hover:shadow-medium transition-all duration-300 open-house-card"
                              data-date="{{ open_house.open_house_date|date:'Y-m-d' }}">
 
                             <div class="relative overflow-hidden">
                                 {% if open_house.get_main_image_url %}
-                                    <img src="{{ open_house.get_main_image_url }}" alt="{{ open_house.title }}" class="w-full h-48 object-cover group-hover:scale-105 transition-transform duration-300 cursor-pointer" data-open-house-id="{{ open_house.id }}" onclick="if(window.openImageGallery && typeof window.openImageGallery === 'function') { window.openImageGallery({{ open_house.id }}); }">
+                                    <img src="{{ open_house.get_main_image_url }}" alt="{{ open_house.title }}"
+                                         class="w-full h-48 object-cover group-hover:scale-105 transition-transform duration-300">
                                 {% else %}
-                                    <img src="{% static 'images/property-1.jpg' %}" alt="{{ open_house.title }}" class="w-full h-48 object-cover group-hover:scale-105 transition-transform duration-300 cursor-pointer" data-open-house-id="{{ open_house.id }}" onclick="if(window.openImageGallery && typeof window.openImageGallery === 'function') { window.openImageGallery({{ open_house.id }}); }">
+                                    <div class="w-full h-48 bg-muted flex items-center justify-center">
+                                        <svg xmlns="http://www.w3.org/2000/svg" width="48" height="48"
+                                             viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                                             stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
+                                             class="lucide lucide-home h-12 w-12 text-muted-foreground">
+                                            <path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"></path>
+                                            <polyline points="9,22 9,12 15,12 15,22"></polyline>
+                                        </svg>
+                                    </div>
                                 {% endif %}
-                                <div class="inline-flex items-center rounded-full border px-2.5 py-0.5 text-xs font-semibold transition-colors focus:outline-none focus:ring-2 focus:ring-ring focus:ring-offset-2 border-transparent hover:bg-primary/80 absolute top-4 left-4 bg-accent text-accent-foreground">Open House</div>
 
-                                {% if open_house.get_main_image_url or open_house.images.all %}
-                                    {% with total_images=open_house.images.all|length %}
-                                        {% if open_house.get_main_image_url %}
-                                            {% with total_images=total_images|add:1 %}
-                                                {% if total_images > 1 %}
-                                                    <div class="absolute bottom-4 right-4 bg-black bg-opacity-70 text-white px-3 py-1 rounded-full text-sm font-medium cursor-pointer" data-gallery-id="{{ open_house.id }}" onclick="event.stopPropagation(); if(window.openImageGallery && typeof window.openImageGallery === 'function') { window.openImageGallery({{ open_house.id }}); }">
-                                                        View {{ total_images }} photos
-                                                    </div>
-                                                {% endif %}
-                                            {% endwith %}
-                                        {% else %}
-                                            {% if total_images > 1 %}
-                                                <div class="absolute bottom-4 right-4 bg-black bg-opacity-70 text-white px-3 py-1 rounded-full text-sm font-medium cursor-pointer" data-gallery-id="{{ open_house.id }}" onclick="event.stopPropagation(); if(window.openImageGallery && typeof window.openImageGallery === 'function') { window.openImageGallery({{ open_house.id }}); }">
-                                                    View {{ total_images }} photos
-                                                </div>
-                                            {% endif %}
-                                        {% endif %}
-                                    {% endwith %}
-                                {% endif %}
+                                <div class="absolute top-4 left-4 flex gap-2 flex-wrap">
+                                    <div class="inline-flex items-center rounded-full border px-2.5 py-0.5 text-xs font-semibold transition-colors border-transparent bg-accent text-accent-foreground">
+                                        Open House
+                                    </div>
+                                </div>
                             </div>
 
-                            <div class="p-6">
-                                <div class="flex items-center text-sm text-muted-foreground mb-3">
-                                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-calendar w-4 h-4 mr-1">
-                                        <path d="M8 2v4"></path>
-                                        <path d="M16 2v4"></path>
-                                        <rect width="18" height="18" x="3" y="4" rx="2"></rect>
-                                        <path d="M3 10h18"></path>
-                                    </svg>
-                                    <span>{{ open_house.open_house_date|date:"M j, Y" }}</span>
-                                    <span class="mx-2">•</span>
-                                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-clock w-4 h-4 mr-1">
-                                        <circle cx="12" cy="12" r="10"></circle>
-                                        <polyline points="12 6 12 12 16 14"></polyline>
-                                    </svg>
-                                    <span>{{ open_house.open_house_time|time:"g:i A" }}{% if open_house.open_house_end_time %} - {{ open_house.open_house_end_time|time:"g:i A" }}{% endif %}</span>
+                            <div class="p-6 space-y-4">
+                                <div>
+                                    <h3 class="text-lg font-semibold text-foreground mb-2 line-clamp-1">{{ open_house.title }}</h3>
+
+                                    <div class="flex items-center text-primary font-medium mb-1 text-sm">
+                                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16"
+                                             viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                                             stroke-linecap="round" stroke-linejoin="round" class="mr-1">
+                                            <rect width="18" height="18" x="3" y="4" rx="2"></rect>
+                                            <path d="M3 10h18"></path>
+                                            <path d="M8 2v4"></path>
+                                            <path d="M16 2v4"></path>
+                                        </svg>
+                                        <span>{{ open_house.open_house_date|date:"M j, Y" }}</span>
+                                        <span class="mx-2">•</span>
+                                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16"
+                                             viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                                             stroke-linecap="round" stroke-linejoin="round" class="mr-1">
+                                            <circle cx="12" cy="12" r="10"></circle>
+                                            <polyline points="12 6 12 12 16 14"></polyline>
+                                        </svg>
+                                        <span>{{ open_house.open_house_time|time:"g:i A" }}</span>
+                                    </div>
+
+                                    <div class="flex items-center text-muted-foreground">
+                                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24"
+                                             viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                                             stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
+                                             class="lucide lucide-map-pin h-4 w-4 mr-1">
+                                            <path d="M20 10c0 4.993-5.539 10.193-7.399 11.799a1 1 0 0 1-1.202 0C9.539 20.193 4 14.993 4 10a8 8 0 0 1 16 0"></path>
+                                            <circle cx="12" cy="10" r="3"></circle>
+                                        </svg>
+                                        <span class="text-sm line-clamp-1">{{ open_house.property_address }}</span>
+                                    </div>
                                 </div>
 
-                                <h3 class="text-lg font-semibold text-foreground mb-2 line-clamp-2">{{ open_house.title }}</h3>
-
-                                <div class="flex items-center text-foreground mb-3 text-base font-medium">
-                                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-map-pin w-4 h-4 mr-2 text-muted-foreground flex-shrink-0">
-                                        <path d="M20 10c0 4.993-5.539 10.193-7.399 11.799a1 1 0 0 1-1.202 0C9.539 20.193 4 14.993 4 10a8 8 0 0 1 16 0"></path>
-                                        <circle cx="12" cy="10" r="3"></circle>
-                                    </svg>
-                                    <span class="line-clamp-1">{{ open_house.property_address }}</span>
-                                </div>
-
-                                <div class="flex items-center space-x-4 text-sm text-muted-foreground mb-3">
-                                    {% if open_house.bedrooms %}
-                                    <span>{{ open_house.bedrooms }} beds</span>
-                                    {% endif %}
-                                    {% if open_house.bathrooms %}
-                                    <span>{{ open_house.bathrooms }} baths</span>
-                                    {% endif %}
-                                    {% if open_house.area_sqft %}
-                                    <span>{{ open_house.area_sqft|intcomma }} sqft</span>
-                                    {% endif %}
-                                </div>
-
-                                <div class="text-lg font-bold text-primary mb-4">${{ open_house.price|floatformat:0|intcomma }}</div>
-
-                                <div class="flex items-center justify-between gap-4 mb-4">
-                                    <button
-                                        class="flex-1 inline-flex items-center justify-center gap-2 whitespace-nowrap text-sm font-medium ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 border bg-gray-100 h-9 rounded-md px-3 py-2 border-primary text-primary hover:bg-primary hover:text-primary-foreground"
-                                        onclick="handleContactRajClick(this)"
-                                        data-open-house-id="{{ open_house.id }}"
-                                        data-title="{{ open_house.title }}"
-                                        data-address="{{ open_house.property_address }}"
-                                        data-date="{{ open_house.open_house_date|date:"M j, Y" }}"
-                                        data-time="{{ open_house.open_house_time|time:"g:i A" }}"
-                                        data-end-time="{% if open_house.open_house_end_time %}{{ open_house.open_house_end_time|time:"g:i A" }}{% endif %}"
-                                        data-price="{{ open_house.price }}">
-                                        Contact Raj
-                                    </button>
-                                    <button
-                                        class="flex-1 inline-flex items-center justify-center gap-2 whitespace-nowrap text-sm font-medium ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 border bg-gray-100 h-9 rounded-md px-3 py-2 border-primary text-primary hover:bg-primary hover:text-primary-foreground"
-                                        onclick="if(window.openImageGallery && typeof window.openImageGallery === 'function') { window.openImageGallery({{ open_house.id }}); }">
-                                        View Details
-                                    </button>
-                                </div>
-
+{#                                 Listing agent#}
                                 {% if open_house.listing_agent_name %}
-                                <div class="flex items-center gap-3 pt-3 border-t">
-                                    {% if open_house.get_listing_agent_image_url %}
-                                    <img src="{{ open_house.get_listing_agent_image_url }}" alt="{{ open_house.listing_agent_name }}" class="w-10 h-10 rounded-full object-cover border-2 border-gray-200">
-                                    {% endif %}
-                                    <div>
-                                        <p class="text-xs text-muted-foreground mb-1">Listing By</p>
-                                        <p class="text-sm font-medium text-foreground">
+                                    <div class="flex items-center gap-2 mt-2 pb-1">
+                                        {% if open_house.get_listing_agent_image_url %}
+                                            <img src="{{ open_house.get_listing_agent_image_url }}"
+                                                 alt="{{ open_house.listing_agent_name }}"
+                                                 class="w-6 h-6 rounded-full object-cover border border-gray-200">
+                                        {% endif %}
+                                        <p class="text-xs text-muted-foreground truncate">
+                                            Listing By:
                                             {% if open_house.listing_agent_link %}
-                                                <a href="{{ open_house.listing_agent_link }}" target="_blank" rel="noopener noreferrer" class="text-primary hover:underline">{{ open_house.listing_agent_name }}</a>
+                                                <a href="{{ open_house.listing_agent_link }}" target="_blank"
+                                                   rel="noopener noreferrer"
+                                                   class="text-foreground hover:underline font-medium hover:text-primary transition-colors"
+                                                   onclick="event.stopPropagation();">{{ open_house.listing_agent_name }}</a>
                                             {% else %}
-                                                {{ open_house.listing_agent_name }}
+                                                <span class="font-medium text-foreground">{{ open_house.listing_agent_name }}</span>
                                             {% endif %}
                                         </p>
                                     </div>
-                                </div>
                                 {% endif %}
+
+                                <div class="flex items-center justify-between text-sm text-muted-foreground">
+                                    <div class="flex items-center space-x-4">
+                                        {% if open_house.bedrooms %}
+                                            <div class="flex items-center">
+                                                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16"
+                                                     viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                                                     stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
+                                                     class="mr-1">
+                                                    <path d="M2 4v16"></path>
+                                                    <path d="M2 8h18a2 2 0 0 1 2 2v10"></path>
+                                                    <path d="M2 17h20"></path>
+                                                    <path d="M6 8v9"></path>
+                                                </svg>
+                                                <span>{{ open_house.bedrooms }}</span>
+                                            </div>
+                                        {% endif %}
+                                        {% if open_house.bathrooms %}
+                                            <div class="flex items-center">
+                                                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16"
+                                                     viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                                                     stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
+                                                     class="mr-1">
+                                                    <path d="M10 4 8 6"></path>
+                                                    <path d="M17 19v2"></path>
+                                                    <path d="M2 12h20"></path>
+                                                    <path d="M7 19v2"></path>
+                                                    <path d="M9 5 7.621 3.621A2.121 2.121 0 0 0 4 5v12a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2v-5"></path>
+                                                </svg>
+                                                <span>{{ open_house.bathrooms }}</span>
+                                            </div>
+                                        {% endif %}
+                                        {% if open_house.area_sqft %}
+                                            <div class="flex items-center">
+                                                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16"
+                                                     viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                                                     stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
+                                                     class="mr-1">
+                                                    <rect width="18" height="18" x="3" y="3" rx="2"></rect>
+                                                </svg>
+                                                <span>{{ open_house.area_sqft|intcomma }}</span>
+                                            </div>
+                                        {% endif %}
+                                    </div>
+                                </div>
+
+                                <div class="flex items-center justify-between pt-4 border-t">
+                                    <div class="text-lg font-bold text-primary">
+                                        ${{ open_house.price|floatformat:0|intcomma }}
+                                    </div>
+
+                                    <button type="button"
+                                            class="view-open-house-details-btn inline-flex items-center justify-center gap-2 whitespace-nowrap rounded-md text-sm font-medium transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring disabled:opacity-50 border bg-gray-100 h-10 px-4 py-2 border-primary text-primary hover:bg-primary hover:text-primary-foreground"
+                                            data-open-house-id="{{ open_house.id }}"
+                                            data-title="{{ open_house.title|escape }}"
+                                            data-address="{{ open_house.property_address|escape }}"
+                                            data-price="{{ open_house.price }}"
+                                            data-date="{{ open_house.open_house_date|date:'M j, Y' }}"
+                                            data-time="{{ open_house.open_house_time|time:'g:i A' }}"
+                                            data-end-time="
+                                                    
+                                                    {% if open_house.open_house_end_time %}{{ open_house.open_house_end_time|time:'g:i A' }}{% endif %}"
+                                            data-bedrooms="{{ open_house.bedrooms|default_if_none:'' }}"
+                                            data-bathrooms="{{ open_house.bathrooms|default_if_none:'' }}"
+                                            data-area="{{ open_house.area_sqft|default_if_none:'' }}"
+                                            data-agent-name="{{ open_house.listing_agent_name|default:''|escape }}"
+                                            data-agent-link="{{ open_house.listing_agent_link|default:'' }}"
+                                            data-agent-image="{{ open_house.get_listing_agent_image_url|default:'' }}"
+                                            data-main-image="{{ open_house.get_main_image_url|default:'' }}">
+                                        View Details
+                                    </button>
+                                </div>
                             </div>
                         </div>
-                        {% endfor %}
-                    </div>
+                    {% endfor %}
                 </div>
+            </div>
 
-                <div id="past-section" class="mt-24 hidden">
-                    <div class="flex items-center mb-8">
-                        <div class="h-px bg-border flex-1"></div>
-                        <h2 class="text-2xl md:text-3xl font-bold text-muted-foreground px-6 uppercase tracking-wide">Recent Open Houses</h2>
-                        <div class="h-px bg-border flex-1"></div>
-                    </div>
-                    <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-6" id="past-grid">
-                        </div>
+            <div id="past-section" class="mt-24 hidden">
+                <div class="flex items-center mb-8">
+                    <div class="h-px bg-border flex-1"></div>
+                    <h2 class="text-2xl md:text-3xl font-bold text-muted-foreground px-6 uppercase tracking-wide">Recent
+                        Open Houses</h2>
+                    <div class="h-px bg-border flex-1"></div>
                 </div>
+                <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-6" id="past-grid">
+                </div>
+            </div>
 
-                <script>
-        (function () {
-            'use strict';
+            <script>
+                (function () {
+                    'use strict';
 
-            // Initialize global object (it starts empty now!)
-            window.openHouseImages = window.openHouseImages || {};
+                    // Initialize global object (it starts empty now!)
+                    window.openHouseImages = window.openHouseImages || {};
 
-            // NEW: Fetch data before opening gallery
-            window.openImageGallery = function (openHouseId) {
-                // 1. If we already have data, open immediately
-                if (window.openHouseImages[openHouseId]) {
-                    renderGallery(openHouseId);
-                    return;
-                }
+                    // NEW: Fetch data before opening gallery
+                    window.openImageGallery = function (openHouseId) {
+                        // 1. If we already have data, open immediately
+                        if (window.openHouseImages[openHouseId]) {
+                            renderGallery(openHouseId);
+                            return;
+                        }
 
-                // 2. Show a loading cursor or simple indicator
-                document.body.style.cursor = 'wait';
+                        // 2. Show a loading cursor or simple indicator
+                        document.body.style.cursor = 'wait';
 
-                // 3. Fetch from API
-                fetch(`/api/open-house/${openHouseId}/`)
-                    .then(response => response.json())
-                    .then(data => {
-                        document.body.style.cursor = 'default';
-                        // Populate the data object
-                        window.openHouseImages[openHouseId] = {
-                            title: data.title,
-                            description: data.description,
-                            images: data.images
-                        };
-                        // Now open the gallery
-                        renderGallery(openHouseId);
-                    })
-                    .catch(err => {
-                        document.body.style.cursor = 'default';
-                        console.error("Error loading images:", err);
-                        alert("Could not load gallery images. Please try again.");
-                    });
-            };
+                        // 3. Fetch from API
+                        fetch(`/api/open-house/${openHouseId}/`)
+                            .then(response => response.json())
+                            .then(data => {
+                                document.body.style.cursor = 'default';
+                                // Populate the data object
+                                window.openHouseImages[openHouseId] = {
+                                    title: data.title,
+                                    description: data.description,
+                                    images: data.images
+                                };
+                                // Now open the gallery
+                                renderGallery(openHouseId);
+                            })
+                            .catch(err => {
+                                document.body.style.cursor = 'default';
+                                console.error("Error loading images:", err);
+                                alert("Could not load gallery images. Please try again.");
+                            });
+                    };
 
-            // Helper function to render the modal (Moved from previous logic)
-            function renderGallery(openHouseId) {
-                const imageData = window.openHouseImages[openHouseId];
-                const images = imageData.images.filter(img => img); // Remove empty
+                    // Helper function to render the modal (Moved from previous logic)
+                    function renderGallery(openHouseId) {
+                        const imageData = window.openHouseImages[openHouseId];
+                        const images = imageData.images.filter(img => img); // Remove empty
 
-                if (images.length === 0) return;
+                        if (images.length === 0) return;
 
-                let currentIndex = 0;
+                        let currentIndex = 0;
 
-                // Create modal HTML
-                const modalHTML = `
+                        // Create modal HTML
+                        const modalHTML = `
                     <div id="imageGalleryModal" class="image-modal-backdrop" onclick="if(event.target.id === 'imageGalleryModal') window.closeImageGallery()">
                         <div class="image-modal-container" onclick="event.stopPropagation()">
                             <div class="image-modal-header">
@@ -609,86 +694,344 @@
                     </div>
                 `;
 
-                const existingModal = document.getElementById('imageGalleryModal');
-                if (existingModal) existingModal.remove();
+                        const existingModal = document.getElementById('imageGalleryModal');
+                        if (existingModal) existingModal.remove();
 
-                document.body.insertAdjacentHTML('beforeend', modalHTML);
-                document.body.style.overflow = 'hidden';
+                        document.body.insertAdjacentHTML('beforeend', modalHTML);
+                        document.body.style.overflow = 'hidden';
 
-                window.currentGalleryIndex = 0;
-                window.currentGalleryImages = images;
-                document.addEventListener('keydown', window.handleGalleryKeyPress);
-            }
+                        window.currentGalleryIndex = 0;
+                        window.currentGalleryImages = images;
+                        document.addEventListener('keydown', window.handleGalleryKeyPress);
+                    }
 
-            // Navigation functions (Keep these global)
-            window.navigateGallery = function (direction) {
-                if (!window.currentGalleryImages) return;
-                const images = window.currentGalleryImages;
-                let newIndex = window.currentGalleryIndex + direction;
-                if (newIndex < 0) newIndex = images.length - 1;
-                else if (newIndex >= images.length) newIndex = 0;
-                window.goToImage(newIndex);
-            };
+                    // Navigation functions (Keep these global)
+                    window.navigateGallery = function (direction) {
+                        if (!window.currentGalleryImages) return;
+                        const images = window.currentGalleryImages;
+                        let newIndex = window.currentGalleryIndex + direction;
+                        if (newIndex < 0) newIndex = images.length - 1;
+                        else if (newIndex >= images.length) newIndex = 0;
+                        window.goToImage(newIndex);
+                    };
 
-            window.goToImage = function (index) {
-                if (!window.currentGalleryImages) return;
-                const images = window.currentGalleryImages;
-                if (index < 0 || index >= images.length) return;
+                    window.goToImage = function (index) {
+                        if (!window.currentGalleryImages) return;
+                        const images = window.currentGalleryImages;
+                        if (index < 0 || index >= images.length) return;
 
-                window.currentGalleryIndex = index;
-                const mainImage = document.getElementById('galleryMainImage');
-                if (mainImage) mainImage.src = images[index];
+                        window.currentGalleryIndex = index;
+                        const mainImage = document.getElementById('galleryMainImage');
+                        if (mainImage) mainImage.src = images[index];
 
-                const counter = document.getElementById('currentImageIndex');
-                if (counter) counter.textContent = index + 1;
+                        const counter = document.getElementById('currentImageIndex');
+                        if (counter) counter.textContent = index + 1;
 
-                const thumbnails = document.querySelectorAll('.image-modal-thumbnail');
-                thumbnails.forEach((thumb, idx) => {
-                    thumb.classList.toggle('active', idx === index);
-                });
-            };
+                        const thumbnails = document.querySelectorAll('.image-modal-thumbnail');
+                        thumbnails.forEach((thumb, idx) => {
+                            thumb.classList.toggle('active', idx === index);
+                        });
+                    };
 
-            window.handleGalleryKeyPress = function (e) {
-                if (document.getElementById('imageGalleryModal')) {
-                    if (e.key === 'ArrowLeft') window.navigateGallery(-1);
-                    else if (e.key === 'ArrowRight') window.navigateGallery(1);
-                    else if (e.key === 'Escape') window.closeImageGallery();
-                }
-            };
+                    window.handleGalleryKeyPress = function (e) {
+                        if (document.getElementById('imageGalleryModal')) {
+                            if (e.key === 'ArrowLeft') window.navigateGallery(-1);
+                            else if (e.key === 'ArrowRight') window.navigateGallery(1);
+                            else if (e.key === 'Escape') window.closeImageGallery();
+                        }
+                    };
 
-            window.closeImageGallery = function () {
-                const modal = document.getElementById('imageGalleryModal');
-                if (modal) {
-                    modal.remove();
-                    document.body.style.overflow = 'auto';
-                    document.removeEventListener('keydown', window.handleGalleryKeyPress);
-                }
-            };
-        })();
-    </script>
-            {% else %}
-                <div class="text-center py-16">
-                    <div class="rounded-lg border bg-card text-card-foreground shadow-sm p-8 shadow-soft max-w-md mx-auto">
-                        <svg xmlns="http://www.w3.org/2000/svg" width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-calendar-x mx-auto mb-4 text-muted-foreground">
-                            <path d="M8 2v4"></path>
-                            <path d="M16 2v4"></path>
-                            <rect width="18" height="18" x="3" y="4" rx="2"></rect>
-                            <path d="M3 10h18"></path>
-                            <path d="m14.5 14.5 5 5"></path>
-                            <path d="m19.5 14.5-5 5"></path>
-                        </svg>
-                        <h3 class="text-xl font-semibold text-foreground mb-2">No Open Houses Scheduled</h3>
-                        <p class="text-muted-foreground mb-6">We don't have any open houses scheduled at the moment. Please check back later.</p>
-                        <a href="{% url 'buy_lease' %}" class="inline-flex items-center justify-center gap-2 whitespace-nowrap rounded-md text-sm font-medium ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 [&_svg]:pointer-events-none [&_svg]:size-4 [&_svg]:shrink-0 hover:bg-accent h-10 text-primary hover:text-primary-foreground px-4 py-2 bg-accent hover:shadow-accent">
-                            View Available Properties
-                        </a>
+                    window.closeImageGallery = function () {
+                        const modal = document.getElementById('imageGalleryModal');
+                        if (modal) {
+                            modal.remove();
+                            document.body.style.overflow = 'auto';
+                            document.removeEventListener('keydown', window.handleGalleryKeyPress);
+                        }
+                    };
+                })();
+            </script>
+        {% else %}
+            <div class="text-center py-16">
+                <div class="rounded-lg border bg-card text-card-foreground shadow-sm p-8 shadow-soft max-w-md mx-auto">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="48" height="48" viewBox="0 0 24 24" fill="none"
+                         stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
+                         class="lucide lucide-calendar-x mx-auto mb-4 text-muted-foreground">
+                        <path d="M8 2v4"></path>
+                        <path d="M16 2v4"></path>
+                        <rect width="18" height="18" x="3" y="4" rx="2"></rect>
+                        <path d="M3 10h18"></path>
+                        <path d="m14.5 14.5 5 5"></path>
+                        <path d="m19.5 14.5-5 5"></path>
+                    </svg>
+                    <h3 class="text-xl font-semibold text-foreground mb-2">No Open Houses Scheduled</h3>
+                    <p class="text-muted-foreground mb-6">We don't have any open houses scheduled at the moment. Please
+                        check back later.</p>
+                    <a href="{% url 'buy_lease' %}"
+                       class="inline-flex items-center justify-center gap-2 whitespace-nowrap rounded-md text-sm font-medium ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 [&_svg]:pointer-events-none [&_svg]:size-4 [&_svg]:shrink-0 hover:bg-accent h-10 text-primary hover:text-primary-foreground px-4 py-2 bg-accent hover:shadow-accent">
+                        View Available Properties
+                    </a>
                 </div>
             </div>
-            {% endif %}
-        </div>
-    </section>
+        {% endif %}
+    </div>
+</section>
 
 {% include 'Raj/footer.html' %}
+
+<div id="propertyModal" class="fixed inset-0 bg-black bg-opacity-50 z-50 hidden flex items-center justify-center p-4">
+    <div class="fixed left-[50%] top-[50%] z-50 grid w-full translate-x-[-50%] translate-y-[-50%] gap-4 border bg-background p-6 shadow-lg sm:rounded-lg max-w-4xl max-h-[90vh] overflow-y-auto"
+         style="background-color: white;">
+
+        <div class="flex flex-col space-y-1.5 text-center sm:text-left">
+            <h2 id="modal-title" class="tracking-tight text-2xl font-bold">Property Details</h2>
+            <p id="modal-date-time" class="text-primary font-medium"></p>
+        </div>
+
+        <div class="space-y-6">
+            <div id="modalMedia" class="relative">
+                <div id="mediaCarousel"
+                     class="relative overflow-hidden rounded-lg flex items-center justify-center bg-gray-100">
+                    <img id="modalImageSrc" src="" alt="Property Image"
+                         class="w-full max-h-[24rem] object-contain transition-opacity duration-300">
+                </div>
+                <div id="imageNavigation" class="hidden">
+                    <button id="prevImage"
+                            class="absolute left-2 top-1/2 transform -translate-y-1/2 bg-black text-white p-3 rounded-full hover:bg-gray-800 border-2 border-white">
+                        <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                  d="M15 19l-7-7 7-7"></path>
+                        </svg>
+                    </button>
+                    <button id="nextImage"
+                            class="absolute right-2 top-1/2 transform -translate-y-1/2 bg-black text-white p-3 rounded-full hover:bg-gray-800 border-2 border-white">
+                        <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                  d="M9 5l7 7-7 7"></path>
+                        </svg>
+                    </button>
+                </div>
+            </div>
+
+            <div class="grid md:grid-cols-2 gap-6">
+                <div>
+                    <h3 class="text-xl font-semibold mb-4">Property Details</h3>
+                    <div class="space-y-2 text-sm">
+                        <div class="flex justify-between border-b pb-2">
+                            <span class="text-muted-foreground">Price:</span>
+                            <span id="modalPrice" class="font-bold text-primary text-lg">-</span>
+                        </div>
+                        <div class="flex justify-between border-b pb-2">
+                            <span class="text-muted-foreground">Address:</span>
+                            <span id="modalAddress" class="text-right ml-4">-</span>
+                        </div>
+                        <div class="flex justify-between border-b pb-2">
+                            <span class="text-muted-foreground">Bedrooms:</span>
+                            <span id="modalBedrooms">-</span>
+                        </div>
+                        <div class="flex justify-between border-b pb-2">
+                            <span class="text-muted-foreground">Bathrooms:</span>
+                            <span id="modalBathrooms">-</span>
+                        </div>
+                        <div class="flex justify-between border-b pb-2">
+                            <span class="text-muted-foreground">Square Feet:</span>
+                            <span id="modalArea">-</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div>
+                    <h3 class="text-xl font-semibold mb-4">Description</h3>
+                    <p id="modalDescriptionText"
+                       class="text-muted-foreground leading-relaxed text-sm h-48 overflow-y-auto pr-2">-</p>
+                </div>
+            </div>
+
+            <div id="modalListingAgent" class="hidden border-t pt-4 mt-4 w-full">
+    <div class="flex items-center gap-3 w-full">
+        <img id="modalListingAgentImage" src="" class="w-12 h-12 rounded-full object-cover hidden border border-gray-200 shadow-sm flex-shrink-0">
+        
+        <div class="flex flex-col">
+            <span class="text-xs text-muted-foreground uppercase tracking-wide font-medium">Listing By</span>
+            <span id="modalListingAgentName" class="text-base font-bold text-gray-900 leading-tight"></span>
+        </div>
+
+        <a id="modalListingAgentLink" href="" target="_blank" class="hidden ml-auto inline-flex items-center text-sm text-primary hover:text-primary/80 hover:underline font-medium">
+            View Profile 
+            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="ml-1"><path d="M5 12h14"/><path d="m12 5 7 7-7 7"/></svg>
+        </a>
+    </div>
+</div>
+
+            <div class="border-t pt-4">
+                <button type="button" id="modalContactBtn"
+                        class="w-full inline-flex items-center justify-center gap-2 rounded-md text-base font-semibold transition-colors bg-primary text-primary-foreground hover:bg-primary/90 h-12 px-4 py-2 shadow-md">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none"
+                         stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
+                         class="lucide lucide-calendar-check-2">
+                        <path d="M8 2v4"/>
+                        <path d="M16 2v4"/>
+                        <rect width="18" height="18" x="3" y="4" rx="2"/>
+                        <path d="M3 10h18"/>
+                        <path d="m9 16 2 2 4-4"/>
+                    </svg>
+                    Book / Contact Raj
+                </button>
+            </div>
+        </div>
+
+        <button type="button" onclick="closePropertyModal()"
+                class="absolute right-4 top-4 opacity-70 hover:opacity-100">
+            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none"
+                 stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M18 6 6 18"/>
+                <path d="m6 6 12 12"/>
+            </svg>
+        </button>
+    </div>
+</div>
+
+<script>
+    let currentMediaIndex = 0;
+    let propertyMedia = [];
+
+    // 1. Open The Details Modal
+    function openOpenHouseDetailsModal(id, title, address, date, time, endTime, bedrooms, bathrooms, area, description, agentName, agentLink, agentImage, images, mainImage) {
+
+        // Populate Basic Info
+        document.getElementById('modal-title').textContent = title;
+        document.getElementById('modalAddress').textContent = address;
+        document.getElementById('modalPrice').textContent = document.querySelector(`button[data-open-house-id="${id}"]`).dataset.price ? '$' + parseFloat(document.querySelector(`button[data-open-house-id="${id}"]`).dataset.price).toLocaleString() : 'Contact for Price';
+        document.getElementById('modal-date-time').textContent = `Open House: ${date} at ${time}` + (endTime ? ` - ${endTime}` : '');
+
+        document.getElementById('modalBedrooms').textContent = bedrooms || '-';
+        document.getElementById('modalBathrooms').textContent = bathrooms || '-';
+        document.getElementById('modalArea').textContent = area ? parseInt(area).toLocaleString() + ' sqft' : '-';
+        document.getElementById('modalDescriptionText').textContent = description || 'Loading description...';
+
+        // Listing Agent Logic
+        const agentSection = document.getElementById('modalListingAgent');
+        if (agentName) {
+            agentSection.classList.remove('hidden');
+            document.getElementById('modalListingAgentName').textContent = agentName;
+
+            const imgEl = document.getElementById('modalListingAgentImage');
+            if (agentImage) {
+                imgEl.src = agentImage;
+                imgEl.classList.remove('hidden');
+            } else {
+                imgEl.classList.add('hidden');
+            }
+
+            const linkEl = document.getElementById('modalListingAgentLink');
+            if (agentLink) {
+                linkEl.href = agentLink;
+                linkEl.classList.remove('hidden');
+            } else {
+                linkEl.classList.add('hidden');
+            }
+        } else {
+            agentSection.classList.add('hidden');
+        }
+
+        // Configure the "Contact Raj" button inside the modal to open the booking form
+        const contactBtn = document.getElementById('modalContactBtn');
+        contactBtn.onclick = function () {
+            // Close details modal first? Optional. Usually better to stack or close.
+            // Let's close the details modal then open the booking form
+            closePropertyModal();
+            setTimeout(() => {
+                // Use existing openBookingModal function
+                openBookingModal(id, title, address, date, time, endTime, document.querySelector(`button[data-open-house-id="${id}"]`).dataset.price);
+            }, 300);
+        };
+
+        // Show Modal
+        document.getElementById('propertyModal').classList.remove('hidden');
+        document.body.style.overflow = 'hidden';
+
+        // Setup Media (Images) - Use main image immediately
+        propertyMedia = [];
+        if (mainImage) propertyMedia.push(mainImage);
+        updateMediaDisplay();
+
+        // Fetch Full Details from API (Description + More Images)
+        fetch(`/api/open-house/${id}/`)
+            .then(res => res.json())
+            .then(data => {
+                document.getElementById('modalDescriptionText').textContent = data.description || "No description available.";
+
+                // Process Images
+                const apiImages = data.images || [];
+                const seen = new Set(propertyMedia);
+                apiImages.forEach(img => {
+                    if (img && !seen.has(img)) {
+                        propertyMedia.push(img);
+                        seen.add(img);
+                    }
+                });
+                updateMediaDisplay();
+            })
+            .catch(err => console.error("Error fetching details:", err));
+    }
+
+    // 2. Media Navigation Functions
+    function updateMediaDisplay() {
+        const imgEl = document.getElementById('modalImageSrc');
+        const navDiv = document.getElementById('imageNavigation');
+
+        if (propertyMedia.length > 0) {
+            imgEl.src = propertyMedia[currentMediaIndex];
+            imgEl.classList.remove('hidden');
+
+            if (propertyMedia.length > 1) navDiv.classList.remove('hidden');
+            else navDiv.classList.add('hidden');
+        } else {
+            imgEl.src = "{% static 'images/property-1.jpg' %}"; // Fallback
+            navDiv.classList.add('hidden');
+        }
+    }
+
+    // Attach Click Handlers for Arrows
+    document.getElementById('prevImage').onclick = function () {
+        if (propertyMedia.length === 0) return;
+        currentMediaIndex = (currentMediaIndex - 1 + propertyMedia.length) % propertyMedia.length;
+        updateMediaDisplay();
+    };
+
+    document.getElementById('nextImage').onclick = function () {
+        if (propertyMedia.length === 0) return;
+        currentMediaIndex = (currentMediaIndex + 1) % propertyMedia.length;
+        updateMediaDisplay();
+    };
+
+    function closePropertyModal() {
+        document.getElementById('propertyModal').classList.add('hidden');
+        document.body.style.overflow = 'auto';
+    }
+
+    // Add this Listener for Click Outside
+    document.addEventListener('DOMContentLoaded', function () {
+        const modal = document.getElementById('propertyModal');
+
+        if (modal) {
+            modal.addEventListener('click', function (e) {
+                // If the target of the click IS the modal container itself (the backdrop), close it.
+                // This won't trigger if you click inside the white content box (its children).
+                if (e.target === modal) {
+                    closePropertyModal();
+                }
+            });
+        }
+    });
+
+    // Also ensure the ESC key still works (if not already added)
+    document.addEventListener('keydown', function (e) {
+        if (e.key === 'Escape') {
+            closePropertyModal();
+        }
+    });
+</script>
 
 <!-- Custom JavaScript -->
 <script src="{% static 'js/django-main-fixed.js' %}"></script>
@@ -701,7 +1044,7 @@
     }
 
     // 2. Sorting Logic (Runs automatically on load)
-    document.addEventListener('DOMContentLoaded', function() {
+    document.addEventListener('DOMContentLoaded', function () {
         const upcomingGrid = document.getElementById('upcoming-grid');
         const pastGrid = document.getElementById('past-grid');
         const pastSection = document.getElementById('past-section');
@@ -724,9 +1067,9 @@
                 const cardDate = new Date(y, m - 1, d);
 
                 if (cardDate < today) {
-                    past.push({ element: card, date: cardDate });
+                    past.push({element: card, date: cardDate});
                 } else {
-                    upcoming.push({ element: card, date: cardDate });
+                    upcoming.push({element: card, date: cardDate});
                 }
             }
         });
@@ -827,7 +1170,7 @@
         }
     }
 
-    document.addEventListener('click', function(e) {
+    document.addEventListener('click', function (e) {
         if (e.target.id === 'bookingModal') {
             closeBookingModal();
         }
@@ -1002,4 +1345,3 @@
 
 </body>
 </html>
-
