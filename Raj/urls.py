@@ -1,5 +1,16 @@
 from django.urls import path
 from . import views
+from django.contrib.sitemaps.views import sitemap
+from django.views.generic import TemplateView
+from .sitemaps import MainViewSitemap, StaticViewSitemap, LegalSitemap, BlogSitemap
+
+
+sitemaps = {
+    'main': MainViewSitemap,
+    'static': StaticViewSitemap,
+    'legal': LegalSitemap,
+    'blog': BlogSitemap,
+}
 
 urlpatterns = [
     path('', views.home, name='home'),
@@ -72,4 +83,6 @@ urlpatterns = [
     path('u-<str:customer_code>', views.general_tracking_redirect),
 
     path('general-inquiry/', views.general_inquiry, name='general_inquiry'),
+    path('robots.txt', TemplateView.as_view(template_name="robots.txt", content_type="text/plain")),
+    path('sitemap.xml', sitemap, {'sitemaps': sitemaps}, name='django.contrib.sitemaps.views.sitemap'),
 ]

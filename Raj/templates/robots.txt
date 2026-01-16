@@ -1,0 +1,13 @@
+User-agent: *
+# 1. Block Admin to save crawl budget & security
+Disallow: /admin/
+Disallow: /bg_admin/
+
+# 2. IMPORTANT: Allow bots to index your Property Images & CSS
+# This ensures your houses show up in "Google Images" search results.
+Allow: /static/
+Allow: /media/
+
+# 3. Your Sitemap Link (This is the SEO Boost)
+# This tells Google exactly where to find all your new pages.
+Sitemap: https://rajtexas.com/sitemap.xml

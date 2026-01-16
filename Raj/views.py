@@ -54,9 +54,9 @@ def send_podium_webhook(tracking_data):
 def home(request):
     try:
         # Debug: Print BRAND_NAME to console
-        print(f"DEBUG: BRAND_NAME from settings = '{settings.BRAND_NAME}'")
-        print(f"DEBUG: BRAND_NAME type = {type(settings.BRAND_NAME)}")
-        print(f"DEBUG: BRAND_NAME repr = {repr(settings.BRAND_NAME)}")
+        # print(f"DEBUG: BRAND_NAME from settings = '{settings.BRAND_NAME}'")
+        # print(f"DEBUG: BRAND_NAME type = {type(settings.BRAND_NAME)}")
+        # print(f"DEBUG: BRAND_NAME repr = {repr(settings.BRAND_NAME)}")
 
         # Check for tracking code
         customer_code = request.GET.get('code')
@@ -111,13 +111,15 @@ def home(request):
         # Get Just Sold properties (LIMIT TO 12 to save memory)
         just_sold_properties = PropertyListing.objects.filter(
             published=True,
-            property_status='just_sold'
+            # property_status='just_sold'
+            property_type='buy'
         ).order_by('-created_at')[:24]  # <--- ADDED [:12]
 
         # Get Just Leased properties (LIMIT TO 12 to save memory)
         just_leased_properties = PropertyListing.objects.filter(
             published=True,
-            property_status='for_lease'
+            # property_status='for_lease'
+            property_type='lease'
         ).order_by('-created_at')[:24]  # <--- ADDED [:12]
 
         # Get featured communities
@@ -128,9 +130,9 @@ def home(request):
 
         # Pass the updated queryset as context
         # Debug: Print BRAND_NAME to console
-        print(f"DEBUG: BRAND_NAME from settings = '{settings.BRAND_NAME}'")
-        print(f"DEBUG: BRAND_NAME type = {type(settings.BRAND_NAME)}")
-        print(f"DEBUG: BRAND_NAME repr = {repr(settings.BRAND_NAME)}")
+        # print(f"DEBUG: BRAND_NAME from settings = '{settings.BRAND_NAME}'")
+        # print(f"DEBUG: BRAND_NAME type = {type(settings.BRAND_NAME)}")
+        # print(f"DEBUG: BRAND_NAME repr = {repr(settings.BRAND_NAME)}")
 
         context = {
             'featured_properties': featured_properties,
@@ -140,7 +142,7 @@ def home(request):
             'brand_name': settings.BRAND_NAME
         }
         # Debug: Print what we're passing to template
-        print(f"DEBUG: Passing brand_name to template = '{context['brand_name']}'")
+        # print(f"DEBUG: Passing brand_name to template = '{context['brand_name']}'")
         return render(request, 'Raj/index.html', context)
     except Exception as e:
         # Return a simple error response for debugging

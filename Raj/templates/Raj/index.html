@@ -57,80 +57,75 @@
         }
 
 
+        /* Base styles (Applies to Anita) - INCREASED HEIGHTS */
         .profile-box {
             width: 360px;
-            height: 360px;
+            height: 360px; /* Increased from 360px */
             border-radius: 20px;
-        {#overflow: hidden;#}
-            /* background: #f3f4f6; */
+            overflow: hidden;
             /* box-shadow: 0 10px 25px rgba(0, 0, 0, 0.15); */
         }
 
         .profile-box img {
             width: 100%;
             height: 100%;
-        {#object-fit: cover;#} object-position: top;
+            object-fit: cover;
+            object-position: top;
             display: block;
         }
 
+        /* Responsive - Anita gets taller on larger screens */
         @media (min-width: 640px) {
             .profile-box {
                 width: 240px;
-                height: 400px;
+                height: 400px; /* Increased from 400px */
             }
         }
 
         @media (min-width: 768px) {
             .profile-box {
                 width: 280px;
-                height: 460px;
+                height: 430px; /* Increased from 460px */
             }
         }
 
         @media (min-width: 1024px) {
             .profile-box {
                 width: 300px;
-                height: 500px;
+                height: 560px; /* Increased from 500px */
             }
         }
 
-        /* Base style for both */
-        .profile-box {
-            width: 220px;
-            height: 360px;
-            border-radius: 10px;
-            overflow: hidden;
-        }
-
-        .profile-box img {
-            width: 100%;
-            height: 100%;
-            object-fit: cover; /* Default for Anita */
-            object-position: top;
-            display: block;
-        }
-
-        /* Specific overrides ONLY for Raj */
+        /* RAJ OVERRIDES - Keep him at ORIGINAL heights (Shorter than Anita) */
         .raj-box {
-            width: 360px !important; /* Forces the wider width you wanted */
-            background: transparent; /* Optional: cleaner for removebg images */
+            width: 360px !important;
+            height: 360px !important; /* Kept original */
+            background: transparent;
         }
 
         .raj-box img {
-            object-fit: contain !important; /* Shows full image without cropping */
-            object-position: bottom; /* Aligns him to the bottom of the box */
+            object-fit: contain !important;
+            object-position: bottom;
         }
 
-        /* Responsive adjustments ONLY for Raj's width */
+        /* Raj Responsive Heights (Original/Smaller values) */
+        @media (min-width: 640px) {
+            .raj-box {
+                height: 400px !important;
+            }
+        }
+
         @media (min-width: 768px) {
             .raj-box {
                 width: 400px !important;
+                height: 460px !important;
             }
         }
 
         @media (min-width: 1024px) {
             .raj-box {
                 width: 450px !important;
+                height: 500px !important; /* Raj stays 500px, Anita is now 560px */
             }
         }
 
@@ -151,6 +146,74 @@
             max-height: 24rem !important;
             width: auto !important;
             height: auto !important;
+        }
+
+        @media (min-width: 640px) {
+            #profiles-container {
+                align-items: flex-end !important;
+            }
+        }
+
+        /* Ensure Raj's box keeps your specific sizing */
+        .raj-box {
+            width: 360px !important;
+            height: 300px !important;
+            background: transparent;
+        }
+
+        .raj-box img {
+            object-fit: contain !important;
+            object-position: bottom;
+        }
+
+        /* Responsive heights for Raj */
+        @media (min-width: 640px) {
+            .raj-box {
+                height: 340px !important;
+            }
+        }
+
+        @media (min-width: 768px) {
+            .raj-box {
+                width: 400px !important;
+                height: 380px !important;
+            }
+        }
+
+        @media (min-width: 1024px) {
+            .raj-box {
+                width: 450px !important;
+                height: 420px !important;
+            }
+        }
+
+        /* Responsive heights for Anita (Base class) */
+        .profile-box {
+            width: 360px;
+            height: 360px;
+            border-radius: 20px;
+            overflow: hidden;
+        }
+
+        @media (min-width: 640px) {
+            .profile-box {
+                width: 240px;
+                height: 360px;
+            }
+        }
+
+        @media (min-width: 768px) {
+            .profile-box {
+                width: 280px;
+                height: 400px;
+            }
+        }
+
+        @media (min-width: 1024px) {
+            .profile-box {
+                width: 300px;
+                height: 440px;
+            }
         }
     </style>
 
@@ -231,45 +294,45 @@
 
                         <h2 class="font-display text-balance mb-8">Your Trusted Real Estate Partner</h2>
 
-                        <div class="relative flex flex-col sm:flex-row gap-6 sm:gap-8 justify-center items-center mb-12">
-                            <div class="flex flex-col items-center">
-                                <div class="profile-box raj-box">
-                                    <img src="{% static 'Images/image-removebg-preview.png' %}" alt="Raj"/>
-                                </div>
-                                <p class="mt-4 text-lg font-semibold">Raj</p>
-                            </div>
+                        <div id="profiles-container" class="relative flex flex-col sm:flex-row gap-6 sm:gap-8 justify-center items-center mb-12">
 
-                            <div class="flex flex-col items-center">
-                                <div class="profile-box">
-                                    <img src="{% static 'Images/Anita.png' %}" alt="Anita"/>
-                                </div>
-                                <p class="mt-4 text-lg font-semibold">Anita</p>
-                            </div>
-                        </div>
+    <div class="flex flex-col items-center">
+        <div class="profile-box raj-box">
+            <img src="{% static 'Images/image-removebg-preview.png' %}" alt="Raj">
+        </div>
+        <p class="mt-4 text-lg font-semibold">Raj</p>
+    </div>
+
+    <div class="flex flex-col items-center">
+        <div class="profile-box">
+            <img src="{% static 'Images/Anita.png' %}" alt="Anita">
+        </div>
+        <p class="mt-4 text-lg font-semibold">Anita</p>
+    </div>
+</div>
 
                         <div class="grid md:grid-cols-2 gap-8 mb-10 text-left">
                             <div class="space-y-4">
                                 <p class="text-muted-foreground text-lg leading-relaxed text-balance">
-                                    With over 30 years of combined professional experience as a technologist and
-                                    a seasoned realtor, I bring a unique blend of expertise, dedication, and
-                                    results to every client he serves.
+                                    With over 30 years of combined professional experience as technologists and seasoned
+                                    realtors, we bring a unique blend of expertise, dedication, and results to every
+                                    client we serve.
                                 </p>
                                 <p class="text-muted-foreground text-lg leading-relaxed text-balance">
-                                    I'm known for strong negotiation skills and a sharp eye for finding the right
-                                    properties, I have built a reputation for delivering best-in-class service
-                                    in buying, selling, and leasing real estate across Texas.
+                                    We are known for strong negotiation skills and a sharp eye for finding the right
+                                    properties. We have built a reputation for delivering best-in-class service in
+                                    buying, selling, and leasing real estate across Texas.
                                 </p>
                             </div>
                             <div class="space-y-4">
                                 <p class="text-muted-foreground text-lg leading-relaxed text-balance">
-                                    What truly sets me apart is the philosophy of quality over quantity. I take
-                                    the time to understand each client's needs and go the extra mile to ensure
-                                    they feel supported every step of the way.
+                                    What truly sets us apart is the philosophy of quality over quantity. We take the
+                                    time to understand each client's needs and go the extra mile to ensure they feel
+                                    supported every step of the way.
                                 </p>
                                 <p class="text-muted-foreground text-lg leading-relaxed text-balance">
-                                    Whether you're looking for residential, commercial, or land opportunities, I
-                                    with my expert partners am committed to making your real estate experience
-                                    seamless and successful.
+                                    Whether you're looking for residential, commercial, or land opportunities, we are
+                                    committed to making your real estate experience seamless and successful.
                                 </p>
                             </div>
                         </div>
@@ -598,6 +661,25 @@
                                             <span class="text-sm">{{ property.location }}</span>
                                         </div>
                                     </div>
+                                    {% if property.listing_agent_name %}
+                                        <div class="flex items-center gap-2 mt-2">
+                                            {% if property.get_listing_agent_image_url %}
+                                                <img src="{{ property.get_listing_agent_image_url }}"
+                                                     alt="{{ property.listing_agent_name }}"
+                                                     class="w-8 h-8 rounded-full object-cover border border-gray-200">
+                                            {% endif %}
+                                            <p class="text-xs text-muted-foreground">
+                                                Listing Agent:
+                                                {% if property.listing_agent_link %}
+                                                    <a href="{{ property.listing_agent_link }}" target="_blank"
+                                                       rel="noopener noreferrer"
+                                                       class="text-primary hover:underline font-medium">{{ property.listing_agent_name }}</a>
+                                                {% else %}
+                                                    <span class="font-medium">{{ property.listing_agent_name }}</span>
+                                                {% endif %}
+                                            </p>
+                                        </div>
+                                    {% endif %}
                                     <div class="flex items-center justify-between text-sm text-muted-foreground">
                                         <div class="flex items-center space-x-4">
                                             {% if property.bedrooms %}
@@ -1124,6 +1206,7 @@
                                 </div>
                             </div>
                         </div>
+
                         <div class="grid md:grid-cols-2 gap-6">
                             <div>
                                 <h3 class="text-xl font-semibold mb-4">Property Details</h3>
@@ -1163,12 +1246,32 @@
                                 </div>
                             </div>
                         </div>
+
+                        <div class="border-t pt-4">
+                            <h3 class="text-xl font-semibold mb-4">Interested in this property?</h3>
+                            <button type="button" id="modalContactBtn" onclick="openPropertyInquiryForm()"
+                                    class="w-full inline-flex items-center justify-center gap-2 rounded-md text-base font-semibold ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 bg-primary text-primary-foreground hover:bg-primary/90 h-12 px-4 py-2 shadow-md">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24"
+                                     fill="none"
+                                     stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                                     stroke-linejoin="round"
+                                     class="lucide lucide-mail">
+                                    <rect width="20" height="16" x="2" y="4" rx="2"></rect>
+                                    <path d="m22 7-10 5L2 7"></path>
+                                </svg>
+                                Contact Raj for Details
+                            </button>
+                            <p class="text-sm text-muted-foreground mt-3 text-center">Fill out the form to get expert
+                                advice on this
+                                property</p>
+                        </div>
+
                         <div id="modalListingAgent" class="hidden border-t pt-4">
                             <h3 class="text-xl font-semibold mb-3">Listing Agent</h3>
                             <div class="flex items-center gap-4">
                                 <img id="modalListingAgentImage" src="" alt="Listing Agent"
-     class="w-16 h-16 rounded-lg object-cover hidden border border-gray-200 shadow-sm flex-shrink-0"
-     style="width: 4rem !important; height: 4rem !important; min-height: 0 !important; object-fit: cover !important;">
+                                     class="w-16 h-16 rounded-lg object-cover hidden border border-gray-200 shadow-sm flex-shrink-0"
+                                     style="width: 4rem !important; height: 4rem !important; min-height: 0 !important; object-fit: cover !important;">
                                 <div>
                                     <p class="text-base font-medium text-foreground mb-1">
                                         <span id="modalListingAgentNameText" class="text-muted-foreground">Listing Agent: </span>
@@ -1181,24 +1284,10 @@
                                 </div>
                             </div>
                         </div>
+
                         <div id="modalDescription" class="hidden">
                             <h3 class="text-xl font-semibold mb-4">Description</h3>
                             <p id="modalDescriptionText" class="text-muted-foreground leading-relaxed">-</p>
-                        </div>
-                        <div class="border-t pt-4">
-                            <h3 class="text-xl font-semibold mb-4">Interested in this property?</h3>
-                            <button type="button" id="modalContactBtn" onclick="openPropertyInquiryForm()"
-                                    class="w-full inline-flex items-center justify-center gap-2 rounded-md text-base font-semibold ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 bg-primary text-primary-foreground hover:bg-primary/90 h-12 px-4 py-2 shadow-md">
-                                <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24"
-                                     fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
-                                     stroke-linejoin="round" class="lucide lucide-mail">
-                                    <rect width="20" height="16" x="2" y="4" rx="2"></rect>
-                                    <path d="m22 7-10 5L2 7"></path>
-                                </svg>
-                                Contact Raj for Details
-                            </button>
-                            <p class="text-sm text-muted-foreground mt-3 text-center">Fill out the form to get expert
-                                advice on this property</p>
                         </div>
                     </div>
                     <button type="button" onclick="closePropertyModal()"

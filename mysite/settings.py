@@ -36,26 +36,26 @@ else:
     DEBUG = False
 
 # Check if running on Vercel
-#IS_VERCEL = os.getenv('VERCEL', 'false').lower() == 'true'
+# IS_VERCEL = os.getenv('VERCEL', 'false').lower() == 'true'
 
 # Get allowed hosts from environment or use a default list
-#ALLOWED_HOSTS = os.getenv('ALLOWED_HOSTS', 'localhost,127.0.0.1,.vercel.app,.onrender.com').split(',')
+# ALLOWED_HOSTS = os.getenv('ALLOWED_HOSTS', 'localhost,127.0.0.1,.vercel.app,.onrender.com').split(',')
 ALLOWED_HOSTS = ['rajtexas.com', 'www.rajtexas.com']
 # Add localhost for local development
 if DEBUG:
     ALLOWED_HOSTS.extend(['localhost', '127.0.0.1', '*'])
 
 # For development, you can add more hosts
-#if DEBUG:
+# if DEBUG:
 #    ALLOWED_HOSTS.extend(['*'])
 
 # Add common deployment domains
-#ALLOWED_HOSTS.extend([
+# ALLOWED_HOSTS.extend([
 #    'raj-realestate.vercel.app',
 #    'raj-realestate-git-main-kumarsravan2004gmailcoms-projects.vercel.app',
 #    'raj-realestate-m8ms2xjy1-kumarsravan2004gmailcoms-projects.vercel.app',
 #    'henry-realestate.onrender.com'
-#])
+# ])
 
 
 # Application definition
@@ -72,11 +72,15 @@ INSTALLED_APPS = [
 
     'tailwind',
     'theme',
- #   'django_browser_reload',
+    #   'django_browser_reload',
 
     'Raj',
     # 'storages',  # Only needed for AWS S3 storage
+    'django.contrib.sites',  # Required for sitemaps
+    'django.contrib.sitemaps',
 ]
+
+SITE_ID = 1
 
 TAILWIND_APP_NAME = 'theme'
 
@@ -88,7 +92,7 @@ NPM_BIN_PATH = "C:/Program Files/nodejs/npm.cmd"
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
-#    'whitenoise.middleware.WhiteNoiseMiddleware',
+    #    'whitenoise.middleware.WhiteNoiseMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
@@ -97,14 +101,12 @@ MIDDLEWARE = [
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
     # 'Raj.middleware.LinkTrackingMiddleware',  # Custom link tracking middleware - temporarily disabled
 
-#    "django_browser_reload.middleware.BrowserReloadMiddleware",
+    #    "django_browser_reload.middleware.BrowserReloadMiddleware",
 ]
 
 if DEBUG:
-        INSTALLED_APPS += ['django_browser_reload']
-        MIDDLEWARE += ['django_browser_reload.middleware.BrowserReloadMiddleware']
-
-
+    INSTALLED_APPS += ['django_browser_reload']
+    MIDDLEWARE += ['django_browser_reload.middleware.BrowserReloadMiddleware']
 
 ROOT_URLCONF = 'mysite.urls'
 
@@ -125,7 +127,6 @@ TEMPLATES = [
 ]
 
 WSGI_APPLICATION = 'mysite.wsgi.application'
-
 
 # Database
 # https://docs.djangoproject.com/en/5.1/ref/settings/#databases
@@ -150,13 +151,13 @@ elif os.getenv('DB_NAME'):
     # Use PostgreSQL for production
     DATABASES = {
         'default': {
-		'ENGINE': 'django.db.backends.postgresql',
-		'NAME': os.getenv('DB_NAME'),
-		'USER': os.getenv('DB_USER'),
-		'PASSWORD': os.getenv('DB_PASSWORD'),
-		'HOST': os.getenv('DB_HOST'),
-		'PORT': os.getenv('DB_PORT', '5432'),
-	}
+            'ENGINE': 'django.db.backends.postgresql',
+            'NAME': os.getenv('DB_NAME'),
+            'USER': os.getenv('DB_USER'),
+            'PASSWORD': os.getenv('DB_PASSWORD'),
+            'HOST': os.getenv('DB_HOST'),
+            'PORT': os.getenv('DB_PORT', '5432'),
+        }
     }
 else:
     # Fallback to SQLite if no DB_NAME is set
@@ -166,7 +167,6 @@ else:
             'NAME': BASE_DIR / 'db.sqlite3',
         }
     }
-
 
 # Password validation
 # https://docs.djangoproject.com/en/5.1/ref/settings/#auth-password-validators
@@ -186,7 +186,6 @@ AUTH_PASSWORD_VALIDATORS = [
     },
 ]
 
-
 # Internationalization
 # https://docs.djangoproject.com/en/5.1/topics/i18n/
 
@@ -203,48 +202,46 @@ DATA_UPLOAD_MAX_MEMORY_SIZE = 100 * 1024 * 1024  # 100 MB - for in-memory upload
 FILE_UPLOAD_MAX_MEMORY_SIZE = 100 * 1024 * 1024  # 100 MB - for file uploads
 DATA_UPLOAD_MAX_NUMBER_FIELDS = 10000  # Increase field limit for forms with many images/videos
 
-
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/5.1/howto/static-files/
 
-#STATIC_URL = '/static/'
-#STATICFILES_DIRS = [
+# STATIC_URL = '/static/'
+# STATICFILES_DIRS = [
 #    BASE_DIR / "static",
-#]
-#STATIC_ROOT = BASE_DIR / "staticfiles"
+# ]
+# STATIC_ROOT = BASE_DIR / "staticfiles"
 
 # Static files configuration for production
-#if not DEBUG:
+# if not DEBUG:
 #    STATICFILES_STORAGE = 'whitenoise.storage.CompressedStaticFilesStorage'
-    
+
 # WhiteNoise configuration
-#STATICFILES_FINDERS = [
+# STATICFILES_FINDERS = [
 #    'django.contrib.staticfiles.finders.FileSystemFinder',
 #    'django.contrib.staticfiles.finders.AppDirectoriesFinder',
-#]
+# ]
 
 # Media files configuration
-#MEDIA_URL = '/media/'
-#MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
+# MEDIA_URL = '/media/'
+# MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 
 # Production media serving configuration
-#if not DEBUG:
-    # In production, we need to serve media files through Django
-    # This is not ideal for production but works for Render
+# if not DEBUG:
+# In production, we need to serve media files through Django
+# This is not ideal for production but works for Render
 #    MEDIA_URL = '/media/'
-    # Add media serving to URL patterns in production
+# Add media serving to URL patterns in production
 
-#STATIC_ROOT = BASE_DIR / "staticfiles"
-#STATICFILES_DIRS = [BASE_DIR / "static"]
-#STATIC_ROOT = BASE_DIR / "staticfiles_dummy"
-#STATIC_ROOT = BASE_DIR / "staticfiles"
+# STATIC_ROOT = BASE_DIR / "staticfiles"
+# STATICFILES_DIRS = [BASE_DIR / "static"]
+# STATIC_ROOT = BASE_DIR / "staticfiles_dummy"
+# STATIC_ROOT = BASE_DIR / "staticfiles"
 
 
-
-#AWS_ACCESS_KEY_ID = config("AWS_ACCESS_KEY_ID", default=None)
-#AWS_SECRET_ACCESS_KEY = config("AWS_SECRET_ACCESS_KEY", default=None)
-#AWS_STORAGE_BUCKET_NAME = config("AWS_STORAGE_BUCKET_NAME", default=None)
-#AWS_S3_REGION_NAME = config("AWS_S3_REGION_NAME", default=None)
+# AWS_ACCESS_KEY_ID = config("AWS_ACCESS_KEY_ID", default=None)
+# AWS_SECRET_ACCESS_KEY = config("AWS_SECRET_ACCESS_KEY", default=None)
+# AWS_STORAGE_BUCKET_NAME = config("AWS_STORAGE_BUCKET_NAME", default=None)
+# AWS_S3_REGION_NAME = config("AWS_S3_REGION_NAME", default=None)
 
 # Default primary key field type
 # https://docs.djangoproject.com/en/5.1/ref/settings/#default-auto-field
@@ -285,14 +282,13 @@ ADMIN_SITE_HEADER = "raj texas Admin"
 ADMIN_SITE_TITLE = "raj texas Admin"
 ADMIN_INDEX_TITLE = "raj texas Administration"
 
-
-
 # ========================================
 # STATIC & MEDIA CONFIGURATION 
 # ========================================
 
 from decouple import config
 import os
+
 BASE_DIR = Path(__file__).resolve().parent.parent
 
 # --- AWS S3 Settings ---
@@ -312,17 +308,17 @@ if USE_S3:
     AWS_S3_OBJECT_PARAMETERS = {
         "ACL": "private",  # explicitly safe for ACL-disabled buckets
     }
-    
+
     # --- STATIC FILES ---
     STATIC_URL = f"https://{AWS_S3_CUSTOM_DOMAIN}/static/"
     STATICFILES_DIRS = [
         BASE_DIR / "static",
     ]
     STATIC_ROOT = BASE_DIR / "staticfiles"  # DO NOT COMMENT THIS
-    
+
     # --- MEDIA FILES ---
     MEDIA_URL = f"https://{AWS_S3_CUSTOM_DOMAIN}/media/"
-    
+
     STORAGES = {
         "default": {
             "BACKEND": "mysite.storage_backends.MediaStorage",
@@ -338,10 +334,10 @@ else:
         BASE_DIR / "static",
     ]
     STATIC_ROOT = BASE_DIR / "staticfiles"
-    
+
     MEDIA_URL = '/media/'
     MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
-    
+
     STORAGES = {
         "default": {
             "BACKEND": "django.core.files.storage.FileSystemStorage",
