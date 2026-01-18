@@ -227,19 +227,29 @@
         }
 
         /* Navigation Arrows */
+        /* Navigation Arrows - FORCED COLORS */
         #prevImage, #nextImage {
             z-index: 1000 !important;
             position: absolute !important;
             display: block !important;
             visibility: visible !important;
-            opacity: 1 !important;
             pointer-events: auto !important;
             cursor: pointer;
+            
+            /* YOUR NEW GOLD COLOR */
+            background-color: #efb31a !important; 
+            color: white !important;
+            border: 2px solid white !important;
+            border-radius: 9999px !important;
+            padding: 0.75rem !important;
         }
 
         #prevImage:hover, #nextImage:hover {
             transform: translateY(-50%) scale(1.1) !important;
             transition: all 0.3s ease !important;
+            
+            /* HOVER SHADE (Darker Gold) */
+            background-color: #d49c12 !important; 
         }
 
         /* Ensure Modal sits on top */
@@ -491,7 +501,7 @@
                                     </div>
                                 </div>
 
-{#                                 Listing agent#}
+                                {#                                 Listing agent#}
                                 {% if open_house.listing_agent_name %}
                                     <div class="flex items-center gap-2 mt-2 pb-1">
                                         {% if open_house.get_listing_agent_image_url %}
@@ -572,6 +582,7 @@
                                             data-date="{{ open_house.open_house_date|date:'M j, Y' }}"
                                             data-time="{{ open_house.open_house_time|time:'g:i A' }}"
                                             data-end-time="
+                                                    
                                                     
                                                     {% if open_house.open_house_end_time %}{{ open_house.open_house_end_time|time:'g:i A' }}{% endif %}"
                                             data-bedrooms="{{ open_house.bedrooms|default_if_none:'' }}"
@@ -797,14 +808,15 @@
                 </div>
                 <div id="imageNavigation" class="hidden">
                     <button id="prevImage"
-                            class="absolute left-2 top-1/2 transform -translate-y-1/2 bg-black text-white p-3 rounded-full hover:bg-gray-800 border-2 border-white">
+                            class="absolute left-2 top-1/2 transform -translate-y-1/2 bg-blue-600 text-white p-3 rounded-full hover:bg-blue-700 border-2 border-white">
                         <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
                                   d="M15 19l-7-7 7-7"></path>
                         </svg>
                     </button>
+
                     <button id="nextImage"
-                            class="absolute right-2 top-1/2 transform -translate-y-1/2 bg-black text-white p-3 rounded-full hover:bg-gray-800 border-2 border-white">
+                            class="absolute right-2 top-1/2 transform -translate-y-1/2 bg-red-600 text-white p-3 rounded-full hover:bg-blue-700 border-2 border-white">
                         <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
                                   d="M9 5l7 7-7 7"></path>
@@ -848,20 +860,27 @@
             </div>
 
             <div id="modalListingAgent" class="hidden border-t pt-4 mt-4 w-full">
-    <div class="flex items-center gap-3 w-full">
-        <img id="modalListingAgentImage" src="" class="w-12 h-12 rounded-full object-cover hidden border border-gray-200 shadow-sm flex-shrink-0">
-        
-        <div class="flex flex-col">
-            <span class="text-xs text-muted-foreground uppercase tracking-wide font-medium">Listing By</span>
-            <span id="modalListingAgentName" class="text-base font-bold text-gray-900 leading-tight"></span>
-        </div>
+                <div class="flex items-center gap-3 w-full">
+                    <img id="modalListingAgentImage" src=""
+                         class="w-12 h-12 rounded-full object-cover hidden border border-gray-200 shadow-sm flex-shrink-0">
 
-        <a id="modalListingAgentLink" href="" target="_blank" class="hidden ml-auto inline-flex items-center text-sm text-primary hover:text-primary/80 hover:underline font-medium">
-            View Profile 
-            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="ml-1"><path d="M5 12h14"/><path d="m12 5 7 7-7 7"/></svg>
-        </a>
-    </div>
-</div>
+                    <div class="flex flex-col">
+                        <span class="text-xs text-muted-foreground uppercase tracking-wide font-medium">Listing By</span>
+                        <span id="modalListingAgentName" class="text-base font-bold text-gray-900 leading-tight"></span>
+                    </div>
+
+                    <a id="modalListingAgentLink" href="" target="_blank"
+                       class="hidden ml-auto inline-flex items-center text-sm text-primary hover:text-primary/80 hover:underline font-medium">
+                        View Profile
+                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none"
+                             stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
+                             class="ml-1">
+                            <path d="M5 12h14"/>
+                            <path d="m12 5 7 7-7 7"/>
+                        </svg>
+                    </a>
+                </div>
+            </div>
 
             <div class="border-t pt-4">
                 <button type="button" id="modalContactBtn"
