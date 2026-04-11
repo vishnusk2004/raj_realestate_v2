@@ -1614,8 +1614,6 @@
                         }
 
                         const mediaArray = JSON.parse(cleanMediaData);
-                        console.log('Parsed media array:', mediaArray);
-
                         if (Array.isArray(mediaArray) && mediaArray.length > 0) {
                             mediaArray.forEach((item) => {
                                 if (item && item.url && item.url.trim() && !seenUrls.has(item.url.trim())) {
@@ -1630,7 +1628,6 @@
                         }
                     } catch (e) {
                         console.error('Could not parse mediaData:', e, 'Raw data:', mediaData);
-                        console.log('Falling back to images only');
                     }
 
                     // Fallback: Parse all images from additionalImages (which includes main + all others)
@@ -1667,8 +1664,6 @@
                             alt: title
                         });
                     }
-
-                    console.log('Property media loaded:', propertyMedia.length, propertyMedia); // Debug
 
                     // Set up carousel
                     currentMediaIndex = 0;
@@ -1810,7 +1805,6 @@
                             };
 
                             imageElement.onload = function () {
-                                console.log('Image loaded successfully:', currentMediaIndex, propertyMedia.length);
                                 imageElement.style.opacity = '1';
                             };
 
@@ -1858,7 +1852,6 @@
                                     iframe.src = '';
                                 }
                                 currentMediaIndex = (currentMediaIndex - 1 + propertyMedia.length) % propertyMedia.length;
-                                console.log('Previous media:', currentMediaIndex, propertyMedia.length);
                                 updateMediaDisplay();
                             }
                         };
@@ -1878,7 +1871,6 @@
                                     iframe.src = '';
                                 }
                                 currentMediaIndex = (currentMediaIndex + 1) % propertyMedia.length;
-                                console.log('Next media:', currentMediaIndex, propertyMedia.length);
                                 updateMediaDisplay();
                             }
                         };
@@ -1914,7 +1906,6 @@
                 }
 
                 function setupPropertyFeatures(bedrooms, bathrooms, area, propertyType) {
-                    console.log('Setting up features:', {bedrooms, bathrooms, area, propertyType});
                     const features = [];
 
                     // Add features based on available data
@@ -1942,8 +1933,6 @@
                         features.push('Modern Design');
                         features.push('Well Maintained');
                     }
-
-                    console.log('Generated features:', features);
 
                     const featuresContainer = document.getElementById('modalFeatures');
                     if (features.length > 0) {

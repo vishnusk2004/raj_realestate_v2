@@ -1,6 +1,8 @@
 from ast import literal_eval
 from datetime import date
+from functools import wraps
 
+from asgiref.sync import sync_to_async
 from django.core.serializers import serialize
 from django.utils.safestring import mark_safe
 from django.conf import settings
@@ -22,6 +24,15 @@ from .models import Property, SellingContact, GeneralInquiry
 
 
 # Create your views here.
+
+
+def asyncify_view(func):
+    """Run sync view logic in a thread so the exported view is async."""
+    @wraps(func)
+    async def _async_wrapper(request, *args, **kwargs):
+        return await sync_to_async(func, thread_sensitive=True)(request, *args, **kwargs)
+
+    return _async_wrapper
 
 def send_podium_webhook(tracking_data):
     """
@@ -51,6 +62,7 @@ def send_podium_webhook(tracking_data):
         return False
 
 
+@asyncify_view
 def home(request):
     try:
         # Debug: Print BRAND_NAME to console
@@ -149,6 +161,7 @@ def home(request):
         return HttpResponse(f"Error in home view: {str(e)}", status=500)
 
 
+@asyncify_view
 def featured_properties(request):
     properties = Property.objects.all()
 
@@ -172,6 +185,7 @@ def featured_properties(request):
     return render(request, 'Raj/featured_properties.html', context)
 
 
+@asyncify_view
 def blog(request):
     """Blog page view with category filtering"""
     try:
@@ -209,6 +223,7 @@ def blog(request):
         return render(request, 'Raj/blog.html', {'posts': [], 'brand_name': settings.BRAND_NAME})
 
 
+@asyncify_view
 def blog_detail(request, post_id):
     """Blog detail page view with optional tracking"""
     try:
@@ -267,6 +282,7 @@ def blog_detail(request, post_id):
         return HttpResponse("Blog post not found", status=404)
 
 
+@asyncify_view
 def blog_page(request):
     context = {
         'brand_name': settings.BRAND_NAME
@@ -274,6 +290,7 @@ def blog_page(request):
     return render(request, 'Raj/blog_page.html', context)
 
 
+@asyncify_view
 def buying(request):
     context = {
         'brand_name': settings.BRAND_NAME
@@ -281,6 +298,7 @@ def buying(request):
     return render(request, 'Raj/buying.html', context)
 
 
+@asyncify_view
 def selling(request):
     if request.method == 'POST':
         try:
@@ -347,6 +365,7 @@ def selling(request):
     return render(request, 'Raj/selling.html', context)
 
 
+@asyncify_view
 def leasing(request):
     context = {
         'brand_name': settings.BRAND_NAME
@@ -354,6 +373,7 @@ def leasing(request):
     return render(request, 'Raj/leasing.html', context)
 
 
+@asyncify_view
 def home_valuation(request):
     if request.method == 'POST':
         try:
@@ -380,6 +400,7 @@ def home_valuation(request):
     return render(request, 'Raj/home_valuation.html', context)
 
 
+@asyncify_view
 def open_house(request):
     if request.method == 'POST':
         try:
@@ -455,6 +476,7 @@ def open_house(request):
     return render(request, 'Raj/open_house.html', context)
 
 
+@asyncify_view
 def get_open_house_details(request, open_house_id):
     """API to fetch open house images dynamically"""
     try:
@@ -484,6 +506,7 @@ def get_open_house_details(request, open_house_id):
         return JsonResponse({'error': str(e)}, status=500)
 
 
+@asyncify_view
 def mortgage_calculator(request):
     context = {
         'brand_name': settings.BRAND_NAME
@@ -491,6 +514,7 @@ def mortgage_calculator(request):
     return render(request, 'Raj/mortgage_calculator.html', context)
 
 
+@asyncify_view
 def market_insights(request):
     context = {
         'brand_name': settings.BRAND_NAME
@@ -498,6 +522,7 @@ def market_insights(request):
     return render(request, 'Raj/market_insights.html', context)
 
 
+@asyncify_view
 def tracked_blog_detail(request, tracking_code):
     """View to handle tracked blog links and record opens"""
     try:
@@ -545,6 +570,7 @@ def tracked_blog_detail(request, tracking_code):
         return HttpResponse(f"Error in tracked blog view: {str(e)}", status=500)
 
 
+@asyncify_view
 @csrf_exempt
 def create_tracking_link(request):
     """
@@ -646,6 +672,7 @@ def create_tracking_link(request):
     }, status=405)
 
 
+@asyncify_view
 def tracking_dashboard(request):
     """Admin dashboard to view tracking statistics"""
     if not request.user.is_staff:
@@ -683,6 +710,7 @@ def tracking_dashboard(request):
 
 
 # Blog Admin Views
+@asyncify_view
 def blog_admin(request):
     """Blog admin dashboard"""
     posts = BlogPost.objects.all().order_by('-created_at')
@@ -693,6 +721,7 @@ def blog_admin(request):
     return render(request, 'Raj/blog_admin.html', context)
 
 
+@asyncify_view
 def blog_add(request):
     """Add new blog post"""
     if request.method == 'POST':
@@ -712,6 +741,7 @@ def blog_add(request):
     return render(request, 'Raj/blog_form.html', context)
 
 
+@asyncify_view
 def blog_edit(request, post_id):
     """Edit existing blog post"""
     post = get_object_or_404(BlogPost, id=post_id)
@@ -734,6 +764,7 @@ def blog_edit(request, post_id):
     return render(request, 'Raj/blog_form.html', context)
 
 
+@asyncify_view
 def blog_delete(request, post_id):
     """Delete blog post"""
     post = get_object_or_404(BlogPost, id=post_id)
@@ -750,6 +781,7 @@ def blog_delete(request, post_id):
     return render(request, 'Raj/blog_delete.html', context)
 
 
+@asyncify_view
 def buy_lease(request):
     """Buy/Lease properties page with Split Pagination"""
     # Get filter parameters
@@ -818,6 +850,7 @@ def buy_lease(request):
 
 
 # --- 3. ADD THIS API FUNCTION AT THE BOTTOM OF views.py ---
+@asyncify_view
 def get_property_details(request, property_id):
     """API to fetch heavy images only when clicked"""
     try:
@@ -831,6 +864,7 @@ def get_property_details(request, property_id):
         return JsonResponse({'error': str(e)}, status=500)
 
 
+@asyncify_view
 def debug_images(request):
     """Debug page to test property images"""
     properties = PropertyListing.objects.filter(published=True).prefetch_related('images')
@@ -841,6 +875,7 @@ def debug_images(request):
     return render(request, 'Raj/debug_images.html', context)
 
 
+@asyncify_view
 def debug_blog_image(request, post_id):
     """Debug page to test blog post images"""
     post = get_object_or_404(BlogPost, id=post_id)
@@ -851,6 +886,7 @@ def debug_blog_image(request, post_id):
     return render(request, 'Raj/debug_blog_image.html', context)
 
 
+@asyncify_view
 def debug_open_house_images(request, open_house_id):
     """Debug page to test open house images"""
     open_house = get_object_or_404(OpenHouse, id=open_house_id)
@@ -861,6 +897,7 @@ def debug_open_house_images(request, open_house_id):
     return render(request, 'Raj/debug_open_house_images.html', context)
 
 
+@asyncify_view
 def community_detail(request, slug):
     """Community detail page showing all properties in that community"""
     community = get_object_or_404(Community, slug=slug, published=True)
@@ -908,6 +945,7 @@ def community_detail(request, slug):
     return render(request, 'Raj/community_detail.html', context)
 
 
+@asyncify_view
 def property_inquiry(request):
     """Handle property inquiry form submissions from any page"""
     # Get the page the user came from (e.g., Home, Buy/Lease, etc.)
@@ -978,6 +1016,7 @@ def property_inquiry(request):
     return redirect(return_url)
 
 
+@asyncify_view
 def mortgage_inquiry(request):
     """Handle mortgage inquiry form submissions from mortgage calculator page"""
     if request.method == 'POST':
@@ -1074,6 +1113,7 @@ def mortgage_inquiry(request):
     return redirect('mortgage_calculator')
 
 
+@asyncify_view
 def terms_of_service(request):
     """Terms of Service page"""
     context = {
@@ -1082,6 +1122,7 @@ def terms_of_service(request):
     return render(request, 'Raj/terms_of_service.html', context)
 
 
+@asyncify_view
 def privacy_policy(request):
     """Privacy Policy page"""
     context = {
@@ -1090,6 +1131,7 @@ def privacy_policy(request):
     return render(request, 'Raj/privacy_policy.html', context)
 
 
+@asyncify_view
 def cookie_policy(request):
     """Cookie Policy page"""
     context = {
@@ -1098,6 +1140,7 @@ def cookie_policy(request):
     return render(request, 'Raj/cookie_policy.html', context)
 
 
+@asyncify_view
 def tracked_blog_detail_new(request, post_id, customer_code):
     """New blog tracking with clean URL format: /blog/<post_id>/<customer_code>/"""
     try:
@@ -1179,21 +1222,25 @@ def tracked_blog_detail_new(request, post_id, customer_code):
         return redirect('blog_detail', post_id=post_id)
 
 
+@asyncify_view
 def tracked_open_house(request, customer_code):
     """Tracked open house page with customer code"""
     return _tracked_page_view(request, 'open-house', 'open-house', customer_code, 'open_house')
 
 
+@asyncify_view
 def tracked_selling(request, customer_code):
     """Tracked selling page with customer code"""
     return _tracked_page_view(request, 'selling', 'selling', customer_code, 'selling')
 
 
+@asyncify_view
 def tracked_buy_lease(request, customer_code):
     """Tracked buy-lease page with customer code"""
     return _tracked_page_view(request, 'buy-lease', 'buy-lease', customer_code, 'buy_lease')
 
 
+@asyncify_view
 def tracked_mortgage_calculator(request, customer_code):
     """Tracked mortgage calculator page with customer code"""
     return _tracked_page_view(request, 'mortgage-calculator', 'mortgage-calculator', customer_code,
@@ -1286,26 +1333,31 @@ def _tracked_page_view(request, page_type, page_id, customer_code, template_name
         return redirect('home')
 
 
+@asyncify_view
 def tracked_blog_root(request, customer_code):
     """Tracked blog root page with customer code"""
     return _tracked_page_view(request, 'blog', 'blog', customer_code, 'blog')
 
 
+@asyncify_view
 def tracked_terms(request, customer_code):
     """Tracked terms of service page"""
     return _tracked_page_view(request, 'terms-of-service', 'terms-of-service', customer_code, 'terms_of_service')
 
 
+@asyncify_view
 def tracked_privacy(request, customer_code):
     """Tracked privacy policy page"""
     return _tracked_page_view(request, 'privacy-policy', 'privacy-policy', customer_code, 'privacy_policy')
 
 
+@asyncify_view
 def tracked_cookie(request, customer_code):
     """Tracked cookie policy page"""
     return _tracked_page_view(request, 'cookie-policy', 'cookie-policy', customer_code, 'cookie_policy')
 
 
+@asyncify_view
 def general_tracking_redirect(request, customer_code):
     """General tracking redirect for customer codes like /ju131"""
     # Normalize incoming code param to include 'u-' prefix
@@ -1361,6 +1413,7 @@ def general_tracking_redirect(request, customer_code):
     return redirect('home')
 
 
+@asyncify_view
 def general_inquiry(request):
     """Handle general inquiry form submissions from any page"""
     # Redirect back to the page they came from

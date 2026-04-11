@@ -19218,7 +19218,7 @@ const Px = ({property: e, onViewDetails: t}) => a.jsxs(Ce, {
                     className: "grid md:grid-cols-2 lg:grid-cols-4 gap-6",
                     children: e.map(o => a.jsx(Px, {
                         property: o,
-                        onViewDetails: () => console.log("View details:", o)
+                        onViewDetails: () => void 0
                     }, o.id))
                 }), a.jsx("div", {
                     className: "text-center mt-12",

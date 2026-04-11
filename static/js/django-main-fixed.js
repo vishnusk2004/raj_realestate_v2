@@ -2,8 +2,6 @@
 // This replaces the problematic React build
 
 document.addEventListener('DOMContentLoaded', function() {
-    console.log('Django main script loaded successfully');
-    
     // Initialize any custom functionality here
     initializeForms();
     initializeModals();
@@ -16,7 +14,6 @@ function initializeForms() {
     forms.forEach(form => {
         form.addEventListener('submit', function(e) {
             // Let the form submit naturally
-            console.log('Form submitted:', form.action);
         });
     });
 }
