@@ -1,8 +1,13 @@
 from ast import literal_eval
 from datetime import date
 from functools import wraps
+import os
+import uuid
+import json
+import logging
 
 from asgiref.sync import sync_to_async
+import boto3
 from django.core.serializers import serialize
 from django.utils.safestring import mark_safe
 from django.conf import settings
@@ -12,15 +17,16 @@ from django.http import HttpResponse, JsonResponse
 from django.contrib import messages
 from django.utils import timezone
 from django.views.decorators.csrf import csrf_exempt
+from django.views.decorators.http import require_POST
 from django.db import models
 from .models import BlogTracking, BlogPost, PropertyListing, OpenHouse, OpenHouseRegistration, PropertyInquiry, \
     MortgageInquiry, LinkTracking, Community, GeneralInquiry
 from .forms import BlogPostForm
-import uuid
-import json
 import requests
 
 from .models import Property, SellingContact, GeneralInquiry
+
+logger = logging.getLogger(__name__)
 
 
 # Create your views here.
@@ -58,8 +64,127 @@ def send_podium_webhook(tracking_data):
         response.raise_for_status()
         return True
     except Exception as e:
-        print(f"Failed to send Podium webhook: {str(e)}")
+        logger.exception("Failed to send Podium webhook")
         return False
+
+
+@asyncify_view
+@require_POST
+def create_presigned_upload(request):
+    """Create a short-lived, staff-only presigned S3 POST policy for direct browser uploads."""
+    if not request.user.is_authenticated or not request.user.is_staff:
+        return JsonResponse({'success': False, 'error': 'Access denied'}, status=403)
+
+    if not settings.AWS_STORAGE_BUCKET_NAME:
+        return JsonResponse({'success': False, 'error': 'Upload storage is not configured'}, status=500)
+
+    try:
+        data = json.loads(request.body or '{}')
+    except json.JSONDecodeError:
+        return JsonResponse({'success': False, 'error': 'Invalid JSON payload'}, status=400)
+
+    original_filename = (data.get('filename') or '').strip()
+    content_type = (data.get('content_type') or '').strip().lower()
+    upload_kind = (data.get('kind') or 'image').strip().lower()
+    folder = (data.get('folder') or 'admin').strip().lower()
+
+    try:
+        file_size = int(data.get('size', 0))
+    except (TypeError, ValueError):
+        file_size = 0
+
+    if upload_kind not in {'image', 'video'}:
+        return JsonResponse({'success': False, 'error': 'kind must be image or video'}, status=400)
+
+    allowed_content_types = {
+        'image': {
+            'image/jpeg',
+            'image/png',
+            'image/webp',
+            'image/gif',
+            'image/svg+xml',
+            'image/avif',
+        },
+        'video': {
+            'video/mp4',
+            'video/webm',
+            'video/quicktime',
+            'video/x-msvideo',
+        },
+    }
+    allowed_extensions = {
+        'image': {'.jpg', '.jpeg', '.png', '.webp', '.gif', '.svg', '.avif'},
+        'video': {'.mp4', '.webm', '.mov', '.avi'},
+    }
+
+    if content_type not in allowed_content_types[upload_kind]:
+        return JsonResponse({'success': False, 'error': 'Unsupported file type'}, status=400)
+
+    _, ext = os.path.splitext(original_filename)
+    ext = ext.lower()
+    if ext not in allowed_extensions[upload_kind]:
+        return JsonResponse({'success': False, 'error': 'Unsupported file extension'}, status=400)
+
+    max_image_bytes = int(getattr(settings, 'S3_MAX_IMAGE_UPLOAD_BYTES', 10 * 1024 * 1024))
+    max_video_bytes = int(getattr(settings, 'S3_MAX_VIDEO_UPLOAD_BYTES', 50 * 1024 * 1024))
+    max_size = max_video_bytes if upload_kind == 'video' else max_image_bytes
+
+    if file_size <= 0 or file_size > max_size:
+        return JsonResponse({
+            'success': False,
+            'error': f'Invalid file size. Max allowed is {max_size} bytes for {upload_kind} uploads.',
+        }, status=400)
+
+    # Keep folder safe and predictable in S3 keys.
+    safe_folder = ''.join(ch for ch in folder if ch.isalnum() or ch in {'-', '_'}) or 'admin'
+
+    date_path = timezone.now().strftime('%Y/%m/%d')
+    key_name = f'uploads/{safe_folder}/{upload_kind}/{date_path}/{uuid.uuid4().hex}{ext}'
+    media_location = str(getattr(settings, 'S3_MEDIA_LOCATION', 'media')).strip('/ ')
+    object_key = f'{media_location}/{key_name}' if media_location else key_name
+
+    try:
+        s3_client = boto3.client('s3', region_name=getattr(settings, 'AWS_S3_REGION_NAME', None))
+
+        fields = {'Content-Type': content_type}
+        conditions = [
+            {'Content-Type': content_type},
+            ['content-length-range', 1, max_size],
+            ['eq', '$key', object_key],
+        ]
+
+        presigned_post = s3_client.generate_presigned_post(
+            Bucket=settings.AWS_STORAGE_BUCKET_NAME,
+            Key=object_key,
+            Fields=fields,
+            Conditions=conditions,
+            ExpiresIn=300,
+        )
+
+        file_url = f"https://{settings.AWS_STORAGE_BUCKET_NAME}.s3.amazonaws.com/{object_key}"
+
+        logger.info(
+            "Presigned upload created user_id=%s kind=%s object_key=%s size=%s content_type=%s",
+            getattr(request.user, 'id', None),
+            upload_kind,
+            object_key,
+            file_size,
+            content_type,
+        )
+
+        return JsonResponse({
+            'success': True,
+            'upload': presigned_post,
+            'file_key': key_name,
+            'object_key': object_key,
+            'file_url': file_url,
+            'content_type': content_type,
+            'max_size': max_size,
+            'expires_in': 300,
+        })
+    except Exception:
+        logger.exception("Failed to create S3 presigned upload request")
+        return JsonResponse({'success': False, 'error': 'Failed to create upload session'}, status=500)
 
 
 @asyncify_view

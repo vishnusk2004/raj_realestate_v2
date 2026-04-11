@@ -180,3 +180,115 @@ For deployment issues, check:
 2. Django logs for application errors
 3. Database connection status
 4. Environment variable configuration
+
+## Direct S3 Uploads (Lambda-safe)
+
+Use this pattern when running Django on serverless infrastructure.
+
+### What was added
+
+1. Staff-only presigned upload endpoint: `/api/uploads/presign/`
+2. Route mapping in `Raj/urls.py`
+3. Upload size and location settings in `mysite/settings.py`
+
+### Security model
+
+1. AWS credentials are never sent to the browser.
+2. Presigned policies expire in 5 minutes.
+3. Only authenticated staff users can request presigned uploads.
+4. MIME type, extension, and max file size are validated server-side.
+5. Object keys are randomized and written under `media/uploads/...`.
+
+### Required environment variables
+
+```bash
+S3_MEDIA_LOCATION=media
+S3_MAX_IMAGE_UPLOAD_BYTES=10485760
+S3_MAX_VIDEO_UPLOAD_BYTES=52428800
+```
+
+### Browser upload flow
+
+1. Call `POST /api/uploads/presign/` with JSON payload:
+```json
+{
+  "filename": "tour.mp4",
+  "content_type": "video/mp4",
+  "size": 41234567,
+  "kind": "video",
+  "folder": "property-listings"
+}
+```
+2. Use returned `upload.url` and `upload.fields` to submit a `FormData` POST directly to S3.
+3. Save returned `file_key` in your model field (this is the storage-relative name).
+
+### Minimal frontend example
+
+```javascript
+async function uploadDirectToS3(file, kind = "image", folder = "admin") {
+  const presignRes = await fetch("/api/uploads/presign/", {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+      "X-CSRFToken": getCsrfToken(),
+    },
+    body: JSON.stringify({
+      filename: file.name,
+      content_type: file.type,
+      size: file.size,
+      kind,
+      folder,
+    }),
+  });
+
+  const presignData = await presignRes.json();
+  if (!presignRes.ok || !presignData.success) {
+    throw new Error(presignData.error || "Failed to prepare upload");
+  }
+
+  const formData = new FormData();
+  Object.entries(presignData.upload.fields).forEach(([k, v]) => formData.append(k, v));
+  formData.append("file", file);
+
+  const s3Res = await fetch(presignData.upload.url, {
+    method: "POST",
+    body: formData,
+  });
+
+  if (!s3Res.ok) {
+    throw new Error("S3 upload failed");
+  }
+
+  return presignData.file_key;
+}
+```
+
+### S3 CORS example
+
+```json
+[
+  {
+    "AllowedOrigins": ["https://rajtexas.com", "https://www.rajtexas.com"],
+    "AllowedMethods": ["POST", "PUT", "GET", "HEAD"],
+    "AllowedHeaders": ["*"],
+    "ExposeHeaders": ["ETag"],
+    "MaxAgeSeconds": 3000
+  }
+]
+```
+
+### IAM permissions for upload signer
+
+Grant only the minimum required:
+
+1. `s3:PutObject`
+2. `s3:AbortMultipartUpload`
+3. `s3:ListBucket` (optional, if needed by tooling)
+
+Scope access to bucket prefix:
+
+1. `arn:aws:s3:::<bucket>/media/uploads/*`
+
+### Important note on scraping
+
+Public pages can always be scraped at the HTML level. Direct S3 uploads protect credentials and backend limits; they do not make rendered public content undiscoverable.

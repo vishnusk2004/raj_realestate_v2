@@ -255,22 +255,44 @@ BRAND_NAME = 'Raj Realty Texas'
 # print(f"SETTINGS DEBUG: BRAND_NAME from env = {repr(os.getenv('BRAND_NAME'))}")
 # print(f"SETTINGS DEBUG: BRAND_NAME final value = {repr(BRAND_NAME)}")
 
-# Logging configuration for debugging
+# Logging configuration
+LOG_DIR = BASE_DIR / 'logs'
+os.makedirs(LOG_DIR, exist_ok=True)
+
 LOGGING = {
     'version': 1,
     'disable_existing_loggers': False,
+    'formatters': {
+        'standard': {
+            'format': '%(asctime)s [%(levelname)s] %(name)s:%(lineno)d %(message)s',
+        },
+    },
     'handlers': {
         'console': {
             'class': 'logging.StreamHandler',
+            'formatter': 'standard',
+        },
+        'app_file': {
+            'class': 'logging.handlers.RotatingFileHandler',
+            'filename': str(LOG_DIR / 'application.log'),
+            'maxBytes': 10 * 1024 * 1024,
+            'backupCount': 5,
+            'formatter': 'standard',
+            'level': 'INFO',
         },
     },
     'root': {
-        'handlers': ['console'],
+        'handlers': ['console', 'app_file'],
         'level': 'INFO',
     },
     'loggers': {
         'django': {
-            'handlers': ['console'],
+            'handlers': ['console', 'app_file'],
+            'level': 'INFO',
+            'propagate': False,
+        },
+        'Raj': {
+            'handlers': ['console', 'app_file'],
             'level': 'INFO',
             'propagate': False,
         },
@@ -296,6 +318,9 @@ AWS_ACCESS_KEY_ID = config("AWS_ACCESS_KEY_ID", default=None)
 AWS_SECRET_ACCESS_KEY = config("AWS_SECRET_ACCESS_KEY", default=None)
 AWS_STORAGE_BUCKET_NAME = config("AWS_STORAGE_BUCKET_NAME", default=None)
 AWS_S3_REGION_NAME = config("AWS_S3_REGION_NAME", default="eu-north-1")
+S3_MEDIA_LOCATION = config("S3_MEDIA_LOCATION", default="media")
+S3_MAX_IMAGE_UPLOAD_BYTES = config("S3_MAX_IMAGE_UPLOAD_BYTES", default=10 * 1024 * 1024, cast=int)
+S3_MAX_VIDEO_UPLOAD_BYTES = config("S3_MAX_VIDEO_UPLOAD_BYTES", default=50 * 1024 * 1024, cast=int)
 
 # Use AWS S3 only if credentials are provided and not in DEBUG mode
 USE_S3 = AWS_ACCESS_KEY_ID and AWS_SECRET_ACCESS_KEY and AWS_STORAGE_BUCKET_NAME and not DEBUG

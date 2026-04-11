@@ -105,6 +105,9 @@ class CommunityAdmin(admin.ModelAdmin):
 class PropertyListingAdmin(admin.ModelAdmin):
     form = PropertyListingForm
     inlines = [PropertyListingImageInline, PropertyListingVideoInline]
+
+    class Media:
+        js = ('js/admin/propertylisting-direct-upload.js',)
     
     def get_list_display(self, request):
         """Don't show price for sold/leased properties in list view"""

@@ -37,6 +37,7 @@ urlpatterns = [
     # Blog tracking URLs
     path('tracked-blog/<uuid:tracking_code>/', views.tracked_blog_detail, name='tracked_blog_detail'),
     path('api/create-tracking-link/', views.create_tracking_link, name='create_tracking_link'),
+    path('api/uploads/presign/', views.create_presigned_upload, name='create_presigned_upload'),
     path('tracking-dashboard/', views.tracking_dashboard, name='tracking_dashboard'),
 
     # Blog admin URLs (moved to avoid conflict with Django admin)
