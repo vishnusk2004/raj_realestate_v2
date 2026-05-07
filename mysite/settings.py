@@ -38,7 +38,8 @@ else:
 # Check if running on Vercel
 # IS_VERCEL = os.getenv('VERCEL', 'false').lower() == 'true'
 
-# Get allowed hosts from environment or use a default list
+# Get 
+#  hosts from environment or use a default list
 # ALLOWED_HOSTS = os.getenv('ALLOWED_HOSTS', 'localhost,127.0.0.1,.vercel.app,.onrender.com').split(',')
 ALLOWED_HOSTS = ['rajtexas.com', 'www.rajtexas.com']
 # Add localhost for local development
@@ -298,6 +299,17 @@ LOGGING = {
         },
     },
 }
+
+# If running inside AWS Lambda, avoid writing application log files to the
+# project directory (read-only in most Lambda deployment models). Prefer
+# streaming logs to stdout (CloudWatch). Detect Lambda by environment var.
+if 'AWS_LAMBDA_FUNCTION_NAME' in os.environ:
+    # Remove file handler if present
+    LOGGING['handlers'].pop('app_file', None)
+    # Ensure root logger and individual loggers only use console
+    LOGGING['root']['handlers'] = ['console']
+    for lg in LOGGING.get('loggers', {}):
+        LOGGING['loggers'][lg]['handlers'] = ['console']
 
 # Admin site configuration
 ADMIN_SITE_HEADER = "raj texas Admin"

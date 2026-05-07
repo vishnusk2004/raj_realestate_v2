@@ -43,3 +43,4 @@ typing_extensions==4.15.0
 tzdata==2024.2
 urllib3==2.2.3
 whitenoise==6.6.0
+mangum==0.14.0
